@@ -1,0 +1,7 @@
+CLIENT_ID="53..."
+CLIENT_SECRET="i2Q..."
+REDIRECT_URI="https://..."
+
+# https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=53... &redirect_uri=https://...
+CODE="TG-66..."
+TOKEN='APP_USR-537...'
