@@ -53,7 +53,7 @@
 
 * 05 Configurar un entorno de desarrollo aislado ✅
 * 06 Implementar el backend
-* 07 Implementar el frontend
+* 07 Implementar el frontend (ng generate component componentes/app-navbar)
 * 08 Integrar backend y frontend
 
 ## ¿Pruebas?
