@@ -10,19 +10,24 @@ import { CompBotonesFlotantesComponent } from '../../componentes/comp-botones-fl
 
 export class PagTiendaFisicaComponent implements OnInit {
 
-  onCheckClick() {
-    //! Lógica para el botón "check"
-    console.log('Botón "check" presionado');
+  ClickAceptar() {
+    //! Lógica para el botón "aceptar"
+    console.log('Botón "aceptar" presionado');
   }
   
-  onXClick() {
-    //! Lógica para el botón "x"
-    console.log('Botón "x" presionado');
+  ClickCancelar() {
+    //! Lógica para el botón "cancelar"
+    console.log('Botón "cancelar" presionado');
   }
   
-  onTrashClick() {
-    //! Lógica para el botón "trash"
-    console.log('Botón "trash" presionado');
+  ClickBorrar() {
+    //! Lógica para el botón "borrar"
+    console.log('Botón "borrar" presionado');
+  }
+
+  ClickAgregar() {
+    //! Lógica para el botón "agregar"
+    console.log('Botón "agregar" presionado');
   }
 
   constructor() { }

@@ -18,11 +18,13 @@
 </div>
 
 <app-comp-botones-flotantes 
-    [mostrarCheck]="true"  
-    [mostrarX]="true" 
-    [mostrarTrash]="true" 
-    (checkClick)="onCheckClick()" 
-    (xClick)="onXClick()" 
-    (trashClick)="onTrashClick()"
+    [mostrarAceptar]="true"  
+    [mostrarCancelar]="true" 
+    [mostrarBorrar]="true" 
+    [mostrarAgregar]="true" 
+    (ClickAceptar)="ClickAceptar()" 
+    (ClickCancelar)="ClickCancelar()" 
+    (ClickBorrar)="ClickBorrar()"
+    (ClickAgregar)="ClickAgregar()"
 >
 </app-comp-botones-flotantes>

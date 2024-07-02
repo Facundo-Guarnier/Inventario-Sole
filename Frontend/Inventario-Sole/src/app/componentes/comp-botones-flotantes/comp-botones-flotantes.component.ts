@@ -7,24 +7,32 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 })
 export class CompBotonesFlotantesComponent implements OnInit {
 
-  @Input() mostrarCheck: boolean = false; // Controla la visibilidad del botón "check"
-  @Input() mostrarX: boolean = false;       // Controla la visibilidad del botón "x"
-  @Input() mostrarTrash: boolean = false;    // Controla la visibilidad del botón "trash"
+  //! Controlan la visibilidad de los botones
+  @Input() mostrarAceptar: boolean = false;
+  @Input() mostrarCancelar: boolean = false;
+  @Input() mostrarBorrar: boolean = false;
+  @Input() mostrarAgregar: boolean = false;
 
-  @Output() checkClick = new EventEmitter<void>(); 
-  @Output() xClick = new EventEmitter<void>();
-  @Output() trashClick = new EventEmitter<void>();
+  //! Funciones que se ejecutan al hacer click en los botones
+  @Output() clickAceptar = new EventEmitter<void>(); 
+  @Output() clickCancelar = new EventEmitter<void>();
+  @Output() clickBorrar = new EventEmitter<void>();
+  @Output() clickAgregar = new EventEmitter<void>();
   
-  onClickCheck() {
-    this.checkClick.emit();
+  ClickAceptar() {
+    this.clickAceptar.emit();
   }
   
-  onClickX() {
-    this.xClick.emit();
+  ClickCancelar() {
+    this.clickCancelar.emit();
   }
   
-  onClickTrash() {
-    this.trashClick.emit();
+  ClickBorrar() {
+    this.clickBorrar.emit();
+  }
+  
+  ClickAgregar() {
+    this.clickAgregar.emit();
   }
   
   constructor(private cdRef: ChangeDetectorRef) { }

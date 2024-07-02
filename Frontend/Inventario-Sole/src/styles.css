@@ -1,0 +1,34 @@
+/*T* Botones flotantes */
+.btn-danger {
+    transition: background-color 0.2s ease; /* Transición del color normal al color hover*/
+} 
+
+.btn-danger:hover {
+    color: white;
+    background-color: #91232e;
+}
+
+.btn-warning {
+    transition: background-color 0.2s ease; /* Transición del color normal al color hover*/
+}
+
+.btn-warning:hover {
+    color: black;
+    background-color: #b3813b;
+}
+.btn-success {
+    transition: background-color 0.2s ease; /* Transición del color normal al color hover*/
+}
+
+.boton-celeste-agregar {
+    background-color: #208aca;
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.boton-celeste-agregar:hover {
+    color: white;
+    background-color: #1a74a3;
+}
+
+/*T* */

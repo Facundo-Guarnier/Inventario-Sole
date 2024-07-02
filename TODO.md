@@ -61,3 +61,10 @@
 * 09 Pruebas unitarias
 * 10 Pruebas de integración
 * 11 Test cases
+
+
+
+# Comandos
+ng new Inventario-Sole --version=14.2.4
+npm install bootstrap@5.2.2
+npm install bootstrap-icons 
