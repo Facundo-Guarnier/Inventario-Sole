@@ -1,8 +1,41 @@
-<p>comp-tabla-datos works!</p>
-
-Este componente será la base para mostrar todas las tablas de datos en tu aplicación. 
+<!-- Este componente será la base para mostrar todas las tablas de datos en tu aplicación. 
 
 Recibirá como input:
 > Columnas: Un array con la definición de las columnas (nombre, tipo de dato, etc.).
 > Datos: Un array con los datos a mostrar en la tabla.
-> Opciones (opcional): Filtros, acciones de fila (editar, eliminar), etc.
+> Opciones (opcional): Filtros, acciones de fila (editar, eliminar), etc. -->
+
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th scope="col">ID producto <i class="bi bi-caret-down-fill"></i></th> 
+            <th scope="col">Marca</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Talle</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Liquidación</th>
+            <th scope="col">Acciones</th> 
+        </tr>
+    </thead>
+    hola 
+    {{ productos }}
+    <tbody>
+        <tr *ngFor="let producto of productos"> 
+            <td>{{ producto.idProducto }}</td>
+            <td>{{ producto.marca }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>{{ producto.talle }}</td>
+            <td>{{ producto.precio | currency }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td [ngClass]="{'bg-success': producto.liquidacion, 'bg-danger': !producto.liquidacion}">
+                {{ producto.liquidacion ? 'Verdadero' : 'Falso' }}
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm">
+                    <i class="bi bi-pencil-square"></i> 
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

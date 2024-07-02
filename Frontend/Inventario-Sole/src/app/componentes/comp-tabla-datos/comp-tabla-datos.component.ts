@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-comp-tabla-datos',
@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompTablaDatosComponent implements OnInit {
 
+  @Input() productos: any; 
+  
   constructor() { }
 
   ngOnInit(): void {

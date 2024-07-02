@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompDetalleComponent } from './comp-detalle.component';
+import { CompDetalleLateralComponent } from './comp-detalle-lateral.component';
 
 describe('CompDetalleComponent', () => {
-  let component: CompDetalleComponent;
-  let fixture: ComponentFixture<CompDetalleComponent>;
+  let component: CompDetalleLateralComponent;
+  let fixture: ComponentFixture<CompDetalleLateralComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CompDetalleComponent ]
+      declarations: [ CompDetalleLateralComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CompDetalleComponent);
+    fixture = TestBed.createComponent(CompDetalleLateralComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
