@@ -14,7 +14,7 @@ import { CompBusquedaComponent } from './componentes/comp-busqueda/comp-busqueda
 import { CompFiltroCheckboxComponent } from './componentes/comp-filtro-checkbox/comp-filtro-checkbox.component';
 import { CompFiltroListaSeleccionComponent } from './componentes/comp-filtro-lista-seleccion/comp-filtro-lista-seleccion.component';
 import { CompBarraLateralComponent } from './componentes/comp-barra-lateral/comp-barra-lateral.component';
-import { CompDetalleCuerpoComponent } from './componentes/comp-detalle-nuevo/comp-detalle-cuerpo.component';
+import { CompDetalleNuevoComponent } from './componentes/comp-detalle-nuevo/comp-detalle-nuevo.component';
 import { PagTiendaFisicaEditarComponent } from './paginas/pag-tienda-fisica-editar/pag-tienda-fisica-editar.component';
 import { CompBotonesFlotantesComponent } from './componentes/comp-botones-flotantes/comp-botones-flotantes.component';
 
@@ -29,7 +29,7 @@ import { CompBotonesFlotantesComponent } from './componentes/comp-botones-flotan
     CompFiltroCheckboxComponent,
     CompFiltroListaSeleccionComponent,
     CompBarraLateralComponent,
-    CompDetalleCuerpoComponent,
+    CompDetalleNuevoComponent,
     PagTiendaFisicaEditarComponent,
     CompBotonesFlotantesComponent,
   ],
