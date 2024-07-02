@@ -1,0 +1,27 @@
+<!-- Botones flotantes que aparecen en la esquina inferior derecha. Se puede elegir que 
+botón se muestra y cual no -->
+
+<!-- <div class="botones-flotantes"> 
+    <button type="button" class="btn btn-success btn-lg rounded-circle" (click)="onClickCheck()"> 
+        <i class="bi bi-check-lg"></i> 
+    </button>
+    <button type="button" class="btn btn-danger btn-lg rounded-circle" (click)="onClickX()">
+        <i class="bi bi-x-lg"></i> 
+    </button>
+    <button type="button" class="btn btn-secondary btn-lg rounded-circle" (click)="onClickTrash()">
+        <i class="bi bi-trash"></i> 
+    </button>
+</div> -->
+
+
+<div class="botones-flotantes"> 
+    <button *ngIf="mostrarCheck" type="button" class="btn btn-success btn-lg rounded-circle" (click)="onClickCheck()"> 
+        <i class="bi bi-check-lg"></i> 
+    </button>
+    <button *ngIf="mostrarX" type="button" class="btn btn-danger btn-lg rounded-circle" (click)="onClickX()">
+        <i class="bi bi-x-lg"></i> 
+    </button>
+    <button *ngIf="mostrarTrash" type="button" class="btn btn-secondary btn-lg rounded-circle" (click)="onClickTrash()">
+        <i class="bi bi-trash"></i> 
+    </button>
+</div>

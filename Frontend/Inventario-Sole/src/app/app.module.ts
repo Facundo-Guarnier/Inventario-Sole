@@ -16,6 +16,7 @@ import { CompFiltroListaSeleccionComponent } from './componentes/comp-filtro-lis
 import { CompBarraLateralComponent } from './componentes/comp-barra-lateral/comp-barra-lateral.component';
 import { CompDetalleCuerpoComponent } from './componentes/comp-detalle-nuevo/comp-detalle-cuerpo.component';
 import { PagTiendaFisicaEditarComponent } from './paginas/pag-tienda-fisica-editar/pag-tienda-fisica-editar.component';
+import { CompBotonesFlotantesComponent } from './componentes/comp-botones-flotantes/comp-botones-flotantes.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { PagTiendaFisicaEditarComponent } from './paginas/pag-tienda-fisica-edit
     CompBarraLateralComponent,
     CompDetalleCuerpoComponent,
     PagTiendaFisicaEditarComponent,
+    CompBotonesFlotantesComponent,
   ],
   imports: [
     BrowserModule,
