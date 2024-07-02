@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { CompBotonesFlotantesComponent } from '../../componentes/comp-botones-flotantes/comp-botones-flotantes.component';
+// import { CompBotonesFlotantesComponent } from '../../componentes/comp-botones-flotantes/comp-botones-flotantes.component';
 
 @Component({
   selector: 'app-pag-tienda-fisica',
@@ -36,7 +36,7 @@ export class PagTiendaFisicaComponent implements OnInit {
     
     //! Botones flotantes
     declarations: [
-      CompBotonesFlotantesComponent 
+      // CompBotonesFlotantesComponent, 
     ]
   }
 
