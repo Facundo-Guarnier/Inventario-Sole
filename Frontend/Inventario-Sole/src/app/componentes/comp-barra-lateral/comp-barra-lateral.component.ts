@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-comp-barra-lateral',
@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompBarraLateralComponent implements OnInit {
 
+    //! Variables para mostrar o no los elementos
+    @Input() mostrarDetalleActual: boolean = false;
+    @Input() mostrarBuscador: boolean = false;
+    
   constructor() { }
 
   ngOnInit(): void {

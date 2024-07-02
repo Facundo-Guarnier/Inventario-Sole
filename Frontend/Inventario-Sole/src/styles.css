@@ -1,3 +1,9 @@
+/*T* Estilos generales */
+.bg-primary { /* Acento primario */
+    background-color: #0d6efd !important; 
+}
+
+
 /*T* Botones flotantes */
 .btn-danger {
     transition: background-color 0.2s ease; /* Transición del color normal al color hover*/
@@ -21,7 +27,7 @@
 }
 
 .boton-celeste-agregar {
-    background-color: #208aca;
+    background-color: #2a85cc;
     color: white;
     transition: background-color 0.2s ease;
 }

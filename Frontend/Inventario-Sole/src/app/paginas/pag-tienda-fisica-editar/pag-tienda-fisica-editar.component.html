@@ -2,9 +2,11 @@
     <app-comp-navbar></app-comp-navbar> 
     
     <div class="row h-100">
-        <div class="col-lg-2 bg-primary sidebar" style="background-color: #4b5676;">
+        <div class="col-lg-2 bg-primary sidebar">
             <!--! Barra lateral -->
-            <app-comp-barra-lateral></app-comp-barra-lateral>
+            <app-comp-barra-lateral
+            [mostrarDetalleActual]="true"
+            ></app-comp-barra-lateral>
         </div>
         
         <div class="col-lg-10 content"> 
@@ -16,3 +18,15 @@
     
     </div>
 </div>
+
+<app-comp-botones-flotantes 
+    [mostrarAceptar]="true"  
+    [mostrarCancelar]="true" 
+    [mostrarBorrar]="true" 
+    [mostrarAgregar]="true" 
+    (ClickAceptar)="ClickAceptar()" 
+    (ClickCancelar)="ClickCancelar()" 
+    (ClickBorrar)="ClickBorrar()"
+    (ClickAgregar)="ClickAgregar()"
+>
+</app-comp-botones-flotantes>
