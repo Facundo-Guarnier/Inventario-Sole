@@ -64,7 +64,9 @@
 
 
 
-# Comandos
+# Extra
+node: v22.3.0
+npm: 10.8.1
 ng new Inventario-Sole --version=14.2.4
 npm install bootstrap@5.2.2
 npm install bootstrap-icons 

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comp-tabla-datos',
@@ -10,7 +11,15 @@ export class CompTablaDatosComponent implements OnInit {
   @Input() productos: any; 
   cdRef: any;
   
-  constructor() { }
+  editarProducto() {
+    // redirigir a la pagina tf/editar
+    this.router.navigate(['/tf/editar']);
+  }
+
+
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.productos = [
