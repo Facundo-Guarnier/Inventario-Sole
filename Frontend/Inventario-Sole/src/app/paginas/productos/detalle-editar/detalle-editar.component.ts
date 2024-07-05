@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-pag-tienda-fisica-editar',
-  templateUrl: './pag-tienda-fisica-editar.component.html',
-  styleUrls: ['./pag-tienda-fisica-editar.component.css']
+  selector: 'pag-productos-editar',
+  templateUrl: './detalle-editar.component.html',
+  styleUrls: ['./detalle-editar.component.css']
 })
-export class PagTiendaFisicaEditarComponent implements OnInit {
+export class PagProductosDetalleEditarComponent implements OnInit {
 
   ClickAceptar() {
     //! Lógica para el botón "aceptar"

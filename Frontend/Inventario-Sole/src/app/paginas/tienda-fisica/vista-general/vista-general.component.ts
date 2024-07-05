@@ -3,12 +3,12 @@ import { Component, OnInit } from '@angular/core';
 // import { CompBotonesFlotantesComponent } from '../../componentes/comp-botones-flotantes/comp-botones-flotantes.component';
 
 @Component({
-  selector: 'app-pag-tienda-fisica',
-  templateUrl: './pag-tienda-fisica.component.html',
-  styleUrls: ['./pag-tienda-fisica.component.css']
+  selector: 'pag-tienda-fisica-vista-general',
+  templateUrl: './vista-general.component.html',
+  styleUrls: ['./vista-general.component.css']
 })
 
-export class PagTiendaFisicaComponent implements OnInit {
+export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
 
   ClickAceptar() {
     //! Lógica para el botón "aceptar"
