@@ -21,7 +21,7 @@ interface Accion {
 export class CompTablaDatosComponent implements OnInit {
 
   @Input() columnas: Columna[] = [];
-  @Input() productos: any[] = [];
+  @Input() datos: any[] = [];
   @Input() acciones: Accion = {};
 
   editarFila(item: any) {

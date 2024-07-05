@@ -1,7 +1,8 @@
 <div class="container-fluid vh-100"> 
-    
     <div class="row">
-        <app-comp-navbar></app-comp-navbar> 
+        <app-comp-navbar
+        [pagActual]="pagActual"
+        ></app-comp-navbar> 
     </div>
     
     <div class="row contenido-principal" >
@@ -28,13 +29,7 @@
 </div>
 
 <app-comp-botones-flotantes 
-    [mostrarAceptar]="true"  
-    [mostrarCancelar]="true" 
-    [mostrarBorrar]="true" 
-    [mostrarAgregar]="true" 
-    (ClickAceptar)="ClickAceptar()" 
-    (ClickCancelar)="ClickCancelar()" 
-    (ClickBorrar)="ClickBorrar()"
+    [mostrarAgregar]="true"  
     (ClickAgregar)="ClickAgregar()"
 >
 </app-comp-botones-flotantes>

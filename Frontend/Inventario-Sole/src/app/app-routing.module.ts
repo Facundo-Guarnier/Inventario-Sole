@@ -22,11 +22,38 @@ import { PagRegalosDetalleEditarComponent } from './paginas/regalos/detalle-edit
 
 import { PagMovimientosDetalleComponent } from './paginas/movimientos/detalle/detalle.component';
 import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.component';
+import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
 
 
 const routes: Routes = [
-  { path: '', component: PagTiendaFisicaVistaGeneralComponent},
-  { path: 'tf/editar', component: PagProductosDetalleEditarComponent}
+  { path: '', redirectTo: 'mov', pathMatch: 'full' },
+
+  { path: 'ven', component: PagVentasVistaGeneralComponent},
+  { path: 'ven/crear', component: PagVentasCrearComponent},
+  { path: 'ven/detalle-editar', component: PagVentasDetalleEditarComponent},
+  
+  { path: 'tf', component: PagTiendaFisicaVistaGeneralComponent},
+  { path: 'to', component: PagTiendaOnlineVistaGeneralComponent},
+  
+  // { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent},
+  { path: 'prod/detalle-editar', component: PagProductosDetalleEditarComponent},
+  { path: 'prod/crear', component: PagProductosCrearComponent},
+
+  { path: "mov", component: PagMovimientosVistaGeneralComponent},
+  { path: "mov/crear", component: PagMovimientosCrearComponent},
+  // { path: "mov/detalle/:id", component: PagMovimientosDetalleComponent},
+  { path: "mov/detalle", component: PagMovimientosDetalleComponent},
+
+  { path: "reg", component: PagRegalosVistaGeneralComponent},
+  { path: "reg/crear", component: PagRegalosCrearComponent},
+  { path: "reg/detalle-editar/:id", component: PagRegalosDetalleEditarComponent},
+  { path: "reg/detalle-editar", component: PagRegalosDetalleEditarComponent},
+
+  { path: "gc", component: PagGiftCardsVistaGeneralComponent},
+  { path: "gc/crear", component: PagGiftCardsCrearComponent},
+  // { path: "gc/detalle-editar/:id", component: PagGiftCardsDetalleEditarComponent},
+  { path: "gc/detalle-editar", component: PagGiftCardsDetalleEditarComponent},
+
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-comp-navbar',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comp-navbar.component.css']
 })
 export class CompNavbarComponent implements OnInit {
+
+  @Input() pagActual: string = '';
 
   constructor() { }
 

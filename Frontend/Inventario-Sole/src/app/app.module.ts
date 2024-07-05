@@ -39,6 +39,7 @@ import { PagRegalosDetalleEditarComponent } from './paginas/regalos/detalle-edit
 
 import { PagMovimientosDetalleComponent } from './paginas/movimientos/detalle/detalle.component';
 import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.component';
+import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
 
 
 @NgModule({
@@ -77,6 +78,7 @@ import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.
 
     PagMovimientosDetalleComponent,
     PagMovimientosCrearComponent,
+    PagMovimientosVistaGeneralComponent,
   ],
 
   imports: [
