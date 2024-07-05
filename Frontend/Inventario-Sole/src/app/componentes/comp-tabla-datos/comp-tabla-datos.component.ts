@@ -1,6 +1,18 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
+//! Definir la estructura de los atributos de una clase
+interface Columna {
+  nombre: string;
+  tipo: string;
+}
+
+interface Accion {
+  editar?: boolean;
+  eliminar?: boolean;
+  detalle?: boolean;
+}
+
 @Component({
   selector: 'app-comp-tabla-datos',
   templateUrl: './comp-tabla-datos.component.html',
@@ -8,58 +20,32 @@ import { Router } from '@angular/router';
 })
 export class CompTablaDatosComponent implements OnInit {
 
-  @Input() productos: any; 
-  cdRef: any;
-  
-  editarProducto() {
-    // redirigir a la pagina tf/editar
-    this.router.navigate(['/tf/editar']);
+  @Input() columnas: Columna[] = [];
+  @Input() productos: any[] = [];
+  @Input() acciones: Accion = {};
+
+  editarFila(item: any) {
+    // Lógica para editar
+    console.log('Editar', item);
   }
 
+  eliminarFila(item: any) {
+    // Lógica para eliminar
+    console.log('Eliminar', item);
+  }
+
+  detalleFila(item: any) {
+    // Lógica para detalle
+    console.log('Detalle', item);
+    // this.router.navigate(['/productos/detalle-editar', item.id]);
+  }
+  
 
   constructor(
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.productos = [
-      {
-        "idProducto": "AB120",
-        "marca": "Adidas",
-        "descripcion": "Pantalón negro deportivo",
-        "talle": "M",
-        "precio": 80000,
-        "cantidad": 12,
-        "liquidacion": true,
-      },
-      {
-        "idProducto": "AB121",
-        "marca": "Nike",
-        "descripcion": "Remera azul deportiva",
-        "talle": "M",
-        "precio": 45000,
-        "cantidad": 7,
-        "liquidacion": true,
-      },
-      {
-        "idProducto": "AB122",
-        "marca": "AAA",
-        "descripcion": "Remera deportiva Remera azul deportiva Remera  asd asd ada dasd ad aazul  a sda  asd asd 151 81 562deportiva Remera azul deportiva",
-        "talle": "XL",
-        "precio": 900000,
-        "cantidad": 2,
-        "liquidacion": false,
-      },
-      {
-        "idProducto": "AB123",
-        "marca": "Adidas",
-        "descripcion": "Campera",
-        "talle": "M",
-        "precio": 10000,
-        "cantidad": 1,
-        "liquidacion": true,
-      },
-    ]
   }
 
 }

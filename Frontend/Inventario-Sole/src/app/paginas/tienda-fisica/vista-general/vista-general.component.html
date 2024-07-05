@@ -16,7 +16,11 @@
             <div class="container-fluid"> 
                 <!--! Cuerpo -->
                 <h1 style="color: aliceblue;">Inventario </h1>
-                <app-comp-tabla-datos></app-comp-tabla-datos>
+                <app-comp-tabla-datos 
+                    [columnas]="columnasProductos"
+                    [productos]="productos"
+                    [acciones]="accionesProductos"
+                ></app-comp-tabla-datos>
             </div>
         </div>
     
