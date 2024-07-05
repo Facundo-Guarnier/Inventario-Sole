@@ -31,14 +31,26 @@ body {  /* Fondo */
 }
 
 .boton-celeste-agregar {
-    background-color: #2a85cc;
+    background-color: #28579f;
     color: white;
     transition: background-color 0.2s ease;
 }
 
 .boton-celeste-agregar:hover {
     color: white;
-    background-color: #1a74a3;
+    background-color: #234b89;
 }
 
-/*T*  */
+/*T* Paginas */
+.barra-lateral-pag {
+    padding: 3% !important;
+    background-color: #28579f !important;
+}
+
+.contenido-principal {
+    height: calc(100vh - 80px); 
+}
+
+.cuerpo-pag {
+    padding: 1% !important;
+}

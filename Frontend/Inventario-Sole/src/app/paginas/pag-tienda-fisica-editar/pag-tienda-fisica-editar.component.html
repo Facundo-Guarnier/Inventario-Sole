@@ -4,15 +4,15 @@
         <app-comp-navbar></app-comp-navbar> 
     </div>
     
-    <div class="row h-100">
-        <div class="col-lg-2 bg-primary sidebar">
+    <div class="row contenido-principal" >
+        <div class="col-lg-2 bg-primary sidebar barra-lateral-pag">
             <!--! Barra lateral -->
             <app-comp-barra-lateral
             [mostrarDetalleActual]="true"
             ></app-comp-barra-lateral>
         </div>
         
-        <div class="col-lg-10 content"> 
+        <div class="col-lg-10 content cuerpo-pag" > 
             <div class="container-fluid"> 
                 <!--! Cuerpo -->
                 <app-comp-detalle-cuerpo></app-comp-detalle-cuerpo>

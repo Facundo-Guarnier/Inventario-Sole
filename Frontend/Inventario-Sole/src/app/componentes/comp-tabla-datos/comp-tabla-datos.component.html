@@ -5,40 +5,42 @@ Recibirá como input:
 > Datos: Un array con los datos a mostrar en la tabla.
 > Opciones (opcional): Filtros, acciones de fila (editar, eliminar), etc. -->
 
-<table class="table table-dark table-striped">
-    <thead>
-        <tr>
-            <th scope="col">ID producto <i class="bi bi-caret-down-fill"></i></th>
-            <th scope="col">Marca</th>
-            <th scope="col">Descripción</th>
-            <th scope="col">Talle</th>
-            <th scope="col">Precio</th>
-            <th scope="col">Cantidad</th>
-            <th scope="col">Liquidación</th>
-            <th scope="col">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let producto of productos">
-            <td>{{ producto.idProducto }}</td>
-            <td>{{ producto.marca }}</td>
-            <td>{{ producto.descripcion }}</td>
-            <td>{{ producto.talle }}</td>
-            <td>{{ producto.precio | currency }}</td>
-            <td>{{ producto.cantidad }}</td>
-            
-            <td>
-                <span *ngIf="producto.liquidacion" class="badge bg-danger">Si</span>
-                <span *ngIf="!producto.liquidacion" class="badge bg-success">No</span>
-            </td>
+<div class="table-responsive">
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID producto <i class="bi bi-caret-down-fill"></i></th>
+                <th scope="col">Marca</th>
+                <th scope="col" class="descripcion-column" >Descripción</th>
+                <th scope="col">Talle</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Liquidación</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let producto of productos">
+                <td>{{ producto.idProducto }}</td>
+                <td>{{ producto.marca }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.talle }}</td>
+                <td>{{ producto.precio | currency }}</td>
+                <td>{{ producto.cantidad }}</td>
+                
+                <td>
+                    <span *ngIf="producto.liquidacion" class="badge bg-danger">Si</span>
+                    <span *ngIf="!producto.liquidacion" class="badge bg-success">No</span>
+                </td>
 
-            <td>
-                <!-- boton que redirige a pagina tf/editar -->
-                <!-- <button type="button" class="btn btn-primary btn-sm" (click)="editarProducto(producto.idProducto)"> -->
-                <button type="button" class="btn btn-primary btn-sm" (click)="editarProducto()">
-                    <i class="bi bi-pencil-square"></i>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                <td>
+                    <!-- boton que redirige a pagina tf/editar -->
+                    <!-- <button type="button" class="btn btn-primary btn-sm" (click)="editarProducto(producto.idProducto)"> -->
+                    <button type="button" class="btn btn-primary btn-sm" (click)="editarProducto()">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

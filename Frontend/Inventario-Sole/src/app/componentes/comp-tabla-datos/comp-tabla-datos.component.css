@@ -3,3 +3,14 @@
     padding: 0.7em 1em;
     width: 50px;
 }
+
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+.descripcion-column {
+    min-width: 250px;
+}
