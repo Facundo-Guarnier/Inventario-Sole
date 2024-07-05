@@ -7,60 +7,50 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagMovimientosVistaGeneralComponent implements OnInit {
 
-  pagActual = 'movimientos';
+  pagActual = 'mov';
 
-  columnasProductos = [
-    { nombre: 'ID producto', tipo: 'text' },
-    { nombre: 'Marca', tipo: 'text' },
-    { nombre: 'Descripción', tipo: 'text' },
-    { nombre: 'Talle', tipo: 'text' },
-    { nombre: 'Precio', tipo: 'currency' },
-    { nombre: 'Cantidad', tipo: 'number' },
-    { nombre: 'Liquidación', tipo: 'boolean' }
+  columnas = [
+    { nombre: 'Movimiento', tipo: 'text' },
+    { nombre: 'Fecha', tipo: 'date' },
+    { nombre: "Producto ID", tipo: "text" },
+    { nombre: "Vendedor", tipo: "text" },
+    { nombre: "Aclaraciones", tipo: "text" },
   ];
 
-  accionesProductos = {
-    editar: true,
-    eliminar: true,
+  acciones = {
+    editar: false,
+    eliminar: false,
     detalle: true
   }
   
-  productos: any[] = [
+  datos: any[] = [
     {
-      "ID producto": "AB120",
-      "Marca": "Adidas",
-      "Descripción": "Pantalon blanco deportivo con rayas negras",
-      "Talle": "M",
-      "Precio": 89000,
-      "Cantidad": 50,
-      "Liquidación": false
-    }, 
-    {
-      "ID producto": "AB121",
-      "Marca": "Nike",
-      "Descripción": "Remera azul deportiva",
-      "Talle": "M",
-      "Precio": 45000,
-      "Cantidad": 7,
-      "Liquidación": true
+      "Movimiento": "Compra",
+      "Fecha": "2021-10-01",
+      "Producto ID": "AB12C",
+      "Vendedor": "Chica 1",
+      "Aclaraciones": "Compra de 100 unidades"
     },
     {
-      "ID producto": "AB122",
-      "Marca": "AAA",
-      "Descripción": "Remera deportiva Remera azul deportiva Remera  asd asd ada dasd ad aazul  a sda  asd asd 151 81 562deportiva Remera azul deportiva",
-      "Talle": "XL",
-      "Precio": 900000,
-      "Cantidad": 2,
-      "Liquidación": false
+      "Movimiento": "Venta",
+      "Fecha": "2021-10-02",
+      "Producto ID": "AB12D",
+      "Vendedor": "Chica 1",
+      "Aclaraciones": "Venta de 200 unidades"
     },
     {
-      "ID producto": "AB123",
-      "Marca": "Adidas",
-      "Descripción": "Campera",
-      "Talle": "M",
-      "Precio": 10000,
-      "Cantidad": 1,
-      "Liquidación": true
+      "Movimiento": "Compra",
+      "Fecha": "2021-10-03",
+      "Producto ID": "AB12E",
+      "Vendedor": "Chica 2",
+      "Aclaraciones": "Compra de 300 unidades"
+    },
+    {
+      "Movimiento": "Venta",
+      "Fecha": "2021-10-04",
+      "Producto ID": "AB12F",
+      "Vendedor": "Chica 1",
+      "Aclaraciones": "Venta de 400 unidades"
     }
     
   ];

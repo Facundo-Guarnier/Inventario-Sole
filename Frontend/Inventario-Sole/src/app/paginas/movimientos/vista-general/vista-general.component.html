@@ -1,4 +1,5 @@
 <div class="container-fluid vh-100"> 
+    <h1 style="color: aliceblue;">Movimientos works! </h1>
     <div class="row">
         <app-comp-navbar
         [pagActual]="pagActual"
@@ -18,9 +19,9 @@
                 <!--! Cuerpo -->
                 <h1 style="color: aliceblue;">Inventario </h1>
                 <app-comp-tabla-datos 
-                    [columnas]="columnasProductos"
-                    [datos]="productos"
-                    [acciones]="accionesProductos"
+                    [columnas]="columnas"
+                    [datos]="datos"
+                    [acciones]="acciones"
                 ></app-comp-tabla-datos>
             </div>
         </div>

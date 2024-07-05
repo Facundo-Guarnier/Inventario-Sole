@@ -1,1 +1,36 @@
-<p>pag-ventas works!</p>
+<div class="container-fluid vh-100"> 
+    <h1 style="color: aliceblue;">Ventas works! </h1>
+    <div class="row">
+        <app-comp-navbar
+        [pagActual]="pagActual"
+        ></app-comp-navbar> 
+    </div>
+    
+    <div class="row contenido-principal" >
+        <div class="col-lg-2 bg-primary sidebar barra-lateral-pag">
+            <!--! Barra lateral -->
+            <app-comp-barra-lateral
+            [mostrarBuscador]="true"
+            ></app-comp-barra-lateral>
+        </div>
+        
+        <div class="col-lg-10 content cuerpo-pag" > 
+            <div class="container-fluid"> 
+                <!--! Cuerpo -->
+                <h1 style="color: aliceblue;">Inventario </h1>
+                <app-comp-tabla-datos 
+                    [columnas]="columnas"
+                    [datos]="datos"
+                    [acciones]="acciones"
+                ></app-comp-tabla-datos>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<app-comp-botones-flotantes 
+    [mostrarAgregar]="true"  
+    (ClickAgregar)="ClickAgregar()"
+>
+</app-comp-botones-flotantes><p>pag-tienda-online works!</p>

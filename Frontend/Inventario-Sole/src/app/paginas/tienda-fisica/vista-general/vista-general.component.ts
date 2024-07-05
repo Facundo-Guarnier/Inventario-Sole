@@ -10,6 +10,8 @@ import { Component, OnInit } from '@angular/core';
 
 export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
 
+  pagActual = 'tf';
+
   ClickAceptar() {
     //! Lógica para el botón "aceptar"
     console.log('Botón "aceptar" presionado');
@@ -31,7 +33,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   }
 
 
-  columnasProductos = [
+  columnas = [
     { nombre: 'ID producto', tipo: 'text' },
     { nombre: 'Marca', tipo: 'text' },
     { nombre: 'Descripción', tipo: 'text' },
@@ -41,13 +43,13 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     { nombre: 'Liquidación', tipo: 'boolean' }
   ];
 
-  accionesProductos = {
+  acciones = {
     editar: true,
     eliminar: true,
     detalle: true
   }
   
-  productos: any[] = [
+  datos: any[] = [
     {
       "ID producto": "AB120",
       "Marca": "Adidas",
