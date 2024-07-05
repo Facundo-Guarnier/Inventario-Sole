@@ -23,17 +23,17 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
     { nombre: 'Fecha', tipo: 'date' },
     { nombre: 'Monto', tipo: 'number' },
     { nombre: 'Metodo', tipo: 'number' },
-    { nombre: 'Canjeado', tipo: 'bool' },
+    { nombre: 'Canjeado', tipo: 'boolean' },
   ];
 
   datos: any[] = [
     {
       "ID gif card": "AB12C",
       "Cliente": "Juan Perez",
-      "Fecha": "2021-10-01",
+      "Fecha": "2021-10-21",
       "Monto": "10000",
       "Metodo": "Mercado Pago",
-      "Canjeado": "False"
+      "Canjeado": false
     },
     {
       "ID gif card": "AB12D",
@@ -41,7 +41,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
       "Fecha": "2021-10-02",
       "Monto": "20000",
       "Metodo": "Tarjeta y efectivo",
-      "Canjeado": "True"
+      "Canjeado": true
     },
     {
       "ID gif card": "AB12E",
@@ -49,7 +49,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
       "Fecha": "2021-10-03",
       "Monto": "30000",
       "Metodo": "Efectivo",
-      "Canjeado": "False"
+      "Canjeado": false
     },
     {
       "ID gif card": "AB12F",
@@ -57,7 +57,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
       "Fecha": "2021-10-04",
       "Monto": "40000",
       "Metodo": "Tarjeta",
-      "Canjeado": "True"
+      "Canjeado": true
     }
     
     

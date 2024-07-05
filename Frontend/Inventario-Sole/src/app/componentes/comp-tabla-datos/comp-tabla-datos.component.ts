@@ -22,7 +22,7 @@ export class CompTablaDatosComponent implements OnInit {
 
   @Input() columnas: Columna[] = [];
   @Input() datos: any[] = [];
-  @Input() acciones: Accion = {};
+  @Input() acciones: Accion = {}; //! Distingue boolean, currency, date (yyyy/mm/dd) o text
 
   editarFila(item: any) {
     // Lógica para editar

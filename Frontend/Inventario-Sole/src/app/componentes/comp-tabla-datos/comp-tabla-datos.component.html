@@ -26,6 +26,7 @@ Recibe como input:
                             <span *ngIf="item[columna.nombre]" class="badge bg-danger">Si</span>
                             <span *ngIf="!item[columna.nombre]" class="badge bg-success">No</span>
                         </span>
+                        <span *ngSwitchCase="'date'">{{ item[columna.nombre] | date:'dd/MM/yyyy' }}</span>
                         <span *ngSwitchDefault>{{ item[columna.nombre] }}</span>
                     </ng-container>
                 </td>
