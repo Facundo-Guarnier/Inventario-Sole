@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-comp-filtro-checkbox',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comp-filtro-checkbox.component.css']
 })
 export class CompFiltroCheckboxComponent implements OnInit {
+
+  @Input() filtro: string = "";
 
   constructor() { }
 

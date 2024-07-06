@@ -2,16 +2,19 @@
     *ngIf="mostrarBusqueda()"
 ></app-comp-busqueda>
 
-<ng-container *ngFor="let filtro of listaFiltros">
+<ng-container *ngFor="let filtro of filtrosLista">
     <app-comp-filtro-lista-seleccion
         *ngIf="mostrarFiltroListaSeleccion()"
         [filtro]="filtro"
     ></app-comp-filtro-lista-seleccion>
 </ng-container>
 
-<app-comp-filtro-checkbox
-    *ngIf="mostrarFiltroCheckbox()"
-></app-comp-filtro-checkbox>
+<ng-container *ngFor="let filtro of filtrosCheckbox">
+    <app-comp-filtro-checkbox
+        *ngIf="mostrarFiltroCheckbox()"
+        [filtro]="filtro"
+    ></app-comp-filtro-checkbox>
+</ng-container>
 
 <app-comp-detalle-lateral
     *ngIf="mostrarDetalleLateral()"

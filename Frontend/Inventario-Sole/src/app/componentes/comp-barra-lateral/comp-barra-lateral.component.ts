@@ -9,7 +9,8 @@ import { Filtro } from '../../models/filtro.interface'
 })
 export class CompBarraLateralComponent implements OnInit {
 
-  @Input() listaFiltros: Filtro[] = [];
+  @Input() filtrosLista: Filtro[] = [];
+  @Input() filtrosCheckbox: string[] = [];
 
   pagActual: string = '';
 
@@ -41,11 +42,18 @@ export class CompBarraLateralComponent implements OnInit {
   ngOnInit(): void {
     this.pagActual = this.router.url.split('/')[1].split('?')[0];
 
-    this.listaFiltros = [
+    this.filtrosLista = [
       {nombre: 'Filtro 1', opciones: ['Opcion 1', 'Opcion 2']},
       {nombre: 'Filtro 2', opciones: ['Opcion 1', 'Opcion 2', 'Opcion 3']},
       {nombre: 'Filtro 3', opciones: ['Opcion 1', 'Opcion 2', 'Opcion 3', 'Opcion 4']},
       {nombre: 'Filtro 4', opciones: ['Opcion 1', 'Opcion 2']}
+    ]
+  
+    this.filtrosCheckbox = [
+      'Checkbox 1', 
+      'Checkbox 2', 
+      'Checkbox 3', 
+      'Checkbox 4'
     ]
   }
 
