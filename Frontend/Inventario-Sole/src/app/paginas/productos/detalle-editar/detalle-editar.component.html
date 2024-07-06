@@ -11,9 +11,21 @@
         </div>
         
         <div class="col-lg-10 content cuerpo-pag" > 
-            <div class="container-fluid"> 
-                <!--! Cuerpo -->
-                <app-comp-detalle-nuevo></app-comp-detalle-nuevo>
+            <!--! Cuerpo -->
+            <div class="mb-3">
+                
+                <div class="container-fluid"> 
+                    <h1 style="color: aliceblue;">Crear un nuevo producto </h1>
+                    <app-comp-detalle-nuevo-prod></app-comp-detalle-nuevo-prod>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="container-fluid"> 
+                    <app-comp-campo-fotos
+                    (clickAgregarFoto)="ClickAgregarFoto()"
+                    (archivoSeleccionado)="archivoSeleccionado($event)"
+                    ></app-comp-campo-fotos>
+                </div>
             </div>
         </div>
     

@@ -46,7 +46,7 @@ const routes: Routes = [
 
   { path: "reg", component: PagRegalosVistaGeneralComponent},
   { path: "reg/crear", component: PagRegalosCrearComponent},
-  { path: "reg/detalle-editar/:id", component: PagRegalosDetalleEditarComponent},
+  // { path: "reg/detalle-editar/:id", component: PagRegalosDetalleEditarComponent},
   { path: "reg/detalle-editar", component: PagRegalosDetalleEditarComponent},
 
   { path: "gc", component: PagGiftCardsVistaGeneralComponent},

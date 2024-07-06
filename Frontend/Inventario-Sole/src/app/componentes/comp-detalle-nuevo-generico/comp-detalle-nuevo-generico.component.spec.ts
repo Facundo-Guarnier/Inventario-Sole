@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompDetalleNuevoMovComponent } from './comp-detalle-nuevo-mov.component';
+import { CompDetalleNuevoMovComponent } from './comp-detalle-nuevo-generico.component';
 
 describe('CompDetalleNuevoMovComponent', () => {
   let component: CompDetalleNuevoMovComponent;

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-comp-detalle-nuevo',
-  templateUrl: './comp-detalle-nuevo.component.html',
-  styleUrls: ['./comp-detalle-nuevo.component.css']
+  selector: 'app-comp-detalle-nuevo-prod',
+  templateUrl: './comp-detalle-nuevo-prod.component.html',
+  styleUrls: ['./comp-detalle-nuevo-prod.component.css']
 })
 export class CompDetalleNuevoComponent implements OnInit {
     producto: any = {

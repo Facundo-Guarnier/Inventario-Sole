@@ -14,7 +14,7 @@ import { CompBusquedaComponent } from './componentes/comp-busqueda/comp-busqueda
 import { CompFiltroCheckboxComponent } from './componentes/comp-filtro-checkbox/comp-filtro-checkbox.component';
 import { CompFiltroListaSeleccionComponent } from './componentes/comp-filtro-lista-seleccion/comp-filtro-lista-seleccion.component';
 import { CompBarraLateralComponent } from './componentes/comp-barra-lateral/comp-barra-lateral.component';
-import { CompDetalleNuevoComponent } from './componentes/comp-detalle-nuevo/comp-detalle-nuevo.component';
+import { CompDetalleNuevoComponent } from './componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { CompBotonesFlotantesComponent } from './componentes/comp-botones-flotantes/comp-botones-flotantes.component';
 
 
@@ -42,7 +42,7 @@ import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.
 import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
 import { CompBotonFotoComponent } from './componentes/comp-boton-foto/comp-boton-foto.component';
 import { CompCampoFotosComponent } from './componentes/comp-campo-fotos/comp-campo-fotos.component';
-import { CompDetalleNuevoMovComponent } from './componentes/comp-detalle-nuevo-mov/comp-detalle-nuevo-mov.component';
+import { CompDetalleNuevoMovComponent } from './componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
 
 
 @NgModule({

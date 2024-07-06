@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-comp-detalle-nuevo-mov',
-  templateUrl: './comp-detalle-nuevo-mov.component.html',
-  styleUrls: ['./comp-detalle-nuevo-mov.component.css']
+  selector: 'app-comp-detalle-nuevo-generico',
+  templateUrl: './comp-detalle-nuevo-generico.component.html',
+  styleUrls: ['./comp-detalle-nuevo-generico.component.css']
 })
 export class CompDetalleNuevoMovComponent implements OnInit {
 
