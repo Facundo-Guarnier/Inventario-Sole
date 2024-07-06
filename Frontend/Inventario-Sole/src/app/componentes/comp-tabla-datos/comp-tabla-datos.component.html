@@ -33,14 +33,14 @@ Recibe como input:
 
                 <!--! Botones de accion -->
                 <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle">
+                    <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm boton-info" (click)="detalleFila(item)">
+                        <i class="bi bi-info-lg"></i>
+                    </button>
                     <button *ngIf="acciones.editar" type="button" class="btn btn-primary btn-sm me-1" (click)="editarFila(item)">
                         <i class="bi bi-pencil"></i>
                     </button>
                     <button *ngIf="acciones.eliminar" type="button" class="btn btn-danger btn-sm" (click)="eliminarFila(item)">
                         <i class="bi bi-trash"></i>
-                    </button>
-                    <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm boton-info" (click)="detalleFila(item)">
-                        <i class="bi bi-info-lg"></i>
                     </button>
                 </td>
             </tr>
