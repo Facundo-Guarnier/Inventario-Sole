@@ -22,5 +22,7 @@
 
 <app-comp-botones-flotantes 
     [mostrarAgregarFoto]="true"
+    (clickAgregarFoto)="ClickAgregarFoto()"
+    (archivoSeleccionado)="archivoSeleccionado($event)"
 >
 </app-comp-botones-flotantes>
