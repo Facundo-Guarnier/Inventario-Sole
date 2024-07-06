@@ -2,10 +2,10 @@
 botón se muestra y cual no -->
 
 <div class="botones-flotantes"> 
-    <button *ngIf="mostrarAceptar" type="button" class="btn btn-success btn-lg rounded-circle" (click)="ClickAceptar()"> 
+    <button *ngIf="mostrarAceptar" type="button" class="btn btn-lg rounded-circle btn-success" (click)="ClickAceptar()"> 
         <i class="bi bi-check-lg"></i> 
     </button>
-    <button *ngIf="mostrarCancelar" type="button" class="btn btn-warning btn-lg rounded-circle" (click)="ClickCancelar()">
+    <button *ngIf="mostrarCancelar" type="button" class="btn btn-lg rounded-circle btn-warning" (click)="ClickCancelar()">
         <i class="bi bi-x-lg"></i> 
     </button>
     <button *ngIf="mostrarBorrar" type="button" class="btn btn-lg rounded-circle btn-danger" (click)="ClickBorrar()">

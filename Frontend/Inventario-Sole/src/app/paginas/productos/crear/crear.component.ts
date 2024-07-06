@@ -7,23 +7,12 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 })
 export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
-
-  //* ---------------------------------------------------
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
-  //* ---------------------------------------------------
-
-
-
 
   constructor() {}
 
   ngOnInit(): void {}
 
-
-
-
-
-  //* ---------------------------------------------------
   ngAfterViewInit() {
     if (this.fileInput) {
       this.fileInput.nativeElement.style.display = 'none';
@@ -59,6 +48,4 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   private isMobile(): boolean {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   }
-  //* ---------------------------------------------------
-
 }

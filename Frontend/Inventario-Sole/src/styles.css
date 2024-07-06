@@ -10,35 +10,47 @@ body {  /* Fondo */
 
 /*T* Botones flotantes */
 .btn-danger {
-    transition: background-color 0.2s ease; /* Transición del color normal al color hover*/
+    transition: background-color 0.3s ease;
 } 
 
-.btn-danger:hover {
+.btn-danger:hover,
+.btn-danger:active {
     color: white;
     background-color: #91232e;
+    border-color: #dc3545;
 }
 
 .btn-warning {
-    transition: background-color 0.2s ease; /* Transición del color normal al color hover*/
+    transition: background-color 0.3s ease;
 }
 
 .btn-warning:hover {
     color: black;
     background-color: #b3813b;
 }
+
 .btn-success {
-    transition: background-color 0.2s ease; /* Transición del color normal al color hover*/
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover,
+.btn-success:active {
+    color: white;
+    background-color: #2d6a4f;
+    border-color: #198754;
 }
 
 .boton-celeste-agregar {
     background-color: #0d6efd;
     color: white;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease;
 }
 
-.boton-celeste-agregar:hover {
-    color: white;
-    background-color: #28579f;
+.boton-celeste-agregar:hover,
+.boton-celeste-agregar:active {
+    color: white !important;
+    background-color: #28579f !important;
+    border-color: #0d6efd !important;
 }
 
 /*T* Paginas */

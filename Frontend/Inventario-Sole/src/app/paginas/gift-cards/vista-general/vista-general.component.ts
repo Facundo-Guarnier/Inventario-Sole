@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pag-gift-cards-vista-general',
@@ -64,13 +65,14 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
   ];
   
   
-  //! Botones flotantes
   ClickAgregar(){
-    console.log("Click en agregar");
+    this.router.navigate(['gc/crear']);
   };
 
   
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pag-regalos-vista-general',
@@ -55,10 +56,12 @@ export class PagRegalosVistaGeneralComponent implements OnInit {
   ]
 
   ClickAgregar(){
-    console.log("Click en agregar");
+    this.router.navigate(['reg/crear']);
   };
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
