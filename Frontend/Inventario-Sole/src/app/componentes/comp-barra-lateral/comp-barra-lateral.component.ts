@@ -40,6 +40,13 @@ export class CompBarraLateralComponent implements OnInit {
 
   ngOnInit(): void {
     this.pagActual = this.router.url.split('/')[1].split('?')[0];
+
+    this.listaFiltros = [
+      {nombre: 'Filtro 1', opciones: ['Opcion 1', 'Opcion 2']},
+      {nombre: 'Filtro 2', opciones: ['Opcion 1', 'Opcion 2', 'Opcion 3']},
+      {nombre: 'Filtro 3', opciones: ['Opcion 1', 'Opcion 2', 'Opcion 3', 'Opcion 4']},
+      {nombre: 'Filtro 4', opciones: ['Opcion 1', 'Opcion 2']}
+    ]
   }
 
 }
