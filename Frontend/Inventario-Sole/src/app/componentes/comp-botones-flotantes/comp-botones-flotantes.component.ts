@@ -12,12 +12,14 @@ export class CompBotonesFlotantesComponent implements OnInit {
   @Input() mostrarCancelar: boolean = false;
   @Input() mostrarBorrar: boolean = false;
   @Input() mostrarAgregar: boolean = false;
+  @Input() mostrarAgregarFoto: boolean = false;
 
   //! Funciones que se ejecutan al hacer click en los botones
   @Output() clickAceptar = new EventEmitter<void>(); 
   @Output() clickCancelar = new EventEmitter<void>();
   @Output() clickBorrar = new EventEmitter<void>();
   @Output() clickAgregar = new EventEmitter<void>();
+  @Output() clickAgregarFoto = new EventEmitter<void>();
   
   ClickAceptar() {
     this.clickAceptar.emit();
@@ -33,6 +35,10 @@ export class CompBotonesFlotantesComponent implements OnInit {
   
   ClickAgregar() {
     this.clickAgregar.emit();
+  }
+  
+  ClickAgregarFoto() {
+    this.clickAgregarFoto.emit();
   }
   
   constructor(private cdRef: ChangeDetectorRef) { }
