@@ -37,7 +37,8 @@ export class CompTablaDatosComponent implements OnInit {
   detalleFila(item: any) {
     // Lógica para detalle
     console.log('Detalle', item);
-    // this.router.navigate(['/productos/detalle-editar', item.id]);
+    // this.router.navigate(['prod/detalle-editar', item.id]);
+    this.router.navigate(['prod/detalle-editar']);
   }
   
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pag-movimientos-vista-general',
@@ -57,10 +58,12 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
 
 
   ClickAgregar(){
-    console.log("Agregar")
+    this.router.navigate(['mov/crear']);
   }
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pag-tienda-fisica-vista-general',
@@ -9,14 +10,14 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   
   //! NavBar
   pagActual = 'to';
-
+  
   //! Tabla de datos
   acciones = {
     editar: true,
     eliminar: true,
     detalle: true
   }
-
+  
   columnas = [
     { nombre: 'ID producto', tipo: 'text' },
     { nombre: 'Marca', tipo: 'text' },
@@ -25,7 +26,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
     { nombre: 'Precio', tipo: 'currency' },
     { nombre: 'Cantidad', tipo: 'number' },
   ];
-
+  
   datos: any[] = [
     {
       "ID producto": "AB120",
@@ -63,11 +64,12 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   
   //! Botones flotantes
   ClickAgregar(){
-    console.log("Click en agregar");
+    this.router.navigate(['prod/crear']);
   };
   
-  
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
   
   ngOnInit(): void {
   }

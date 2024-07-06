@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Filtro } from '../../models/filtro.interface'
+import { Filtro } from '../../interfaces/filtro.interface'
 
 @Component({
   selector: 'app-comp-barra-lateral',

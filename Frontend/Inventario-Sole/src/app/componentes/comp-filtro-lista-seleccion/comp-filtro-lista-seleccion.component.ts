@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Filtro } from '../../models/filtro.interface'
+import { Filtro } from '../../interfaces/filtro.interface'
 
 
 @Component({

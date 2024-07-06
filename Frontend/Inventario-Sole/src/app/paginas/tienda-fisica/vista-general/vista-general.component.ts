@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 // import { CompBotonesFlotantesComponent } from '../../componentes/comp-botones-flotantes/comp-botones-flotantes.component';
 
@@ -12,24 +13,9 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
 
   pagActual = 'tf';
 
-  ClickAceptar() {
-    //! Lógica para el botón "aceptar"
-    console.log('Botón "aceptar" presionado');
-  }
-  
-  ClickCancelar() {
-    //! Lógica para el botón "cancelar"
-    console.log('Botón "cancelar" presionado');
-  }
-  
-  ClickBorrar() {
-    //! Lógica para el botón "borrar"
-    console.log('Botón "borrar" presionado');
-  }
-
   ClickAgregar() {
     //! Lógica para el botón "agregar"
-    console.log('Botón "agregar" presionado');
+    this.router.navigate(['prod/crear']);
   }
 
 
@@ -91,9 +77,12 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
 
 
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    
     
     
     //! Botones flotantes

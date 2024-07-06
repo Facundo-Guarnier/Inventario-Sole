@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pag-ventas-vista-general',
@@ -66,11 +67,13 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   //! Botones flotantes
   ClickAgregar(){
-    console.log("Click en agregar");
+    this.router.navigate(['ven/crear']);
   };
 
   
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
