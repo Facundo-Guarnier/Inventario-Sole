@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Filtro } from '../../models/filtro.interface'
+
 
 @Component({
   selector: 'app-comp-filtro-lista-seleccion',
@@ -6,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comp-filtro-lista-seleccion.component.css']
 })
 export class CompFiltroListaSeleccionComponent implements OnInit {
+
+  @Input() filtro: Filtro = {nombre: '', opciones: []};
 
   constructor() { }
 

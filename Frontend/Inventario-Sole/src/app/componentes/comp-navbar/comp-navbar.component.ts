@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comp-navbar',
@@ -7,11 +8,14 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CompNavbarComponent implements OnInit {
 
-  @Input() pagActual: string = '';
+  pagActual: string = '';
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.pagActual = this.router.url.split('/')[1].split('?')[0];
   }
 
 }

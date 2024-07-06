@@ -31,14 +31,14 @@ body {  /* Fondo */
 }
 
 .boton-celeste-agregar {
-    background-color: #28579f;
+    background-color: #0d6efd;
     color: white;
     transition: background-color 0.2s ease;
 }
 
 .boton-celeste-agregar:hover {
     color: white;
-    background-color: #234b89;
+    background-color: #28579f;
 }
 
 /*T* Paginas */

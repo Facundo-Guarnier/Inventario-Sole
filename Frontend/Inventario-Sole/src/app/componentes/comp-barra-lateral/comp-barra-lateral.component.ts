@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Filtro } from '../../models/filtro.interface'
 
 @Component({
   selector: 'app-comp-barra-lateral',
@@ -7,13 +9,37 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CompBarraLateralComponent implements OnInit {
 
-    //! Variables para mostrar o no los elementos
-    @Input() mostrarDetalleActual: boolean = false;
-    @Input() mostrarBuscador: boolean = false;
-    
-  constructor() { }
+  @Input() listaFiltros: Filtro[] = [];
+
+  pagActual: string = '';
+
+  
+  mostrarBusqueda(): boolean {
+    //! Activa o desactiva la barra de busqueda en base a la pag actual.
+    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov'].includes(this.pagActual);
+  }
+  
+  mostrarFiltroListaSeleccion(): boolean {
+    //! Activa o desactiva el filtro de lista de seleccion en base a la pag actual.
+    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov'].includes(this.pagActual);
+  }
+
+  mostrarFiltroCheckbox(): boolean {
+    //! Activa o desactiva el filtro de checkbox en base a la pag actual.
+    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov'].includes(this.pagActual);
+  }
+
+  mostrarDetalleLateral(): boolean {
+    //! Activa o desactiva el detalle lateral en base a la pag actual.
+    return ['prod'].includes(this.pagActual);
+  }
+
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.pagActual = this.router.url.split('/')[1].split('?')[0];
   }
 
 }
