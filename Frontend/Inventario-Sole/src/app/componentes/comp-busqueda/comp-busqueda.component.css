@@ -1,0 +1,11 @@
+.boton-busqueda {
+    background-color: #0d6efd;
+    border-color: #ffffff;
+    color: #ffffff;
+    transition: 0.3s;
+}
+
+.boton-busqueda:hover {
+    background-color: #28579f; 
+    color: #ffffff;
+}
