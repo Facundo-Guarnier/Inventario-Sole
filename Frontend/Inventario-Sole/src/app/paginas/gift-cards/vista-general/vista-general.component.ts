@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class PagGiftCardsVistaGeneralComponent implements OnInit {
 
   //! NavBar
-  pagActual = 'ven';
+  pagActual = 'gc';
 
   //! Tabla de datos
   acciones = {

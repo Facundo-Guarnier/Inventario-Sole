@@ -25,28 +25,28 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   
   datos: any[] = [
     {
-      "Movimiento": "Compra",
+      "Movimiento": "Entrada",
       "Fecha": "2021-10-01",
       "Producto ID": "AB12C",
       "Vendedor": "Chica 1",
       "Aclaraciones": "Compra de 100 unidades"
     },
     {
-      "Movimiento": "Venta",
+      "Movimiento": "Salida",
       "Fecha": "2021-10-02",
       "Producto ID": "AB12D",
       "Vendedor": "Chica 1",
       "Aclaraciones": "Venta de 200 unidades"
     },
     {
-      "Movimiento": "Compra",
+      "Movimiento": "Entrada",
       "Fecha": "2021-10-03",
       "Producto ID": "AB12E",
       "Vendedor": "Chica 2",
       "Aclaraciones": "Compra de 300 unidades"
     },
     {
-      "Movimiento": "Venta",
+      "Movimiento": "Salida",
       "Fecha": "2021-10-04",
       "Producto ID": "AB12F",
       "Vendedor": "Chica 1",
