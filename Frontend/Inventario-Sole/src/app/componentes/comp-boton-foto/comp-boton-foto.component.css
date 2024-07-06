@@ -1,0 +1,11 @@
+.boton-agregar-foto {
+    background-color: #212529;
+    border-color: #212529;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.boton-agregar-foto:hover {
+    color: white;
+    background-color: #343a40;
+}

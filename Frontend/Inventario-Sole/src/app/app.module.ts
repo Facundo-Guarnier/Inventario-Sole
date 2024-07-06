@@ -40,6 +40,8 @@ import { PagRegalosDetalleEditarComponent } from './paginas/regalos/detalle-edit
 import { PagMovimientosDetalleComponent } from './paginas/movimientos/detalle/detalle.component';
 import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.component';
 import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
+import { CompBotonFotoComponent } from './componentes/comp-boton-foto/comp-boton-foto.component';
+import { CompCampoFotosComponent } from './componentes/comp-campo-fotos/comp-campo-fotos.component';
 
 
 @NgModule({
@@ -79,6 +81,8 @@ import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista
     PagMovimientosDetalleComponent,
     PagMovimientosCrearComponent,
     PagMovimientosVistaGeneralComponent,
+    CompBotonFotoComponent,
+    CompCampoFotosComponent,
   ],
 
   imports: [
