@@ -41,7 +41,7 @@ export class CompBarraLateralComponent implements OnInit {
   mostrarDetalleLateral(): boolean {
     //! Activa o desactiva el detalle lateral en base a la página actual.
     if (this.urlActual.length > 1) {
-      return ['prod'].includes(this.urlActual[0]);
+      return ["prod"].includes(this.urlActual[0]) && this.urlActual[1].includes('crear-editar');
     }
     return false;
 }
