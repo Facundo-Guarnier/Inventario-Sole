@@ -1,4 +1,9 @@
 # TO DO list
+
+## Preguntas
+
+* Movimientos es olo para la tienda fisica? 
+
 ## General
 
 * [ ] Botón para descargar la DB, para hacer una copia de seguridad.

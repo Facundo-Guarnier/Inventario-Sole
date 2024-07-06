@@ -1,1 +1,31 @@
-<p>crear works!</p>
+<div class="container-fluid vh-100"> 
+    <div class="row">
+        <h1 style="color: aliceblue;">Movimiento crear works! </h1>
+        <app-comp-navbar></app-comp-navbar> 
+    </div>
+    
+    <div class="row contenido-principal" >
+        <div class="col-lg-2 bg-primary sidebar barra-lateral-pag">
+            <!--! Barra lateral -->
+            <app-comp-barra-lateral></app-comp-barra-lateral>
+        </div>
+        
+        <div class="col-lg-10 content cuerpo-pag" > 
+            <!--! Cuerpo -->
+            <div class="mb-3">
+                
+                <div class="container-fluid"> 
+                    <h1 style="color: aliceblue;">Crear un nuevo movimiento</h1>
+                    <app-comp-detalle-nuevo-mov></app-comp-detalle-nuevo-mov>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<app-comp-botones-flotantes 
+    [mostrarAceptar]="true"
+    [mostrarCancelar]="true"
+    >
+</app-comp-botones-flotantes>
