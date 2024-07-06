@@ -1,29 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'pag-productos-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.css']
+  styleUrls: ['./crear.component.css'],
 })
 export class PagProductosCrearComponent implements OnInit {
 
 
-  ClickAceptar() {
-    console.log('Click en Aceptar');
-  }
+  constructor() {}
 
-  ClickCancelar() {
-    console.log('Click en Cancelar');
-  }
+  ngOnInit(): void {}
 
-  ClickAgregarFoto() {
-    console.log('Click en Agregar Foto');
-  }
-
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }
