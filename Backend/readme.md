@@ -1,5 +1,4 @@
-
-Copyproject_root/
+project_root/
 │
 ├── app/
 │   ├── __init__.py
@@ -14,3 +13,10 @@ Copyproject_root/
 │   ├── services/
 │   │   ├── __init__.py
 │   │   └── user_service.py
+│   └── utils/
+│       ├── __init__.py
+│       └── jwt.py
+├── config/
+│   ├── __init__.py
+│   ├── development.py
+│   └── production.py

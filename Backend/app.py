@@ -1,4 +1,5 @@
 import os
+from app import create_app
 
 def esta_en_entorno_virtual():
     """
@@ -12,7 +13,10 @@ def esta_en_entorno_virtual():
 
 if __name__ == '__main__':
     if esta_en_entorno_virtual():
-        print("El script se está ejecutando dentro de un entorno virtual.")
+        print("[OK] El script se está ejecutando dentro de un entorno virtual.")
     else:
         print("El script NO se está ejecutando dentro de un entorno virtual.")
         exit(1)
+
+    # app = create_app()
+    # app.run(debug=True)
