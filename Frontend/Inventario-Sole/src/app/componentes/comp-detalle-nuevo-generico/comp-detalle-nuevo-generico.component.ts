@@ -12,14 +12,14 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
   @Input() titulo: string = "Nuevo Detalle";
   @Input() campos: Campo[] = [];  //! Nombre, identificador y tipo. Ej: "Cantidad", "cantidad", "input-number"
   
-  @Output() datosRecolectados = new EventEmitter<any[]>();
+  @Output() datosRecolectados = new EventEmitter<any>();
   
   constructor() { }
 
   ngOnInit(): void { }
 
   recolectarDatos(): void {
-    let datos: any[] = [];
+    let datos: any = {};
     
     this.campos.forEach(campo => {
       const element = document.getElementById(campo.identificador) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
@@ -35,7 +35,7 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
           valor = (element as HTMLSelectElement).value;
         }
 
-        datos.push({ nombre2: campo.nombre, valor: valor });
+        datos[campo.identificador] = valor;
       }
     });
 
