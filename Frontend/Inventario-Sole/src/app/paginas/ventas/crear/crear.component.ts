@@ -8,10 +8,7 @@ import { Campo } from 'src/app/interfaces/campo.interface';
   styleUrls: ['./crear.component.css']
 })
 export class PagVentasCrearComponent implements OnInit {
-
-
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
-
 
   titulo1 = "Detalle de la venta";
   campos1: Campo[] = [
@@ -29,20 +26,20 @@ export class PagVentasCrearComponent implements OnInit {
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
 
+  productos: any[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
   clickAceptar() {
-    const datos = this.compDetalleNuevo.recolectarDatos();
-    console.log('Datos recolectados en el padre:', datos);
-    // Aquí puedes procesar los datos como necesites
+    this.compDetalleNuevo.recolectarDatos();
   }
 
   onDatosRecolectados(datos: any[]) {
     console.log('Datos recibidos del hijo:', datos);
-    // Puedes realizar acciones adicionales aquí si es necesario
+    this.productos = datos;
+    // Aquí puedes procesar los datos como necesites
   }
-
 }
