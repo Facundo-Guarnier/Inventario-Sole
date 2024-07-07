@@ -53,6 +53,19 @@ body {  /* Fondo */
     border-color: #0d6efd !important;
 }
 
+.boton-revisar-stock {
+    background-color: #669206;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.boton-revisar-stock:hover,
+.boton-revisar-stock:active {
+    color: white !important;
+    background-color: #507206 !important;
+    border-color: #669206 !important;
+}
+
 /*T* Paginas */
 .barra-lateral-pag {
     padding: 2% !important;

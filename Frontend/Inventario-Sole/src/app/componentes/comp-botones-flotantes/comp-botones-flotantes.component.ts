@@ -12,12 +12,14 @@ export class CompBotonesFlotantesComponent implements OnInit {
   @Input() mostrarCancelar: boolean = false;
   @Input() mostrarBorrar: boolean = false;
   @Input() mostrarAgregar: boolean = false;
+  @Input() mostrarRevisarStock: boolean = false;
   
   //! Funciones que se ejecutan al hacer click en los botones
   @Output() clickAceptar = new EventEmitter<void>(); 
   @Output() clickCancelar = new EventEmitter<void>();
   @Output() clickBorrar = new EventEmitter<void>();
   @Output() clickAgregar = new EventEmitter<void>();
+  @Output() clickRevisarStock = new EventEmitter<void>();
   
   
   ClickAceptar() {
@@ -34,6 +36,10 @@ export class CompBotonesFlotantesComponent implements OnInit {
   
   ClickAgregar() {
     this.clickAgregar.emit();
+  }
+  
+  ClickRevisarStock() {
+    this.clickRevisarStock.emit();
   }
   
   

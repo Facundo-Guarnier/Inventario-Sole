@@ -17,6 +17,11 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     //! Lógica para el botón "agregar"
     this.router.navigate(['prod/crear']);
   }
+  
+  ClickRevisarStock() {
+    //! Lógica para el botón "agregar"
+    this.router.navigate(['prod/crear']);
+  }
 
 
   columnas = [
@@ -81,14 +86,6 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-    
-    
-    
-    //! Botones flotantes
-    declarations: [
-      // CompBotonesFlotantesComponent, 
-    ]
-  }
+  ngOnInit(): void { }
 
 }
