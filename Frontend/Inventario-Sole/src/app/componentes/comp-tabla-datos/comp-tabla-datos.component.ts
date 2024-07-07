@@ -33,7 +33,12 @@ export class CompTablaDatosComponent implements OnInit {
   }
   
   editarFila(item: any) {
-    console.log('Editar', item);
+    if (this.tipo === 'mov') {
+      this.router.navigate([this.tipo + '/detalle']);
+    } else {
+      // this.router.navigate(['prod/detalle-editar', item.id]);
+      this.router.navigate([this.tipo + '/detalle-editar']);
+    }
   }
   
   eliminarFila(item: any) {
