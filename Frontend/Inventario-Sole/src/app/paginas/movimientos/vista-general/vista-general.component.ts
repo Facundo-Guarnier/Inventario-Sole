@@ -22,7 +22,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   acciones = {
     editar: false,
     eliminar: false,
-    detalle: true
+    detalle: false
   }
   
   datos: any[] = [
