@@ -16,14 +16,20 @@ import { CompFiltroListaSeleccionComponent } from './componentes/comp-filtro-lis
 import { CompBarraLateralComponent } from './componentes/comp-barra-lateral/comp-barra-lateral.component';
 import { CompDetalleNuevoComponent } from './componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { CompBotonesFlotantesComponent } from './componentes/comp-botones-flotantes/comp-botones-flotantes.component';
-
+import { CompBotonFotoComponent } from './componentes/comp-boton-foto/comp-boton-foto.component';
+import { CompCampoFotosComponent } from './componentes/comp-campo-fotos/comp-campo-fotos.component';
+import { CompDetalleNuevoGenericoComponent } from './componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
+import { CompVentaListaProdComponent } from './componentes/comp-venta-lista-prod/comp-venta-lista-prod.component';
 
 //! Importar las páginas
 import { PagProductosCrearComponent } from './paginas/productos/crear/crear.component';
 import { PagProductosDetalleEditarComponent } from './paginas/productos/detalle-editar/detalle-editar.component';
 
 import { PagTiendaFisicaVistaGeneralComponent } from './paginas/tienda-fisica/vista-general/vista-general.component';
+import { PagTiendaFisicaRevisarStockComponent } from './paginas/tienda-fisica/revisar-stock/revisar-stock.component';
+
 import { PagTiendaOnlineVistaGeneralComponent } from './paginas/tienda-online/vista-general/vista-general.component';
+import { PagTiendaOnlineRevisarStockComponent } from './paginas/tienda-online/revisar-stock/revisar-stock.component';
 
 import { PagVentasCrearComponent } from './paginas/ventas/crear/crear.component';
 import { PagVentasDetalleEditarComponent } from './paginas/ventas/detalle-editar/detalle-editar.component';
@@ -40,10 +46,7 @@ import { PagRegalosDetalleEditarComponent } from './paginas/regalos/detalle-edit
 import { PagMovimientosDetalleComponent } from './paginas/movimientos/detalle/detalle.component';
 import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.component';
 import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
-import { CompBotonFotoComponent } from './componentes/comp-boton-foto/comp-boton-foto.component';
-import { CompCampoFotosComponent } from './componentes/comp-campo-fotos/comp-campo-fotos.component';
-import { CompDetalleNuevoGenericoComponent } from './componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
-import { CompVentaListaProdComponent } from './componentes/comp-venta-lista-prod/comp-venta-lista-prod.component';
+
 
 
 @NgModule({
@@ -60,13 +63,20 @@ import { CompVentaListaProdComponent } from './componentes/comp-venta-lista-prod
     CompBarraLateralComponent,
     CompDetalleNuevoComponent,
     CompBotonesFlotantesComponent,
+    CompBotonFotoComponent,
+    CompCampoFotosComponent,
+    CompDetalleNuevoGenericoComponent,
+    CompVentaListaProdComponent,
     
     //! Declarar las paginas
     PagProductosCrearComponent,
     PagProductosDetalleEditarComponent,
 
     PagTiendaFisicaVistaGeneralComponent,
+    PagTiendaFisicaRevisarStockComponent,
+
     PagTiendaOnlineVistaGeneralComponent,
+    PagTiendaOnlineRevisarStockComponent,
 
     PagVentasCrearComponent,
     PagVentasDetalleEditarComponent,
@@ -83,10 +93,7 @@ import { CompVentaListaProdComponent } from './componentes/comp-venta-lista-prod
     PagMovimientosDetalleComponent,
     PagMovimientosCrearComponent,
     PagMovimientosVistaGeneralComponent,
-    CompBotonFotoComponent,
-    CompCampoFotosComponent,
-    CompDetalleNuevoGenericoComponent,
-    CompVentaListaProdComponent,
+
   ],
 
   imports: [

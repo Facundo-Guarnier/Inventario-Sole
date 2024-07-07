@@ -6,7 +6,10 @@ import { PagProductosCrearComponent } from './paginas/productos/crear/crear.comp
 import { PagProductosDetalleEditarComponent } from './paginas/productos/detalle-editar/detalle-editar.component';
 
 import { PagTiendaFisicaVistaGeneralComponent } from './paginas/tienda-fisica/vista-general/vista-general.component';
+import { PagTiendaFisicaRevisarStockComponent } from './paginas/tienda-fisica/revisar-stock/revisar-stock.component';
+
 import { PagTiendaOnlineVistaGeneralComponent } from './paginas/tienda-online/vista-general/vista-general.component';
+import { PagTiendaOnlineRevisarStockComponent } from './paginas/tienda-online/revisar-stock/revisar-stock.component';
 
 import { PagVentasCrearComponent } from './paginas/ventas/crear/crear.component';
 import { PagVentasDetalleEditarComponent } from './paginas/ventas/detalle-editar/detalle-editar.component';
@@ -33,8 +36,11 @@ const routes: Routes = [
   { path: 'ven/detalle-editar', component: PagVentasDetalleEditarComponent},
   
   { path: 'tf', component: PagTiendaFisicaVistaGeneralComponent},
+  { path: 'tf/revisar-stock', component: PagTiendaFisicaRevisarStockComponent},
+
   { path: 'to', component: PagTiendaOnlineVistaGeneralComponent},
-  
+  { path: 'to/revisar-stock', component: PagTiendaOnlineRevisarStockComponent},
+
   // { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent},
   { path: 'prod/detalle-editar', component: PagProductosDetalleEditarComponent},
   { path: 'prod/crear', component: PagProductosCrearComponent},

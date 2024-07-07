@@ -20,7 +20,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   
   ClickRevisarStock() {
     //! Lógica para el botón "agregar"
-    this.router.navigate(['prod/crear']);
+    this.router.navigate(['tf/revisar-stock']);
   }
 
 

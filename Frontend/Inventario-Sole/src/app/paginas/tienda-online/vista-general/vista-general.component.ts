@@ -68,7 +68,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   };
   
   ClickRevisarStock(){
-    this.router.navigate(['prod/crear']);
+    this.router.navigate(['to/revisar-stock']);
   };
   
   constructor(
