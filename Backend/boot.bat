@@ -2,4 +2,4 @@
 call Inventario-env\Scripts\activate
 
 :: Ejecutar aplicación
-python run.py
+python app.py
