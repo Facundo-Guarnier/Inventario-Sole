@@ -43,36 +43,48 @@
         
         <!--! Estilo compacto -->
         <div *ngIf="estilo == 'compacto'">
-            <div  class="row">
-                <div class="col" *ngFor="let campo of campos"> 
-                    
-                    <!--! Campos -->
-                    <div *ngIf="campo.tipo == 'textarea-text'">
-                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
-                        <textarea class="form-control" id={{campo.identificador}} rows="3"></textarea>
+            <div *ngFor="let producto of productos; let i = index" class="mb-3">
+                <h5>Producto {{i + 1}}</h5>
+                <div class="row">
+                    <div class="col" *ngFor="let campo of campos">
+                        <!-- Los campos existentes aquí -->
+                        <div *ngIf="campo.tipo == 'textarea-text'">
+                            <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
+                            <textarea class="form-control" [id]="campo.identificador + '_' + i" rows="3"></textarea>
+                        </div>
+                        
+                        <div *ngIf="campo.tipo == 'input-text'">
+                            <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
+                            <input type="text" class="form-control" [id]="campo.identificador + '_' + i">
+                        </div>
+                        
+                        <div *ngIf="campo.tipo == 'input-number'">
+                            <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
+                            <input type="number" class="form-control" [id]="campo.identificador + '_' + i">
+                        </div>
+                        
+                        <div *ngIf="campo.tipo == 'selector'">
+                            <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
+                            <select class="form-select" [id]="campo.identificador + '_' + i">
+                                <option selected>Seleccionar...</option>
+                                <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{opcion}}</option>
+                            </select>
+                        </div>
                     </div>
-                    
-                    <div *ngIf="campo.tipo == 'input-text'">
-                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
-                        <input type="text" class="form-control" id={{campo.identificador}}>
-                    </div>
-                    
-                    <div *ngIf="campo.tipo == 'input-number'">
-                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
-                        <input type="number" class="form-control" id={{campo.identificador}}>
-                    </div>
-                    
-                    <div *ngIf="campo.tipo == 'selector'">
-                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
-                        <select class="form-select" id={{campo.identificador}}>
-                            <option selected>Seleccionar...</option>
-                            <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{opcion}}</option>
-                        </select>
-                    </div>
-                    
                 </div>
             </div>
+            
+            <!--! Botón para agregar nuevo producto -->
+            <button type="button" class="btn btn-primary mt-3" (click)="agregarProducto()">
+                Agregar otro producto
+            </button>
+
+            <!--! Botón para recolectar datos -->
+            <button type="button" class="btn btn-success mt-3 ml-2" (click)="recolectarDatos()">
+                Guardar todos los productos
+            </button>
         </div>
+
         
     </div>
 </div>

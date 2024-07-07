@@ -23,4 +23,18 @@ export class CompDetalleNuevoMovComponent implements OnInit {
     this.productos.push({});
   }
 
+  recolectarDatos() {
+    const datosRecolectados = this.productos.map(producto => {
+      const datosProducto: any = {};
+      this.campos.forEach(campo => {
+        const valor = (document.getElementById(`${campo.identificador}_${this.productos.indexOf(producto)}`) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement).value;
+        datosProducto[campo.identificador] = valor;
+      });
+      return datosProducto;
+    });
+
+    console.log('Datos recolectados:', datosRecolectados);
+    return datosRecolectados;
+  }
+
 }
