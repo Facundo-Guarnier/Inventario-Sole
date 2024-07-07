@@ -9,9 +9,10 @@ import { Campo } from '../../../interfaces/campo.interface'
 export class PagMovimientosCrearComponent implements OnInit {
 
   campos: Campo[] = [
+    { nombre: "Movimiento", identificador: "movimiento", tipo: "selector", opciones: ["Entrada", "Salida"] },
     { nombre: "ID producto", identificador: "idProducto", tipo: "input-text" },
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
-    { nombre: "Precio", identificador: "precio", tipo: "input-number" },
+    // { nombre: "Precio", identificador: "precio", tipo: "input-number" },
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
 

@@ -14,8 +14,9 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
     { nombre: 'Movimiento', tipo: 'text' },
     { nombre: 'Fecha', tipo: 'date' },
     { nombre: "Producto ID", tipo: "text" },
+    { nombre: "Cantidad", tipo: "number" },
     { nombre: "Vendedor", tipo: "text" },
-    { nombre: "Aclaraciones", tipo: "text" },
+    { nombre: "Comentario", tipo: "text" },
   ];
 
   acciones = {
@@ -29,29 +30,33 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
       "Movimiento": "Entrada",
       "Fecha": "2021-10-01",
       "Producto ID": "AB12C",
+      "Cantidad": 2,
       "Vendedor": "Chica 1",
-      "Aclaraciones": "Compra de 100 unidades"
+      "Comentario": "Compra de 1 unidad"
     },
     {
       "Movimiento": "Salida",
       "Fecha": "2021-10-02",
       "Producto ID": "AB12D",
+      "Cantidad": 3,
       "Vendedor": "Chica 1",
-      "Aclaraciones": "Venta de 200 unidades"
+      "Comentario": "Venta de 3 unidades"
     },
     {
       "Movimiento": "Entrada",
       "Fecha": "2021-10-03",
       "Producto ID": "AB12E",
+      "Cantidad": 1,
       "Vendedor": "Chica 2",
-      "Aclaraciones": "Compra de 300 unidades"
+      "Comentario": "Compra de 1 unidad"
     },
     {
       "Movimiento": "Salida",
       "Fecha": "2021-10-04",
       "Producto ID": "AB12F",
+      "Cantidad": 4,
       "Vendedor": "Chica 1",
-      "Aclaraciones": "Venta de 400 unidades"
+      "Comentario": "Venta de 4 unidades"
     }
     
   ];

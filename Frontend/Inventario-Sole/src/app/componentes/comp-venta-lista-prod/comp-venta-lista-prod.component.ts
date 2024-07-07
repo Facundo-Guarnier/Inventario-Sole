@@ -24,8 +24,8 @@ export class CompVentaListaProdComponent implements OnInit {
     this.productos.push({});
   }
 
-  quitarProducto() {
-    this.productos.pop();
+  quitarProducto(index: number) {
+    this.productos.splice(index, 1);
   }
 
   recolectarDatos() {
