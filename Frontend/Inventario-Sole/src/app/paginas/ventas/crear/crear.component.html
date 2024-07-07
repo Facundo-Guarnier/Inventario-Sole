@@ -5,18 +5,33 @@
     </div>
     
     <div class="row contenido-principal" >
+        <!--! Barra lateral -->
         <div class="col-lg-2 bg-primary sidebar barra-lateral-pag">
-            <!--! Barra lateral -->
             <app-comp-barra-lateral></app-comp-barra-lateral>
         </div>
         
+        <!--! Cuerpo -->
         <div class="col-lg-10 content cuerpo-pag" > 
-            <!--! Cuerpo -->
+            
+            <!--! Detalle venta -->
             <div class="mb-3">
-                
                 <div class="container-fluid"> 
-                    <h1 style="color: aliceblue;">Crear un nuevo regalo </h1>
-                    <app-comp-detalle-nuevo-generico></app-comp-detalle-nuevo-generico>
+                    <h1 style="color: aliceblue;">Crear una nueva venta</h1>
+                    <app-comp-detalle-nuevo-generico
+                        [titulo]="titulo1"
+                        [campos]="campos1"
+                    ></app-comp-detalle-nuevo-generico>
+                </div>
+            </div>
+
+            <!--! Productos -->
+            <div class="mb-3">
+                <div class="container-fluid"> 
+                    <app-comp-detalle-nuevo-generico
+                        [estilo]="'compacto'"
+                        [titulo]="titulo2"
+                        [campos]="campos2"
+                    ></app-comp-detalle-nuevo-generico>
                 </div>
             </div>
         </div>

@@ -7,12 +7,20 @@ import { Campo } from '../../interfaces/campo.interface'
   styleUrls: ['./comp-detalle-nuevo-generico.component.css']
 })
 export class CompDetalleNuevoMovComponent implements OnInit {
-  
+
+  @Input() estilo: string = "normal";  //! "normal" o "compacto"
+  @Input() titulo: string = "Nuevo Detalle";
   @Input() campos: Campo[] = [];  //! Nombre, identificador y tipo. Ej: "Cantidad", "cantidad", "input-number"
   
+  productos: any[] = [{}]
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  agregarProducto() {
+    this.productos.push({});
   }
 
 }

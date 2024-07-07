@@ -1,34 +1,78 @@
-<!--! Formulario para editar un producto -->
-
 <div class="card text-white bg-dark">
     <div class="card-header bg-primary">
-        Nuevo Detalle
+        {{titulo}}
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col"> 
+        
+        <!--! Estilo normal -->
+        <div *ngIf="estilo == 'normal'">
+            <div class="row">
+                <div class="col"> 
+                    
+                    <!--! Campos -->
+                    <div class="mb-3" *ngFor="let campo of campos">
+                        
+                        <div *ngIf="campo.tipo == 'textarea-text'">
+                            <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                            <textarea class="form-control" id={{campo.identificador}} rows="3"></textarea>
+                        </div>
+                        
+                        <div *ngIf="campo.tipo == 'input-text'">
+                            <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                            <input type="text" class="form-control" id={{campo.identificador}}>
+                        </div>
+                        
+                        <div *ngIf="campo.tipo == 'input-number'">
+                            <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                            <input type="number" class="form-control" id={{campo.identificador}}>
+                        </div>
+                        
+                        <div *ngIf="campo.tipo == 'selector'">
+                            <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                            <select class="form-select" id={{campo.identificador}}>
+                                <option selected>Seleccionar...</option>
+                                <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{opcion}}</option>
+                            </select>
+                        </div>
+                        
+                    </div>
 
-                <!--! Campos -->
-                <div class="mb-3" *ngFor="let campo of campos">
-
+                </div>
+            </div>
+        </div>
+        
+        <!--! Estilo compacto -->
+        <div *ngIf="estilo == 'compacto'">
+            <div  class="row">
+                <div class="col" *ngFor="let campo of campos"> 
+                    
+                    <!--! Campos -->
                     <div *ngIf="campo.tipo == 'textarea-text'">
                         <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
                         <textarea class="form-control" id={{campo.identificador}} rows="3"></textarea>
                     </div>
-
+                    
                     <div *ngIf="campo.tipo == 'input-text'">
                         <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
                         <input type="text" class="form-control" id={{campo.identificador}}>
                     </div>
-
+                    
                     <div *ngIf="campo.tipo == 'input-number'">
                         <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
                         <input type="number" class="form-control" id={{campo.identificador}}>
                     </div>
-
+                    
+                    <div *ngIf="campo.tipo == 'selector'">
+                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                        <select class="form-select" id={{campo.identificador}}>
+                            <option selected>Seleccionar...</option>
+                            <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{opcion}}</option>
+                        </select>
+                    </div>
+                    
                 </div>
-
             </div>
         </div>
+        
     </div>
 </div>
