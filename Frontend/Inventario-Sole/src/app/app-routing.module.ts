@@ -41,8 +41,7 @@ const routes: Routes = [
 
   { path: "mov", component: PagMovimientosVistaGeneralComponent},
   { path: "mov/crear", component: PagMovimientosCrearComponent},
-  // { path: "mov/detalle/:id", component: PagMovimientosDetalleComponent},
-  { path: "mov/detalle", component: PagMovimientosDetalleComponent},
+  // { path: "mov/detalle", component: PagMovimientosDetalleComponent}, //* No se necesita crear un componente para el detalle de movimientos, creo que es redundante
 
   { path: "reg", component: PagRegalosVistaGeneralComponent},
   { path: "reg/crear", component: PagRegalosCrearComponent},
