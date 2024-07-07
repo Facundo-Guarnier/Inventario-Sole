@@ -14,25 +14,26 @@
         <div class="col-lg-10 content cuerpo-pag" > 
             
             <!--! Detalle venta -->
-            <!-- <div class="mb-3">
+            <div class="mb-3">
                 <div class="container-fluid"> 
                     <h1 style="color: aliceblue;">Crear una nueva venta</h1>
                     <app-comp-detalle-nuevo-generico
                         [titulo]="titulo1"
                         [campos]="campos1"
+                        (datosRecolectados)="onDatosRecolectadosVenta($event)"
                     ></app-comp-detalle-nuevo-generico>
                 </div>
-            </div> -->
+            </div>
 
             <!--! Productos -->
             <div class="mb-3">
                 <div class="container-fluid"> 
-                    <app-comp-detalle-nuevo-generico
+                    <app-comp-venta-lista-prod
                         [estilo]="'compacto'"
                         [titulo]="titulo2"
                         [campos]="campos2"
-                        (datosRecolectados)="onDatosRecolectados($event)"
-                    ></app-comp-detalle-nuevo-generico>
+                        (datosRecolectados)="onDatosRecolectadosProductos($event)"
+                    ></app-comp-venta-lista-prod>
                 </div>
             </div>
         </div>

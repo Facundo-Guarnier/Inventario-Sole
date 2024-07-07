@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Campo } from '../../interfaces/campo.interface';
+import { CompCampoFotosComponent } from '../comp-campo-fotos/comp-campo-fotos.component';
 
 @Component({
   selector: 'app-comp-detalle-nuevo-generico',
@@ -7,42 +8,25 @@ import { Campo } from '../../interfaces/campo.interface';
   styleUrls: ['./comp-detalle-nuevo-generico.component.css']
 })
 export class CompDetalleNuevoGenericoComponent implements OnInit {
-  @Output() datosRecolectados = new EventEmitter<any[]>();
   
   @Input() estilo: string = "normal";  //! "normal" o "compacto"
   @Input() titulo: string = "Nuevo Detalle";
   @Input() campos: Campo[] = [];  //! Nombre, identificador y tipo. Ej: "Cantidad", "cantidad", "input-number"
   
-  productos: any[] = [{}]
+  @Output() datosRecolectados = new EventEmitter<any[]>();
+  
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  agregarProducto() {
-    this.productos.push({});
-  }
-
-  quitarProducto() {
-    this.productos.pop();
-  }
-
-  recolectarDatos() {
-    const datosRecolectados = this.productos.map((producto, index) => {
-      const datosProducto: any = {};
-      this.campos.forEach(campo => {
-        const elemento = document.getElementById(`${campo.identificador}_${index}`) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-        if (elemento) {
-          datosProducto[campo.identificador] = elemento.value;
-        } else {
-          console.error(`Elemento con id ${campo.identificador}_${index} no encontrado.`);
-        }
-      });
-      return datosProducto;
-    });
-    
-    this.datosRecolectados.emit(datosRecolectados);
-    return datosRecolectados;
-  }
+  
+  
 }
+
+
+// Lee mal los campos de la tarjeta "detalle de la venta" pero si se comenta esa tarjeta, lee bien los campos de la tarjeta "productos".
+// Ver si se puede hacer que el boton flotante de aceptar lea los campos de ambas tarjetas correctamente.
+// Separar app-comp-detalle-nuevo-generico en dos componentes, uno el estilo compacto y el otro el estilo NumberFormatStyle, ya que el compoacto 
+// tiene funcionalidades propias y botones propios que no tiene el otro.
