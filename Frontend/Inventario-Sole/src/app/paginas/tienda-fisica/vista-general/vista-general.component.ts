@@ -31,7 +31,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
 
   acciones = {
     editar: true,
-    eliminar: true,
+    eliminar: false,
     detalle: true
   }
   
