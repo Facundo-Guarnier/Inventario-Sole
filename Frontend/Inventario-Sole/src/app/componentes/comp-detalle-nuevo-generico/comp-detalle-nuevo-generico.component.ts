@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Campo } from '../../interfaces/campo.interface'
 
 @Component({
@@ -6,8 +6,11 @@ import { Campo } from '../../interfaces/campo.interface'
   templateUrl: './comp-detalle-nuevo-generico.component.html',
   styleUrls: ['./comp-detalle-nuevo-generico.component.css']
 })
-export class CompDetalleNuevoMovComponent implements OnInit {
+export class CompDetalleNuevoGenericoComponent implements OnInit {
 
+
+  @Output() datosRecolectados = new EventEmitter<any[]>();
+  
   @Input() estilo: string = "normal";  //! "normal" o "compacto"
   @Input() titulo: string = "Nuevo Detalle";
   @Input() campos: Campo[] = [];  //! Nombre, identificador y tipo. Ej: "Cantidad", "cantidad", "input-number"
@@ -32,8 +35,9 @@ export class CompDetalleNuevoMovComponent implements OnInit {
       });
       return datosProducto;
     });
-
+    
     console.log('Datos recolectados:', datosRecolectados);
+    this.datosRecolectados.emit(datosRecolectados);
     return datosRecolectados;
   }
 

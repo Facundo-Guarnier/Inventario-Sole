@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompDetalleNuevoMovComponent } from './comp-detalle-nuevo-generico.component';
+import { CompDetalleNuevoGenericoComponent } from './comp-detalle-nuevo-generico.component';
 
-describe('CompDetalleNuevoMovComponent', () => {
-  let component: CompDetalleNuevoMovComponent;
-  let fixture: ComponentFixture<CompDetalleNuevoMovComponent>;
+describe('CompDetalleNuevoGenericoComponent', () => {
+  let component: CompDetalleNuevoGenericoComponent;
+  let fixture: ComponentFixture<CompDetalleNuevoGenericoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CompDetalleNuevoMovComponent ]
+      declarations: [ CompDetalleNuevoGenericoComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CompDetalleNuevoMovComponent);
+    fixture = TestBed.createComponent(CompDetalleNuevoGenericoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

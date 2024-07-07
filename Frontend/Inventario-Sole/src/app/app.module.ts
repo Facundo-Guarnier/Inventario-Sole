@@ -42,7 +42,7 @@ import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.
 import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
 import { CompBotonFotoComponent } from './componentes/comp-boton-foto/comp-boton-foto.component';
 import { CompCampoFotosComponent } from './componentes/comp-campo-fotos/comp-campo-fotos.component';
-import { CompDetalleNuevoMovComponent } from './componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
+import { CompDetalleNuevoGenericoComponent } from './componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
 
 
 @NgModule({
@@ -84,7 +84,7 @@ import { CompDetalleNuevoMovComponent } from './componentes/comp-detalle-nuevo-g
     PagMovimientosVistaGeneralComponent,
     CompBotonFotoComponent,
     CompCampoFotosComponent,
-    CompDetalleNuevoMovComponent,
+    CompDetalleNuevoGenericoComponent,
   ],
 
   imports: [

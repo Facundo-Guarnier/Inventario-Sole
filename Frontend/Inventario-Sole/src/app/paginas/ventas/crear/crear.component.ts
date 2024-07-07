@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CompDetalleNuevoGenericoComponent } from 'src/app/componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 
 @Component({
@@ -7,6 +8,11 @@ import { Campo } from 'src/app/interfaces/campo.interface';
   styleUrls: ['./crear.component.css']
 })
 export class PagVentasCrearComponent implements OnInit {
+
+
+  @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
+
+
   titulo1 = "Detalle de la venta";
   campos1: Campo[] = [
     { nombre: "Cliente", identificador: "cliente", tipo: "input-text" },
@@ -26,6 +32,17 @@ export class PagVentasCrearComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  clickAceptar() {
+    const datos = this.compDetalleNuevo.recolectarDatos();
+    console.log('Datos recolectados en el padre:', datos);
+    // Aquí puedes procesar los datos como necesites
+  }
+
+  onDatosRecolectados(datos: any[]) {
+    console.log('Datos recibidos del hijo:', datos);
+    // Puedes realizar acciones adicionales aquí si es necesario
   }
 
 }

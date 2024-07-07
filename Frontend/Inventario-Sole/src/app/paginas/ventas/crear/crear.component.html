@@ -31,6 +31,7 @@
                         [estilo]="'compacto'"
                         [titulo]="titulo2"
                         [campos]="campos2"
+                        (datosRecolectados)="onDatosRecolectados($event)"
                     ></app-comp-detalle-nuevo-generico>
                 </div>
             </div>
@@ -42,5 +43,6 @@
 <app-comp-botones-flotantes 
     [mostrarAceptar]="true"
     [mostrarCancelar]="true"
+    (clickAceptar)="clickAceptar()"
     >
 </app-comp-botones-flotantes>
