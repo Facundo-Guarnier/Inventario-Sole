@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Campo } from '../../interfaces/campo.interface'
 
 @Component({
   selector: 'app-comp-detalle-nuevo-generico',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comp-detalle-nuevo-generico.component.css']
 })
 export class CompDetalleNuevoMovComponent implements OnInit {
-
+  
+  @Input() campos: Campo[] = [];  //! Nombre, identificador y tipo. Ej: "Cantidad", "cantidad", "input-number"
+  
   constructor() { }
 
   ngOnInit(): void {

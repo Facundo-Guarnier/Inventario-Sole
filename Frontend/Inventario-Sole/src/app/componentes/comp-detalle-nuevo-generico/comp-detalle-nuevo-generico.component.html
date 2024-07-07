@@ -8,24 +8,24 @@
         <div class="row">
             <div class="col"> 
 
-                <div class="mb-3">
-                    <label for="idProducto" class="form-label">ID producto</label>
-                    <input type="text" class="form-control" id="idProducto"> 
-                </div>
+                <!--! Campos -->
+                <div class="mb-3" *ngFor="let campo of campos">
 
-                <div class="mb-3">
-                    <label for="cantidadFisica" class="form-label">Cantidad</label>
-                    <input type="number" class="form-control" id="cantidadFisica">
-                </div>
+                    <div *ngIf="campo.tipo == 'textarea-text'">
+                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                        <textarea class="form-control" id={{campo.identificador}} rows="3"></textarea>
+                    </div>
 
-                <div class="mb-3">
-                    <label for="precioFisico" class="form-label">Precio</label>
-                    <input type="number" class="form-control" id="precioFisico">
-                </div>
+                    <div *ngIf="campo.tipo == 'input-text'">
+                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                        <input type="text" class="form-control" id={{campo.identificador}}>
+                    </div>
 
-                <div class="mb-3">
-                    <label for="aclaraciones" class="form-label">Aclaraciones</label>
-                    <textarea class="form-control" id="aclaraciones" rows="3"></textarea>
+                    <div *ngIf="campo.tipo == 'input-number'">
+                        <label for={{campo.identificador}} class="form-label">{{campo.nombre}}</label>
+                        <input type="number" class="form-control" id={{campo.identificador}}>
+                    </div>
+
                 </div>
 
             </div>
