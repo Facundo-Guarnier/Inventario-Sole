@@ -37,7 +37,7 @@ export class PagVentasCrearComponent implements OnInit {
   }
 
   clickAceptar() {
-    // this.compDetalleNuevo.recolectarDatos();
+    this.compDetalleNuevo.recolectarDatos();
     this.compVentaLista.recolectarDatos();
   }
 

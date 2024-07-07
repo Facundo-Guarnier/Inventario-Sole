@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Campo } from '../../interfaces/campo.interface';
-import { CompCampoFotosComponent } from '../comp-campo-fotos/comp-campo-fotos.component';
 
 @Component({
   selector: 'app-comp-detalle-nuevo-generico',
@@ -15,18 +14,31 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
   
   @Output() datosRecolectados = new EventEmitter<any[]>();
   
-
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  recolectarDatos(): void {
+    let datos: any[] = [];
+    
+    this.campos.forEach(campo => {
+      const element = document.getElementById(campo.identificador) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+
+      if (element) {
+        let valor: any;
+
+        if (element.tagName === 'INPUT' && (element as HTMLInputElement).type === 'number') {
+          valor = (element as HTMLInputElement).valueAsNumber;
+        } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+          valor = element.value;
+        } else if (element.tagName === 'SELECT') {
+          valor = (element as HTMLSelectElement).value;
+        }
+
+        datos.push({ nombre2: campo.nombre, valor: valor });
+      }
+    });
+
+    this.datosRecolectados.emit(datos);
   }
-
-  
-  
 }
-
-
-// Lee mal los campos de la tarjeta "detalle de la venta" pero si se comenta esa tarjeta, lee bien los campos de la tarjeta "productos".
-// Ver si se puede hacer que el boton flotante de aceptar lea los campos de ambas tarjetas correctamente.
-// Separar app-comp-detalle-nuevo-generico en dos componentes, uno el estilo compacto y el otro el estilo NumberFormatStyle, ya que el compoacto 
-// tiene funcionalidades propias y botones propios que no tiene el otro.
