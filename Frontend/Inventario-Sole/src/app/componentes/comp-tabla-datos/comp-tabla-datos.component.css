@@ -15,10 +15,40 @@
     background-color: #8d49ff;
     border-color: #8d49ff;
     color: white;
-    transition: 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-.boton-info:hover {
+.boton-info:hover,
+.boton-info:active {
+    color: white;
     background-color: #6f42c1;
-    border-color: #6f42c1;
+    border-color: #8d49ff;
+}
+
+.boton-editar {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.boton-editar:hover,
+.boton-editar:active {
+    color: white;
+    background-color: #28579f;
+    border-color: #0d6efd;
+}
+
+.boton-borrar {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.boton-borrar:hover, 
+.boton-borrar:active {
+    color: white;
+    background-color: #91232e;
+    border-color: #dc3545;
 }
