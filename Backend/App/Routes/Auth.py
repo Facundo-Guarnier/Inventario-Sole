@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token
-from Backend.App.Services.Usuarios import UserService
+from App.Services.Usuarios import UserService
 from . import api_bp
 
 @api_bp.route('/auth/register', methods=['POST'])

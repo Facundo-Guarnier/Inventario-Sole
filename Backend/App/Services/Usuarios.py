@@ -1,5 +1,5 @@
 from App.Models.Usuarios import UsuarioModel
-from App.Utils.jwt import hash_password, verify_password
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class UserService:
     @staticmethod
@@ -9,7 +9,7 @@ class UserService:
             raise ValueError("Username already exists")
         
         # Procesar datos
-        hashed_password = hash_password(password)
+        hashed_password = generate_password_hash(password)
         
         # Guardar en la base de datos
         user_id = UsuarioModel.create(username, email, hashed_password)
@@ -18,7 +18,7 @@ class UserService:
     @staticmethod
     def authenticate_user(username, password):
         user = UsuarioModel.get_by_username(username)
-        if not user or not verify_password(password, user['password']):
+        if not user or not check_password_hash(password, user['password']):
             return None
         return user
 

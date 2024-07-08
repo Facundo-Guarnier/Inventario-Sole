@@ -1,4 +1,5 @@
-from App import db
+# from App import db
+from App import get_db as db
 
 class UsuarioModel:
     def __init__(self, username, email, password, roles):
