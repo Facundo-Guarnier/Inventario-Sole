@@ -7,3 +7,4 @@ pymongo==4.8.0
 
 flask==3.0.2
 flask_jwt_extended==4.6.0
+Werzeug==3.0.3
