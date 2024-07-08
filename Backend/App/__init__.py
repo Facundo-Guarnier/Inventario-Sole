@@ -8,10 +8,11 @@ import App.Resources as Resources
 
 db_sql = SQLAlchemy()
 
-def db_mongo() -> MongoClient:
+def get_db_mongo() -> MongoClient:
     if 'db_mongo' not in g:
         g.db_mongo = MongoClient(current_app.config['MONGO_URI'])[current_app.config['MONGO_DBNAME']]
     return g.db_mongo
+
 
 def create_app(config_class=Config):
 
@@ -54,6 +55,8 @@ def create_app(config_class=Config):
     #T* Configurar la API
     api = Api(app)
     api.add_resource(Resources.UsuariosResource, '/api/usuario/<id>')
+    
+    
     
     
     return app
