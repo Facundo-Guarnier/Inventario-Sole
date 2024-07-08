@@ -1,22 +1,22 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
 from App.Models import UsuarioModel
 
 auth = Blueprint('api/auth', __name__, url_prefix='/api/auth')
 
 
-@auth.route('/register', methods=['POST'])
-def post() -> dict:
+@auth.route('/registrar', methods=['POST'])
+def registrar() -> dict:
     
     #! Validar campos
     try: 
         data = request.json
         
-        data["alias"] = data["alias"].lower()
-        data["contraseña"] = generate_password_hash(data['contraseña'])
+        data["alias"] = str(data["alias"].lower())
+        data["contraseña"] = generate_password_hash(str(data['contraseña']))
         #data["email"] = data["email"].lower()
-        data["roles"] = ["user"]
+        data["roles"] = data["roles"]
     
     except Exception as e:
         return jsonify({"mensaje": f"Campos requeridos"}), 400
@@ -36,18 +36,28 @@ def post() -> dict:
     return jsonify({"mensaje": data}), 200
 
 
-
-# def login():
-#     username = request.json.get('usuario')
-#     password = request.json.get('contraseña')
+@auth.route('/acceder', methods=['POST'])
+def acceder():
+    #! Validar campos
+    try: 
+        alias = str(request.json.get('alias')).lower()
+        contraseña = str(request.json.get('contraseña'))
     
-#     usuario = UsuarioModel.get_acceder(username)
+    except Exception as e:
+        return jsonify({"mensaje": "Campos requeridos"}), 400
     
-#     if not usuario:
-#         return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
+    #! Validar usuario y contraseña
+    usuario_db = UsuarioModel.get_alias(alias)
     
-#     if not check_password_hash(usuario['contraseña'], password):
-#         return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
+    if not usuario_db:
+        return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
     
-#     access_token = create_access_token(identity=username)
-#     return jsonify(access_token=access_token), 200
+    if not check_password_hash(usuario_db['contraseña'], contraseña):
+        return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
+    
+    else:
+        claims = {
+            'roles': usuario_db['roles']
+        }
+        access_token = create_access_token(identity=alias, additional_claims=claims)
+        return jsonify(access_token=access_token), 200

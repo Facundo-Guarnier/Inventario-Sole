@@ -26,12 +26,12 @@ def initialize_database(app):
     for collection in collections:
         if collection not in existing_collections:
             mongo.db.create_collection(collection)
-            print(f"Collection '{collection}' created.")
+            print(f"Colección '{collection}' creada.")
             
         else:
-            print(f"Collection '{collection}' already exists.")
+            print(f"Colección '{collection}' ya existente.")
     
-    admin = mongo.db.usuarios.find_one({"admin": 1})    
+    admin = mongo.db.usuarios.find_one({"roles": {"$in": ["admin"]}})    
     if admin == None:
         from werkzeug.security import generate_password_hash
         mongo.db.usuarios.insert_one(
@@ -42,6 +42,9 @@ def initialize_database(app):
             }
         )
         print("Admin creado.")
+    
+    else:
+        print("Admin ya existente.")
 
 
 

@@ -28,9 +28,9 @@ class Usuario:
         return db_mongo.db.usuarios.find_one({"alias": alias})
     
     
-    # @staticmethod
-    # def acceder(username: str) -> dict:
-    #     """
-    #     Obtiene un usuario de la base.
-    #     """
-    #     return db_mongo.usuarios.find_one({"username": username})
+    @staticmethod
+    def acceder(username: str) -> dict:
+        """
+        Obtiene un usuario de la base.
+        """
+        return db_mongo.usuarios.find_one({"username": username})
