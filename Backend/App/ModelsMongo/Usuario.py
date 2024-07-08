@@ -1,12 +1,14 @@
 # from App import get_db_mongo
 # db_mongo = get_db_mongo()
 
-from flask import g
-db_mongo = g.db_mongo
+# from flask import g
+# db_mongo = g.db_mongo
 
-
+# from flask import current_app
+from App import mongo
 
 class Usuario:
+    
     
     @staticmethod
     def put_registrar(data: dict) -> dict:
@@ -16,17 +18,20 @@ class Usuario:
         Args:
             - data (dict): usuario y contraseña
         """
+        db_mongo = current_app.extensions['pymongo']
+        { "username": "admin", "password": "admin"}
+        
         return db_mongo.usuarios.insert_one(data)
         
         
     
     
-    @staticmethod
-    def get_acceder(username: str) -> dict:
-        """
-        Obtiene un usuario de la base.
-        """
-        return db_mongo.usuarios.find_one({"username": username})
+    # @staticmethod
+    # def get_acceder(username: str) -> dict:
+    #     """
+    #     Obtiene un usuario de la base.
+    #     """
+    #     return db_mongo.usuarios.find_one({"username": username})
     
     
     # @staticmethod
