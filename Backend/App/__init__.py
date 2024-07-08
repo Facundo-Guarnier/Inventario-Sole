@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from pymongo import MongoClient
-from config import Config
+from Config import Config
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -13,7 +13,7 @@ def create_app(config_class=Config):
     app.db = mongo[app.config['MONGO_DBNAME']]
 
     # Register blueprints
-    from app.routes import auth_bp, api_bp
+    from App.Routes import auth_bp, api_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(api_bp, url_prefix='/api')
 

@@ -1,5 +1,5 @@
 import os
-from app import create_app
+from App import create_app
 
 def esta_en_entorno_virtual():
     """

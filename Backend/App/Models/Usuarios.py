@@ -1,6 +1,6 @@
-from app import db
+from App import db
 
-class User:
+class UsuarioModel:
     def __init__(self, username, email, password, roles):
         self.username = username
         self.email = email

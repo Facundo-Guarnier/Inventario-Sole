@@ -1,6 +1,6 @@
 from flask import jsonify
 from . import api_bp
-from app.utils.jwt import admin_required
+from App.Utils.jwt import admin_required
 
 @api_bp.route('/users', methods=['GET'])
 @admin_required
