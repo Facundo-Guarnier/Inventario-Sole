@@ -1,4 +1,3 @@
-# from App import db
 from App import get_db as db
 
 class UsuarioModel:
@@ -8,17 +7,17 @@ class UsuarioModel:
         self.password = password
         self.roles = roles
 
-    @staticmethod
-    def get_by_username(username):
-        return db.users.find_one({"username": username})
+    # @staticmethod
+    # def get_by_username(username):
+    #     return db.users.find_one({"username": username})
 
-    @staticmethod
-    def create(username, email, password, roles):
-        user = {
-            "username": username,
-            "email": email,
-            "password": password,
-            "roles": roles
-        }
-        result = db.users.insert_one(user)
-        return result.inserted_id
+    # @staticmethod
+    # def create(username, email, password, roles):
+    #     user = {
+    #         "username": username,
+    #         "email": email,
+    #         "password": password,
+    #         "roles": roles
+    #     }
+    #     result = db.users.insert_one(user)
+    #     return result.inserted_id
