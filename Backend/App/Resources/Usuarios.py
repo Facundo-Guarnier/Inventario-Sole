@@ -1,13 +1,14 @@
-from App.ModelsMongo import UsuarioModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_restful import Resource
+
+from App.Models import UsuarioModel
 
 class Usuario(Resource):
     
     def get(self, id: int):
         # Leer de la base de datos
         return UsuarioModel.put_registrar(id)
-        # return f"Usuario con ID: {id}"
+        return f"Usuario con ID: {id}"
     
     
     

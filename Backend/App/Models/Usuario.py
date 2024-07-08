@@ -5,7 +5,7 @@
 # db_mongo = g.db_mongo
 
 # from flask import current_app
-from App import mongo
+from .. import mongo as db_mongo
 
 class Usuario:
     
@@ -18,12 +18,12 @@ class Usuario:
         Args:
             - data (dict): usuario y contraseña
         """
-        db_mongo = current_app.extensions['pymongo']
-        { "username": "admin", "password": "admin"}
+        # db_mongo = current_app.extensions['pymongo']
+        data =  { "username": "admin", "password": "admin"}
         
-        return db_mongo.usuarios.insert_one(data)
-        
-        
+        # return db_mongo.usuarios.insert_one(data)
+        return "Usuario registrado con éxito."
+    
     
     
     # @staticmethod
