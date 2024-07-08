@@ -4,6 +4,7 @@
         "fisica",
         "generico",
         "metodo",
-        "seleccion"
+        "seleccion",
+        "sqlalchemy"
     ]
 }

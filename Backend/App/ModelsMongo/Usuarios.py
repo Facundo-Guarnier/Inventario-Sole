@@ -1,15 +1,16 @@
-from App import get_db as db
+from App import db_mongo
+
 
 class UsuarioModel:
-    def __init__(self, username, email, password, roles):
-        self.username = username
-        self.email = email
-        self.password = password
-        self.roles = roles
+    # def __init__(self, username, email, password, roles):
+    #     self.username = username
+    #     self.email = email
+    #     self.password = password
+    #     self.roles = roles
 
-    # @staticmethod
-    # def get_by_username(username):
-    #     return db.users.find_one({"username": username})
+    @staticmethod
+    def get_by_username(username):
+        return db_mongo. users.find_one({"username": username})
 
     # @staticmethod
     # def create(username, email, password, roles):
