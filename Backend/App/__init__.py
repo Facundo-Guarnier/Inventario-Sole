@@ -37,8 +37,8 @@ def initialize_database(app):
         mongo.db.usuarios.insert_one(
             {
             "alias": "admin",
-            'password': generate_password_hash(app.config['CONTRA_ADMIN']),
-            "admin": 1
+            'contraseña': generate_password_hash(app.config['CONTRA_ADMIN']),
+            "roles": ["admin"],
             }
         )
         print("Admin creado.")
@@ -58,10 +58,15 @@ def create_app(config_class=Config):
     jwt.init_app(app)
     
     import App.Resources as Resources
-    api.add_resource(Resources.UsuariosResource, '/api/usuario/<id>')
+    api.add_resource(Resources.UsuariosResource, '/api/usuario/<alias>')
+    # api.add_resource(Resources.AutenticacionResource, '/api/registro')
+    
     
     api.init_app(app)
     jwt.init_app(app)
     # mailsender.init_app(app)  #! Para los emails
+    
+    from App.Auth import Autenticacion
+    app.register_blueprint(Autenticacion.auth)
     
     return app
