@@ -64,9 +64,8 @@ def create_app(config_class=Config):
     api.add_resource(Resources.UsuarioResource, '/api/usuario/<alias>')
     # api.add_resource(Resources.AutenticacionResource, '/api/registro')
     
-    api.add_resource(Resources.VentaResource, '/api/venta/<id_venta>')
-    api.add_resource(Resources.VentasBuscadorResource, '/api/venta')
-    
+    api.add_resource(Resources.VentaResource, '/api/venta/<id>') #! buscar_x_id
+    api.add_resource(Resources.VentasResource, '/api/ventas') #! buscar_x_atributo, buscar_todos
     
     api.init_app(app)
     jwt.init_app(app)

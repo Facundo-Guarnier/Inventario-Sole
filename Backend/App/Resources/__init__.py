@@ -3,6 +3,5 @@
 
 from .Venta import Venta as VentaResource
 from .Venta import Ventas as VentasResource
-from .Venta import VentasBuscador as VentasBuscadorResource
 
 from .Usuario import Usuario as UsuarioResource

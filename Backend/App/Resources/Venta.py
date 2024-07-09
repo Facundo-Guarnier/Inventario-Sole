@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
@@ -7,17 +8,17 @@ from App.Models import VentaModel
 
 class Venta(Resource):
     
-    def get(self, id_venta:int) -> dict:
+    def get(self, id:int) -> dict:
         """
         Busca una venta por su id.
         
         Args:
-            - id_venta (int): ID de la venta
+            - id (int): ID de la venta
         
         Returns:
             - dict: Venta encontrada
         """
-        respuesta = VentaModel.buscar_x_id(id_venta)
+        respuesta = VentaModel.buscar_x_id(id)
         if respuesta["estado"]: #! Sin error con la DB
             if respuesta["respuesta"] == None:  #! No se encontró la venta
                 return ({"msg": "No se encontró la venta"}), 404
@@ -26,23 +27,12 @@ class Venta(Resource):
     
     
     @jwt_required()
-    def post(self) -> dict:
-        """
-        Crea una venta.
-        
-        Returns:
-            - dict: Venta creada
-        """
-        raise NotImplementedError
-    
-    
-    @jwt_required()
-    def put(self, id_venta:int) -> dict:
+    def put(self, id:int) -> dict:
         """
         Actualiza una venta.
         
         Args:
-            - id_venta (int): ID de la venta
+            - id (int): ID de la venta
         
         Returns:
             - dict: Venta actualizada
@@ -52,27 +42,16 @@ class Venta(Resource):
 
 class Ventas(Resource):
     
-    def get(self) -> dict:
-        """
-        Busca todas las ventas.
-        
-        Returns:
-            - dict: Ventas encontradas
-        """
-        raise NotImplementedError
-
-
-class VentasBuscador(Resource):
-    
     def get(self) -> list:
         """
         Busca ventas en base a los atributos que se pasen.
+        Sin atributos, devuelve todas las ventas.
         TODO: Implementar la búsqueda por atributos numéricos, solo está buscando por srt.
         """
         data = request.json
         
-        #! Validar data: id_venta, Cliente, Fecha, Total, Tienda, Metodo de pago, Productos
-        id_venta = data.get("id_venta")
+        #! Validar data: id, Cliente, Fecha, Total, Tienda, Metodo de pago, Productos
+        id = data.get("id")
         cliente = data.get("cliente")
         fecha = data.get("fecha")
         total = data.get("total")
@@ -84,8 +63,8 @@ class VentasBuscador(Resource):
         #! Añadir condiciones al filtro si se proporcionan
         filtro = {}
         
-        if id_venta:
-            filtro['id_venta'] = id_venta
+        if id:
+            filtro['id'] = id
             print(f"filtro + id venta: ", filtro)
         if cliente:
             filtro['cliente'] = cliente
@@ -109,7 +88,7 @@ class VentasBuscador(Resource):
         #! Búsqueda de palabra clave en los campos relevantes
         if palabra_clave:
             filtro['$or'] = [
-                {"id_venta": {"$regex": palabra_clave, "$options": "i"}},
+                {"id": {"$regex": palabra_clave, "$options": "i"}},
                 {"cliente": {"$regex": palabra_clave, "$options": "i"}},
                 {"fecha": {"$regex": palabra_clave, "$options": "i"}},
                 {"total": {"$regex": palabra_clave, "$options": "i"}},
@@ -118,5 +97,46 @@ class VentasBuscador(Resource):
             ]
         respuesta = "a"
         respuesta = VentaModel.buscar_x_atributo(filtro)
-
+        
         return ({"msg": "Búsqueda realizada con éxito", "data": respuesta}), 200
+    
+    
+    @jwt_required()
+    def post(self) -> dict:
+        """
+        Crea una venta.
+        
+        Returns:
+            - dict: Venta creada
+        """
+        data = request.json
+        
+        id = data.get("id")
+        cliente = data.get("cliente")
+        total = data.get("total")
+        tienda = data.get("tienda")
+        metodo_pago = data.get("metodo")
+        productos = data.get("productos")
+        
+        if not id or \
+        not cliente or \
+        not total or \
+        not tienda or \
+        not metodo_pago or \
+        not productos:
+            return ({"msg": "Faltan datos"}), 400
+
+        respuesta = VentaModel.crear(
+            {
+                "id": id,
+                "cliente": cliente,
+                "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
+                "total": total,
+                "tienda": tienda,
+                "metodo": metodo_pago,
+                "productos": productos
+            }
+        )
+        if respuesta["estado"]:
+            return ({"msg": "Venta creada con éxito"}), 201
+        return ({"msg": respuesta["respuesta"]}), 400

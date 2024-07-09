@@ -6,12 +6,12 @@ from bson import json_util
 class Venta: 
     
     @staticmethod
-    def buscar_x_id(id_venta:int) -> dict:
+    def buscar_x_id(id:int) -> dict:
         """
         Busca una venta por su id.
         
         Args:
-            - id_venta (int): ID de la venta
+            - id (int): ID de la venta
         
         Returns:
             - dict: Venta encontrada
@@ -19,7 +19,7 @@ class Venta:
         try: 
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.ventas.find_one({"id_venta": id_venta}),
+                "respuesta": db_mongo.db.ventas.find_one({"id": id}),
             }
         
         except Exception as e:
@@ -44,17 +44,6 @@ class Venta:
     
     
     @staticmethod
-    def buscar_todos() -> list:
-        """
-        Obtiene todas las ventas.
-        
-        Returns:
-            - list: Ventas encontradas
-        """
-        return list(db_mongo.db.ventas.find())
-    
-    
-    @staticmethod
     def crear(data: dict) -> dict:
         """
         Crea una venta.
@@ -76,14 +65,14 @@ class Venta:
     
     
     @staticmethod
-    def actualizar(id_venta:int, data: dict) -> dict:
+    def actualizar(id:int, data: dict) -> dict:
         """
         Actualiza una venta.
         
         Args:
-            - id_venta (int): ID de la venta
+            - id (int): ID de la venta
         
         Returns:
             - dict: Venta actualizada
         """
-        return db_mongo.db.ventas.update_one({"id_venta": id_venta}, {"$set": data})
+        return db_mongo.db.ventas.update_one({"id": id}, {"$set": data})
