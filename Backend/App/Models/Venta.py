@@ -17,7 +17,7 @@ class Venta:
             - dict: Venta encontrada
         """
         try: 
-            venta = db_mongo.db.ventas.find_one({"id_venta": id})
+            venta = db_mongo.db.ventas.find_one({"id": id})
             del venta['_id']
             return {
                 "estado": True,
@@ -67,7 +67,7 @@ class Venta:
     
     
     @staticmethod
-    def actualizar(id:int, data: dict) -> dict:
+    def actualizar(id:str, data: dict) -> dict:
         """
         Actualiza una venta.
         
@@ -77,4 +77,14 @@ class Venta:
         Returns:
             - dict: Venta actualizada
         """
-        return db_mongo.db.ventas.update_one({"id": id}, {"$set": data})
+        try: 
+            return {
+                "estado": True,
+                "respuesta": db_mongo.db.ventas.update_one({"id": id}, {"$set": data}),
+            }
+            
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }

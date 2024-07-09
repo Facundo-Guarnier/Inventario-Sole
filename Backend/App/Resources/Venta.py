@@ -18,6 +18,9 @@ class Venta(Resource):
         Returns:
             - dict: Venta encontrada
         """
+        if not id:
+            return ({"msg": "Falta el ID"}), 400
+        
         respuesta = VentaModel.buscar_x_id(id)
         if respuesta["estado"]: #! Sin error con la DB
             if respuesta["respuesta"] == None:  #! No se encontró la venta
@@ -26,7 +29,7 @@ class Venta(Resource):
         return ({"msg": respuesta["respuesta"]}), 404
     
     
-    @jwt_required()
+    # @jwt_required()
     def put(self, id:str) -> dict:
         """
         Actualiza una venta.
@@ -37,7 +40,43 @@ class Venta(Resource):
         Returns:
             - dict: Venta actualizada
         """
-        raise NotImplementedError
+        
+        if not id:
+            return ({"msg": "Falta el ID"}), 400
+        
+        #! Buscar si existe la venta
+        venta = VentaModel.buscar_x_id(id)
+        if not venta:
+            return ({"msg": "No se encontró la venta"}), 404
+        
+        #! Obtener datos a actualizar
+        data = request.json
+        if not data:
+            return ({"msg": "Faltan datos"}), 400
+        
+        #! Crear diccionario con los datos a actualizar
+        nueva_venta = {}
+        
+        if data.get("cliente"):
+            nueva_venta["cliente"] = data["cliente"]
+        
+        if data.get("total"):
+            nueva_venta["total"] = data["total"]
+        
+        if data.get("tienda"):
+            nueva_venta["tienda"] = data["tienda"]
+        
+        if data.get("metodo"):
+            nueva_venta["metodo"] = data["metodo"]
+        
+        if data.get("productos"):
+            nueva_venta["productos"] = data["productos"]
+        
+        #! Actualizar venta
+        respuesta = VentaModel.actualizar(id, data)
+        if respuesta["estado"]:
+            return ({"msg": "Venta actualizada"}), 200
+        return ({"msg": respuesta["respuesta"]}), 400
 
 
 class Ventas(Resource):
