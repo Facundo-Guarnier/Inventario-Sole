@@ -4,6 +4,7 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt
 
 from App.Models import UsuarioModel
+from App.Auth.Decorators import admin_required
 
 class Usuario(Resource):
     
@@ -22,10 +23,11 @@ class Usuario(Resource):
         respuesta = UsuarioModel.get_alias(alias)
         del respuesta['_id']
         del respuesta['contraseña']
-        return f"Usuario con ID: {respuesta}"
+        return jsonify(f"Usuario con ID: {respuesta}"), 200
     
     
     @jwt_required()
+    @admin_required
     def put(self) -> dict:
         """
             Actualiza un usuario.

@@ -61,8 +61,11 @@ def create_app(config_class=Config):
     jwt.init_app(app)
     
     import App.Resources as Resources
-    api.add_resource(Resources.UsuariosResource, '/api/usuario/<alias>')
+    api.add_resource(Resources.UsuarioResource, '/api/usuario/<alias>')
     # api.add_resource(Resources.AutenticacionResource, '/api/registro')
+    
+    api.add_resource(Resources.VentaResource, '/api/venta/<id_venta>')
+    api.add_resource(Resources.VentasBuscadorResource, '/api/venta')
     
     
     api.init_app(app)

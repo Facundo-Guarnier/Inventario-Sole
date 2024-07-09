@@ -13,18 +13,18 @@ class Usuario:
         try: 
             return {
                 "estado": True,
-                "repuesta": str(db_mongo.db.usuarios.insert_one(data)),
+                "respuesta": str(db_mongo.db.usuarios.insert_one(data)),
             } 
         
         except Exception as e:
             return {
                 "estado": False,
-                "repuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
     
     
     @staticmethod
-    def get_alias(alias:str):
+    def get_alias(alias:str) -> dict:
         return db_mongo.db.usuarios.find_one({"alias": alias})
     
     
