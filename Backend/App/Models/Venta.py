@@ -6,7 +6,7 @@ from bson import json_util
 class Venta: 
     
     @staticmethod
-    def buscar_x_id(id:int) -> dict:
+    def buscar_x_id(id:str) -> dict:
         """
         Busca una venta por su id.
         
@@ -17,9 +17,11 @@ class Venta:
             - dict: Venta encontrada
         """
         try: 
+            venta = db_mongo.db.ventas.find_one({"id_venta": id})
+            del venta['_id']
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.ventas.find_one({"id": id}),
+                "respuesta": venta,
             }
         
         except Exception as e:

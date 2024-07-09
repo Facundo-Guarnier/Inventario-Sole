@@ -8,7 +8,7 @@ from App.Models import VentaModel
 
 class Venta(Resource):
     
-    def get(self, id:int) -> dict:
+    def get(self, id:str) -> dict:
         """
         Busca una venta por su id.
         
@@ -22,12 +22,12 @@ class Venta(Resource):
         if respuesta["estado"]: #! Sin error con la DB
             if respuesta["respuesta"] == None:  #! No se encontró la venta
                 return ({"msg": "No se encontró la venta"}), 404
-            return ({"msg": respuesta["respuesta"]}), 200
+            return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
     
     @jwt_required()
-    def put(self, id:int) -> dict:
+    def put(self, id:str) -> dict:
         """
         Actualiza una venta.
         
@@ -125,7 +125,7 @@ class Ventas(Resource):
         not metodo_pago or \
         not productos:
             return ({"msg": "Faltan datos"}), 400
-
+        
         respuesta = VentaModel.crear(
             {
                 "id": id,
