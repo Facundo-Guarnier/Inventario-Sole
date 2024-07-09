@@ -1,34 +1,33 @@
 from .. import mongo as db_mongo
-from datetime import datetime
 from bson import json_util
 
 
 class Venta: 
     
-    @staticmethod
-    def buscar_x_id(id:str) -> dict:
-        """
-        Busca una venta por su id.
+    # @staticmethod
+    # def buscar_x_id(id:str) -> dict:
+    #     """
+    #     Busca una venta por su id.
         
-        Args:
-            - id (int): ID de la venta
+    #     Args:
+    #         - id (int): ID de la venta
         
-        Returns:
-            - dict: Venta encontrada
-        """
-        try: 
-            venta = db_mongo.db.ventas.find_one({"id": id})
-            del venta['_id']
-            return {
-                "estado": True,
-                "respuesta": venta,
-            }
+    #     Returns:
+    #         - dict: Venta encontrada
+    #     """
+    #     try: 
+    #         venta = db_mongo.db.ventas.find_one({"id": id})
+    #         del venta['_id']
+    #         return {
+    #             "estado": True,
+    #             "respuesta": venta,
+    #         }
         
-        except Exception as e:
-            return {
-                "estado": False,
-                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
-            }
+    #     except Exception as e:
+    #         return {
+    #             "estado": False,
+    #             "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+    #         }
     
     
     @staticmethod
@@ -42,7 +41,17 @@ class Venta:
         Returns:
             - list: Ventas encontradas
         """
-        return json_util.dumps(db_mongo.db.ventas.find(filtro))
+        try:
+            return {
+                "estado": True,
+                "respuesta": json_util.dumps(db_mongo.db.ventas.find(filtro))
+            }
+        
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }
     
     
     @staticmethod

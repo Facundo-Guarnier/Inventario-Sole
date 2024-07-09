@@ -21,7 +21,8 @@ class Venta(Resource):
         if not id:
             return ({"msg": "Falta el ID"}), 400
         
-        respuesta = VentaModel.buscar_x_id(id)
+        # respuesta = VentaModel.buscar_x_id(id)
+        respuesta = VentaModel.buscar_x_atributo({"id": id})
         if respuesta["estado"]: #! Sin error con la DB
             if respuesta["respuesta"] == None:  #! No se encontró la venta
                 return ({"msg": "No se encontró la venta"}), 404
@@ -29,7 +30,7 @@ class Venta(Resource):
         return ({"msg": respuesta["respuesta"]}), 404
     
     
-    # @jwt_required()
+    @jwt_required()
     def put(self, id:str) -> dict:
         """
         Actualiza una venta.
@@ -78,14 +79,16 @@ class Venta(Resource):
             return ({"msg": "Venta actualizada"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
 
-
+    @jwt_required()
+    def delete(self, id:str) -> dict:
+        raise NotImplementedError("No se puede eliminar una venta")
+    
 class Ventas(Resource):
     
     def get(self) -> list:
         """
         Busca ventas en base a los atributos que se pasen.
         Sin atributos, devuelve todas las ventas.
-        TODO: Implementar la búsqueda por atributos numéricos, solo está buscando por srt.
         """
         data = request.json
         
