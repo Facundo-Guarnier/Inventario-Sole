@@ -81,8 +81,9 @@ class Venta(Resource):
 
     @jwt_required()
     def delete(self, id:str) -> dict:
+        #TODO: Implementar
         raise NotImplementedError("No se puede eliminar una venta")
-    
+
 class Ventas(Resource):
     
     def get(self) -> list:
