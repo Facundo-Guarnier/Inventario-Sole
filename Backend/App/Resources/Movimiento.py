@@ -1,13 +1,13 @@
 
 from datetime import datetime
-from flask import jsonify, request
+from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from App.Models import MovimientoModel
+from App.Auth.Decorators import admin_required
 
 class Movimiento(Resource):
-    
     def get(self, id:str) -> dict:
         """
         Busca un movimiento por su id.
@@ -28,8 +28,8 @@ class Movimiento(Resource):
             return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    
     # @jwt_required()
+    # @admin_required
     def put(self, id:str) -> dict:
         """
         Actualiza un movimiento.
@@ -76,7 +76,8 @@ class Movimiento(Resource):
             return ({"msg": "Movimiento actualizado"}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    
+    # @jwt_required
+    # @admin_required
     def delete(self, id:str) -> dict:
         """
         Elimina un movimiento.
@@ -87,7 +88,6 @@ class Movimiento(Resource):
         Returns:
             - dict: Movimiento eliminado
         """
-        #TODO Revisar
         if not id:
             return ({"msg": "Falta el ID"}), 400
         
@@ -98,7 +98,6 @@ class Movimiento(Resource):
 
 
 class Movimientos(Resource):
-    
     def get(self) -> list:
         """
         Busca movimientos en base a los atributos que se pasen.
@@ -156,7 +155,6 @@ class Movimientos(Resource):
         if respuesta["estado"]:
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
-    
     
     # @jwt_required()
     def post(self) -> dict:
