@@ -32,13 +32,39 @@ class Movimiento:
         Crea un movimiento.
         
         Returns:
-            - dict: Movimiento creado
+            - dict: Estado de la operación
         """
         try: 
             return {
                 "estado": True,
                 "respuesta": str(db_mongo.db.movimientos.insert_one(data)),
             } 
+        
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }
+    
+    
+    @staticmethod
+    def actualizar(id:str, data:dict) -> dict:
+        """
+        Actualizar un movimiento.
+        
+        Args:
+            - id (int): ID del movimiento
+            - data (dict): Datos del movimiento a actualizar
+        
+        Returns:
+            - dict: Estado de la operación
+        """
+        
+        try: 
+            return {
+                "estado": True,
+                "respuesta": str(db_mongo.db.movimientos.update_one({"id": id}, {"$set": data})),
+            }
         
         except Exception as e:
             return {

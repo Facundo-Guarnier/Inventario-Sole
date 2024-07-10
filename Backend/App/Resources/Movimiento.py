@@ -18,7 +18,6 @@ class Movimiento(Resource):
         Returns:
             - dict: Movimiento encontrado
         """
-        #TODO Revisar
         if not id:
             return ({"msg": "Falta el ID"}), 400
         
@@ -30,7 +29,7 @@ class Movimiento(Resource):
         return ({"msg": respuesta["respuesta"]}), 404
     
     
-    @jwt_required()
+    # @jwt_required()
     def put(self, id:str) -> dict:
         """
         Actualiza un movimiento.
@@ -41,31 +40,37 @@ class Movimiento(Resource):
         Returns:
             - dict: Movimiento actualizado
         """
-        #TODO Revisar
+        #! Verificar si se puede actualizar el ID
         if not id:
             return ({"msg": "Falta el ID"}), 400
         
-        movimiento = MovimientoModel.buscar_x_id(id)
+        movimiento = MovimientoModel.buscar_x_atributo(id)
         if not movimiento:
             return ({"msg": "No se encontró el movimiento"}), 404
         
+        #! Verificar si existe y si es correcta la data
         data = request.json
         if not data:
             return ({"msg": "Faltan datos"}), 400
         
         nuevo_movimiento = {}
         
-        if data.get("cliente"):
-            nuevo_movimiento["cliente"] = data["cliente"]
+        if data.get("movimiento"):
+            nuevo_movimiento["movimiento"] = data["movimiento"]
         
-        if data.get("productos"):
-            nuevo_movimiento["productos"] = data["productos"]
+        if data.get("id_producto"):
+            nuevo_movimiento["id_producto"] = data["id_producto"]
         
-        if data.get("total"):
-            nuevo_movimiento["total"] = data["total"]
+        if data.get("cantidad"):
+            nuevo_movimiento["cantidad"] = data["cantidad"]
         
-        nuevo_movimiento["fecha"] = datetime.now()
+        if data.get("vendedor"):
+            nuevo_movimiento["vendedor"] = data["vendedor"]
+            
+        if data.get("comentario"):
+            nuevo_movimiento["comentario"] = data["comentario"]
         
+        #! Actualizar 
         respuesta = MovimientoModel.actualizar(id, nuevo_movimiento)
         if respuesta["estado"]:
             return ({"msg": "Movimiento actualizado"}), 200
