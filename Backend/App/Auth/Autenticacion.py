@@ -8,6 +8,9 @@ auth = Blueprint('api/auth', __name__, url_prefix='/api/auth')
 
 @auth.route('/registrar', methods=['POST'])
 def registrar() -> dict:
+    """
+    Registra un usuario en la base.
+    """
     
     #! Validar campos
     try: 
@@ -21,16 +24,16 @@ def registrar() -> dict:
     except Exception as e:
         return jsonify({"mensaje": f"Campos requeridos"}), 400
     
-
+    
     #! Validar si el usuario ya existe
-    if UsuarioModel.get_alias(data["alias"]):
+    if UsuarioModel.buscar_x_alias(data["alias"]):
         return jsonify({"mensaje": "El alias ya está en uso."}), 400
     
     #! Insertar usuario
-    respuesta = UsuarioModel.register(data=data)
+    respuesta = UsuarioModel.crear(data=data)
     if not respuesta["estado"]:
         return jsonify({"mensaje": respuesta["repuesta"]}), 500
-
+    
     else:
         return jsonify({"mensaje": "Usuario creado exitosamente."}), 201
     return jsonify({"mensaje": data}), 200
@@ -47,7 +50,7 @@ def acceder():
         return jsonify({"mensaje": "Campos requeridos"}), 400
     
     #! Validar usuario y contraseña
-    usuario_db = UsuarioModel.get_alias(alias)
+    usuario_db = UsuarioModel.buscar_x_alias(alias)
     
     if not usuario_db:
         return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401

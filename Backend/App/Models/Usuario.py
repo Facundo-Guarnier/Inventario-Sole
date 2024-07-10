@@ -1,9 +1,8 @@
 from .. import mongo as db_mongo
 
 class Usuario:
-    
     @staticmethod
-    def register(data: dict) -> dict:
+    def crear(data: dict) -> dict:
         """
         Inserta un usuario en la base.
         
@@ -22,15 +21,53 @@ class Usuario:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
     
+    @staticmethod
+    def buscar_x_alias(alias:str) -> dict:
+        try:
+            return {
+                "estado": True,
+                "respuesta": db_mongo.db.usuarios.find_one({"alias": alias})
+                }
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }
     
     @staticmethod
-    def get_alias(alias:str) -> dict:
-        return db_mongo.db.usuarios.find_one({"alias": alias})
-    
+    def actualizar(alias: str, data: dict) -> dict:
+        """
+        Actualiza un usuario en la base.
+        
+        Args:
+            - alias (str): Alias del usuario
+            - data (dict): roles y/o contraseña
+        """
+        try:
+            return {
+                "estado": True,
+                "respuesta": db_mongo.db.usuarios.update_one({"alias": alias}, {"$set": data})
+            }
+        
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }
     
     @staticmethod
-    def acceder(username: str) -> dict:
+    def eliminar(alias: str) -> dict:
         """
-        Obtiene un usuario de la base.
+        Elimina un usuario de la base.
         """
-        return db_mongo.usuarios.find_one({"username": username})
+        try: 
+            return {
+                "estado": True,
+                "respuesta": db_mongo.db.usuarios.delete_one({"alias": alias})
+            }
+        
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }
