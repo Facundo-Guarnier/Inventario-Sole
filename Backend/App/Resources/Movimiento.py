@@ -7,6 +7,7 @@ from flask_restful import Resource
 from App.Models import MovimientoModel
 from App.Auth.Decorators import admin_required
 
+
 class Movimiento(Resource):
     def get(self, id:str) -> dict:
         """
