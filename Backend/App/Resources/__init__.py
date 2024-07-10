@@ -6,5 +6,8 @@ from .Usuario import Usuario as UsuarioResource
 from .Movimiento import Movimiento as MovimientoResource
 from .Movimiento import Movimientos as MovimientosResource
 
+from .Producto import Producto as ProductoResource
+from .Producto import Productos as ProductosResource
+
 from .Venta import Venta as VentaResource
 from .Venta import Ventas as VentasResource

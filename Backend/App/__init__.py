@@ -67,6 +67,9 @@ def create_app(config_class=Config):
     api.add_resource(Resources.MovimientoResource, '/api/movimiento/<id>') #! buscar_x_id
     api.add_resource(Resources.MovimientosResource, '/api/movimientos') #! buscar_x_atributo, buscar_todos
     
+    api.add_resource(Resources.ProductoResource, '/api/producto/<id>') #! buscar_x_id, actualizar, eliminar
+    api.add_resource(Resources.ProductosResource, '/api/productos') #! buscar_x_atributo, buscar_todos, crear
+    
     api.add_resource(Resources.VentaResource, '/api/venta/<id>') #! buscar_x_id, actualizar, eliminar
     api.add_resource(Resources.VentasResource, '/api/ventas') #! buscar_x_atributo, buscar_todos, crear
     
