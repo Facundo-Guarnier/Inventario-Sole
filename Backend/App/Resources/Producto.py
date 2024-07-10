@@ -7,7 +7,6 @@ from App.Models import ProductoModel
 
 
 class Producto(Resource):
-    
     def get(self, id:str) -> dict:
         """
         Busca una producto por su id.
@@ -112,7 +111,6 @@ class Producto(Resource):
 
 
 class Productos(Resource):
-    
     def get(self) -> list:
         """
         Busca productos en base a los atributos que se pasen.
