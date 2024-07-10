@@ -7,7 +7,6 @@ from App.Models import VentaModel
 
 
 class Venta(Resource):
-    
     def get(self, id:str) -> dict:
         """
         Busca una venta por su id.
@@ -28,7 +27,6 @@ class Venta(Resource):
                 return ({"msg": "No se encontró la venta"}), 404
             return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
-    
     
     @jwt_required()
     def put(self, id:str) -> dict:
@@ -78,14 +76,35 @@ class Venta(Resource):
         if respuesta["estado"]:
             return ({"msg": "Venta actualizada"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
-
+    
     @jwt_required()
     def delete(self, id:str) -> dict:
-        #TODO: Implementar
-        raise NotImplementedError("No se puede eliminar una venta")
+        """
+        Elimina una venta.
+        
+        Args:
+            - id (int): ID de la venta
+        
+        Returns:
+            - dict: Confirmación de eliminación.
+        """
+        
+        if not id:
+            return ({"msg": "Falta el ID"}), 400
+        
+        #! Buscar si existe la venta
+        venta = VentaModel.buscar_x_atributo({"id": id})
+        if not venta:
+            return ({"msg": "No se encontró la venta"}), 404
+        
+        #! Eliminar venta
+        respuesta = VentaModel.eliminar(id)
+        if respuesta["estado"]:
+            return ({"msg": "Venta eliminada"}), 200
+        return ({"msg": respuesta["respuesta"]}), 400
+
 
 class Ventas(Resource):
-    
     def get(self) -> list:
         """
         Busca ventas en base a los atributos que se pasen.
@@ -136,7 +155,6 @@ class Ventas(Resource):
         if respuesta["estado"]:
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
-    
     
     @jwt_required()
     def post(self) -> dict:

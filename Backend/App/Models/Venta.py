@@ -3,33 +3,6 @@ from bson import json_util
 
 
 class Venta: 
-    
-    # @staticmethod
-    # def buscar_x_id(id:str) -> dict:
-    #     """
-    #     Busca una venta por su id.
-        
-    #     Args:
-    #         - id (int): ID de la venta
-        
-    #     Returns:
-    #         - dict: Venta encontrada
-    #     """
-    #     try: 
-    #         venta = db_mongo.db.ventas.find_one({"id": id})
-    #         del venta['_id']
-    #         return {
-    #             "estado": True,
-    #             "respuesta": venta,
-    #         }
-        
-    #     except Exception as e:
-    #         return {
-    #             "estado": False,
-    #             "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
-    #         }
-    
-    
     @staticmethod
     def buscar_x_atributo(filtro: dict) -> list:
         """
@@ -53,7 +26,6 @@ class Venta:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
     
-    
     @staticmethod
     def crear(data: dict) -> dict:
         """
@@ -74,7 +46,6 @@ class Venta:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
     
-    
     @staticmethod
     def actualizar(id:str, data: dict) -> dict:
         """
@@ -90,6 +61,29 @@ class Venta:
             return {
                 "estado": True,
                 "respuesta": db_mongo.db.ventas.update_one({"id": id}, {"$set": data}),
+            }
+            
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }
+    
+    @staticmethod
+    def eliminar(id:str) -> dict:
+        """
+        Elimina una venta.
+        
+        Args:
+            - id (int): ID de la venta
+        
+        Returns:
+            - dict: Venta eliminada
+        """
+        try: 
+            return {
+                "estado": True,
+                "respuesta": db_mongo.db.ventas.delete_one({"id": id}),
             }
             
         except Exception as e:
