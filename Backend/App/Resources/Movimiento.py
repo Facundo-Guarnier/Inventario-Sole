@@ -101,20 +101,61 @@ class Movimientos(Resource):
     
     def get(self) -> list:
         """
-        Busca movimientos.
+        Busca movimientos en base a los atributos que se pasen.
+        Sin atributos, devuelve todos los movimientos.
         
         Returns:
             - list: Movimientos encontrados
         """
-        #TODO Revisar
-        filtro = request.json
-        if not filtro:
-            return ({"msg": "Faltan datos"}), 400
         
+        data = request.json
+        
+        #! Validar data: id, movimiento, id_producto, cantidad, vendedor, comentario, fecha
+        id = data.get("id")
+        movimiento = data.get("movimiento")
+        id_producto = data.get("id_producto")
+        cantidad = data.get("cantidad")
+        vendedor = data.get("vendedor")
+        comentario = data.get("comentario")
+        fecha = data.get("fecha")
+        palabra_clave = data.get("palabra_clave")
+        
+        #! Añadir condiciones al filtro si se proporcionan
+        filtro = {}
+        
+        if id:
+            filtro['id'] = id
+        if movimiento:
+            filtro['movimiento'] = movimiento
+        if id_producto:
+            filtro['id_producto'] = id_producto
+        if cantidad:
+            filtro['cantidad'] = cantidad
+        if vendedor:
+            filtro['vendedor'] = vendedor
+        if comentario:
+            filtro['comentario'] = comentario
+        if fecha:
+            filtro['fecha'] = fecha
+        
+        #! Búsqueda de palabra clave en los campos relevantes
+        if palabra_clave:
+            filtro['$or'] = [
+                {"id": {"$regex": palabra_clave, "$options": "i"}},
+                {"movimiento": {"$regex": palabra_clave, "$options": "i"}},
+                {"id_producto": {"$regex": palabra_clave, "$options": "i"}},
+                {"cantidad": {"$regex": palabra_clave, "$options": "i"}},
+                {"vendedor": {"$regex": palabra_clave, "$options": "i"}},
+                {"comentario": {"$regex": palabra_clave, "$options": "i"}},
+                {"fecha": {"$regex": palabra_clave, "$options": "i"}},
+            ]
+        
+        print(filtro)
         respuesta = MovimientoModel.buscar_x_atributo(filtro)
-        if respuesta:
-            return ({"msg":respuesta}), 200
-        return ({"msg": "No se encontraron movimientos"}), 404
+        
+        if respuesta["estado"]:
+            return ({"msg": respuesta["respuesta"]}), 200
+        return ({"msg": respuesta["respuesta"]}), 404
     
     
     # @jwt_required()

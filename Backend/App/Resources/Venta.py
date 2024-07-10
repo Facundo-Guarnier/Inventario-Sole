@@ -108,25 +108,18 @@ class Ventas(Resource):
         
         if id:
             filtro['id'] = id
-            print(f"filtro + id venta: ", filtro)
         if cliente:
             filtro['cliente'] = cliente
-            print(f"filtro + cliente: ", filtro)
         if fecha:
             filtro['fecha'] = fecha
-            print(f"filtro + fecha: ", filtro)
         if total:
             filtro['total'] = total
-            print(f"filtro + total: ", filtro)
         if tienda:
             filtro['tienda'] = tienda
-            print(f"filtro + tienda: ", filtro)
         if metodo_pago:
             filtro['metodo'] = metodo_pago
-            print(f"filtro + metodo: ", filtro)
         if productos:
             filtro['productos'] = productos
-            print(f"filtro + productos: ", filtro)
         
         #! Búsqueda de palabra clave en los campos relevantes
         if palabra_clave:
@@ -138,10 +131,11 @@ class Ventas(Resource):
                 {"tienda": {"$regex": palabra_clave, "$options": "i"}},
                 {"metodo": {"$regex": palabra_clave, "$options": "i"}}
             ]
-        respuesta = "a"
         respuesta = VentaModel.buscar_x_atributo(filtro)
         
-        return ({"msg": "Búsqueda realizada con éxito", "data": respuesta}), 200
+        if respuesta["estado"]:
+            return ({"msg": respuesta["respuesta"]}), 200
+        return ({"msg": respuesta["respuesta"]}), 404
     
     
     @jwt_required()
