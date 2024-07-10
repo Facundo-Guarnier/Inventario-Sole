@@ -5,6 +5,7 @@ from flask_restful import Resource
 
 from App.Models import ProductoModel
 
+
 class Producto(Resource):
     
     def get(self, id:str) -> dict:
@@ -15,7 +16,7 @@ class Producto(Resource):
             - id (int): ID del producto
         
         Returns:
-            - dict: Producto encontrada
+            - dict: Producto encontrado
         """
         if not id:
             return ({"msg": "Falta el ID"}), 400
@@ -27,7 +28,6 @@ class Producto(Resource):
             return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    
     # @jwt_required()
     def put(self, id:str) -> dict:
         """
@@ -37,7 +37,7 @@ class Producto(Resource):
             - id (int): ID del producto
         
         Returns:
-            - dict: Producto actualizada
+            - dict: Producto actualizado
         """
         if not id:
             return ({"msg": "Falta el ID"}), 400
@@ -79,17 +79,37 @@ class Producto(Resource):
         if data.get("fotos"):
             nueva_producto["fotos"] = data["fotos"]
         
-        
         #! Actualizar producto
         respuesta = ProductoModel.actualizar(id, data)
         if respuesta["estado"]:
             return ({"msg": "Producto actualizada"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
-
-    @jwt_required()
+    
+    # @jwt_required()
     def delete(self, id:str) -> dict:
-        #TODO: Implementar
-        raise NotImplementedError("No se puede eliminar una producto")
+        """
+        Elimina una producto.
+        
+        Args:
+            - id (int): ID del producto
+        
+        Returns:
+            - dict: Producto eliminado
+        """
+        if not id:
+            return ({"msg": "Falta el ID"}), 400
+        
+        #! Buscar si existe el producto
+        producto = ProductoModel.buscar_x_atributo({"id": id})
+        if not producto:
+            return ({"msg": "No se encontró el producto"}), 404
+        
+        #! Eliminar producto
+        respuesta = ProductoModel.eliminar(id)
+        if respuesta["estado"]:
+            return ({"msg": "Producto eliminado"}), 200
+        return ({"msg": respuesta["respuesta"]}), 400
+
 
 class Productos(Resource):
     
@@ -154,14 +174,13 @@ class Productos(Resource):
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    
     # @jwt_required()
     def post(self) -> dict:
         """
         Crea una producto.
         
         Returns:
-            - dict: Producto creada
+            - dict: Producto creado
         """
         data = request.json
         
