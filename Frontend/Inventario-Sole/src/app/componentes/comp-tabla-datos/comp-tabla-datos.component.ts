@@ -1,23 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Columna } from '../../interfaces/columna.interface';
+import { Accion } from '../../interfaces/accion.interface';
 
-//! Definir la estructura de los atributos de una clase
-interface Columna {
-  nombre: string;
-  tipo: string;
-}
-
-interface Accion {
-  editar?: boolean;
-  eliminar?: boolean;
-  detalle?: boolean;
-}
 
 @Component({
   selector: 'app-comp-tabla-datos',
   templateUrl: './comp-tabla-datos.component.html',
   styleUrls: ['./comp-tabla-datos.component.css']
 })
+
 export class CompTablaDatosComponent implements OnInit {
   
   @Input() columnas: Columna[] = [];

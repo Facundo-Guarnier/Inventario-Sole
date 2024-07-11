@@ -19,12 +19,12 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
   }
 
   columnas = [
-    { nombre: 'ID gif card', tipo: 'text' },
-    { nombre: 'Cliente', tipo: 'text' },
-    { nombre: 'Fecha', tipo: 'date' },
-    { nombre: 'Monto', tipo: 'number' },
-    { nombre: 'Metodo', tipo: 'number' },
-    { nombre: 'Canjeado', tipo: 'boolean' },
+    { nombre: 'ID gif card', identificador: "", tipo: 'text' },
+    { nombre: 'Cliente', identificador: "", tipo: 'text' },
+    { nombre: 'Fecha', identificador: "", tipo: 'date' },
+    { nombre: 'Monto', identificador: "", tipo: 'number' },
+    { nombre: 'Metodo', identificador: "", tipo: 'number' },
+    { nombre: 'Canjeado', identificador: "", tipo: 'boolean' },
   ];
 
   datos: any[] = [

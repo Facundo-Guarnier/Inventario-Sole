@@ -11,12 +11,12 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   pagActual = 'mov';
 
   columnas = [
-    { nombre: 'Movimiento', tipo: 'text' },
-    { nombre: 'Fecha', tipo: 'date' },
-    { nombre: "Producto ID", tipo: "text" },
-    { nombre: "Cantidad", tipo: "number" },
-    { nombre: "Vendedor", tipo: "text" },
-    { nombre: "Comentario", tipo: "text" },
+    { nombre: 'Movimiento', identificador: "", tipo: 'text' },
+    { nombre: 'Fecha', identificador: "", tipo: 'date' },
+    { nombre: "Producto ID", identificador: "", tipo: "text" },
+    { nombre: "Cantidad", identificador: "", tipo: "number" },
+    { nombre: "Vendedor", identificador: "", tipo: "text" },
+    { nombre: "Comentario", identificador: "", tipo: "text" },
   ];
 
   acciones = {

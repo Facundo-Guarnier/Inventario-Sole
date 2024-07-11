@@ -17,11 +17,11 @@ export class PagRegalosVistaGeneralComponent implements OnInit {
   }
 
   columnas = [
-    { nombre: 'ID regalo', tipo: 'text' },
-    { nombre: 'Cliente', tipo: 'text' },
-    { nombre: 'Fecha', tipo: 'date' },
-    { nombre: 'Total', tipo: 'currency' },
-    { nombre: 'Metodo', tipo: 'text' }
+    { nombre: 'ID regalo', identificador: "", tipo: 'text' },
+    { nombre: 'Cliente', identificador: "", tipo: 'text' },
+    { nombre: 'Fecha', identificador: "", tipo: 'date' },
+    { nombre: 'Total', identificador: "", tipo: 'currency' },
+    { nombre: 'Metodo', identificador: "", tipo: 'text' }
   ];
   
   datos = [

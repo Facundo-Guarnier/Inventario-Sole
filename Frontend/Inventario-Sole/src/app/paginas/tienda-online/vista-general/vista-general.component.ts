@@ -19,12 +19,12 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   }
   
   columnas = [
-    { nombre: 'ID producto', tipo: 'text' },
-    { nombre: 'Marca', tipo: 'text' },
-    { nombre: 'Descripción', tipo: 'text' },
-    { nombre: 'Talle', tipo: 'text' },
-    { nombre: 'Precio', tipo: 'currency' },
-    { nombre: 'Cantidad', tipo: 'number' },
+    { nombre: 'ID producto', identificador: "", tipo: 'text' },
+    { nombre: 'Marca', identificador: "", tipo: 'text' },
+    { nombre: 'Descripción', identificador: "", tipo: 'text' },
+    { nombre: 'Talle', identificador: "", tipo: 'text' },
+    { nombre: 'Precio', identificador: "", tipo: 'currency' },
+    { nombre: 'Cantidad', identificador: "", tipo: 'number' },
   ];
   
   datos: any[] = [

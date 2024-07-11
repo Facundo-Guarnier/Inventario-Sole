@@ -7,11 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagTiendaOnlineRevisarStockComponent implements OnInit {
   columnas = [
-    { nombre: 'ID producto', tipo: 'text' },
-    { nombre: 'Marca', tipo: 'text' },
-    { nombre: 'Descripción', tipo: 'text' },
-    { nombre: 'Talle', tipo: 'text' },
-    { nombre: 'Cantidad', tipo: 'number' },
+    { nombre: 'ID producto', identificador: "", tipo: 'text' },
+    { nombre: 'Marca', identificador: "", tipo: 'text' },
+    { nombre: 'Descripción', identificador: "", tipo: 'text' },
+    { nombre: 'Talle', identificador: "", tipo: 'text' },
+    { nombre: 'Cantidad', identificador: "", tipo: 'number' },
   ];
 
   acciones = {
