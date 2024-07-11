@@ -47,6 +47,8 @@ import { PagMovimientosDetalleComponent } from './paginas/movimientos/detalle/de
 import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.component';
 import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
 
+import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-general/vista-general.component';
+
 
 
 @NgModule({
@@ -93,6 +95,8 @@ import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista
     PagMovimientosDetalleComponent,
     PagMovimientosCrearComponent,
     PagMovimientosVistaGeneralComponent,
+    
+    PagUsuarioVistaGeneralComponent,
 
   ],
 
