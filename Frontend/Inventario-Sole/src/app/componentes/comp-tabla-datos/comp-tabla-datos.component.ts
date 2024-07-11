@@ -45,9 +45,12 @@ export class CompTablaDatosComponent implements OnInit {
   detalleFila(item: any) {
     if (this.tipo === 'mov') {
       this.router.navigate([this.tipo + '/detalle']);
+    
+    } else if (this.tipo == "usu") {
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.alias], { queryParams: { detalle: true } });
+    
     } else {
-      // this.router.navigate(['prod/detalle-editar', item.id]);
-      this.router.navigate([this.tipo + '/detalle-editar']);
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.id], { queryParams: { detalle: true }});
     }
   }
   

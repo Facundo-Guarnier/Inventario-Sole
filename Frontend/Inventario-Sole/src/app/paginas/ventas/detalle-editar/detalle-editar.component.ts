@@ -16,6 +16,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   @ViewChild(CompVentaListaProdComponent) compVentaLista!: CompVentaListaProdComponent;
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
 
+  //! Campos para el detalle de la venta
   titulo1 = "Detalle de la venta";
   campos1: Campo[] = [
     { nombre: "ID venta", identificador: "id", tipo: "readonly", valor: this.router.url.split("?")[0].split('/').pop()},
@@ -25,7 +26,9 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     { nombre: "Método", identificador: "metodo", tipo: "textarea-text"},
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
+  detalleventa: any[] = [];
 
+  //! Campos para los productos de la venta
   titulo2 = "Productos";
   campos2: Campo[] = [
     { nombre: "ID producto", identificador: "id", tipo: "input-text" },
@@ -33,10 +36,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     { nombre: "Precio", identificador: "precio", tipo: "input-number" },
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
-
   productos: any[] = [];
-  detalleventa: any[] = [];
-
   datosOriginalesProductos: any[] = [];
 
   constructor(
@@ -49,6 +49,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
       (res: any) => {
         let datos = res["msg"][0]
         
+        //! Detalle de la venta
         this.campos1[0].valor = datos["id"];
         this.campos1[1].valor = datos["fecha"];
         this.campos1[2].valor = datos["cliente"];
@@ -56,6 +57,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
         this.campos1[4].valor = datos["metodo"];
         this.campos1[5].valor = datos["comentario"];
 
+        //! Productos de la venta
         this.datosOriginalesProductos = datos["productos"];
       },
 
@@ -65,21 +67,18 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     );
   }
 
+  //! Funciones de los botones
   clickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
     this.compVentaLista.recolectarDatos();
   }
 
   onDatosRecolectadosVenta(datos: any[]) {
-    console.log('Datos recibidos del hijo detalle venta:', datos);
     this.detalleventa = datos;
-    // Aquí puedes procesar los datos como necesites
   }
   
   onDatosRecolectadosProductos(datos: any[]) {
-    console.log('Datos recibidos del hijo productos:', datos);
     this.productos = datos;
-    // Aquí puedes procesar los datos como necesites
   }
 
 }
