@@ -16,8 +16,9 @@
             <!--! Detalle venta -->
             <div class="mb-3">
                 <div class="container-fluid"> 
-                    <h1 style="color: aliceblue;">Detalle-editar venta</h1>
+                    <h1 style="color: aliceblue;">{{tituloGeneral}}</h1>
                     <app-comp-detalle-nuevo-generico
+                        [mostrarEditar]="mostrarEditar"
                         [titulo]="titulo1"
                         [campos]="campos1"
                         (datosRecolectados)="onDatosRecolectadosVenta($event)"
@@ -29,6 +30,7 @@
             <div class="mb-3">
                 <div class="container-fluid"> 
                     <app-comp-venta-lista-prod
+                        [mostrarEditar]="mostrarEditar"
                         [estilo]="'compacto'"
                         [titulo]="titulo2"
                         [campos]="campos2"

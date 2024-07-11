@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CompDetalleNuevoGenericoComponent } from 'src/app/componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
 import { CompVentaListaProdComponent } from 'src/app/componentes/comp-venta-lista-prod/comp-venta-lista-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiVentaService } from 'src/app/services/ventas/api-venta.service';
+import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
+
 
 @Component({
   selector: 'pag-ventas-detalle',
@@ -15,6 +17,8 @@ export class PagVentasDetalleEditarComponent implements OnInit {
 
   @ViewChild(CompVentaListaProdComponent) compVentaLista!: CompVentaListaProdComponent;
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
+
+  tituloGeneral: string = "Detalle de la venta";
 
   //! Campos para el detalle de la venta
   titulo1 = "Detalle de la venta";
@@ -39,12 +43,38 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   productos: any[] = [];
   datosOriginalesProductos: any[] = [];
 
+  //! Para mostrar la opción de editar o no
+  mostrarEditar: boolean = false;
+
   constructor(
     private router: Router,
-    private apiVenta: ApiVentaService
+    private apiVenta: ApiVentaService,
+    private route: ActivatedRoute,
+    private jwtToken: JwtTokenService
   ) { }
 
   ngOnInit(): void {
+    //! Obtener parametro de "editar" la URL
+    console.log("EDITAR1:", this.mostrarEditar)
+    this.route.queryParams.subscribe(params => {
+      this.mostrarEditar = params['editar'] === 'true'; //! Se compara con true porque originalmente es un string
+    });
+    console.log("EDITAR2:", this.mostrarEditar)
+    
+    if (this.mostrarEditar === undefined) {
+      this.mostrarEditar = true;
+    }
+    console.log("EDITAR3:", this.mostrarEditar)
+
+    if (this.mostrarEditar) {
+      this.tituloGeneral = "Editar detalle de la venta";
+    } else {
+      this.tituloGeneral = "Ver detalle de la venta";
+    }
+
+    console.log("EDITAR4:", this.mostrarEditar)
+
+    //! Buscar la venta
     this.apiVenta.buscar_x_id(this.router.url.split("?")[0].split('/').pop()).subscribe(
       (res: any) => {
         let datos = res["msg"][0]
@@ -62,10 +92,10 @@ export class PagVentasDetalleEditarComponent implements OnInit {
       },
 
       (err: any) => {
-        console.log('Error al buscar la venta:', err);
+        console.error('Error al buscar la venta:', err);
       }
     );
-  }
+  } 
 
   //! Funciones de los botones
   clickAceptar() {

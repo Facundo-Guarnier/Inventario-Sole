@@ -8,6 +8,9 @@ import { Campo } from '../../interfaces/campo.interface';
 })
 export class CompDetalleNuevoGenericoComponent implements OnInit {
   
+  //! Para mostrar la opción de editar o no
+  @Input() mostrarEditar: boolean = false;
+
   @Input() estilo: string = "normal";  //! "normal" o "compacto"
   @Input() titulo: string = "Nuevo Detalle";
   @Input() campos: Campo[] = [];  //! Nombre, identificador y tipo. Ej: "Cantidad", "cantidad", "input-number"
@@ -16,7 +19,8 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
   
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+  }
 
   recolectarDatos(): void {
     let datos: any = {};

@@ -8,6 +8,9 @@ import { Campo } from 'src/app/interfaces/campo.interface';
 })
 export class CompVentaListaProdComponent implements OnInit, OnChanges  {
 
+  //! Para mostrar la opción de editar o no
+  @Input() mostrarEditar: boolean = false;
+
   @Output() datosRecolectados = new EventEmitter<any[]>();
   @Input() estilo: string = "normal";  //! "normal" o "compacto"
   @Input() titulo: string = "Nuevo Detalle";
@@ -27,14 +30,16 @@ export class CompVentaListaProdComponent implements OnInit, OnChanges  {
     if (changes["datosOriginales"]) {
       this.actualizarProductos();
     }
+
+    if (changes["mostrarEditar"]) {
+      this.actualizarProductos();
+    }
   }
 
   actualizarProductos(): void {
     if (this.datosOriginales && this.datosOriginales.length > 0) {
       this.productos = [...this.datosOriginales];
     }
-
-    console.log('Datos originales:', this.productos);
   }
 
   agregarProducto() {
