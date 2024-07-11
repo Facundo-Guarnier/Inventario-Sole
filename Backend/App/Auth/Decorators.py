@@ -6,7 +6,7 @@ def admin_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt()
-        if 'admin' in claims['roles']:
+        if 'Admin' in claims['roles'] or 'admin' in claims['roles']:
             return fn(*args, **kwargs)
         else:
             return 'Acceso único para administradores', 403

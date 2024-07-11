@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,15 +11,17 @@ export class ApiUsuarioService {
   url = "http://localhost:5000/api/usuario"
   
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    
   ) { }
   
   buscar_x_id(id:string, pagina: number = 1): Observable<any> {
     return this.httpClient.get(`${this.url}/${id}`);
   } 
   
-  editar(id:string, usuario: {}): Observable<any> {
-    return this.httpClient.put(`${this.url}/${id}`, usuario);
+  editar(id:string, usuario: {}, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.put(`${this.url}/${id}`, usuario, {headers: heads});
   }
   
   eliminar(id:string): Observable<any> {

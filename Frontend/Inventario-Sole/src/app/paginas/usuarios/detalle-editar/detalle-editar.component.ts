@@ -50,7 +50,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
       return 
     }
     
-    this.apiUsuario.editar(this.alias, this.detalleUsuario).subscribe(
+    this.apiUsuario.editar(this.alias, this.detalleUsuario, localStorage.getItem("token")).subscribe(
       (data: any) => {
         console.log("Respuesta del servidor:", data);
         this.tituloModal = "Usuario editado"

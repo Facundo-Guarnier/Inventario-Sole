@@ -28,8 +28,8 @@ class Usuario(Resource):
                 del respuesta["respuesta"]['contraseña']
                 return {"msg": f"Usuario con ID: {respuesta}"}, 200
     
-    # @jwt_required()
-    # @admin_required
+    @jwt_required()
+    @admin_required
     def put(self, alias:str) -> dict:
         """
         Actualiza un usuario.
@@ -58,8 +58,8 @@ class Usuario(Resource):
         nuevo_usuario = {}
         nuevo_usuario["roles"] = datos["roles"]
         
-        if datos.get("contraseña_nueva"): #! Opcional
-            nuevo_usuario["contraseña_nueva"] = generate_password_hash(datos["contraseña_nueva"])
+        if datos.get("contraseña"): #! Opcional
+            nuevo_usuario["contraseña"] = generate_password_hash(datos["contraseña"])
         
         #! Actualizar usuario
         respuesta = UsuarioModel.actualizar(alias, nuevo_usuario)

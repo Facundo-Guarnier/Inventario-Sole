@@ -28,7 +28,7 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
       (response) => {
         console.log('Login successful', response);
         if (response && response.access_token) {
-          localStorage.setItem('access_token', response.access_token);
+          localStorage.setItem('token', response.access_token);
           this.router.navigate(['/ven']);
 
         } else {
