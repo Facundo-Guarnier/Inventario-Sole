@@ -15,27 +15,27 @@
                         <!--! TextArea  -->
                         <div *ngIf="campo.tipo == 'textarea-text'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <textarea class="form-control" id="{{campo.identificador}}" rows="2"></textarea>
+                            <textarea class="form-control" id="{{campo.identificador}}" rows="2" value={{campo.valor}}></textarea>
                         </div>
                         
                         <!--! Input  -->
                         <div *ngIf="campo.tipo == 'input-text'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="text" class="form-control" id="{{campo.identificador}}">
+                            <input type="text" class="form-control" id="{{campo.identificador}}" value={{campo.valor}}>
                         </div>
                         
                         <!--! Number  -->
                         <div *ngIf="campo.tipo == 'input-number'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="number" class="form-control" id="{{campo.identificador}}">
+                            <input type="number" class="form-control" id="{{campo.identificador}}" value={{campo.valor}}>
                         </div>
                         
                         <!--! Selector  -->
                         <div *ngIf="campo.tipo == 'selector'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
                             <select class="form-select" id="{{campo.identificador}}">
-                                <option selected>Seleccionar...</option>
-                                <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{opcion}}</option>
+                                <option>Seleccionar...</option>
+                                <option *ngFor="let opcion of campo.opciones" [value]="opcion" [selected]="opcion === campo.valor">{{opcion}}</option>
                             </select>
                         </div>
 

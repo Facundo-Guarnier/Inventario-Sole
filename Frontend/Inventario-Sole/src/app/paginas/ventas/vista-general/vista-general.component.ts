@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { ApiVentasService } from '../../../services/ventas/api-venta.service';
+
 
 @Component({
   selector: 'pag-ventas-vista-general',
   templateUrl: './vista-general.component.html',
   styleUrls: ['./vista-general.component.css']
 })
+
 export class PagVentasVistaGeneralComponent implements OnInit {
   
   //! NavBar
@@ -37,7 +38,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    // let filtro = {"id": "AB120"}
     let filtro = {}
     this.apiVentas.buscar_x_atributo(filtro).subscribe({
       next: (data) => {

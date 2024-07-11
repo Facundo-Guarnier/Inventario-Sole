@@ -17,7 +17,7 @@ export class ApiVentaService {
     private httpClient: HttpClient
   ) { }
   
-  buscar_x_id(id:string, pagina: number = 1): Observable<any> {
+  buscar_x_id(id:string="a", pagina: number = 1): Observable<any> {
     return this.httpClient.get(`${this.url}/${id}`);
   } 
   

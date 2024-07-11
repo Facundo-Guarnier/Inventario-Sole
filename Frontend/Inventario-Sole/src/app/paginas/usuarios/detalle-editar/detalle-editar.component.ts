@@ -14,8 +14,8 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
 
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
 
-  alias = this.router.url.split("?")[0].split('/').pop()
-
+  alias = this.router.url.split("?")[0].split('/').pop();
+  
   //! Datos
   titulo1 = "Detalle del usario";
   campos1: Campo[] = [

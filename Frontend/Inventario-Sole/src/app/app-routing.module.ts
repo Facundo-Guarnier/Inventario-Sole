@@ -37,7 +37,7 @@ const routes: Routes = [
 
   { path: 'ven', component: PagVentasVistaGeneralComponent},
   { path: 'ven/crear', component: PagVentasCrearComponent},
-  { path: 'ven/detalle-editar', component: PagVentasDetalleEditarComponent},
+  { path: 'ven/detalle-editar/:id', component: PagVentasDetalleEditarComponent},
   
   { path: 'tf', component: PagTiendaFisicaVistaGeneralComponent},
   { path: 'tf/revisar-stock', component: PagTiendaFisicaRevisarStockComponent},
@@ -45,9 +45,8 @@ const routes: Routes = [
   { path: 'to', component: PagTiendaOnlineVistaGeneralComponent},
   { path: 'to/revisar-stock', component: PagTiendaOnlineRevisarStockComponent},
 
-  // { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent},
-  { path: 'prod/detalle-editar', component: PagProductosDetalleEditarComponent},
   { path: 'prod/crear', component: PagProductosCrearComponent},
+  { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent},
 
   { path: "mov", component: PagMovimientosVistaGeneralComponent},
   { path: "mov/crear", component: PagMovimientosCrearComponent},
@@ -55,13 +54,11 @@ const routes: Routes = [
 
   { path: "reg", component: PagRegalosVistaGeneralComponent},
   { path: "reg/crear", component: PagRegalosCrearComponent},
-  // { path: "reg/detalle-editar/:id", component: PagRegalosDetalleEditarComponent},
-  { path: "reg/detalle-editar", component: PagRegalosDetalleEditarComponent},
+  { path: "reg/detalle-editar/:id", component: PagRegalosDetalleEditarComponent},
 
   { path: "gc", component: PagGiftCardsVistaGeneralComponent},
   { path: "gc/crear", component: PagGiftCardsCrearComponent},
-  // { path: "gc/detalle-editar/:id", component: PagGiftCardsDetalleEditarComponent},
-  { path: "gc/detalle-editar", component: PagGiftCardsDetalleEditarComponent},
+  { path: "gc/detalle-editar/:id", component: PagGiftCardsDetalleEditarComponent},
 
   { path: "usu", component: PagUsuarioVistaGeneralComponent},
   { path: "usu/crear", component: PagUsuarioCrearComponent},
