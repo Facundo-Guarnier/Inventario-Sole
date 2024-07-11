@@ -30,9 +30,10 @@ import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista
 import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-general/vista-general.component';
 import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
 import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-editar/detalle-editar.component';
+import { PagUsuarioIniciarSesionComponent } from './paginas/usuarios/iniciar-sesion/iniciar-sesion.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'mov', pathMatch: 'full' },
+  { path: '', component: PagUsuarioIniciarSesionComponent,  pathMatch: 'full' },
 
   { path: 'ven', component: PagVentasVistaGeneralComponent},
   { path: 'ven/crear', component: PagVentasCrearComponent},

@@ -51,6 +51,7 @@ import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-genera
 import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-editar/detalle-editar.component';
 import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
 import { CompNotificacionComponent } from './componentes/comp-notificacion/comp-notificacion.component';
+import { PagUsuarioIniciarSesionComponent } from './paginas/usuarios/iniciar-sesion/iniciar-sesion.component';
 
 
 
@@ -103,6 +104,7 @@ import { CompNotificacionComponent } from './componentes/comp-notificacion/comp-
     PagUsuarioDetalleEditarComponent,
     PagUsuarioCrearComponent,
     CompNotificacionComponent,
+    PagUsuarioIniciarSesionComponent,
 
   ],
 

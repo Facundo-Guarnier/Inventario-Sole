@@ -57,15 +57,18 @@ def acceder():
     #! Validar usuario y contraseña
     usuario_db = UsuarioModel.buscar_x_alias(alias)
     
-    if not usuario_db:
-        return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
+    if usuario_db["estado"] is False:
+        return jsonify({"msg": "Usuario o contraseña incorrectos1"}), 401
+    if usuario_db["respuesta"] is None:
+        return jsonify({"msg": "Usuario o contraseña incorrectos2"}), 401
+
     
-    if not check_password_hash(usuario_db['contraseña'], contraseña):
-        return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
+    if not check_password_hash(usuario_db["respuesta"]['contraseña'], contraseña):
+        return jsonify({"msg": "Usuario o contraseña incorrectos3"}), 401
     
     else:
         claims = {
-            'roles': usuario_db['roles']
+            'roles': usuario_db["respuesta"]['roles']
         }
         access_token = create_access_token(identity=alias, additional_claims=claims)
         return jsonify(access_token=access_token), 200

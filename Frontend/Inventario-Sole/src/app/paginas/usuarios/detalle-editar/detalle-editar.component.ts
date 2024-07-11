@@ -36,7 +36,6 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
     private apiUsuarios: ApiUsuariosService,
     private apiAuth: ApiAuthService,
     private router: Router,
-
   ) { }
 
   ngOnInit(): void {
