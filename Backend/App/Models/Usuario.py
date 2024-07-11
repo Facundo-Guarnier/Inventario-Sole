@@ -1,3 +1,5 @@
+from bson import json_util
+import json
 from .. import mongo as db_mongo
 
 class Usuario:
@@ -32,6 +34,29 @@ class Usuario:
             return {
                 "estado": False,
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+            }
+    
+    @staticmethod
+    def buscar_x_atributo(filtro: dict) -> list:
+        """
+        Busca usuarios.
+        
+        Args:
+            - filtro (dict): Datos de los usuarios a buscar
+        
+        Returns:
+            - list: usuarios encontrados
+        """
+        try:
+            return {
+                "estado": True,
+                "respuesta": json.loads(json_util.dumps(db_mongo.db.usuarios.find(filtro)))
+            }
+        
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error en la DB {str(e)}",
             }
     
     @staticmethod

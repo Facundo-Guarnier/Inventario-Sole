@@ -24,9 +24,8 @@ def registrar() -> dict:
     except Exception as e:
         return jsonify({"mensaje": f"Campos requeridos"}), 400
     
-    
     #! Validar si el usuario ya existe
-    if UsuarioModel.buscar_x_alias(data["alias"]):
+    if not UsuarioModel.buscar_x_alias(data["alias"])["respuesta"] is None:
         return jsonify({"mensaje": "El alias ya está en uso."}), 400
     
     #! Insertar usuario

@@ -63,8 +63,10 @@ def create_app(config_class=Config):
     jwt.init_app(app)
     
     import App.Resources as Resources
-    api.add_resource(Resources.UsuarioResource, '/api/usuario/<alias>')
     # api.add_resource(Resources.AutenticacionResource, '/api/registro')
+    
+    api.add_resource(Resources.UsuarioResource, '/api/usuario/<alias>')
+    api.add_resource(Resources.UsuariosResource, '/api/usuarios')
     
     api.add_resource(Resources.MovimientoResource, '/api/movimiento/<id>') #! buscar_x_id
     api.add_resource(Resources.MovimientosResource, '/api/movimientos') #! buscar_x_atributo, buscar_todos

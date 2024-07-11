@@ -2,6 +2,7 @@
 #* RESOURCE consiste en la logica de negocio de la aplicacion, es decir, la forma en que se interactua con los datos
 
 from .Usuario import Usuario as UsuarioResource
+from .Usuario import Usuarios as UsuariosResource
 
 from .Movimiento import Movimiento as MovimientoResource
 from .Movimiento import Movimientos as MovimientosResource

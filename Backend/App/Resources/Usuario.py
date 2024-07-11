@@ -88,3 +88,24 @@ class Usuario(Resource):
         if respuesta["estado"]:
             return ({"msg": "Usuario eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 404
+
+
+class Usuarios(Resource):
+    # @jwt_required()
+    # @admin_required
+    def get(self) -> dict:
+        """
+        Busca todos los usuarios.
+        
+        Returns:
+            - dict: Lista de usuarios
+        """
+        filtro = {}
+        respuesta = UsuarioModel.buscar_x_atributo(filtro)
+        if respuesta["estado"]:
+            usuarios = respuesta["respuesta"]
+            for usuario in usuarios:
+                del usuario['_id']
+                del usuario['contraseña']
+            return {"usuarios": usuarios}, 200
+        return {"msg": respuesta["respuesta"]}, 404
