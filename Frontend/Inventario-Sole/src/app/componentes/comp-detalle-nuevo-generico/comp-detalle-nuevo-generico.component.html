@@ -12,21 +12,25 @@
                     <!--! Campos -->
                     <div class="mb-3" *ngFor="let campo of campos">
                         
+                        <!--! TextArea  -->
                         <div *ngIf="campo.tipo == 'textarea-text'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
                             <textarea class="form-control" id="{{campo.identificador}}" rows="2"></textarea>
                         </div>
                         
+                        <!--! Input  -->
                         <div *ngIf="campo.tipo == 'input-text'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
                             <input type="text" class="form-control" id="{{campo.identificador}}">
                         </div>
                         
+                        <!--! Number  -->
                         <div *ngIf="campo.tipo == 'input-number'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
                             <input type="number" class="form-control" id="{{campo.identificador}}">
                         </div>
                         
+                        <!--! Selector  -->
                         <div *ngIf="campo.tipo == 'selector'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
                             <select class="form-select" id="{{campo.identificador}}">
@@ -35,6 +39,7 @@
                             </select>
                         </div>
 
+                        <!--! Selector multiple  -->
                         <div *ngIf="campo.tipo == 'selector-multiple'">
                             <label class="form-label">{{campo.nombre}}</label>
                             <div *ngFor="let opcion of campo.opciones; let i = index" class="form-check">
@@ -46,6 +51,13 @@
                                     {{opcion}}
                                 </label>
                             </div>
+                        </div>
+
+                        <!--! ReadOnly  -->
+                        <div *ngIf="campo.tipo == 'readonly'">
+                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
+                            <input type="text" class="form-control" id="{{campo.identificador}}" 
+                                [value]="campo.valor" readonly>
                         </div>
                     
                     </div>

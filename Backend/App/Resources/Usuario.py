@@ -42,7 +42,8 @@ class Usuario(Resource):
         """
         #! Buscar si existe el usuario
         usuario_actual = UsuarioModel.buscar_x_alias(alias)
-        if not usuario_actual:
+        print("\n\n\n", usuario_actual)
+        if not usuario_actual["respuesta"]:
             return ({"msg": "No se encontró el usuario"}), 404
         
         #! Obtener datos a actualizar

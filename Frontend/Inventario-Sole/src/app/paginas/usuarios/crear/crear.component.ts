@@ -33,7 +33,7 @@ export class PagUsuarioCrearComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
+  //! Funciones
   openModal() {
     this.isModalOpen = true;
   }
@@ -58,7 +58,6 @@ export class PagUsuarioCrearComponent implements OnInit {
 
   onDatosRecolectadosUsuario(datos: any[]) {
     this.detalleusuario = datos;
-    // Aquí puedes procesar los datos como necesites
   }
   
 

@@ -64,7 +64,7 @@ const routes: Routes = [
 
   { path: "usu", component: PagUsuarioVistaGeneralComponent},
   { path: "usu/crear", component: PagUsuarioCrearComponent},
-  { path: "usu/detalle-editar", component: PagUsuarioDetalleEditarComponent},
+  { path: "usu/detalle-editar/:alias", component: PagUsuarioDetalleEditarComponent},
 
 ];
 

@@ -9,7 +9,8 @@ export class CompNotificacionComponent implements OnInit {
   
   @Input() titulo: string = '';
   @Input() estaAbierto: boolean = false;
-  @Output() cerrar = new EventEmitter<void>();
+  @Input() mensaje: string = '';
+  @Output() cerrarModal = new EventEmitter<void>();
   
   constructor() { }
   
@@ -17,7 +18,7 @@ export class CompNotificacionComponent implements OnInit {
   }
   
     closeModal() {
-      this.cerrar.emit();
+      this.cerrarModal.emit();
     }
 
 }

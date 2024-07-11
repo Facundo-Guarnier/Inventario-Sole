@@ -18,7 +18,7 @@ export class ApiUsuarioService {
     return this.httpClient.get(`${this.url}/${id}`);
   } 
   
-  actualizar(id:string, usuario: {}): Observable<any> {
+  editar(id:string, usuario: {}): Observable<any> {
     return this.httpClient.put(`${this.url}/${id}`, usuario);
   }
   

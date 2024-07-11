@@ -24,12 +24,16 @@ export class CompTablaDatosComponent implements OnInit {
   ngOnInit(): void {
   }
   
+  //! Botones
   editarFila(item: any) {
     if (this.tipo === 'mov') {
       this.router.navigate([this.tipo + '/detalle']);
+    
+    } else if (this.tipo == "usu") {
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.alias]);
+    
     } else {
-      // this.router.navigate(['prod/detalle-editar', item.id]);
-      this.router.navigate([this.tipo + '/detalle-editar']);
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.id]);
     }
   }
   
