@@ -42,13 +42,11 @@ export class PagVentasCrearComponent implements OnInit {
   }
 
   onDatosRecolectadosVenta(datos: any[]) {
-    console.log('Datos recibidos del hijo detalle venta:', datos);
     this.detalleventa = datos;
     // Aquí puedes procesar los datos como necesites
   }
   
   onDatosRecolectadosProductos(datos: any[]) {
-    console.log('Datos recibidos del hijo productos:', datos);
     this.productos = datos;
     // Aquí puedes procesar los datos como necesites
   }

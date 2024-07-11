@@ -14,13 +14,12 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   titulo1 = "Detalle del usario";
   campos1: Campo[] = [
     { nombre: "Alias", identificador: "alias", tipo: "input-text" },
-    { nombre: "Roles", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User", "Ver y nada mas"] },
+    { nombre: "Roles", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User", "Ver y nada mas"]},
     { nombre: "Nueva contraseña (si no desea cambiarla deje el campo vacío)", identificador: "nueva_contraseña", tipo: "input-text"},
   ];
 
 
-  productos: any[] = [];
-  detalleventa: any[] = [];
+  detalleusuario: any[] = [];
 
   constructor() { }
 
@@ -31,17 +30,9 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
     this.compDetalleNuevo.recolectarDatos();
   }
 
-  onDatosRecolectadosVenta(datos: any[]) {
-    console.log('Datos recibidos del hijo detalle venta:', datos);
-    this.detalleventa = datos;
+  onDatosRecolectadosUsuario(datos: any[]) {
+    this.detalleusuario = datos;
     // Aquí puedes procesar los datos como necesites
   }
   
-  onDatosRecolectadosProductos(datos: any[]) {
-    console.log('Datos recibidos del hijo productos:', datos);
-    this.productos = datos;
-    // Aquí puedes procesar los datos como necesites
-  }
-
-
 }
