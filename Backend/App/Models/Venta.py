@@ -1,6 +1,6 @@
 from .. import mongo as db_mongo
 from bson import json_util
-
+import json
 
 class Venta: 
     @staticmethod
@@ -17,13 +17,13 @@ class Venta:
         try:
             return {
                 "estado": True,
-                "respuesta": json_util.dumps(db_mongo.db.ventas.find(filtro))
+                "respuesta": json.loads(json_util.dumps(db_mongo.db.ventas.find(filtro)))
             }
         
         except Exception as e:
             return {
                 "estado": False,
-                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+                "respuesta": f"Hubo un error en la DB {str(e)}",
             }
     
     @staticmethod
@@ -43,7 +43,7 @@ class Venta:
         except Exception as e:
             return {
                 "estado": False,
-                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+                "respuesta": f"Hubo un error en la DB {str(e)}",
             }
     
     @staticmethod
@@ -66,7 +66,7 @@ class Venta:
         except Exception as e:
             return {
                 "estado": False,
-                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+                "respuesta": f"Hubo un error en la DB {str(e)}",
             }
     
     @staticmethod
@@ -89,5 +89,5 @@ class Venta:
         except Exception as e:
             return {
                 "estado": False,
-                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
+                "respuesta": f"Hubo un error en la DB {str(e)}",
             }

@@ -156,8 +156,8 @@ class Ventas(Resource):
         respuesta = VentaModel.buscar_x_atributo(filtro)
         
         if respuesta["estado"]:
-            return ({"msg": respuesta["respuesta"]}), 200
-        return ({"msg": respuesta["respuesta"]}), 404
+            return {"msg": respuesta["respuesta"]}, 200
+        return {"msg": respuesta["respuesta"]}, 404
     
     # @jwt_required()
     def post(self) -> dict:
