@@ -40,27 +40,27 @@ class Usuario(Resource):
         Returns:
             - dict: Usuario actualizado
         """
+        
         #! Buscar si existe el usuario
         usuario_actual = UsuarioModel.buscar_x_alias(alias)
-        print("\n\n\n", usuario_actual)
         if not usuario_actual["respuesta"]:
             return ({"msg": "No se encontró el usuario"}), 404
         
         #! Obtener datos a actualizar
-        data = request.json
-        if not data:
+        datos = request.json
+        if not datos or datos is None:
+            return ({"msg": "Faltan datos"}), 400
+        
+        if not datos.get("roles"):
             return ({"msg": "Faltan datos"}), 400
         
         #! Crear diccionario con los datos a actualizar
         nuevo_usuario = {}
+        nuevo_usuario["roles"] = datos["roles"]
         
-        if data.get("roles"):
-            nuevo_usuario["roles"] = data["roles"]
+        if datos.get("contraseña_nueva"): #! Opcional
+            nuevo_usuario["contraseña_nueva"] = generate_password_hash(datos["contraseña_nueva"])
         
-        if data.get("contraseña_nueva"):
-            nuevo_usuario["contraseña_nueva"] = generate_password_hash(data["contraseña_nueva"])
-        
-        print(nuevo_usuario)
         #! Actualizar usuario
         respuesta = UsuarioModel.actualizar(alias, nuevo_usuario)
         if respuesta["estado"]:
