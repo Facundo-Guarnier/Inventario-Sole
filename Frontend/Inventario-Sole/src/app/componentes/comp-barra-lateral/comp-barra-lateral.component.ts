@@ -52,7 +52,6 @@ export class CompBarraLateralComponent implements OnInit {
 
   ngOnInit(): void {
     
-    console.log("URL actual: " + this.urlActual)
     //TODO Borrar, solo para pruebas
     this.filtrosLista = [
       {nombre: 'Filtro 1', opciones: ['Opción 1', 'Opción 2']},
