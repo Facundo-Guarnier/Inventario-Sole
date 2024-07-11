@@ -19,6 +19,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   titulo1 = "Detalle de la venta";
   campos1: Campo[] = [
     { nombre: "ID venta", identificador: "id", tipo: "readonly", valor: this.router.url.split("?")[0].split('/').pop()},
+    { nombre: "Fecha", identificador: "fecha", tipo: "readonly"},
     { nombre: "Cliente", identificador: "cliente", tipo: "input-text"},
     { nombre: "Tienda", identificador: "tienda", tipo: "selector", opciones: ["Fisica", "Online"] },
     { nombre: "Método", identificador: "metodo", tipo: "textarea-text"},
@@ -27,7 +28,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
 
   titulo2 = "Productos";
   campos2: Campo[] = [
-    { nombre: "ID producto", identificador: "idProducto", tipo: "input-text" },
+    { nombre: "ID producto", identificador: "id", tipo: "input-text" },
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
     { nombre: "Precio", identificador: "precio", tipo: "input-number" },
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
@@ -35,6 +36,8 @@ export class PagVentasDetalleEditarComponent implements OnInit {
 
   productos: any[] = [];
   detalleventa: any[] = [];
+
+  datosOriginalesProductos: any[] = [];
 
   constructor(
     private router: Router,
@@ -47,14 +50,15 @@ export class PagVentasDetalleEditarComponent implements OnInit {
         let datos = res["msg"][0]
         
         this.campos1[0].valor = datos["id"];
-        this.campos1[1].valor = datos["cliente"];
-        this.campos1[2].valor = datos["tienda"];
-        this.campos1[3].valor = datos["metodo"];
-        this.campos1[4].valor = datos["comentario"];
+        this.campos1[1].valor = datos["fecha"];
+        this.campos1[2].valor = datos["cliente"];
+        this.campos1[3].valor = datos["tienda"];
+        this.campos1[4].valor = datos["metodo"];
+        this.campos1[5].valor = datos["comentario"];
 
-        this.productos = datos["productos"];
+        this.datosOriginalesProductos = datos["productos"];
       },
-      
+
       (err: any) => {
         console.log('Error al buscar la venta:', err);
       }

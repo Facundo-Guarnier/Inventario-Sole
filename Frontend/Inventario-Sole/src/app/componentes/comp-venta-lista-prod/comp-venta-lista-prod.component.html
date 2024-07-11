@@ -18,20 +18,19 @@
                 </div>
                 <div class="row">
                     <div class="col" *ngFor="let campo of campos">
-                        <!-- Los campos existentes aquí -->
+                        
                         <div *ngIf="campo.tipo == 'textarea-text'">
                             <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
-                            <textarea class="form-control" [id]="campo.identificador + '_' + i" rows="1"></textarea>
+                            <textarea class="form-control" [id]="campo.identificador + '_' + i" rows="1" [value]="producto[campo.identificador] || ''"></textarea>
                         </div>
-                        
                         <div *ngIf="campo.tipo == 'input-text'">
                             <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
-                            <input type="text" class="form-control" [id]="campo.identificador + '_' + i">
+                            <input type="text" class="form-control" [id]="campo.identificador + '_' + i" [value]="producto[campo.identificador] || ''">
                         </div>
                         
                         <div *ngIf="campo.tipo == 'input-number'">
                             <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
-                            <input type="number" class="form-control" [id]="campo.identificador + '_' + i">
+                            <input type="number" class="form-control" [id]="campo.identificador + '_' + i" [value]="producto[campo.identificador] || ''">
                         </div>
                         
                         <div *ngIf="campo.tipo == 'selector'">
@@ -52,9 +51,6 @@
             <button type="button" class="btn btn-primary mt-3" (click)="agregarProducto()">
                 Agregar otro producto
             </button>
-            <!-- <button type="button" class="btn btn-danger mt-3" (click)="quitarProducto()">
-                Quitar ultimo producto
-            </button> -->
 
         </div>
     </div>
