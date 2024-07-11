@@ -32,7 +32,6 @@ def initialize_database(app):
             print(f"Colección '{collection}' ya existente.")
     
     admin = mongo.db.usuarios.find_one({"roles": {"$in": ["admin"]}})    
-    print(admin)
     if admin == None:
         mongo.db.usuarios.delete_one({"alias": "admin"})
         from werkzeug.security import generate_password_hash

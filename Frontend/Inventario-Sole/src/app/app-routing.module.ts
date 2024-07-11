@@ -28,7 +28,8 @@ import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.
 import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
 
 import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-general/vista-general.component';
-
+import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
+import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-editar/detalle-editar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'mov', pathMatch: 'full' },
@@ -62,6 +63,8 @@ const routes: Routes = [
   { path: "gc/detalle-editar", component: PagGiftCardsDetalleEditarComponent},
 
   { path: "usu", component: PagUsuarioVistaGeneralComponent},
+  { path: "usu/crear", component: PagUsuarioCrearComponent},
+  { path: "usu/detalle-editar", component: PagUsuarioDetalleEditarComponent},
 
 ];
 

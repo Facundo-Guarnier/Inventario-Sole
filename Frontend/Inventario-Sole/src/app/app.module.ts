@@ -48,6 +48,8 @@ import { PagMovimientosCrearComponent } from './paginas/movimientos/crear/crear.
 import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista-general/vista-general.component';
 
 import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-general/vista-general.component';
+import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-editar/detalle-editar.component';
+import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
 
 
 
@@ -97,6 +99,8 @@ import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-genera
     PagMovimientosVistaGeneralComponent,
     
     PagUsuarioVistaGeneralComponent,
+    PagUsuarioDetalleEditarComponent,
+    PagUsuarioCrearComponent,
 
   ],
 

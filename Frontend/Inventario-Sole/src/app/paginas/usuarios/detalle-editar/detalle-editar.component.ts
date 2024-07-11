@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'pag-usuario-detalle-editar',
+  templateUrl: './detalle-editar.component.html',
+  styleUrls: ['./detalle-editar.component.css']
+})
+export class PagUsuarioDetalleEditarComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

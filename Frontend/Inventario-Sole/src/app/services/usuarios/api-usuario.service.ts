@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 
 export class ApiUsuarioService {
-  url = "http://localhost:5000/api/venta"
+  url = "http://localhost:5000/api/usuario"
   
   constructor(
     private httpClient: HttpClient
@@ -18,8 +18,8 @@ export class ApiUsuarioService {
     return this.httpClient.get(`${this.url}/${id}`);
   } 
   
-  actualizar(id:string, venta: {}): Observable<any> {
-    return this.httpClient.put(`${this.url}/${id}`, venta);
+  actualizar(id:string, usuario: {}): Observable<any> {
+    return this.httpClient.put(`${this.url}/${id}`, usuario);
   }
   
   eliminar(id:string): Observable<any> {
@@ -33,7 +33,7 @@ export class ApiUsuarioService {
 })
 
 export class ApiUsuariosService {
-  url = "http://localhost:5000/api/ventas"
+  url = "http://localhost:5000/api/usuarios"
   
   constructor(
     private httpClient: HttpClient
@@ -43,8 +43,8 @@ export class ApiUsuariosService {
     return this.httpClient.get(`${this.url}`, { params: filtro });
   }  
   
-  crear(venta: {}): Observable<any> {
-    return this.httpClient.post(`${this.url}`, venta);
+  crear(usuario: {}): Observable<any> {
+    return this.httpClient.post(`${this.url}`, usuario);
   }
 
 }

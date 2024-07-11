@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiUsuariosService } from '../../../services/usuarios/api-usuario.service';
 
 @Component({
   selector: 'pag-usuario-vista-general',
@@ -7,9 +9,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagUsuarioVistaGeneralComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  //! NavBar
+  pagActual = 'usu';
+  
+  //! Tabla de datos
+  acciones = {
+    editar: true,
+    eliminar: true,
+    detalle: false,
   }
+  
+  columnas = [
+    { nombre: 'Alias', identificador: "alias", tipo: 'text' },
+    { nombre: 'Roles', identificador: "roles", tipo: 'text' },
+  ];
+  
+  datos: any[] = [
+    
+  ];
+  
+  constructor(
+    private router: Router,
+    private apiUsuarios: ApiUsuariosService,
+  ) { }
+  
+  ngOnInit(): void {
 
+    this.apiUsuarios.buscar_x_atributo({}).subscribe({
+      next: (data) => {
+        this.datos = Object.values(data).flat();
+        console.log(this.datos);
+      },
+      error: (error) => {
+        console.error('ERROR al cargar usuarios:', error);
+      }
+    });
+
+  }
+  
+  //! Botones flotantes
+  ClickAgregar(){
+    this.router.navigate(['usu/crear']);
+  };
+  
 }
