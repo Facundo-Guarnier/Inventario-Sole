@@ -30,10 +30,10 @@ export class CompTablaDatosComponent implements OnInit {
       this.router.navigate([this.tipo + '/detalle']);
     
     } else if (this.tipo == "usu") {
-      this.router.navigate([this.tipo + '/detalle-editar/' + item.alias]);
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.alias], { queryParams: { editar: true } });
     
     } else {
-      this.router.navigate([this.tipo + '/detalle-editar/' + item.id]);
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.id], { queryParams: { editar: true } });
     }
   }
   
@@ -47,10 +47,10 @@ export class CompTablaDatosComponent implements OnInit {
       this.router.navigate([this.tipo + '/detalle']);
     
     } else if (this.tipo == "usu") {
-      this.router.navigate([this.tipo + '/detalle-editar/' + item.alias], { queryParams: { detalle: true } });
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.alias], { queryParams: { editar: false } });
     
     } else {
-      this.router.navigate([this.tipo + '/detalle-editar/' + item.id], { queryParams: { detalle: true }});
+      this.router.navigate([this.tipo + '/detalle-editar/' + item.id], { queryParams: { editar: false }});
     }
   }
   
