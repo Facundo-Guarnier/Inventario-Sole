@@ -50,6 +50,7 @@ import { PagMovimientosVistaGeneralComponent } from './paginas/movimientos/vista
 import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-general/vista-general.component';
 import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-editar/detalle-editar.component';
 import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
+import { CompNotificacionComponent } from './componentes/comp-notificacion/comp-notificacion.component';
 
 
 
@@ -101,6 +102,7 @@ import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.compone
     PagUsuarioVistaGeneralComponent,
     PagUsuarioDetalleEditarComponent,
     PagUsuarioCrearComponent,
+    CompNotificacionComponent,
 
   ],
 

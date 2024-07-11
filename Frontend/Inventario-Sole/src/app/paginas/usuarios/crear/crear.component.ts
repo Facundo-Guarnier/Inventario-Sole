@@ -11,6 +11,8 @@ export class PagUsuarioCrearComponent implements OnInit {
 
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
 
+  isModalOpen = false;
+  
   titulo1 = "Detalle de la usuario";
   campos1: Campo[] = [
     { nombre: "Alias", identificador: "alias", tipo: "input-text" },
@@ -23,6 +25,15 @@ export class PagUsuarioCrearComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
   }
 
   clickAceptar() {
