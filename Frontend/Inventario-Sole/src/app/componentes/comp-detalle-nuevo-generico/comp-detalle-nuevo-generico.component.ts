@@ -41,4 +41,21 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
 
     this.datosRecolectados.emit(datos);
   }
+
+  onCheckboxChange(campo: any, opcion: string, event: any) {
+    const checked = event.target.checked;
+    
+    if (!campo.seleccionados) {
+      campo.seleccionados = [];
+    }
+    
+    if (checked) {
+      campo.seleccionados.push(opcion);
+    } else {
+      const index = campo.seleccionados.indexOf(opcion);
+      if (index > -1) {
+        campo.seleccionados.splice(index, 1);
+      }
+    }
+  }
 }

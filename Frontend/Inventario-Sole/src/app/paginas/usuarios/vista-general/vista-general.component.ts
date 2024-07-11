@@ -38,7 +38,6 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
     this.apiUsuarios.buscar_x_atributo({}).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
-        console.log(this.datos);
       },
       error: (error) => {
         console.error('ERROR al cargar usuarios:', error);
