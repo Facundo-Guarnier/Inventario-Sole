@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiVentaService {
-  url = "http://localhost:5000/api/venta"
+export class ApiProductoService {
+  url = "http://localhost:5000/api/producto"
   
   constructor(
     private httpClient: HttpClient
@@ -21,8 +21,8 @@ export class ApiVentaService {
     return this.httpClient.get(`${this.url}/${id}`);
   } 
   
-  actualizar(id:string, venta: {}): Observable<any> {
-    return this.httpClient.put(`${this.url}/${id}`, venta);
+  actualizar(id:string, producto: {}): Observable<any> {
+    return this.httpClient.put(`${this.url}/${id}`, producto);
   }
   
   eliminar(id:string): Observable<any> {
@@ -35,8 +35,8 @@ export class ApiVentaService {
   providedIn: "root",
 })
 
-export class ApiVentasService {
-  url = "http://localhost:5000/api/ventas"
+export class ApiProductosService {
+  url = "http://localhost:5000/api/productos"
   
   constructor(
     private httpClient: HttpClient
@@ -46,8 +46,8 @@ export class ApiVentasService {
     return this.httpClient.get(`${this.url}`, { params: filtro });
   }  
   
-  crear(venta: {}): Observable<any> {
-    return this.httpClient.post(`${this.url}`, venta);
+  crear(producto: {}): Observable<any> {
+    return this.httpClient.post(`${this.url}`, producto);
   }
 
 }

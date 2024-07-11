@@ -7,10 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: "root",
 })
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ApiVentaService {
+export class ApiUsuarioService {
   url = "http://localhost:5000/api/venta"
   
   constructor(
@@ -35,7 +32,7 @@ export class ApiVentaService {
   providedIn: "root",
 })
 
-export class ApiVentasService {
+export class ApiUsuariosService {
   url = "http://localhost:5000/api/ventas"
   
   constructor(

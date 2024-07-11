@@ -28,14 +28,8 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     { nombre: 'Tienda', identificador: "tienda", tipo: 'text' },
     { nombre: 'Metodo', identificador: "metodo", tipo: 'number' },
   ];
-
+  
   datos: any[] = [];
-  
-  
-  //! Botones flotantes
-  ClickAgregar(){
-    this.router.navigate(['ven/crear']);
-  };
   
   constructor(
     private router: Router,
@@ -48,12 +42,16 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     this.apiVentas.buscar_x_atributo(filtro).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
-        console.log('Datos recibidos:', this.datos[0]);
       },
       error: (error) => {
-        console.error('Error al cargar ventas:', error);
+        console.error('ERROR al cargar ventas:', error);
       }
     });
   }
   
+  //! Botones flotantes
+  ClickAgregar(){
+    this.router.navigate(['ven/crear']);
+  };
+
 }
