@@ -116,7 +116,8 @@ class Productos(Resource):
         Busca productos en base a los atributos que se pasen.
         Sin atributos, devuelve todas las productos.
         """
-        data = request.json
+        # data = request.json
+        data = request.args.to_dict()
         
         #! Validar data
         id = data.get("id")

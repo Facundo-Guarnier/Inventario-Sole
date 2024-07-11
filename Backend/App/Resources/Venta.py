@@ -28,7 +28,7 @@ class Venta(Resource):
             return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    @jwt_required()
+    # @jwt_required()
     def put(self, id:str) -> dict:
         """
         Actualiza una venta.
@@ -77,7 +77,7 @@ class Venta(Resource):
             return ({"msg": "Venta actualizada"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
     
-    @jwt_required()
+    # @jwt_required()
     def delete(self, id:str) -> dict:
         """
         Elimina una venta.
@@ -110,7 +110,8 @@ class Ventas(Resource):
         Busca ventas en base a los atributos que se pasen.
         Sin atributos, devuelve todas las ventas.
         """
-        data = request.json
+        # data = request.json
+        data = request.args.to_dict()
         
         #! Validar data: id, Cliente, Fecha, Total, Tienda, Metodo de pago, Productos
         id = data.get("id")
@@ -150,13 +151,15 @@ class Ventas(Resource):
                 {"tienda": {"$regex": palabra_clave, "$options": "i"}},
                 {"metodo": {"$regex": palabra_clave, "$options": "i"}}
             ]
+            
+        print(filtro)
         respuesta = VentaModel.buscar_x_atributo(filtro)
         
         if respuesta["estado"]:
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    @jwt_required()
+    # @jwt_required()
     def post(self) -> dict:
         """
         Crea una venta.

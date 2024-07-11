@@ -108,7 +108,8 @@ class Movimientos(Resource):
             - list: Movimientos encontrados
         """
         
-        data = request.json
+        # data = request.json
+        data = request.args.to_dict()
         
         #! Validar data: id, movimiento, id_producto, cantidad, vendedor, comentario, fecha
         id = data.get("id")
