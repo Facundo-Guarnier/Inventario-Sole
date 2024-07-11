@@ -22,9 +22,11 @@
             <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'gc'" [attr.aria-current]="pagActual === 'giftCard' ? 'page' : null" href="gc">Gift Card</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" [class.active]="pagActual === 'usu'" [attr.aria-current]="pagActual === 'usuarios' ? 'page' : null" href="usu">Usuarios</a>
-            </li>
+            <div *ngIf="admin">
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="pagActual === 'usu'" [attr.aria-current]="pagActual === 'usuarios' ? 'page' : null" href="usu">Usuarios</a>
+                </li>
+            </div>
         </ul>
     </div>
 </nav>

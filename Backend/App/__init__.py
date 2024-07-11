@@ -39,7 +39,7 @@ def initialize_database(app):
             {
             "alias": "admin",
             'contraseña': generate_password_hash(app.config['CONTRA_ADMIN']),
-            "roles": ["admin"],
+            "roles": ["Admin"],
             }
         )
         print("Admin creado.")
