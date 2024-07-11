@@ -15,19 +15,19 @@
                         <!--! TextArea  -->
                         <div *ngIf="campo.tipo == 'textarea-text'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <textarea class="form-control" id="{{campo.identificador}}" rows="2" [value]="campo.valor" [disabled]="!mostrarEditar"></textarea>
+                            <textarea class="form-control" id="{{campo.identificador}}" rows="2" [value]="campo.valor || ''" [disabled]="!mostrarEditar"></textarea>
                         </div>
                         
                         <!--! Input  -->
                         <div *ngIf="campo.tipo == 'input-text'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="text" class="form-control" id="{{campo.identificador}}" [value]="campo.valor" [disabled]="!mostrarEditar">
+                            <input type="text" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
                         </div>
                         
                         <!--! Number  -->
                         <div *ngIf="campo.tipo == 'input-number'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="number" class="form-control" id="{{campo.identificador}}" [value]="campo.valor" [disabled]="!mostrarEditar">
+                            <input type="number" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
                         </div>
                         
                         <!--! Selector  -->
@@ -35,7 +35,7 @@
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
                             <select class="form-select" id="{{campo.identificador}}" [disabled]="!mostrarEditar">
                                 <option>Seleccionar...</option>
-                                <option *ngFor="let opcion of campo.opciones" [value]="opcion" [selected]="opcion === campo.valor">{{opcion}}</option>
+                                <option *ngFor="let opcion of campo.opciones" [value]="opcion" [selected]="opcion === campo.valor || ''">{{opcion}}</option>
                             </select>
                         </div>
                         
@@ -58,7 +58,7 @@
                         <div *ngIf="campo.tipo == 'readonly'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
                             <input type="text" class="form-control" id="{{campo.identificador}}" 
-                                [value]="campo.valor" readonly>
+                                [value]="campo.valor || ''" readonly>
                         </div>
                     
                     </div>
