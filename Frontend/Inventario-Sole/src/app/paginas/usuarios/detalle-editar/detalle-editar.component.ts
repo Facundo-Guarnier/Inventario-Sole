@@ -15,7 +15,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   campos1: Campo[] = [
     { nombre: "Alias", identificador: "alias", tipo: "input-text" },
     { nombre: "Roles", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User", "Ver y nada mas"]},
-    { nombre: "Nueva contraseña (si no desea cambiarla deje el campo vacío)", identificador: "nueva_contraseña", tipo: "input-text"},
+    { nombre: "Nueva contraseña (si no desea cambiarla deje el campo vacío)", identificador: "contraseña", tipo: "input-text"},
   ];
 
 

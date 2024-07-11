@@ -22,23 +22,27 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
     let datos: any = {};
     
     this.campos.forEach(campo => {
-      const element = document.getElementById(campo.identificador) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-
-      if (element) {
-        let valor: any;
-
-        if (element.tagName === 'INPUT' && (element as HTMLInputElement).type === 'number') {
-          valor = (element as HTMLInputElement).valueAsNumber;
-        } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-          valor = element.value;
-        } else if (element.tagName === 'SELECT') {
-          valor = (element as HTMLSelectElement).value;
+      if (campo.tipo === 'selector-multiple') {
+        datos[campo.identificador] = campo.seleccionados || [];
+      } else {
+        const element = document.getElementById(campo.identificador) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+        
+        if (element) {
+          let valor: any;
+          
+          if (element.tagName === 'INPUT' && (element as HTMLInputElement).type === 'number') {
+            valor = (element as HTMLInputElement).valueAsNumber;
+          } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            valor = element.value;
+          } else if (element.tagName === 'SELECT') {
+            valor = (element as HTMLSelectElement).value;
+          }
+          
+          datos[campo.identificador] = valor;
         }
-
-        datos[campo.identificador] = valor;
       }
     });
-
+  
     this.datosRecolectados.emit(datos);
   }
 

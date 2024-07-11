@@ -43,8 +43,8 @@ export class ApiUsuariosService {
     return this.httpClient.get(`${this.url}`, { params: filtro });
   }  
   
-  crear(usuario: {}): Observable<any> {
-    return this.httpClient.post(`${this.url}`, usuario);
-  }
+  // crear(usuario: {}): Observable<any> {
+  //   return this.httpClient.post(`${this.url}`, usuario);
+  // }
 
 }

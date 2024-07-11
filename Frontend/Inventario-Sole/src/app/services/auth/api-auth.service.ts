@@ -7,7 +7,7 @@ import { Observable, take } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiAuthService {
-  url = "http://localhost:5000/api/productos"
+  url = "http://localhost:5000/api/auth"
 
   constructor(
     private httpClient: HttpClient,
@@ -22,5 +22,9 @@ export class ApiAuthService {
     console.log("Cerrando sesion")
     localStorage.clear()
     // this.router.navigate(["Home/1"])
+  }
+
+  register(dataRegister:{}): Observable<any> {
+    return this.httpClient.post(this.url + '/registrar', dataRegister).pipe(take(1))
   }
 }
