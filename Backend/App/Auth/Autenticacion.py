@@ -13,23 +13,29 @@ def registrar() -> dict:
     """
     
     #! Validar campos
-    try: 
-        data = request.json
-        
-        data["alias"] = str(data["alias"].lower())
-        data["contraseña"] = generate_password_hash(str(data['contraseña']))
-        #data["email"] = data["email"].lower()
-        data["roles"] = data["roles"]
+    if not request.json:
+        return jsonify({"mensaje": "No se encontraron datos"}), 400
     
-    except Exception as e:
-        return jsonify({"mensaje": f"Campos requeridos"}), 400
+    datos = request.json
+    if not datos["roles"]:
+        return jsonify({"mensaje": "Campo requerido"}), 400
+    if not datos["alias"]:
+        return jsonify({"mensaje": "Campo requerido"}), 400
+    if not datos["contraseña"]:
+        return jsonify({"mensaje": "Campo requerido"}), 400
+    
+    usuario_nuevo = {
+        "roles": datos["roles"],
+        "alias": datos["alias"],
+        "contraseña": generate_password_hash(datos["contraseña"])
+    }
     
     #! Validar si el usuario ya existe
-    if not UsuarioModel.buscar_x_alias(data["alias"])["respuesta"] is None:
+    if not UsuarioModel.buscar_x_alias(usuario_nuevo["alias"])["respuesta"] is None:
         return jsonify({"mensaje": "El alias ya está en uso."}), 400
     
     #! Insertar usuario
-    respuesta = UsuarioModel.crear(data=data)
+    respuesta = UsuarioModel.crear(data=usuario_nuevo)
     if not respuesta["estado"]:
         return jsonify({"mensaje": respuesta["repuesta"]}), 500
     

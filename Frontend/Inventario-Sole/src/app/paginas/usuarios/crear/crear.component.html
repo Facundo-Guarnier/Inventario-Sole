@@ -38,14 +38,11 @@
 </app-comp-botones-flotantes>
 
 
-<!--! Mover este boton  -->
-<button class="btn btn-primary" (click)="openModal()">Abrir Modal</button>
-
 <!--! Modal  -->
 <app-comp-notificacion 
-    [estaAbierto]="isModalOpen" 
-    [titulo]="'Mi Modal'" 
-    (cerrar)="closeModal()">
-    <p>Este es el contenido del modal.</p>
-    <button class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+    [estaAbierto]="estaAbierto" 
+    [titulo]="tituloModal" 
+    [mensaje]="mensajeModal"
+    (cerrarModal)="cerrarModal()">
+    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
 </app-comp-notificacion>
