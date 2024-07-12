@@ -24,8 +24,9 @@ export class ApiUsuarioService {
     return this.httpClient.put(`${this.url}/${id}`, usuario, {headers: heads});
   }
   
-  eliminar(id:string): Observable<any> {
-    return this.httpClient.delete(`${this.url}/${id}`);
+  eliminar(id:string, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.delete(`${this.url}/${id}`, {headers: heads});
   }
   
 }
@@ -43,10 +44,5 @@ export class ApiUsuariosService {
   
   buscar_x_atributo(filtro:{}): Observable<any> {
     return this.httpClient.get(`${this.url}`, { params: filtro });
-  }  
-  
-  // crear(usuario: {}): Observable<any> {
-  //   return this.httpClient.post(`${this.url}`, usuario);
-  // }
-
+  }
 }

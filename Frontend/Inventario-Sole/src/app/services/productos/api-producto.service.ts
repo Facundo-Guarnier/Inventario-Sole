@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -21,12 +21,14 @@ export class ApiProductoService {
     return this.httpClient.get(`${this.url}/${id}`);
   } 
   
-  actualizar(id:string, producto: {}): Observable<any> {
-    return this.httpClient.put(`${this.url}/${id}`, producto);
+  actualizar(id:string, producto: {}, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.put(`${this.url}/${id}`, producto, {headers: heads});
   }
   
-  eliminar(id:string): Observable<any> {
-    return this.httpClient.delete(`${this.url}/${id}`);
+  eliminar(id:string, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.delete(`${this.url}/${id}`, {headers: heads});
   }
   
 }
@@ -46,8 +48,9 @@ export class ApiProductosService {
     return this.httpClient.get(`${this.url}`, { params: filtro });
   }  
   
-  crear(producto: {}): Observable<any> {
-    return this.httpClient.post(`${this.url}`, producto);
+  crear(producto: {}, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.post(`${this.url}`, producto, {headers: heads});
   }
 
 }

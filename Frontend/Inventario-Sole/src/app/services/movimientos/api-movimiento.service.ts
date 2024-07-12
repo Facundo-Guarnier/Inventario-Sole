@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,9 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: "root",
 })
 
-@Injectable({
-  providedIn: 'root'
-})
+
 export class ApiMovimientoService {
   url = "http://localhost:5000/api/movimiento"
   
@@ -21,15 +19,19 @@ export class ApiMovimientoService {
     return this.httpClient.get(`${this.url}/${id}`);
   } 
   
-  actualizar(id:string, movimiento: {}): Observable<any> {
-    return this.httpClient.put(`${this.url}/${id}`, movimiento);
+  actualizar(id:string, movimiento: {}, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.put(`${this.url}/${id}`, movimiento, {headers: heads});
   }
   
-  eliminar(id:string): Observable<any> {
-    return this.httpClient.delete(`${this.url}/${id}`);
+  eliminar(id:string, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.delete(`${this.url}/${id}`, {headers: heads});
   }
   
 }
+
+//* ------------------------------------------------------------
 
 @Injectable({
   providedIn: "root",
@@ -46,8 +48,9 @@ export class ApiMovimientosService {
     return this.httpClient.get(`${this.url}`, { params: filtro });
   }  
   
-  crear(movimiento: {}): Observable<any> {
-    return this.httpClient.post(`${this.url}`, movimiento);
+  crear(movimiento: {}, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.post(`${this.url}`, movimiento, {headers: heads});
   }
 
 }

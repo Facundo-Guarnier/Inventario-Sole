@@ -21,7 +21,7 @@ export class ApiAuthService {
   logout() {
     console.log("Cerrando sesion")
     localStorage.clear()
-    // this.router.navigate(["Home/1"])
+    this.router.navigate([""])
   }
 
   register(dataRegister:{}): Observable<any> {
