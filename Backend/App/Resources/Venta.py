@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from App.Models import VentaModel
-from App.Resources import UltimaIDResource
+from App.Resources.UltimaID import UltimaID
 
 
 class Venta(Resource):
@@ -110,7 +110,7 @@ class Venta(Resource):
 
 class Ventas(Resource):
     def __init__(self):
-        self.ultima_id_resource = UltimaIDResource()
+        self.ultima_id_resource = UltimaID()
     
     def get(self) -> list:
         """
@@ -202,6 +202,7 @@ class Ventas(Resource):
         if respuesta["estado"]:
             if respuesta["respuesta"] == None:
                 return ({"msg": "Error al crear la venta"}), 400
+            
             else:
                 self.ultima_id_resource.put("venta")        #*+++++
                 return ({"msg": "Venta creada con éxito"}), 201

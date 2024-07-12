@@ -6,6 +6,7 @@ from flask_restful import Resource
 
 from App.Models import MovimientoModel
 from App.Auth.Decorators import admin_required
+from App.Resources.UltimaID import UltimaID
 
 
 class Movimiento(Resource):
@@ -99,6 +100,10 @@ class Movimiento(Resource):
 
 
 class Movimientos(Resource):
+    def __init__(self) -> None:
+        self.ultima_id_resource = UltimaID()
+    
+    
     def get(self) -> list:
         """
         Busca movimientos en base a los atributos que se pasen.
@@ -168,15 +173,13 @@ class Movimientos(Resource):
         if not data:
             return ({"msg": "Faltan datos"}), 400
         
-        id = data.get("id")
         movimiento = data.get("movimiento")
         id_producto = data.get("id_producto")
         cantidad = data.get("cantidad")
         vendedor = data.get("vendedor")
         comentario = data.get("comentario")
         
-        if not id or \
-        not movimiento or \
+        if not movimiento or \
         not id_producto or \
         not cantidad or \
         not vendedor:
@@ -185,7 +188,7 @@ class Movimientos(Resource):
         
         respuesta = MovimientoModel.crear(
             {
-                "id": id,
+                "id": UltimaID.calcular_proximo_id("movimiento"),
                 "movimiento": movimiento,
                 "id_producto": id_producto,
                 "cantidad": cantidad,
@@ -195,5 +198,10 @@ class Movimientos(Resource):
             }
         )
         if respuesta["estado"]:
-            return ({"msg": "Movimiento creado"}), 201
+            if respuesta["respuesta"] == None:
+                return ({"msg": "No se pudo crear el movimiento"}), 404
+            
+            else:
+                self.ultima_id_resource.put("movimiento")
+                return ({"msg": "Movimiento creado"}), 201
         return ({"msg": respuesta["respuesta"]}), 404

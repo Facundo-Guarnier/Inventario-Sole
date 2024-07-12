@@ -1,10 +1,8 @@
-from flask import Flask
 from flask_jwt_extended import JWTManager
-from flask_restful import Api
 from flask_pymongo import PyMongo
+from flask_restful import Api
 from flask_cors import CORS
-# from flask_mail import Mail
-from flask import current_app
+from flask import Flask
 
 from Config import Config
 
@@ -12,7 +10,6 @@ from Config import Config
 api = Api()
 mongo = PyMongo()
 jwt = JWTManager()
-# mailsender = Mail()   #! Para los emails
 
 
 def initialize_database(app):
@@ -62,8 +59,6 @@ def create_app(config_class=Config):
     jwt.init_app(app)
     
     import App.Resources as Resources
-    # api.add_resource(Resources.AutenticacionResource, '/api/registro')
-    
     api.add_resource(Resources.UsuarioResource, '/api/usuario/<alias>')
     api.add_resource(Resources.UsuariosResource, '/api/usuarios')
     
@@ -80,7 +75,6 @@ def create_app(config_class=Config):
     
     api.init_app(app)
     jwt.init_app(app)
-    # mailsender.init_app(app)  #! Para los emails
     
     from App.Auth import Autenticacion
     app.register_blueprint(Autenticacion.auth)

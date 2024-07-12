@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from App.Models import ProductoModel
+from App.Resources.UltimaID import UltimaID
 
 
 class Producto(Resource):
@@ -111,6 +112,9 @@ class Producto(Resource):
 
 
 class Productos(Resource):
+    def __init__(self):
+        self.ultima_id_resource = UltimaID()
+        
     def get(self) -> list:
         """
         Busca productos en base a los atributos que se pasen.
@@ -182,7 +186,6 @@ class Productos(Resource):
         """
         data = request.json
         
-        id = data.get("id")
         cod_ms = data.get("cod_ms")
         marca = data.get("marca")
         descripcion = data.get("descripcion")
@@ -192,8 +195,7 @@ class Productos(Resource):
         liquidacion = data.get("liquidacion")
         fotos = data.get("fotos")
         
-        if not id or \
-        not cod_ms or \
+        if not cod_ms or \
         not marca or \
         not descripcion or \
         not talle or \
@@ -205,7 +207,7 @@ class Productos(Resource):
         
         respuesta = ProductoModel.crear(
             {
-                "id": id,
+                "id": UltimaID.calcular_proximo_id("producto"),
                 "cod_ms": cod_ms,
                 "marca": marca,
                 "descripcion": descripcion,
@@ -217,5 +219,10 @@ class Productos(Resource):
             }
         )
         if respuesta["estado"]:
-            return ({"msg": "Producto creada con éxito"}), 201
+            if respuesta["respuesta"] == None:
+                return ({"msg": "Error al crear el producto"}), 400
+            
+            else:
+                self.ultima_id_resource.put("producto")
+                return ({"msg": "Producto creado con éxito"}), 201
         return ({"msg": respuesta["respuesta"]}), 400
