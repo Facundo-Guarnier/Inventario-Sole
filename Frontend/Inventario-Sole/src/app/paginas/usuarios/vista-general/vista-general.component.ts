@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiUsuariosService } from '../../../services/usuarios/api-usuario.service';
+import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
+
 
 @Component({
   selector: 'pag-usuario-vista-general',
   templateUrl: './vista-general.component.html',
   styleUrls: ['./vista-general.component.css']
 })
-export class PagUsuarioVistaGeneralComponent implements OnInit {
 
-  //! NavBar
-  pagActual = 'usu';
+export class PagUsuarioVistaGeneralComponent implements OnInit {
   
   //! Tabla de datos
   acciones = {
@@ -18,24 +18,22 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
     eliminar: false,
     detalle: false,
   }
-  
   columnas = [
     { nombre: 'Alias', identificador: "alias", tipo: 'text' },
     { nombre: 'Roles', identificador: "roles", tipo: 'text' },
   ];
+  datos: any[] = [];
   
-  datos: any[] = [
-    
-  ];
+  //* ------------------------------------------------------------
   
   constructor(
     private router: Router,
     private apiUsuarios: ApiUsuariosService,
+    private jwtToken: JwtTokenService,
   ) { }
   
   ngOnInit(): void {
-
-    this.apiUsuarios.buscar_x_atributo({}).subscribe({
+    this.apiUsuarios.buscar_x_atributo({}, this.jwtToken.getToken()).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
       },
@@ -43,9 +41,9 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
         console.error('ERROR al cargar usuarios:', error);
       }
     });
-
   }
   
+  //T* Funcniones
   //! Botones flotantes
   ClickAgregar(){
     this.router.navigate(['usu/crear']);

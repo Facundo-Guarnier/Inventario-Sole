@@ -15,8 +15,9 @@ export class ApiUsuarioService {
     
   ) { }
   
-  buscar_x_id(id:string, pagina: number = 1): Observable<any> {
-    return this.httpClient.get(`${this.url}/${id}`);
+  buscar_x_id(id:string, pagina: number = 1, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.get(`${this.url}/${id}`, {headers: heads});
   } 
   
   editar(id:string, usuario: {}, token:any): Observable<any> {
@@ -44,7 +45,8 @@ export class ApiUsuariosService {
     private httpClient: HttpClient
   ) { }
   
-  buscar_x_atributo(filtro:{}): Observable<any> {
-    return this.httpClient.get(`${this.url}`, { params: filtro });
+  buscar_x_atributo(filtro:{}, token:any): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.get(`${this.url}`, { params: filtro, headers: heads});
   }
 }

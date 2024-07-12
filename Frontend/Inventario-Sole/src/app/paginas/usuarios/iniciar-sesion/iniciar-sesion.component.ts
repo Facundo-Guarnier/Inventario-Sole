@@ -2,17 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiAuthService } from 'src/app/services/auth/api-auth.service';
 
+
 @Component({
   selector: 'pag-usuario-iniciar-sesion',
   templateUrl: './iniciar-sesion.component.html',
   styleUrls: ['./iniciar-sesion.component.css']
 })
+
 export class PagUsuarioIniciarSesionComponent implements OnInit {
-
-
+  
+  //! Datos
   alias: string = '';
   contra: string = '';
   errorMessage: string = '';
+  
+  //* ------------------------------------------------------------
   
   constructor(
     private authService: ApiAuthService, 
@@ -21,16 +25,17 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
   
   ngOnInit(): void {
   }
-
-  onSubmit() {
+  
+  //T* Funciones
+  //! Boton login
+  ingresar() {
     this.errorMessage = '';
     this.authService.login({ alias: this.alias, contraseña: this.contra }).subscribe(
       (response) => {
-        console.log('Login successful', response);
         if (response && response.access_token) {
           localStorage.setItem('token', response.access_token);
           this.router.navigate(['/ven']);
-
+          
         } else {
           this.errorMessage = 'Respuesta de login inválida';
         }
@@ -40,14 +45,5 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
         this.errorMessage = 'Usuario o contraseña incorrectos';
       }
     );
-  }
-
-  private decodeToken(token: string): any {
-    try {
-      return JSON.parse(atob(token.split('.')[1]));
-    } catch (e) {
-      console.error('Error decoding token', e);
-      return null;
-    }
   }
 }

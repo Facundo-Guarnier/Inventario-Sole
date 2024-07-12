@@ -5,25 +5,26 @@ import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiAuthService } from 'src/app/services/auth/api-auth.service';
 import { ApiUsuarioService, ApiUsuariosService } from 'src/app/services/usuarios/api-usuario.service';
 
+
 @Component({
   selector: 'pag-usuario-detalle-editar',
   templateUrl: './detalle-editar.component.html',
   styleUrls: ['./detalle-editar.component.css']
 })
+
 export class PagUsuarioDetalleEditarComponent implements OnInit {
-
+  
+  //! Ver los componentes hijos
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
-
-  alias = this.router.url.split("?")[0].split('/').pop();
   
   //! Datos
+  alias = this.router.url.split("?")[0].split('/').pop();
   titulo1 = "Detalle del usario";
   campos1: Campo[] = [
     { nombre: "Alias (no editable)", identificador: "alias", tipo: "readonly", valor: this.alias},
     { nombre: "Roles (obligatorio)", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User", "Ver y nada mas"]},
     { nombre: "Nueva contraseña (si no desea cambiarla deje el campo vacío)", identificador: "contraseña", tipo: "input-text"},
   ];
-  
   detalleUsuario: any[] = [];
   
   //! Modal
@@ -31,17 +32,20 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   tituloModal = "titulo";
   mensajeModal = "mensaje";
   
+  //* ------------------------------------------------------------
+  
   constructor(
     private apiUsuario: ApiUsuarioService,
     private apiUsuarios: ApiUsuariosService,
     private apiAuth: ApiAuthService,
     private router: Router,
   ) { }
-
+  
   ngOnInit(): void {
   }
-
+  
   //T* Funciones
+  //! Boton flotante
   clickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
     
@@ -65,18 +69,18 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
       }
     );
   }
-
+  
+  //! Modal
   openModal() {
     this.estaAbierto = true;
   }
-
   cerrarModal() {
     this.estaAbierto = false;
     this.router.navigate(['/usu']);
   }
-
+  
+  //! Recibir datos del componente hijo
   onDatosRecolectadosUsuario(datos: any[]) {
     this.detalleUsuario = datos;
   }
-  
 }

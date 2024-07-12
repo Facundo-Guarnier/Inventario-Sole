@@ -50,6 +50,7 @@ export class CompVentaListaProdComponent implements OnInit, OnChanges  {
     this.productos.splice(index, 1);
   }
 
+  //! Recolectar datos de los productos para componente padre
   recolectarDatos() {
     const datosRecolectados = this.productos.map((producto, index) => {
       const datosProducto: any = { ...producto };  // Comenzar con los datos existentes

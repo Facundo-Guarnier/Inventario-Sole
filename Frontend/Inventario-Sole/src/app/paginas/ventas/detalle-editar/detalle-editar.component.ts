@@ -15,11 +15,10 @@ import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
 
 export class PagVentasDetalleEditarComponent implements OnInit {
 
+  //! Ver los componentes hijos
   @ViewChild(CompVentaListaProdComponent) compVentaLista!: CompVentaListaProdComponent;
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
-
-  tituloGeneral: string = "Detalle de la venta";
-
+  
   //! Campos para el detalle de la venta
   titulo1 = "Detalle de la venta";
   campos1: Campo[] = [
@@ -31,7 +30,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
   detalleventa: any[] = [];
-
+  
   //! Campos para los productos de la venta
   titulo2 = "Productos";
   campos2: Campo[] = [
@@ -42,17 +41,20 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   ];
   productos: any[] = [];
   datosOriginalesProductos: any[] = [];
-
+  
   //! Para mostrar la opción de editar o no
   mostrarEditar: boolean = false;
-
+  tituloGeneral: string = "";
+  
+  //* ------------------------------------------------------------
+  
   constructor(
     private router: Router,
     private apiVenta: ApiVentaService,
     private route: ActivatedRoute,
     private jwtToken: JwtTokenService
   ) { }
-
+  
   ngOnInit(): void {
     //! Obtener parametro de "editar" la URL
     this.route.queryParams.subscribe(params => {
@@ -81,23 +83,24 @@ export class PagVentasDetalleEditarComponent implements OnInit {
         this.campos1[3].valor = datos["tienda"];
         this.campos1[4].valor = datos["metodo"];
         this.campos1[5].valor = datos["comentario"];
-
+        
         //! Productos de la venta
         this.datosOriginalesProductos = datos["productos"];
       },
-
+      
       (err: any) => {
         console.error('Error al buscar la venta:', err);
       }
     );
   } 
-
-  //! Funciones de los botones
+  
+  //T* Funciones
+  //! Boton flotante
   clickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
     this.compVentaLista.recolectarDatos();
   }
-
+  
   onDatosRecolectadosVenta(datos: any[]) {
     this.detalleventa = datos;
   }
@@ -105,5 +108,4 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   onDatosRecolectadosProductos(datos: any[]) {
     this.productos = datos;
   }
-
 }

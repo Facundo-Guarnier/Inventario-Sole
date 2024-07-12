@@ -32,6 +32,8 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   datos: any[] = [];
   
+  //* ------------------------------------------------------------
+  
   constructor(
     private router: Router,
     private apiVentas: ApiVentasService,
@@ -49,9 +51,9 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     });
   }
   
+  //T* Funciones
   //! Botones flotantes
   ClickAgregar(){
     this.router.navigate(['ven/crear']);
   };
-
 }

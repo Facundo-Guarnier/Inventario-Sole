@@ -5,46 +5,50 @@ import { ApiUsuarioService, ApiUsuariosService } from '../../../services/usuario
 import { ApiAuthService } from '../../../services/auth/api-auth.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'pag-usuario-crear',
   templateUrl: './crear.component.html',
   styleUrls: ['./crear.component.css']
 })
+
 export class PagUsuarioCrearComponent implements OnInit {
-
-  @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
-
   
-  //! Datos
+  //! Ver los componentes hijos
+  @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
+  
+  //! Datos para el detalle de la usuario
   titulo1 = "Detalle de la usuario";
   campos1: Campo[] = [
     { nombre: "Alias", identificador: "alias", tipo: "input-text" },
     { nombre: "Roles", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User", "Ver y nada mas"]},
     { nombre: "Contraseña", identificador: "contraseña", tipo: "input-text"},
   ];
-
   detalleUsuario: any[] = [];
-
+  
   //! Modal
   estaAbierto = false;
   tituloModal = "titulo";
   mensajeModal = "mensaje";
-
+  
+  //* ------------------------------------------------------------
+  
   constructor(
     private apiUsuario: ApiUsuarioService,
     private apiUsuarios: ApiUsuariosService,
     private apiAuth: ApiAuthService,
     private router: Router,
   ) { }
-
+  
   ngOnInit(): void {
   }
-
+  
   //T* Funciones
+  //! Boton flotante
   clickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
     console.log("Datos a enviar:", this.detalleUsuario);
-  
+    
     this.apiAuth.register(this.detalleUsuario).subscribe(
       (data: any) => {
         console.log("Respuesta del servidor:", data);
@@ -60,19 +64,18 @@ export class PagUsuarioCrearComponent implements OnInit {
       }
     );
   }
-
+  
+  //! Modal
   openModal() {
     this.estaAbierto = true;
   }
-
   cerrarModal() {
     this.estaAbierto = false;
     this.router.navigate(['/usu']);
   }
-
+  
+  //! Recibir datos del componente hijo
   onDatosRecolectadosUsuario(datos: any[]) {
     this.detalleUsuario = datos;
   }
-  
-
 }

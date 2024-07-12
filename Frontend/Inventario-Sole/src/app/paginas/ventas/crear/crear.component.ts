@@ -5,15 +5,20 @@ import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiVentasService } from 'src/app/services/ventas/api-venta.service';
 import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
 
+
 @Component({
   selector: 'pag-ventas-crear',
   templateUrl: './crear.component.html',
   styleUrls: ['./crear.component.css']
 })
+
 export class PagVentasCrearComponent implements OnInit {
+
+  //! Ver los componentes hijos
   @ViewChild(CompVentaListaProdComponent) compVentaLista!: CompVentaListaProdComponent;
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
-
+  
+  //! Campos para el detalle de la venta
   titulo1 = "Detalle de la venta";
   campos1: Campo[] = [
     { nombre: "Cliente", identificador: "cliente", tipo: "input-text" },
@@ -21,7 +26,9 @@ export class PagVentasCrearComponent implements OnInit {
     { nombre: "Método", identificador: "metodo", tipo: "textarea-text"},
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
-
+  detalleventa = {} ;
+  
+  //! Campos para los productos de la venta
   titulo2 = "Productos";
   campos2: Campo[] = [
     { nombre: "ID producto", identificador: "idProducto", tipo: "input-text" },
@@ -29,21 +36,20 @@ export class PagVentasCrearComponent implements OnInit {
     { nombre: "Precio", identificador: "precio", tipo: "input-number" },
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
-
   productos: any[] = [];
-  detalleventa = {} ;
-
+  
+  //* ------------------------------------------------------------
+  
   constructor(
     private apiVenta: ApiVentasService,
     private jwtToken: JwtTokenService,
   ) { }
-
+  
   ngOnInit(): void {
   }
-
+  
   //T* Funciones
-
-  //! Botones
+  //! Boton flotante
   clickAceptar() {
     //! Obtener los datos de los componentes hijos
     this.compDetalleNuevo.recolectarDatos();
@@ -52,7 +58,7 @@ export class PagVentasCrearComponent implements OnInit {
     //! Revisar si hay campos vacíos
     let optionalFields = ['comentario'];
     let venta_nueva = { 
-      "id": "AAFFF",  //TODO: generar automaticamnete en el backend
+      "id": "AAFFF",  //TODO: generar automáticamente en el backend
       "total": 100, //TODO: calcular el total
       ...this.detalleventa,
       "productos": this.productos 
@@ -63,9 +69,7 @@ export class PagVentasCrearComponent implements OnInit {
       
     }
     
-    console.log("Venta nueva:", venta_nueva);
-    
-    // //! Crear la venta
+    //! Crear la venta
     this.apiVenta.crear(venta_nueva, this.jwtToken.getToken()).subscribe(
       (res) => {
         console.log("Venta creada:", res);
@@ -77,20 +81,18 @@ export class PagVentasCrearComponent implements OnInit {
     
   }
   
+  //! Recolectar datos de los componentes hijos
   onDatosRecolectadosVenta(datos: {}) {
     this.detalleventa = datos;
   }
-  
   onDatosRecolectadosProductos(datos: any[]) {
     this.productos = datos;
   }
-  
   
   //! Revisar si hay campos vacíos
   isEmpty(value: any): boolean {
     return value === null || value === undefined || value === '' || (Array.isArray(value) && value.length === 0);
   }
-  
   hasEmptyFields(obj: any, optionalFields: string[] = []): boolean {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
@@ -127,6 +129,4 @@ export class PagVentasCrearComponent implements OnInit {
     }
     return false;
   }
-  
-  
 }
