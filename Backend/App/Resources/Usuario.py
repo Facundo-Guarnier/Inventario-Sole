@@ -7,7 +7,7 @@ from App.Models import UsuarioModel
 from App.Auth.Decorators import admin_required
 
 class Usuario(Resource):
-    # @jwt_required()
+    @jwt_required()
     def get(self, alias:str) -> dict:
         """
         Busca un usuario por su alias.
@@ -67,8 +67,8 @@ class Usuario(Resource):
             return {"msg": "Usuario actualizado"}, 200
         return {"msg": respuesta["respuesta"]}, 404
     
-    # @jwt_required()
-    # @admin_required
+    @jwt_required()
+    @admin_required
     def delete(self, alias:str) -> dict:
         """
         Elimina un usuario.
@@ -92,8 +92,8 @@ class Usuario(Resource):
 
 
 class Usuarios(Resource):
-    # @jwt_required()
-    # @admin_required
+    @jwt_required()
+    @admin_required
     def get(self) -> dict:
         """
         Busca todos los usuarios.

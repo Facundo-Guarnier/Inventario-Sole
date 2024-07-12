@@ -27,7 +27,7 @@ class Producto(Resource):
             return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    # @jwt_required()
+    @jwt_required()
     def put(self, id:str) -> dict:
         """
         Actualiza una producto.
@@ -84,7 +84,7 @@ class Producto(Resource):
             return ({"msg": "Producto actualizada"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
     
-    # @jwt_required()
+    @jwt_required()
     def delete(self, id:str) -> dict:
         """
         Elimina una producto.
@@ -116,7 +116,6 @@ class Productos(Resource):
         Busca productos en base a los atributos que se pasen.
         Sin atributos, devuelve todas las productos.
         """
-        # data = request.json
         data = request.args.to_dict()
         
         #! Validar data
@@ -173,7 +172,7 @@ class Productos(Resource):
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    # @jwt_required()
+    @jwt_required()
     def post(self) -> dict:
         """
         Crea una producto.

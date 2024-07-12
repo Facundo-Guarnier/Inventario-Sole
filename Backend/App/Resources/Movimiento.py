@@ -29,8 +29,8 @@ class Movimiento(Resource):
             return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    # @jwt_required()
-    # @admin_required
+    @jwt_required()
+    @admin_required
     def put(self, id:str) -> dict:
         """
         Actualiza un movimiento.
@@ -77,8 +77,8 @@ class Movimiento(Resource):
             return ({"msg": "Movimiento actualizado"}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    # @jwt_required
-    # @admin_required
+    @jwt_required
+    @admin_required
     def delete(self, id:str) -> dict:
         """
         Elimina un movimiento.
@@ -107,8 +107,6 @@ class Movimientos(Resource):
         Returns:
             - list: Movimientos encontrados
         """
-        
-        # data = request.json
         data = request.args.to_dict()
         
         #! Validar data: id, movimiento, id_producto, cantidad, vendedor, comentario, fecha
@@ -158,7 +156,7 @@ class Movimientos(Resource):
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
-    # @jwt_required()
+    @jwt_required()
     def post(self) -> dict:
         """
         Crea un movimiento.
