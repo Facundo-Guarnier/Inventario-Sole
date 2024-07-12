@@ -55,25 +55,20 @@ export class PagVentasDetalleEditarComponent implements OnInit {
 
   ngOnInit(): void {
     //! Obtener parametro de "editar" la URL
-    console.log("EDITAR1:", this.mostrarEditar)
     this.route.queryParams.subscribe(params => {
       this.mostrarEditar = params['editar'] === 'true'; //! Se compara con true porque originalmente es un string
     });
-    console.log("EDITAR2:", this.mostrarEditar)
     
     if (this.mostrarEditar === undefined) {
       this.mostrarEditar = true;
     }
-    console.log("EDITAR3:", this.mostrarEditar)
-
+    
     if (this.mostrarEditar) {
       this.tituloGeneral = "Editar detalle de la venta";
     } else {
       this.tituloGeneral = "Ver detalle de la venta";
     }
-
-    console.log("EDITAR4:", this.mostrarEditar)
-
+    
     //! Buscar la venta
     this.apiVenta.buscar_x_id(this.router.url.split("?")[0].split('/').pop()).subscribe(
       (res: any) => {
