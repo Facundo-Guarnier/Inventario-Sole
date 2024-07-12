@@ -19,3 +19,5 @@
 <app-comp-detalle-lateral
     *ngIf="mostrarDetalleLateral()"
 ></app-comp-detalle-lateral> 
+
+<button *ngIf="authService.isLoggedIn()" (click)="logout()" class="btn btn-danger">Cerrar sesión</button>
