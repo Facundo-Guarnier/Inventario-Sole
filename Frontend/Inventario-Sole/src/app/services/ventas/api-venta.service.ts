@@ -7,9 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: "root",
 })
 
-@Injectable({
-  providedIn: 'root'
-})
 export class ApiVentaService {
   url = "http://localhost:5000/api/venta"
   

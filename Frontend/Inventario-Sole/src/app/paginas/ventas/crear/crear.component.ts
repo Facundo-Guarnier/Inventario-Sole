@@ -4,6 +4,7 @@ import { CompVentaListaProdComponent } from 'src/app/componentes/comp-venta-list
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiVentasService } from 'src/app/services/ventas/api-venta.service';
 import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
+import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
 
 
 @Component({
@@ -20,7 +21,9 @@ export class PagVentasCrearComponent implements OnInit {
   
   //! Campos para el detalle de la venta
   titulo1 = "Detalle de la venta";
+  id = "";
   campos1: Campo[] = [
+    { nombre: "ID Venta", identificador: "idVenta", tipo: "readonly" },
     { nombre: "Cliente", identificador: "cliente", tipo: "input-text" },
     { nombre: "Tienda", identificador: "tienda", tipo: "selector", opciones: ["Fisica", "Online"] },
     { nombre: "Método", identificador: "metodo", tipo: "textarea-text"},
@@ -43,9 +46,20 @@ export class PagVentasCrearComponent implements OnInit {
   constructor(
     private apiVenta: ApiVentasService,
     private jwtToken: JwtTokenService,
+    private ultimasIDs: UltimasIDsService,
   ) { }
   
   ngOnInit(): void {
+    //! Buscar id
+    this.ultimasIDs.buscar_proxima_id("venta", this.jwtToken.getToken()).subscribe(
+      (id) => {
+        this.id = id;
+        this.campos1[0].valor = this.id;
+      },
+      (err) => {
+        console.error("Error al buscar la última ID:", err);
+      }
+    );
   }
   
   //T* Funciones
@@ -58,7 +72,6 @@ export class PagVentasCrearComponent implements OnInit {
     //! Revisar si hay campos vacíos
     let optionalFields = ['comentario'];
     let venta_nueva = { 
-      "id": "AAFFF",  //TODO: generar automáticamente en el backend
       "total": 100, //TODO: calcular el total
       ...this.detalleventa,
       "productos": this.productos 
@@ -66,7 +79,6 @@ export class PagVentasCrearComponent implements OnInit {
     
     if (this.hasEmptyFields(venta_nueva, optionalFields)) {
       console.error("Hay campos vacíos.");
-      
     }
     
     //! Crear la venta
@@ -78,7 +90,6 @@ export class PagVentasCrearComponent implements OnInit {
         console.error("Error al crear la venta:", err);
       }
     );
-    
   }
   
   //! Recolectar datos de los componentes hijos
