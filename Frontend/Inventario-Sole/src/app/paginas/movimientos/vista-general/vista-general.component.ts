@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiMovimientoService, ApiMovimientosService } from 'src/app/services/movimientos/api-movimiento.service';
 
 @Component({
   selector: 'pag-movimientos-vista-general',
@@ -11,12 +12,12 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   pagActual = 'mov';
 
   columnas = [
-    { nombre: 'Movimiento', identificador: "", tipo: 'text' },
-    { nombre: 'Fecha', identificador: "", tipo: 'date' },
-    { nombre: "Producto ID", identificador: "", tipo: "text" },
-    { nombre: "Cantidad", identificador: "", tipo: "number" },
-    { nombre: "Vendedor", identificador: "", tipo: "text" },
-    { nombre: "Comentario", identificador: "", tipo: "text" },
+    { nombre: 'Movimiento', identificador: "movimiento", tipo: 'text' },
+    { nombre: "Producto ID", identificador: "idProducto", tipo: "text" },
+    { nombre: 'Fecha', identificador: "fecha", tipo: 'date' },
+    { nombre: "Cantidad", identificador: "cantidad", tipo: "number" },
+    { nombre: "Vendedor", identificador: "vendedor", tipo: "text" },
+    { nombre: "Comentario", identificador: "comentario", tipo: "text" },
   ];
 
   acciones = {
@@ -25,52 +26,29 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
     detalle: false
   }
   
-  datos: any[] = [
-    {
-      "Movimiento": "Entrada",
-      "Fecha": "2021-10-01",
-      "Producto ID": "AB12C",
-      "Cantidad": 2,
-      "Vendedor": "Chica 1",
-      "Comentario": "Compra de 1 unidad"
-    },
-    {
-      "Movimiento": "Salida",
-      "Fecha": "2021-10-02",
-      "Producto ID": "AB12D",
-      "Cantidad": 3,
-      "Vendedor": "Chica 1",
-      "Comentario": "Venta de 3 unidades"
-    },
-    {
-      "Movimiento": "Entrada",
-      "Fecha": "2021-10-03",
-      "Producto ID": "AB12E",
-      "Cantidad": 1,
-      "Vendedor": "Chica 2",
-      "Comentario": "Compra de 1 unidad"
-    },
-    {
-      "Movimiento": "Salida",
-      "Fecha": "2021-10-04",
-      "Producto ID": "AB12F",
-      "Cantidad": 4,
-      "Vendedor": "Chica 1",
-      "Comentario": "Venta de 4 unidades"
-    }
-    
-  ];
+  datos: any[] = [];
 
-
+  constructor(
+    private router: Router,
+    private apiMovimientos: ApiMovimientosService,
+    private apiMovimiento: ApiMovimientoService,
+  ) { }
+  
+  ngOnInit(): void {
+    //! Cargar todos los movimientos
+    this.apiMovimientos.buscar_x_atributo({}).subscribe(
+      (data: any) => {
+        this.datos = data["msg"];
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+  }
+  
+  //T* Funciones
+  //! Botones
   ClickAgregar(){
     this.router.navigate(['mov/crear']);
   }
-
-  constructor(
-    private router: Router
-  ) { }
-
-  ngOnInit(): void {
-  }
-
 }

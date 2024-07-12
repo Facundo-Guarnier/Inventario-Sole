@@ -17,7 +17,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   //! Tabla de datos
   acciones = {
     editar: true,
-    eliminar: true,
+    eliminar: false,
     detalle: true
   }
   
