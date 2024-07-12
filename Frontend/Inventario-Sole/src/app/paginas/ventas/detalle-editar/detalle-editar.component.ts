@@ -115,7 +115,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   clickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
     this.compVentaLista.recolectarDatos();
-
+    
     //! Revisar si hay campos vacíos
     let optionalFields = ['comentario'];
     let venta_nueva = { 
@@ -150,6 +150,31 @@ export class PagVentasDetalleEditarComponent implements OnInit {
         console.error("Error en la solicitud:", error);
         this.tituloModal = "Error al actualizar la venta"
         this.mensajeModal = "No se pudo actualizar la venta. Revise los campos e intenta de nuevo."
+        this.openModal()
+      }
+    );
+  }
+  clickCancelar() {
+    this.router.navigate(['/ven']);
+  }
+  clickBorrar() {
+    let id = this.router.url.split("?")[0].split('/').pop()
+    if (id === undefined) {
+      return;
+    }
+    
+    this.apiVenta.eliminar(id, this.authService.getToken()).subscribe(
+      (data: any) => {
+        console.log("Respuesta del servidor:", data);
+        this.tituloModal = "Venta eliminada"
+        this.mensajeModal = "La venta ha sido eliminada correctamente."
+        this.redireccionar = true;
+        this.openModal()
+      },
+      (error) => {
+        console.error("Error en la solicitud:", error);
+        this.tituloModal = "Error al eliminar la venta"
+        this.mensajeModal = "No se pudo eliminar la venta. Revise los campos e intenta de nuevo."
         this.openModal()
       }
     );
