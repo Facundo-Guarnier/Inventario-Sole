@@ -9,7 +9,7 @@ class UltimaID(Resource):
     @jwt_required()
     def get(self, coleccion:str) -> dict:
         """
-        Busca el último ID de una colección.
+        Busca la proxima ID de una colección.
         
         Args:
             - coleccion (str): Nombre de la colección
@@ -21,14 +21,8 @@ class UltimaID(Resource):
         if not coleccion:
             return ({"msg": "Faltan datos"}), 400
         
-        respuesta = UltimaIDModel.buscar_id(coleccion)
-        if respuesta["estado"]:
-            if respuesta["respuesta"] is None:
-                return (f"ID de '{coleccion}' no encontrada"), 404
-            else:
-                return respuesta['respuesta']['id'], 200
-        else:
-            return ({"msg": respuesta["respuesta"]}), 500
+        return UltimaID.calcular_proximo_id(coleccion)
+        
     
     @jwt_required()
     def put(self, coleccion:str) -> dict:
