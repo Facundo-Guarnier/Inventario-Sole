@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiAuthService } from '../../services/auth/api-auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-comp-navbar',
@@ -11,11 +11,11 @@ export class CompNavbarComponent implements OnInit {
 
   pagActual: string = '';
 
-  admin: boolean = this.authServiceService.isAdmin();
+  admin: boolean = this.authService.isAdmin();
 
   constructor(
     private router: Router,
-    private authServiceService: ApiAuthService
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {

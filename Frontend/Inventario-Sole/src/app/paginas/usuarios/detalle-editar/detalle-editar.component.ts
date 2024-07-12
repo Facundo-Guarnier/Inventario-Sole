@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompDetalleNuevoGenericoComponent } from 'src/app/componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
-import { ApiAuthService } from 'src/app/services/auth/api-auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiUsuarioService, ApiUsuariosService } from 'src/app/services/usuarios/api-usuario.service';
 
 
@@ -37,7 +37,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   constructor(
     private apiUsuario: ApiUsuarioService,
     private apiUsuarios: ApiUsuariosService,
-    private apiAuth: ApiAuthService,
+    private authService: AuthService,
     private router: Router,
   ) { }
   

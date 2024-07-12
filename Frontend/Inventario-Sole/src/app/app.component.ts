@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
-import { ApiAuthService } from './services/auth/api-auth.service'; 
+import { AuthService } from './services/auth/auth.service'; 
 
 
 @Component({
@@ -12,12 +12,12 @@ import { ApiAuthService } from './services/auth/api-auth.service';
 
 export class AppComponent implements OnInit {
   title = 'Inventario-Sole';
-  constructor(private apiAuthService: ApiAuthService) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     // Verifica el token cada minuto
     interval(60000).subscribe(() => {
-      this.apiAuthService.checkTokenExpiration();
+      this.authService.checkTokenExpiration();
     });
   }
 }

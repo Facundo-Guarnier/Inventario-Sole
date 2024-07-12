@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CompDetalleNuevoGenericoComponent } from 'src/app/componentes/comp-detalle-nuevo-generico/comp-detalle-nuevo-generico.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiUsuarioService, ApiUsuariosService } from '../../../services/usuarios/api-usuario.service';
-import { ApiAuthService } from '../../../services/auth/api-auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 
 
@@ -36,7 +36,7 @@ export class PagUsuarioCrearComponent implements OnInit {
   constructor(
     private apiUsuario: ApiUsuarioService,
     private apiUsuarios: ApiUsuariosService,
-    private apiAuth: ApiAuthService,
+    private authService: AuthService,
     private router: Router,
   ) { }
   
@@ -49,7 +49,7 @@ export class PagUsuarioCrearComponent implements OnInit {
     this.compDetalleNuevo.recolectarDatos();
     console.log("Datos a enviar:", this.detalleUsuario);
     
-    this.apiAuth.register(this.detalleUsuario).subscribe(
+    this.authService.register(this.detalleUsuario).subscribe(
       (data: any) => {
         console.log("Respuesta del servidor:", data);
         this.tituloModal = "Usuario creado"

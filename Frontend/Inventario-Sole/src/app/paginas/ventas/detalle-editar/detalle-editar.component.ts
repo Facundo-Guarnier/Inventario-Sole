@@ -4,7 +4,7 @@ import { CompDetalleNuevoGenericoComponent } from 'src/app/componentes/comp-deta
 import { CompVentaListaProdComponent } from 'src/app/componentes/comp-venta-lista-prod/comp-venta-lista-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiVentaService } from 'src/app/services/ventas/api-venta.service';
-import { ApiAuthService } from 'src/app/services/auth/api-auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
@@ -52,7 +52,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     private router: Router,
     private apiVenta: ApiVentaService,
     private route: ActivatedRoute,
-    private authService: ApiAuthService
+    private authService: AuthService
   ) { }
   
   ngOnInit(): void {

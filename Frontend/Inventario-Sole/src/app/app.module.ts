@@ -54,7 +54,7 @@ import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-edi
 import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
 import { CompNotificacionComponent } from './componentes/comp-notificacion/comp-notificacion.component';
 import { PagUsuarioIniciarSesionComponent } from './paginas/usuarios/iniciar-sesion/iniciar-sesion.component';
-import { ApiAuthService } from './services/auth/api-auth.service';
+import { AuthService } from './services/auth/auth.service';
 import { JwtModule } from '@auth0/angular-jwt';
 
 // Función para obtener el token del localStorage
@@ -131,7 +131,7 @@ export function tokenGetter() {
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    ApiAuthService,
+    AuthService,
   ],
   bootstrap: [AppComponent]
 })

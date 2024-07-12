@@ -4,7 +4,7 @@ import { CompVentaListaProdComponent } from 'src/app/componentes/comp-venta-list
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiVentasService } from 'src/app/services/ventas/api-venta.service';
 import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
-import { ApiAuthService } from 'src/app/services/auth/api-auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
@@ -45,7 +45,7 @@ export class PagVentasCrearComponent implements OnInit {
   
   constructor(
     private apiVenta: ApiVentasService,
-    private authService: ApiAuthService,
+    private authService: AuthService,
     private ultimasIDs: UltimasIDsService,
   ) { }
   

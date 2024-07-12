@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiUsuariosService } from '../../../services/usuarios/api-usuario.service';
-import { ApiAuthService } from '../../../services/auth/api-auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 
 @Component({
@@ -29,7 +29,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   constructor(
     private router: Router,
     private apiUsuarios: ApiUsuariosService,
-    private authService: ApiAuthService,
+    private authService: AuthService,
   ) { }
   
   ngOnInit(): void {

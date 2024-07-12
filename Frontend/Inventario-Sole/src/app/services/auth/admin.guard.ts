@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ApiAuthService } from './api-auth.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate {
   constructor(
-    private authService: ApiAuthService, 
+    private authService: AuthService, 
     private router: Router
   ) {}
 
   canActivate(): boolean {
-    console.log("ESTA logeado?:", this.authService.isLoggedIn());
-    console.log("Es admin?:", this.authService.isAdmin());
-
     if (this.authService.isLoggedIn() && this.authService.isAdmin()) {
       return true;
     } else {

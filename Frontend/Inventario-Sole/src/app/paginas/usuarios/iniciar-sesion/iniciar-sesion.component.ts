@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiAuthService } from 'src/app/services/auth/api-auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
   //* ------------------------------------------------------------
   
   constructor(
-    private authService: ApiAuthService, 
+    private authService: AuthService, 
     private router: Router,
   ) {}
   
