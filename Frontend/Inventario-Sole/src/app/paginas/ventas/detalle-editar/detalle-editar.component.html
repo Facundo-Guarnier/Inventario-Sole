@@ -44,10 +44,20 @@
     </div>
 </div>
 
+<!--! Botones flotantes  -->
 <app-comp-botones-flotantes 
-    [mostrarAceptar]="true"
-    [mostrarCancelar]="true"
-    [mostrarBorrar]="true"
+    [mostrarAceptar]="mostrarAceptar"
+    [mostrarCancelar]="mostrarCancelar"
+    [mostrarBorrar]="mostrarBorrar"
     (clickAceptar)="clickAceptar()"
 >
 </app-comp-botones-flotantes>
+
+<!--! Modal  -->
+<app-comp-notificacion 
+    [estaAbierto]="estaAbierto" 
+    [titulo]="tituloModal" 
+    [mensaje]="mensajeModal"
+    (cerrarModal)="cerrarModal()">
+    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+</app-comp-notificacion>

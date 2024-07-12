@@ -27,6 +27,7 @@ export class PagVentasCrearComponent implements OnInit {
     { nombre: "ID Venta", identificador: "idVenta", tipo: "readonly" },
     { nombre: "Cliente", identificador: "cliente", tipo: "input-text" },
     { nombre: "Tienda", identificador: "tienda", tipo: "selector", opciones: ["Fisica", "Online"] },
+    { nombre: "Total", identificador: "total", tipo: "input-number"},
     { nombre: "Método", identificador: "metodo", tipo: "textarea-text"},
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
@@ -84,7 +85,6 @@ export class PagVentasCrearComponent implements OnInit {
       ...this.detalleventa,
       "productos": this.productos 
     };
-    
     
     if (this.hasEmptyFields(venta_nueva, optionalFields) || this.productos.length === 0) {
       this.tituloModal = "Error al crear la venta"

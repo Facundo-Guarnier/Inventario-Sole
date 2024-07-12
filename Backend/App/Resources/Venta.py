@@ -44,7 +44,7 @@ class Venta(Resource):
             return ({"msg": "Falta el ID"}), 400
         
         #! Buscar si existe la venta
-        venta = VentaModel.buscar_x_id(id)
+        venta = VentaModel.buscar_x_atributo({"id": id})
         if not venta["estado"]:
             return ({"msg": venta["respuesta"]}), 404
         if venta["respuesta"] == None:

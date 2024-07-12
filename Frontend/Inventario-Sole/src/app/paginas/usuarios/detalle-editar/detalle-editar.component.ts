@@ -31,6 +31,12 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   estaAbierto = false;
   tituloModal = "titulo";
   mensajeModal = "mensaje";
+  redireccionar: boolean = false;
+  
+  //! Botones flotantes
+  mostrarBorrar = true;
+  mostrarAceptar = true;
+  mostrarCancelar = true;
   
   //* ------------------------------------------------------------
   
@@ -59,6 +65,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
         console.log("Respuesta del servidor:", data);
         this.tituloModal = "Usuario editado"
         this.mensajeModal = "El usuario ha sido editado correctamente"
+        this.redireccionar = true;
         this.openModal()
       },
       (error) => {
@@ -76,7 +83,9 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   }
   cerrarModal() {
     this.estaAbierto = false;
-    this.router.navigate(['/usu']);
+    if (this.redireccionar) {
+      this.router.navigate(['/usu']);
+    }
   }
   
   //! Recibir datos del componente hijo

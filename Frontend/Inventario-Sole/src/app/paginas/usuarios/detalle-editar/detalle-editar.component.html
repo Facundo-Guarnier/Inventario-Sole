@@ -24,15 +24,16 @@
                     ></app-comp-detalle-nuevo-generico>
                 </div>
             </div>
-
+            
         </div>
     
     </div>
 </div>
 
 <app-comp-botones-flotantes 
-    [mostrarAceptar]="true"
-    [mostrarCancelar]="true"
+    [mostrarAceptar]="mostrarAceptar"
+    [mostrarCancelar]="mostrarCancelar"
+    [mostrarBorrar]="mostrarBorrar"
     (clickAceptar)="clickAceptar()"
 >
 </app-comp-botones-flotantes>
