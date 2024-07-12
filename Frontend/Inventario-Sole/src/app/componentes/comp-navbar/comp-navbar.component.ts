@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
+import { ApiAuthService } from '../../services/auth/api-auth.service';
 
 @Component({
   selector: 'app-comp-navbar',
@@ -11,11 +11,11 @@ export class CompNavbarComponent implements OnInit {
 
   pagActual: string = '';
 
-  admin: boolean = this.jwtTokenService.isAdmin();
+  admin: boolean = this.authServiceService.isAdmin();
 
   constructor(
     private router: Router,
-    private jwtTokenService: JwtTokenService
+    private authServiceService: ApiAuthService
   ) { }
 
   ngOnInit(): void {

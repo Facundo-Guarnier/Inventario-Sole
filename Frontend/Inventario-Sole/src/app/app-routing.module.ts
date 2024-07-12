@@ -31,39 +31,44 @@ import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-genera
 import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
 import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-editar/detalle-editar.component';
 import { PagUsuarioIniciarSesionComponent } from './paginas/usuarios/iniciar-sesion/iniciar-sesion.component';
+import { AuthGuard } from './services/auth/auth.guard';
+import { AdminGuard } from './services/auth/admin.guard';
 
 const routes: Routes = [
-  { path: '', component: PagUsuarioIniciarSesionComponent,  pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
 
-  { path: 'ven', component: PagVentasVistaGeneralComponent},
-  { path: 'ven/crear', component: PagVentasCrearComponent},
-  { path: 'ven/detalle-editar/:id', component: PagVentasDetalleEditarComponent},
+  { path: 'login', component: PagUsuarioIniciarSesionComponent},
+
+  { path: 'ven', component: PagVentasVistaGeneralComponent, canActivate: [AuthGuard]},
+  { path: 'ven/crear', component: PagVentasCrearComponent, canActivate: [AuthGuard]},
+  { path: 'ven/detalle-editar/:id', component: PagVentasDetalleEditarComponent, canActivate: [AuthGuard]},
   
-  { path: 'tf', component: PagTiendaFisicaVistaGeneralComponent},
-  { path: 'tf/revisar-stock', component: PagTiendaFisicaRevisarStockComponent},
+  { path: 'tf', component: PagTiendaFisicaVistaGeneralComponent, canActivate: [AuthGuard]},
+  { path: 'tf/revisar-stock', component: PagTiendaFisicaRevisarStockComponent, canActivate: [AuthGuard]},
 
-  { path: 'to', component: PagTiendaOnlineVistaGeneralComponent},
-  { path: 'to/revisar-stock', component: PagTiendaOnlineRevisarStockComponent},
+  { path: 'to', component: PagTiendaOnlineVistaGeneralComponent, canActivate: [AuthGuard]},
+  { path: 'to/revisar-stock', component: PagTiendaOnlineRevisarStockComponent, canActivate: [AuthGuard]},
 
-  { path: 'prod/crear', component: PagProductosCrearComponent},
-  { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent},
+  { path: 'prod/crear', component: PagProductosCrearComponent, canActivate: [AuthGuard]},
+  { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent, canActivate: [AuthGuard]},
 
-  { path: "mov", component: PagMovimientosVistaGeneralComponent},
-  { path: "mov/crear", component: PagMovimientosCrearComponent},
+  { path: "mov", component: PagMovimientosVistaGeneralComponent, canActivate: [AuthGuard]},
+  { path: "mov/crear", component: PagMovimientosCrearComponent, canActivate: [AuthGuard]},
   // { path: "mov/detalle", component: PagMovimientosDetalleComponent}, //* No se necesita crear un componente para el detalle de movimientos, creo que es redundante
 
-  { path: "reg", component: PagRegalosVistaGeneralComponent},
-  { path: "reg/crear", component: PagRegalosCrearComponent},
-  { path: "reg/detalle-editar/:id", component: PagRegalosDetalleEditarComponent},
+  { path: "reg", component: PagRegalosVistaGeneralComponent, canActivate: [AuthGuard]},
+  { path: "reg/crear", component: PagRegalosCrearComponent, canActivate: [AuthGuard]},
+  { path: "reg/detalle-editar/:id", component: PagRegalosDetalleEditarComponent, canActivate: [AuthGuard]},
 
-  { path: "gc", component: PagGiftCardsVistaGeneralComponent},
-  { path: "gc/crear", component: PagGiftCardsCrearComponent},
-  { path: "gc/detalle-editar/:id", component: PagGiftCardsDetalleEditarComponent},
+  { path: "gc", component: PagGiftCardsVistaGeneralComponent, canActivate: [AuthGuard]},
+  { path: "gc/crear", component: PagGiftCardsCrearComponent, canActivate: [AuthGuard]},
+  { path: "gc/detalle-editar/:id", component: PagGiftCardsDetalleEditarComponent, canActivate: [AuthGuard]},
 
-  { path: "usu", component: PagUsuarioVistaGeneralComponent},
-  { path: "usu/crear", component: PagUsuarioCrearComponent},
-  { path: "usu/detalle-editar/:alias", component: PagUsuarioDetalleEditarComponent},
+  { path: "usu", component: PagUsuarioVistaGeneralComponent, canActivate: [AuthGuard, AdminGuard]},
+  { path: "usu/crear", component: PagUsuarioCrearComponent, canActivate: [AuthGuard, AdminGuard]},
+  { path: "usu/detalle-editar/:alias", component: PagUsuarioDetalleEditarComponent, canActivate: [AuthGuard, AdminGuard]},
 
+  { path: '**', redirectTo: '/mov' }
 ];
 
 @NgModule({

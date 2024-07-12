@@ -3,8 +3,8 @@ import { CompDetalleNuevoGenericoComponent } from 'src/app/componentes/comp-deta
 import { CompVentaListaProdComponent } from 'src/app/componentes/comp-venta-lista-prod/comp-venta-lista-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiVentasService } from 'src/app/services/ventas/api-venta.service';
-import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
 import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
+import { ApiAuthService } from 'src/app/services/auth/api-auth.service';
 
 
 @Component({
@@ -45,13 +45,13 @@ export class PagVentasCrearComponent implements OnInit {
   
   constructor(
     private apiVenta: ApiVentasService,
-    private jwtToken: JwtTokenService,
+    private authService: ApiAuthService,
     private ultimasIDs: UltimasIDsService,
   ) { }
   
   ngOnInit(): void {
     //! Buscar id
-    this.ultimasIDs.buscar_proxima_id("venta", this.jwtToken.getToken()).subscribe(
+    this.ultimasIDs.buscar_proxima_id("venta", this.authService.getToken()).subscribe(
       (id) => {
         this.id = id;
         this.campos1[0].valor = this.id;
@@ -82,7 +82,7 @@ export class PagVentasCrearComponent implements OnInit {
     }
     
     //! Crear la venta
-    this.apiVenta.crear(venta_nueva, this.jwtToken.getToken()).subscribe(
+    this.apiVenta.crear(venta_nueva, this.authService.getToken()).subscribe(
       (res) => {
         console.log("Venta creada:", res);
       },

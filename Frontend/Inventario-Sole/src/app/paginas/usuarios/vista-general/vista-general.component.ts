@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiUsuariosService } from '../../../services/usuarios/api-usuario.service';
-import { JwtTokenService } from 'src/app/services/auth/jwt-token.service';
+import { ApiAuthService } from '../../../services/auth/api-auth.service';
 
 
 @Component({
@@ -29,11 +29,11 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   constructor(
     private router: Router,
     private apiUsuarios: ApiUsuariosService,
-    private jwtToken: JwtTokenService,
+    private authService: ApiAuthService,
   ) { }
   
   ngOnInit(): void {
-    this.apiUsuarios.buscar_x_atributo({}, this.jwtToken.getToken()).subscribe({
+    this.apiUsuarios.buscar_x_atributo({}, this.authService.getToken()).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
       },
