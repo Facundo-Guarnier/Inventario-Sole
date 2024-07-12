@@ -30,6 +30,7 @@ export class PagUsuarioCrearComponent implements OnInit {
   estaAbierto = false;
   tituloModal = "titulo";
   mensajeModal = "mensaje";
+  redireccionar: boolean = false;
   
   //* ------------------------------------------------------------
   
@@ -47,19 +48,19 @@ export class PagUsuarioCrearComponent implements OnInit {
   //! Boton flotante
   clickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
-    console.log("Datos a enviar:", this.detalleUsuario);
     
     this.authService.register(this.detalleUsuario).subscribe(
       (data: any) => {
         console.log("Respuesta del servidor:", data);
         this.tituloModal = "Usuario creado"
-        this.mensajeModal = "El usuario ha sido creado correctamente"
+        this.mensajeModal = "El usuario ha sido creado correctamente."
+        this.redireccionar = true;
         this.openModal()
       },
       (error) => {
         console.error("Error en la solicitud:", error);
         this.tituloModal = "Error al crear el usuario"
-        this.mensajeModal = "No se pudo crear el usuario"
+        this.mensajeModal = "No se pudo crear el usuario. Revise los campos e intenta de nuevo."
         this.openModal()
       }
     );
@@ -71,7 +72,9 @@ export class PagUsuarioCrearComponent implements OnInit {
   }
   cerrarModal() {
     this.estaAbierto = false;
-    this.router.navigate(['/usu']);
+    if (this.redireccionar) {
+      this.router.navigate(['/usu']);
+    }
   }
   
   //! Recibir datos del componente hijo

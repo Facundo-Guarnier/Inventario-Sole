@@ -5,6 +5,7 @@ import { Campo } from 'src/app/interfaces/campo.interface';
 import { ApiVentasService } from 'src/app/services/ventas/api-venta.service';
 import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -41,12 +42,19 @@ export class PagVentasCrearComponent implements OnInit {
   ];
   productos: any[] = [];
   
+  //! Modal
+  estaAbierto = false;
+  tituloModal = "titulo";
+  mensajeModal = "mensaje";
+  redireccionar: boolean = false;
+
   //* ------------------------------------------------------------
   
   constructor(
     private apiVenta: ApiVentasService,
     private authService: AuthService,
     private ultimasIDs: UltimasIDsService,
+    private router: Router,
   ) { }
   
   ngOnInit(): void {
@@ -77,19 +85,34 @@ export class PagVentasCrearComponent implements OnInit {
       "productos": this.productos 
     };
     
-    if (this.hasEmptyFields(venta_nueva, optionalFields)) {
+    
+    if (this.hasEmptyFields(venta_nueva, optionalFields) || this.productos.length === 0) {
+      this.tituloModal = "Error al crear la venta"
+      this.mensajeModal = "No se pudo crear la venta. Revise los campos e intente de nuevo."
+      this.openModal()
       console.error("Hay campos vacíos.");
+      return;
     }
     
     //! Crear la venta
     this.apiVenta.crear(venta_nueva, this.authService.getToken()).subscribe(
       (res) => {
         console.log("Venta creada:", res);
+        this.tituloModal = "Venta creada"
+        this.mensajeModal = "La venta ha sido creado correctamente."
+        this.redireccionar = true;
+        this.openModal()
       },
       (err) => {
         console.error("Error al crear la venta:", err);
+        this.tituloModal = "Error al crear la venta"
+        this.mensajeModal = "No se pudo crear la venta. Revise los campos e intente de nuevo."
+        this.openModal()
       }
     );
+  }
+  clickCancelar() {
+    this.router.navigate(['/ven']);
   }
   
   //! Recolectar datos de los componentes hijos
@@ -139,5 +162,16 @@ export class PagVentasCrearComponent implements OnInit {
       }
     }
     return false;
+  }
+  
+  //! Modal
+  openModal() {
+    this.estaAbierto = true;
+  }
+  cerrarModal() {
+    this.estaAbierto = false;
+    if (this.redireccionar) {
+      this.router.navigate(['/ven']);
+    }
   }
 }
