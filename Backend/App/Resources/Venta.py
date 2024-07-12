@@ -190,7 +190,7 @@ class Ventas(Resource):
         
         respuesta = VentaModel.crear(
             {
-                "id": UltimaIDResource.calcular_proximo_id("venta"), #*+++++
+                "id": UltimaID.calcular_proximo_id("venta"), #*+++++
                 "cliente": cliente,
                 "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
                 "total": total,
