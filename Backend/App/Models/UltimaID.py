@@ -14,8 +14,6 @@ class UltimaID:
         Returns:
             - dict: ID encontrado
         """
-        print(coleccion)
-        print(json.loads(json_util.dumps(db_mongo.db.ultimasIDs.find_one({"coleccion": coleccion}))))
         try:
             return {
                 "estado": True,
