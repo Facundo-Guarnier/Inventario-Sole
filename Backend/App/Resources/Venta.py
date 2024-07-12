@@ -20,7 +20,6 @@ class Venta(Resource):
         if not id:
             return ({"msg": "Falta el ID"}), 400
         
-        # respuesta = VentaModel.buscar_x_id(id)
         respuesta = VentaModel.buscar_x_atributo({"id": id})
         if respuesta["estado"]: #! Sin error con la DB
             if respuesta["respuesta"] == None:  #! No se encontró la venta
@@ -45,7 +44,9 @@ class Venta(Resource):
         
         #! Buscar si existe la venta
         venta = VentaModel.buscar_x_id(id)
-        if not venta:
+        if not venta["estado"]:
+            return ({"msg": venta["respuesta"]}), 404
+        if venta["respuesta"] == None:
             return ({"msg": "No se encontró la venta"}), 404
         
         #! Obtener datos a actualizar
@@ -94,7 +95,9 @@ class Venta(Resource):
         
         #! Buscar si existe la venta
         venta = VentaModel.buscar_x_atributo({"id": id})
-        if not venta:
+        if not venta["estado"]:
+            return ({"msg": venta["respuesta"]}), 404
+        if venta["respuesta"] == None:
             return ({"msg": "No se encontró la venta"}), 404
         
         #! Eliminar venta
@@ -112,7 +115,7 @@ class Ventas(Resource):
         """
         data = request.args.to_dict()
         
-        #! Validar data: id, Cliente, Fecha, Total, Tienda, Metodo de pago, Productos
+        #! Validar data
         id = data.get("id")
         cliente = data.get("cliente")
         fecha = data.get("fecha")
