@@ -6,7 +6,7 @@ from App.Models import UltimaIDModel
 
 class UltimaID(Resource):
     
-    # @jwt_required()
+    @jwt_required()
     def get(self, coleccion:str) -> dict:
         """
         Busca el último ID de una colección.
@@ -30,7 +30,7 @@ class UltimaID(Resource):
         else:
             return ({"msg": respuesta["respuesta"]}), 500
     
-    # @jwt_required()
+    @jwt_required()
     def put(self, coleccion:str) -> dict:
         """
         Actualiza el último ID de una colección.
@@ -56,6 +56,26 @@ class UltimaID(Resource):
                 return {"msg": f"ID de la colección: {coleccion} actualizado a {nuevo_id}"}, 200
         else:
             return ({"msg": respuesta["respuesta"]}), 500
+    
+    @staticmethod
+    def calcular_proximo_id(coleccion:str) -> str:
+        """
+        Calcula el próximo ID de una colección.
+        
+        Args:
+            - coleccion (str): Nombre de la colección
+        
+        Returns:
+            - str: Próximo ID
+        """
+        respuesta = UltimaIDModel.buscar_id(coleccion)
+        if respuesta["estado"]:
+            if respuesta["respuesta"] is None:
+                return ""
+            else:
+                return increment_id(respuesta['respuesta']['id'])
+        else:
+            return ""
 
 
 def base36_decode(s:str) -> int:

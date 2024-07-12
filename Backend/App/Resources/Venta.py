@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from App.Models import VentaModel
+from App.Resources import UltimaIDResource
 
 
 class Venta(Resource):
@@ -108,6 +109,9 @@ class Venta(Resource):
 
 
 class Ventas(Resource):
+    def __init__(self):
+        self.ultima_id_resource = UltimaIDResource()
+    
     def get(self) -> list:
         """
         Busca ventas en base a los atributos que se pasen.
@@ -171,15 +175,13 @@ class Ventas(Resource):
         """
         data = request.json
         
-        id = data.get("id")
         cliente = data.get("cliente")
         total = data.get("total")
         tienda = data.get("tienda")
         metodo_pago = data.get("metodo")
         productos = data.get("productos")
         
-        if not id or \
-        not cliente or \
+        if not cliente or \
         not total or \
         not tienda or \
         not metodo_pago or \
@@ -188,7 +190,7 @@ class Ventas(Resource):
         
         respuesta = VentaModel.crear(
             {
-                "id": id,
+                "id": UltimaIDResource.calcular_proximo_id("venta"), #*+++++
                 "cliente": cliente,
                 "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
                 "total": total,
@@ -198,5 +200,9 @@ class Ventas(Resource):
             }
         )
         if respuesta["estado"]:
-            return ({"msg": "Venta creada con éxito"}), 201
+            if respuesta["respuesta"] == None:
+                return ({"msg": "Error al crear la venta"}), 400
+            else:
+                self.ultima_id_resource.put("venta")        #*+++++
+                return ({"msg": "Venta creada con éxito"}), 201
         return ({"msg": respuesta["respuesta"]}), 400
