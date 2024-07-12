@@ -76,6 +76,8 @@ def create_app(config_class=Config):
     api.add_resource(Resources.VentaResource, '/api/venta/<id>') #! buscar_x_id, actualizar, eliminar
     api.add_resource(Resources.VentasResource, '/api/ventas') #! buscar_x_atributo, buscar_todos, crear
     
+    api.add_resource(Resources.UltimaIDResource, '/api/ultimaid/<coleccion>') #! buscar_id, aumentar_id
+    
     api.init_app(app)
     jwt.init_app(app)
     # mailsender.init_app(app)  #! Para los emails
