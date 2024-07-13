@@ -48,7 +48,7 @@ def registrar() -> dict:
 def acceder():
     #! Validar campos
     try: 
-        alias = str(request.json.get('alias')).lower()
+        alias = str(request.json.get('alias'))
         contraseña = str(request.json.get('contraseña'))
     
     except Exception as e:
@@ -59,6 +59,7 @@ def acceder():
     
     if usuario_db["estado"] is False:
         return jsonify({"msg": "Usuario o contraseña incorrectos1"}), 401
+    
     if usuario_db["respuesta"] is None:
         return jsonify({"msg": "Usuario o contraseña incorrectos2"}), 401
 

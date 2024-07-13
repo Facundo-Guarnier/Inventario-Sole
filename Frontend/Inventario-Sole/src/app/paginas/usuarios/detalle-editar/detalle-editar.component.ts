@@ -56,7 +56,6 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
     }
     this.apiUsuario.buscar_x_id(alias, this.authService.getToken()).subscribe(
       (data: any) => {
-        console.log("Respuesta del servidor:", data);
         this.usuarioActual = data;
         this.nuevoDetalleUsuario = [
           { nombre: "alias", valor: data.alias },
@@ -64,7 +63,6 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
         ]
         this.campos1[0].valor = this.usuarioActual.alias;
         this.campos1[1].seleccionados = this.usuarioActual.roles;
-        console.log("++++++++++",this.campos1[1].seleccionados)
       },
       (error) => {
         console.error("Error en la solicitud:", error);
@@ -79,25 +77,82 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   //T* Funciones
   //! Boton flotante
   clickAceptar() {
+    //! Obtener los datos de los componentes hijos
     this.compDetalleNuevo.recolectarDatos();
     
-
+    //! Revisar si hay campos vacíos
+    let optionalFields = ['contraseña'];
+    
+    if (this.hasEmptyFields(this.nuevoDetalleUsuario, optionalFields)) {
+      this.tituloModal = "Error al crear la venta"
+      this.mensajeModal = "No se pudo crear la venta. Revise los campos e intente de nuevo."
+      this.openModal()
+      console.error("Hay campos vacíos.");
+      return;
+    }
     
     this.apiUsuario.editar(this.usuarioActual.alias, this.nuevoDetalleUsuario, localStorage.getItem("token")).subscribe(
       (data: any) => {
-        console.log("Respuesta del servidor:", data);
         this.tituloModal = "Usuario editado"
-        this.mensajeModal = "El usuario ha sido editado correctamente"
+        this.mensajeModal = "El usuario ha sido editado correctamente."
         this.redireccionar = true;
         this.openModal()
       },
       (error) => {
         console.error("Error en la solicitud:", error);
         this.tituloModal = "Error al editar"
-        this.mensajeModal = "No se pudo editar el usuario."
+        this.mensajeModal = "No se pudo editar el usuario. Revise los campos e intente de nuevo."
         this.openModal()
       }
     );
+  }
+  clickCancelar() {
+    this.router.navigate(['/usu']);
+  }
+  
+  //! Revisar si hay campos vacíos
+  isEmpty(value: any): boolean {
+    return value === null || value === undefined || value === '' || (Array.isArray(value) && value.length === 0);
+  }
+  hasEmptyFields(obj: any, optionalFields: string[] = []): boolean {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        
+        //! Campo "Comentario" es opcional
+        if (optionalFields.includes(key)) {
+          continue;
+        }
+        
+        if (typeof value === 'object' && !Array.isArray(value)) {
+          if (this.hasEmptyFields(value, optionalFields)) {
+            return true;
+          }
+        
+        } else if (Array.isArray(value)) {
+          
+          //! Lista vacía
+          if (value.length === 0) {
+            return true;
+          }
+          
+          for (const item of value) {
+            if (typeof item === 'object') {
+              if (this.hasEmptyFields(item, optionalFields)) {
+                return true;
+              }
+            
+            } else if (this.isEmpty(item)) {
+              return true;
+            }
+            
+          }
+        } else if (this.isEmpty(value)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   
   //! Modal

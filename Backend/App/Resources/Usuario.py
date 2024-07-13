@@ -61,6 +61,7 @@ class Usuario(Resource):
         if datos.get("contraseña"): #! Opcional
             nuevo_usuario["contraseña"] = generate_password_hash(datos["contraseña"])
         
+        print("Nuevo usuario:", nuevo_usuario)
         #! Actualizar usuario
         respuesta = UsuarioModel.actualizar(alias, nuevo_usuario)
         if respuesta["estado"]:
