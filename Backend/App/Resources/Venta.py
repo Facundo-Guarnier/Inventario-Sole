@@ -155,7 +155,16 @@ class Ventas(Resource):
                 {"fecha": {"$regex": palabra_clave, "$options": "i"}},
                 {"total": {"$regex": palabra_clave, "$options": "i"}},
                 {"tienda": {"$regex": palabra_clave, "$options": "i"}},
-                {"metodo": {"$regex": palabra_clave, "$options": "i"}}
+                {"metodo": {"$regex": palabra_clave, "$options": "i"}},
+                {"productos": {
+                    "$elemMatch": {
+                        "$or": [
+                                {"idProducto": {"$regex": palabra_clave, "$options": "i"}},
+                                {"cantidad": {"$regex": palabra_clave, "$options": "i"}},
+                                {"precio": {"$regex": palabra_clave, "$options": "i"}},
+                                {"comentario": {"$regex": palabra_clave, "$options": "i"}}
+                            ]
+                }}},
             ]
             
         print(filtro)
