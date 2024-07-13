@@ -17,7 +17,9 @@
                 <div class="container-fluid"> 
                     <h1 style="color: aliceblue;">Crear un nuevo movimiento</h1>
                     <app-comp-detalle-nuevo-generico
+                        [mostrarEditar]="true"
                         [campos]="campos"
+                        (datosRecolectados)="onDatosRecolectadosMovimiento($event)"
                     ></app-comp-detalle-nuevo-generico>
                 </div>
             </div>
@@ -26,8 +28,20 @@
     </div>
 </div>
 
+<!--! Botones flotantes  -->
 <app-comp-botones-flotantes 
     [mostrarAceptar]="true"
     [mostrarCancelar]="true"
+    (clickAceptar)="clickAceptar()"
+    (clickCancelar)="clickCancelar()"
     >
 </app-comp-botones-flotantes>
+
+<!--! Modal  -->
+<app-comp-notificacion 
+    [estaAbierto]="estaAbierto" 
+    [titulo]="tituloModal" 
+    [mensaje]="mensajeModal"
+    (cerrarModal)="cerrarModal()">
+    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+</app-comp-notificacion>
