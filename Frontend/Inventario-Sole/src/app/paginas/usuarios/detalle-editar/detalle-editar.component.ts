@@ -18,14 +18,14 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   @ViewChild(CompDetalleNuevoGenericoComponent) compDetalleNuevo!: CompDetalleNuevoGenericoComponent;
   
   //! Datos
-  alias = this.router.url.split("?")[0].split('/').pop();
   titulo1 = "Detalle del usario";
   campos1: Campo[] = [
-    { nombre: "Alias (no editable)", identificador: "alias", tipo: "readonly", valor: this.alias},
+    { nombre: "Alias (no editable)", identificador: "alias", tipo: "readonly"},
     { nombre: "Roles (obligatorio)", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User", "Ver y nada mas"]},
     { nombre: "Nueva contraseña (si no desea cambiarla deje el campo vacío)", identificador: "contraseña", tipo: "input-text"},
   ];
-  detalleUsuario: any[] = [];
+  nuevoDetalleUsuario: any[] = [];
+  usuarioActual: any = {};
   
   //! Modal
   estaAbierto = false;
@@ -48,6 +48,32 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+    let alias = this.router.url.split("?")[0].split('/').pop();
+    if (alias === undefined) {
+      console.error("No se pudo obtener el alias del usuario")
+      this.router.navigate(['/usu']);
+      return;
+    }
+    this.apiUsuario.buscar_x_id(alias, this.authService.getToken()).subscribe(
+      (data: any) => {
+        console.log("Respuesta del servidor:", data);
+        this.usuarioActual = data;
+        this.nuevoDetalleUsuario = [
+          { nombre: "alias", valor: data.alias },
+          { nombre: "roles", valor: data.roles },
+        ]
+        this.campos1[0].valor = this.usuarioActual.alias;
+        this.campos1[1].seleccionados = this.usuarioActual.roles;
+        console.log("++++++++++",this.campos1[1].seleccionados)
+      },
+      (error) => {
+        console.error("Error en la solicitud:", error);
+        this.tituloModal = "Error al cargar el usuario"
+        this.mensajeModal = "No se pudo cargar el usuario."
+        this.redireccionar = true;
+        this.openModal()
+      }
+    );
   }
   
   //T* Funciones
@@ -55,12 +81,9 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   clickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
     
-    if (this.alias === undefined) {
-      console.error("No se pudo obtener el alias del usuario")
-      return 
-    }
+
     
-    this.apiUsuario.editar(this.alias, this.detalleUsuario, localStorage.getItem("token")).subscribe(
+    this.apiUsuario.editar(this.usuarioActual.alias, this.nuevoDetalleUsuario, localStorage.getItem("token")).subscribe(
       (data: any) => {
         console.log("Respuesta del servidor:", data);
         this.tituloModal = "Usuario editado"
@@ -90,6 +113,6 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   
   //! Recibir datos del componente hijo
   onDatosRecolectadosUsuario(datos: any[]) {
-    this.detalleUsuario = datos;
+    this.nuevoDetalleUsuario = datos;
   }
 }

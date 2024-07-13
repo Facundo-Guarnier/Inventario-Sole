@@ -46,6 +46,7 @@
                                 <input class="form-check-input" type="checkbox" 
                                     [id]="campo.identificador + '_' + i"
                                     [value]="opcion"
+                                    [checked]="campo.seleccionados?.includes(opcion)"
                                     [disabled]="!mostrarEditar"
                                     (change)="onCheckboxChange(campo, opcion, $event)">
                                 <label class="form-check-label" [for]="campo.identificador + '_' + i">

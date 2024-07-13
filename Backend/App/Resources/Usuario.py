@@ -26,7 +26,7 @@ class Usuario(Resource):
             else:
                 del respuesta["respuesta"]['_id']
                 del respuesta["respuesta"]['contraseña']
-                return {"msg": f"Usuario con ID: {respuesta}"}, 200
+                return respuesta["respuesta"], 200
     
     @jwt_required()
     @admin_required

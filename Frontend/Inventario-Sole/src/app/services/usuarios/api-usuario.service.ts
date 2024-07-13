@@ -15,7 +15,7 @@ export class ApiUsuarioService {
     
   ) { }
   
-  buscar_x_id(id:string, pagina: number = 1, token:any): Observable<any> {
+  buscar_x_id(id:string, token:any, pagina: number = 1, ): Observable<any> {
     let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
     return this.httpClient.get(`${this.url}/${id}`, {headers: heads});
   } 

@@ -18,6 +18,7 @@
                 <div class="container-fluid"> 
                     <h1 style="color: aliceblue;">Editar usuario</h1>
                     <app-comp-detalle-nuevo-generico
+                        [mostrarEditar]="true"
                         [titulo]="titulo1"
                         [campos]="campos1"
                         (datosRecolectados)="onDatosRecolectadosUsuario($event)"
