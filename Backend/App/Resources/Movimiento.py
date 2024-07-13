@@ -114,10 +114,10 @@ class Movimientos(Resource):
         """
         data = request.args.to_dict()
         
-        #! Validar data: id, movimiento, id_producto, cantidad, vendedor, comentario, fecha
+        #! Validar data: id, movimiento, idProducto, cantidad, vendedor, comentario, fecha
         id = data.get("id")
         movimiento = data.get("movimiento")
-        id_producto = data.get("id_producto")
+        id_producto = data.get("idProducto")
         cantidad = data.get("cantidad")
         vendedor = data.get("vendedor")
         comentario = data.get("comentario")
@@ -132,7 +132,7 @@ class Movimientos(Resource):
         if movimiento:
             filtro['movimiento'] = movimiento
         if id_producto:
-            filtro['id_producto'] = id_producto
+            filtro['idProducto'] = id_producto
         if cantidad:
             filtro['cantidad'] = cantidad
         if vendedor:
@@ -147,7 +147,7 @@ class Movimientos(Resource):
             filtro['$or'] = [
                 {"id": {"$regex": palabra_clave, "$options": "i"}},
                 {"movimiento": {"$regex": palabra_clave, "$options": "i"}},
-                {"id_producto": {"$regex": palabra_clave, "$options": "i"}},
+                {"idProducto": {"$regex": palabra_clave, "$options": "i"}},
                 {"cantidad": {"$regex": palabra_clave, "$options": "i"}},
                 {"vendedor": {"$regex": palabra_clave, "$options": "i"}},
                 {"comentario": {"$regex": palabra_clave, "$options": "i"}},
@@ -174,7 +174,7 @@ class Movimientos(Resource):
             return ({"msg": "Faltan datos"}), 400
         
         movimiento = data.get("movimiento")
-        id_producto = data.get("id_producto")
+        id_producto = data.get("idProducto")
         cantidad = data.get("cantidad")
         vendedor = data.get("vendedor")
         comentario = data.get("comentario")
@@ -190,7 +190,7 @@ class Movimientos(Resource):
             {
                 "id": UltimaID.calcular_proximo_id("movimiento"),
                 "movimiento": movimiento,
-                "id_producto": id_producto,
+                "idProducto": id_producto,
                 "cantidad": cantidad,
                 "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
                 "vendedor": vendedor,
