@@ -9,7 +9,7 @@
           <div class="col">
             <div class="d-flex justify-content-between align-items-center">
               <h5>Producto {{i + 1}}</h5>
-              <button type="button" class="btn btn-danger" (click)="quitarProducto(i)" [disabled]="!mostrarEditar">
+              <button *ngIf="mostrarEditar" type="button" class="btn btn-danger" (click)="quitarProducto(i)" [disabled]="!mostrarEditar">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
@@ -40,7 +40,7 @@
           <hr class="custom-hr">
         </div>
       </div>
-      <button type="button" class="btn btn-primary mt-3" (click)="agregarProducto()" [disabled]="!mostrarEditar">
+      <button *ngIf="mostrarEditar" type="button" class="btn btn-primary mt-3" (click)="agregarProducto()" [disabled]="!mostrarEditar">
         Agregar otro producto
       </button>
     </div>
