@@ -109,6 +109,22 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   clickCancelar() {
     this.router.navigate(['/usu']);
   }
+  clickBorrar() {
+    this.apiUsuario.eliminar(this.usuarioActual.alias, localStorage.getItem("token")).subscribe(
+      (data: any) => {
+        this.tituloModal = "Usuario borrado"
+        this.mensajeModal = "El usuario ha sido borrado correctamente."
+        this.redireccionar = true;
+        this.openModal()
+      },
+      (error) => {
+        console.error("Error en la solicitud:", error);
+        this.tituloModal = "Error al borrar"
+        this.mensajeModal = "No se pudo borrar el usuario."
+        this.openModal()
+      }
+    );
+  }
   
   //! Revisar si hay campos vacíos
   isEmpty(value: any): boolean {

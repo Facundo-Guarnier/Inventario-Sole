@@ -18,6 +18,7 @@
                 <div class="container-fluid"> 
                     <h1 style="color: aliceblue;">Crear un nuevo usario</h1>
                     <app-comp-detalle-nuevo-generico
+                        [mostrarEditar]="true"
                         [titulo]="titulo1"
                         [campos]="campos1"
                         (datosRecolectados)="onDatosRecolectadosUsuario($event)"
@@ -35,6 +36,7 @@
     [mostrarAceptar]="true"
     [mostrarCancelar]="true"
     (clickAceptar)="clickAceptar()"
+    (clickCancelar)="clickCancelar()"
 >
 </app-comp-botones-flotantes>
 

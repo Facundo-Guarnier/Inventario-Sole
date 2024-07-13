@@ -65,6 +65,9 @@ export class PagUsuarioCrearComponent implements OnInit {
       }
     );
   }
+  clickCancelar() {
+    this.router.navigate(['/usu']);
+  }
   
   //! Modal
   openModal() {
