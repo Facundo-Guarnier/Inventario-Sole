@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-comp-busqueda',
@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompBusquedaComponent implements OnInit {
 
+  @Output() clickBuscar = new EventEmitter<any>();
+  palabraClave: string = '';
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  ClickBuscar(palabra_clave: string) {
+    this.clickBuscar.emit(palabra_clave);
+  }
 }

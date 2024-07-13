@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiVentasService } from '../../../services/ventas/api-venta.service';
+import { CompBarraLateralComponent } from 'src/app/componentes/comp-barra-lateral/comp-barra-lateral.component';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
@@ -32,11 +34,16 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   datos: any[] = [];
   
+  //! Busqueda
+  filtrosBusqueda: any[] = []
+  // @ViewChild(CompBarraLateralComponent) compBarraLateralComponent!: CompBarraLateralComponent;
+  
   //* ------------------------------------------------------------
   
   constructor(
     private router: Router,
     private apiVentas: ApiVentasService,
+    private authService: AuthService,
   ) { }
   
   ngOnInit(): void {
@@ -49,6 +56,8 @@ export class PagVentasVistaGeneralComponent implements OnInit {
         console.error('ERROR al cargar ventas:', error);
       }
     });
+    
+    this.filtrosBusqueda= ["a"]
   }
   
   //T* Funciones
@@ -56,4 +65,18 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   ClickAgregar(){
     this.router.navigate(['ven/crear']);
   };
+
+  //! Busqueda
+  clickBuscar(datos: any[]){
+    console.log("Padre que lee al hijo:", datos);
+    this.apiVentas.buscar_x_atributo({"palabra_clave": datos}).subscribe({
+      next: (data) => {
+        this.datos = Object.values(data).flat();
+        console.log("Datos de la busqueda:", data["msg"]);
+      },
+      error: (error) => {
+        console.error('ERROR al cargar usuarios:', error);
+      }
+    });
+  }
 }

@@ -1,5 +1,6 @@
 <app-comp-busqueda 
     *ngIf="mostrarBusqueda()"
+    (clickBuscar)="ClickBuscar($event)"
 ></app-comp-busqueda>
 
 <ng-container *ngFor="let filtro of filtrosLista">

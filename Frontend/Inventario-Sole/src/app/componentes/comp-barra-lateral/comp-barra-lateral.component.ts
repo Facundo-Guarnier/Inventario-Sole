@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filtro } from '../../interfaces/filtro.interface'
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -16,6 +16,10 @@ export class CompBarraLateralComponent implements OnInit {
   
   urlActual: string[] = this.router.url.split('?')[0].split('/').slice(1);
   
+  //! Busqueda
+  @Output() clickBuscar = new EventEmitter<any>();
+  busqueda: string = '';
+  @Input() filtros: any[]  = [];
   //* ------------------------------------------------------------
   
   constructor(
@@ -49,7 +53,7 @@ export class CompBarraLateralComponent implements OnInit {
     if (this.urlActual.length > 1) {
       return false
     }
-    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov'].includes(this.urlActual[0]);
+    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov', "usu"].includes(this.urlActual[0]);
   }
   
   mostrarFiltroListaSeleccion(): boolean {
@@ -57,7 +61,7 @@ export class CompBarraLateralComponent implements OnInit {
     if (this.urlActual.length > 1) {
       return false
     }
-    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov'].includes(this.urlActual[0]);
+    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov', "usu"].includes(this.urlActual[0]);
   }
   
   mostrarFiltroCheckbox(): boolean {
@@ -65,7 +69,7 @@ export class CompBarraLateralComponent implements OnInit {
     if (this.urlActual.length > 1) {
       return false
     }
-    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov'].includes(this.urlActual[0]);
+    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov', "usu"].includes(this.urlActual[0]);
   }
   
   mostrarDetalleLateral(): boolean {
@@ -78,6 +82,11 @@ export class CompBarraLateralComponent implements OnInit {
   
   //! Boton
   logout() {
-    this.authService.logout();
+    this.authService.logout();  
   }
+
+  ClickBuscar(data: any) {
+    this.clickBuscar.emit(data);
+  }
+
 }

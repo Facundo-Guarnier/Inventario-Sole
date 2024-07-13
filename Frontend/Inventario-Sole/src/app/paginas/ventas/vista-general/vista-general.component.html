@@ -7,7 +7,10 @@
     <div class="row contenido-principal" >
         <div class="col-lg-2 bg-primary sidebar barra-lateral-pag">
             <!--! Barra lateral -->
-            <app-comp-barra-lateral></app-comp-barra-lateral>
+            <app-comp-barra-lateral
+            [filtros]="filtrosBusqueda"
+            (clickBuscar)="clickBuscar($event)"
+            ></app-comp-barra-lateral>
         </div>
         
         <div class="col-lg-10 content cuerpo-pag" > 
@@ -26,6 +29,7 @@
     </div>
 </div>
 
+<!--! Botones flotantes  -->
 <app-comp-botones-flotantes 
     [mostrarAgregar]="true"  
     [mostrarAceptar]="true"  
