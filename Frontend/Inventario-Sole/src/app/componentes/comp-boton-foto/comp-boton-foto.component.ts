@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-comp-boton-foto',
@@ -6,6 +6,8 @@ import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output,
   styleUrls: ['./comp-boton-foto.component.css']
 })
 export class CompBotonFotoComponent implements OnInit {
+
+  @Input() mostrarEditar: boolean = false;
   
   @Output() clickAgregarFoto = new EventEmitter<void>();
   @Output() archivoSeleccionado = new EventEmitter<Event>();

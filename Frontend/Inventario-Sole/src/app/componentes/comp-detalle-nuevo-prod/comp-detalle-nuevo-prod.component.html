@@ -9,10 +9,48 @@
         
         <!--! Columna 1  -->
         <div class="col-6"> 
-          
           <div class="mb-3" *ngFor="let campo of detalleGeneral">
-            <label for="idProducto" class="form-label">{{campo.nombre}}</label>
-            <input type="text" class="form-control" id="idProducto" [value]="campo.valor || ''" [disabled]="!mostrarEditar" > 
+          
+            <!--! TextArea  -->
+            <div *ngIf="campo.tipo == 'textarea-text'">
+              <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
+              <textarea class="form-control" id="{{campo.identificador}}" rows="2" [value]="campo.valor || ''" [disabled]="!mostrarEditar"></textarea>
+            </div>
+            
+            <!--! Input text -->
+            <div *ngIf="campo.tipo == 'input-text'">
+                <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
+                <input type="text" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
+            </div>
+            
+            <!--! Selector  -->
+            <div *ngIf="campo.tipo == 'selector'">
+                <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
+                <select class="form-select" id="{{campo.identificador}}" [disabled]="!mostrarEditar">
+                    <option>Seleccionar...</option>
+                    <option *ngFor="let opcion of campo.opciones" [value]="opcion" [selected]="opcion === campo.valor || ''">{{opcion}}</option>
+                </select>
+            </div>
+            
+            <!--! ReadOnly  -->
+            <div *ngIf="campo.tipo == 'readonly'">
+                <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
+                <input type="text" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" readonly>
+            </div>
+            
+            <!--! Boolean  -->
+            <div *ngIf="campo.tipo == 'boolean'">
+              <label class="form-check-label d-flex align-items-center" for="{{campo.identificador}}" style="font-size: 1.2rem;"> 
+                <span class="me-2">{{campo.nombre}}</span>
+                <input type="checkbox" 
+                  class="form-check-input" 
+                  id="{{campo.identificador}}" 
+                  [checked]="campo.valor"
+                  [disabled]="!mostrarEditar"
+                >
+              </label>
+            </div>
+            
           </div>
         </div>
         

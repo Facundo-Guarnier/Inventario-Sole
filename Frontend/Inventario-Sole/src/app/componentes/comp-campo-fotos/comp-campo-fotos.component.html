@@ -5,6 +5,7 @@
     <div class="card-header bg-primary">
         Fotos
         <app-comp-boton-foto class="float-end"
+            [mostrarEditar]="mostrarEditar"
             (clickAgregarFoto)="ClickAgregarFoto()" 
             (archivoSeleccionado)="ArchivoSeleccionado($event)"
         >

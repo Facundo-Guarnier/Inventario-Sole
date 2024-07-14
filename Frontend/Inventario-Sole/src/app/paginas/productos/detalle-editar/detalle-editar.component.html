@@ -28,6 +28,7 @@
                 <div class="container-fluid"> 
                     <app-comp-campo-fotos
                         [mostrarEditar]="mostrarEditar"
+                        [listaFotos]="fotos"
                         (clickAgregarFoto)="ClickAgregarFoto()"
                         (archivoSeleccionado)="archivoSeleccionado($event)"
                     ></app-comp-campo-fotos>

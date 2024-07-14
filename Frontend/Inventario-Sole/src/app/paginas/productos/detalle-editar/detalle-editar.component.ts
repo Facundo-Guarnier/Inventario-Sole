@@ -28,10 +28,10 @@ export class PagProductosDetalleEditarComponent implements OnInit {
 
   //! Producto
   camposGenerales: Campo[] = [
-    { nombre: "ID", identificador: "id", tipo: "readonly", valor: "" },
+    { nombre: "ID", identificador: "id", tipo: "readonly" },
     { nombre: "Código Mercado Shop", identificador: "cod_ms", tipo: "input-text" },
     { nombre: "Marca", identificador: "marca", tipo: "input-text"},
-    { nombre: "Descripcion", identificador: "descripcion", tipo: "input-text"},
+    { nombre: "Descripcion", identificador: "descripcion", tipo: "textarea-text"},
     { nombre: "Talle", identificador: "talle", tipo: "input-text"},
     { nombre: "Liquidacion", identificador: "liquidacion", tipo: "boolean" },
   ];
@@ -47,7 +47,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   ];
   
   fotos: any[] = [];
-  
   
   //* ------------------------------------------------------------
   
@@ -103,6 +102,9 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         //! Detalles online
         this.camposOnline[0].valor = datos["online"]["precio"];
         this.camposOnline[1].valor = datos["online"]["cantidad"];
+        
+        //! Fotos
+        this.fotos = datos["fotos"];
       },
       
       (err: any) => {

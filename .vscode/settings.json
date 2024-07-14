@@ -9,6 +9,7 @@
         "liquidacion",
         "metodo",
         "Notificacion",
+        "opcion",
         "seleccion",
         "sqlalchemy"
     ]
