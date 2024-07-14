@@ -32,8 +32,12 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   
   //! Busqueda
   filtrosBusqueda: any[] = []
+  filtrosLista: Filtro[] = [
+    {nombre: "Liquidación", identificador: "liquidacion", opciones: ["Sí", "No"]},
+  ];
   filtrosCheckbox: {nombre:string, identificador: string, seleccionado:boolean}[] = [
-    {nombre: 'Liquidación', identificador: "liquidacion", seleccionado: false},
+    // {nombre: 'Liquidación', identificador: "liquidacion", seleccionado: false},
+    // { nombre: "Stock", identificador: "stock", seleccionado: true },
   ]
   
   //* ------------------------------------------------------------

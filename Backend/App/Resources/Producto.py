@@ -152,9 +152,9 @@ class Productos(Resource):
         if online:
             filtro['online'] = online
         if liquidacion:
-            if liquidacion == "true":
+            if liquidacion == "true" or liquidacion == "True" or liquidacion == "Si" or liquidacion == "si" or liquidacion == "Sí" or liquidacion == "sí":
                 liquidacion = True
-            elif liquidacion == "false":
+            elif liquidacion == "false" or liquidacion == "False" or liquidacion == "No" or liquidacion == "no":
                 liquidacion = False
             filtro['liquidacion'] = liquidacion
         if fotos:
@@ -175,7 +175,7 @@ class Productos(Resource):
                 
             ]
         respuesta = ProductoModel.buscar_x_atributo(filtro)
-        
+        print(filtro)
         if respuesta["estado"]:
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
