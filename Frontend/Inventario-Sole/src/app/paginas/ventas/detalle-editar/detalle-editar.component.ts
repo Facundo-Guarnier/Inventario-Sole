@@ -62,9 +62,9 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   
   constructor(
     private router: Router,
-    private apiVenta: ApiVentaService,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private apiVenta: ApiVentaService,
   ) { }
   
   ngOnInit(): void {

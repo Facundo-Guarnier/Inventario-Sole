@@ -4,7 +4,6 @@ import { Filtro } from 'src/app/interfaces/filtro.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiProductosService } from 'src/app/services/productos/api-producto.service';
 
-// import { CompBotonesFlotantesComponent } from '../../componentes/comp-botones-flotantes/comp-botones-flotantes.component';
 
 @Component({
   selector: 'pag-tienda-fisica-vista-general',

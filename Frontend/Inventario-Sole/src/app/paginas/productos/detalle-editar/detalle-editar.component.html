@@ -15,15 +15,21 @@
             <div class="mb-3">
                 
                 <div class="container-fluid"> 
-                    <h1 style="color: aliceblue;">Detalle-editar un nuevo producto </h1>
-                    <app-comp-detalle-nuevo-prod></app-comp-detalle-nuevo-prod>
+                    <h1 style="color: aliceblue;">{{tituloGeneral}}</h1>
+                    <app-comp-detalle-nuevo-prod
+                        [mostrarEditar]="mostrarEditar"
+                        [detalleGeneral]="camposGenerales"
+                        [detalleFisica]="camposFisica"
+                        [detalleOnline]="camposOnline"
+                    ></app-comp-detalle-nuevo-prod>
                 </div>
             </div>
             <div class="mb-3">
                 <div class="container-fluid"> 
                     <app-comp-campo-fotos
-                    (clickAgregarFoto)="ClickAgregarFoto()"
-                    (archivoSeleccionado)="archivoSeleccionado($event)"
+                        [mostrarEditar]="mostrarEditar"
+                        (clickAgregarFoto)="ClickAgregarFoto()"
+                        (archivoSeleccionado)="archivoSeleccionado($event)"
                     ></app-comp-campo-fotos>
                 </div>
             </div>
@@ -33,13 +39,11 @@
 </div>
 
 <app-comp-botones-flotantes 
-    [mostrarAceptar]="true"  
-    [mostrarCancelar]="true" 
-    [mostrarBorrar]="true" 
-    [mostrarAgregar]="true" 
+    [mostrarAceptar]="mostrarAceptar"  
+    [mostrarCancelar]="mostrarCancelar" 
+    [mostrarBorrar]="mostrarBorrar" 
     (ClickAceptar)="ClickAceptar()" 
     (ClickCancelar)="ClickCancelar()" 
     (ClickBorrar)="ClickBorrar()"
-    (ClickAgregar)="ClickAgregar()"
 >
 </app-comp-botones-flotantes>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-comp-campo-fotos',
@@ -6,6 +6,9 @@ import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@ang
   styleUrls: ['./comp-campo-fotos.component.css']
 })
 export class CompCampoFotosComponent implements OnInit {
+  
+  //! Para mostrar la opción de editar o no
+  @Input() mostrarEditar: boolean = false;
   
   @Output() clickAgregarFoto = new EventEmitter<void>();
   @Output() archivoSeleccionado = new EventEmitter<Event>();
