@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class CompBusquedaComponent implements OnInit {
 
-  @Output() clickBuscar = new EventEmitter<any>();
+  @Output() clickBuscar = new EventEmitter<string>();
   palabraClave: string = '';
 
   constructor() { }

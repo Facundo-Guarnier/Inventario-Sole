@@ -119,6 +119,8 @@ class Ventas(Resource):
         """
         data = request.args.to_dict()
         
+        print(data)
+        
         #! Validar data
         id = data.get("id")
         cliente = data.get("cliente")
@@ -166,8 +168,6 @@ class Ventas(Resource):
                             ]
                 }}},
             ]
-            
-        print(filtro)
         respuesta = VentaModel.buscar_x_atributo(filtro)
         
         if respuesta["estado"]:

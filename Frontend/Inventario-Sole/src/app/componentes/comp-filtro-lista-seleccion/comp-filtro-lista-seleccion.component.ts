@@ -9,7 +9,7 @@ import { Filtro } from '../../interfaces/filtro.interface'
 })
 export class CompFiltroListaSeleccionComponent implements OnInit {
 
-  @Input() filtro: Filtro = {nombre: '', opciones: []};
+  @Input() filtro: Filtro = {nombre: '', identificador:"", opciones: []};
   @Output() clickFiltro = new EventEmitter<{nombre: string, valor: string}>();
 
   constructor() { }
@@ -23,7 +23,7 @@ export class CompFiltroListaSeleccionComponent implements OnInit {
     const selectedValue = selectElement.value;
     this.clickFiltro.emit(
       { 
-        nombre: this.filtro.nombre, 
+        nombre: this.filtro.identificador, 
         valor: selectedValue 
       });
   }

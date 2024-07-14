@@ -17,10 +17,9 @@ export class CompBarraLateralComponent implements OnInit {
   urlActual: string[] = this.router.url.split('?')[0].split('/').slice(1);
   
   //! Busqueda
-  @Output() clickBuscar = new EventEmitter<any>();
+  @Output() clickBuscar = new EventEmitter<string>();
   @Output() clickFiltro = new EventEmitter<{nombre: string, valor: string}>();
   busqueda: string = '';
-
 
   //* ------------------------------------------------------------
   
@@ -30,22 +29,6 @@ export class CompBarraLateralComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    
-    //TODO Borrar, solo para pruebas
-    this.filtrosLista = [
-      {nombre: 'Filtro 1', opciones: ['Opción 1', 'Opción 2']},
-      {nombre: 'Filtro 2', opciones: ['Opción 1', 'Opción 2', 'Opción 3']},
-      {nombre: 'Filtro 3', opciones: ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4']},
-      {nombre: 'Filtro 4', opciones: ['Opción 1', 'Opción 2']}
-    ]
-    
-    //TODO Borrar, solo para pruebas
-    this.filtrosCheckbox = [
-      'Checkbox 1', 
-      'Checkbox 2', 
-      'Checkbox 3', 
-      'Checkbox 4'
-    ]
   }
   
   //T* Funciones
@@ -88,7 +71,7 @@ export class CompBarraLateralComponent implements OnInit {
   }
 
   //! Busqueda
-  ClickBuscar(data: any) {
+  ClickBuscar(data: string) {
     this.clickBuscar.emit(data);
   }
 
