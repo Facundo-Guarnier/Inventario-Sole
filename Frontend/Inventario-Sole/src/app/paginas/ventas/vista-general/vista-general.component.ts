@@ -73,7 +73,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   //! Busqueda
   clickBuscar(datos: string){
     if (datos === "") {
-      this.filtrosBusqueda = this.filtrosBusqueda.filter(filtro => filtro.palabra_clave !== "palabra_clave");
+      this.filtrosBusqueda = this.filtrosBusqueda.filter(filtro => Object.keys(filtro)[0] !== "palabra_clave");
     } else {
       this.filtrosBusqueda.push({"palabra_clave": datos});
     }
@@ -103,32 +103,31 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     this.recargarLista();
   }
   
-  //! Fecha
   generarOpcionesFecha(): string[] {
     const hoy = new Date();
     const opciones: string[] = [];
-
+  
     // Hoy
-    opciones.push(this.formatearFecha(hoy));
-
+    opciones.push(`${this.formatearFecha(hoy)} al ${this.formatearFecha(hoy)}`);
+  
     // Ayer
     const ayer = new Date(hoy);
     ayer.setDate(hoy.getDate() - 1);
-    opciones.push(this.formatearFecha(ayer));
-
-    // Inicio de esta semana (domingo)
+    opciones.push(`${this.formatearFecha(ayer)} al ${this.formatearFecha(ayer)}`);
+  
+    // Esta semana (domingo a hoy)
     const inicioSemana = new Date(hoy);
     inicioSemana.setDate(hoy.getDate() - hoy.getDay());
-    opciones.push(this.formatearFecha(inicioSemana));
-
-    // Inicio de este mes
+    opciones.push(`${this.formatearFecha(inicioSemana)} al ${this.formatearFecha(hoy)}`);
+  
+    // Este mes
     const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    opciones.push(this.formatearFecha(inicioMes));
-
-    // Inicio de este año
+    opciones.push(`${this.formatearFecha(inicioMes)} al ${this.formatearFecha(hoy)}`);
+  
+    // Este año
     const inicioAno = new Date(hoy.getFullYear(), 0, 1);
-    opciones.push(this.formatearFecha(inicioAno));
-
+    opciones.push(`${this.formatearFecha(inicioAno)} al ${this.formatearFecha(hoy)}`);
+  
     return opciones;
   }
   

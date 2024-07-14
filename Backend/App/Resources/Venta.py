@@ -139,9 +139,15 @@ class Ventas(Resource):
         if cliente:
             filtro['cliente'] = cliente
         if fecha:
-            filtro['fecha'] = fecha
+            fecha_inicio, fecha_fin = fecha.split(' al ')
+            fecha_inicio = datetime.strptime(fecha_inicio, '%d-%m-%Y')
+            fecha_fin = datetime.strptime(fecha_fin, '%d-%m-%Y').replace(hour=23, minute=59, second=59)
+            filtro['fecha'] = {
+                '$gte': fecha_inicio.strftime('%Y-%m-%d %H:%M:%S'),
+                '$lte': fecha_fin.strftime('%Y-%m-%d %H:%M:%S')
+            }
         if total:
-            filtro['total'] = total
+            filtro['total'] = float(total)
         if tienda:
             filtro['tienda'] = tienda
         if metodo_pago:
@@ -168,6 +174,7 @@ class Ventas(Resource):
                             ]
                 }}},
             ]
+        
         respuesta = VentaModel.buscar_x_atributo(filtro)
         
         if respuesta["estado"]:
