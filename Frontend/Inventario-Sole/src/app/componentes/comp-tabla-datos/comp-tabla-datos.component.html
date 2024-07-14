@@ -1,8 +1,4 @@
-<!-- Este componente será la base para mostrar todas las tablas de datos en tu aplicación. 
-
-Recibe como input:
-> Columnas: Lista de diccionarios. Ej: [{ nombre: 'ID producto', tipo: 'text' }, ... ]
-> Datos: Diccionario con las acciones. Ej: {editar: true, eliminar: true, ...} -->
+<!-- Este componente será la base para mostrar todas las tablas de datos en tu aplicación. -->
 
 <div class="table-responsive">
     <table class="table table-dark table-striped">
@@ -23,14 +19,14 @@ Recibe como input:
                     <ng-container [ngSwitch]="columna.tipo">
                         <span *ngSwitchCase="'currency'">{{ item[columna.identificador] | currency }}</span>
                         <span *ngSwitchCase="'boolean'">
-                            <span *ngIf="item[columna.nombre]" class="badge bg-danger">Si</span>
-                            <span *ngIf="!item[columna.nombre]" class="badge bg-success">No</span>
+                            <span *ngIf="item[columna.identificador]" class="badge bg-danger">Si</span>
+                            <span *ngIf="!item[columna.identificador]" class="badge bg-success">No</span>
                         </span>
                         <span *ngSwitchCase="'date'">{{ item[columna.identificador] | date:'yyyy-MM-dd hh:mm' }}</span>
                         <span *ngSwitchDefault>{{ item[columna.identificador] }}</span>
                     </ng-container>
                 </td>
-
+                
                 <!--! Botones de accion -->
                 <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle">
                     <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm me-1 boton-info" (click)="detalleFila(item)">
@@ -45,6 +41,6 @@ Recibe como input:
                 </td>
             </tr>
         </tbody>
-
+        
     </table>
 </div>

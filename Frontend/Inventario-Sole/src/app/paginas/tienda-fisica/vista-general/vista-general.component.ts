@@ -137,7 +137,17 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   
     this.apiProductos.buscar_x_atributo(filtrosObj).subscribe({
       next: (data) => {
-        this.datos = Object.values(data).flat();
+        this.datos = Object.values(data).flat().map((producto: any) => {
+          const productoModificado = { ...producto };
+          
+          if (productoModificado.fisica) {
+            productoModificado.precio = productoModificado.fisica.precio;
+            productoModificado.cantidad = productoModificado.fisica.cantidad;
+          }
+          
+          return productoModificado;
+        });
+    
         console.log('Datos:', this.datos);
       },
       error: (error) => {
