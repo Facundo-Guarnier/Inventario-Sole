@@ -17,11 +17,14 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
   
   @Output() datosRecolectados = new EventEmitter<any>();
   
+  //* ------------------------------------------------------------
+  
   constructor() { }
-
+  
   ngOnInit(): void { 
   }
-
+  
+  //T* Funciones
   recolectarDatos(): void {
     let datos: any = {};
     

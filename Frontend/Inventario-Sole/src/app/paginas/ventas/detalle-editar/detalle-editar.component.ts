@@ -57,7 +57,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   mostrarBorrar = false;
   mostrarAceptar = false;
   mostrarCancelar = false;
-
+  
   //* ------------------------------------------------------------
   
   constructor(

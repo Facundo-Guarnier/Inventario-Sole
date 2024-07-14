@@ -1,6 +1,7 @@
 import { identifierName } from '@angular/compiler';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
@@ -16,16 +17,17 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   
   //! Ver los componentes hijos
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
+  @ViewChild(CompDetalleNuevoComponent) compDetalleNuevo!: CompDetalleNuevoComponent;
+  
   
   //! Para mostrar la opción de editar o no
   mostrarEditar: boolean = false;
   tituloGeneral: string = "";
   
   //! Botones flotantes
-  mostrarBorrar = false;
   mostrarAceptar = false;
   mostrarCancelar = false;
-
+  
   //! Producto
   camposGenerales: Campo[] = [
     { nombre: "ID", identificador: "id", tipo: "readonly" },
@@ -47,6 +49,12 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   ];
   
   fotos: any[] = [];
+  
+  //! Modal
+  estaAbierto = false;
+  tituloModal = "titulo";
+  mensajeModal = "mensaje";
+  redireccionar: boolean = false;
   
   //* ------------------------------------------------------------
   
@@ -71,7 +79,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       this.tituloGeneral = "Editar detalle de producto";
       this.mostrarAceptar = true;
       this.mostrarCancelar = true;
-      this.mostrarBorrar = true;
     } else {
       this.tituloGeneral = "Ver detalle de producto";
     }
@@ -123,12 +130,15 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   //! Botones flotantes
   ClickAceptar() {
     console.log('Botón "aceptar" presionado');
+    this.compDetalleNuevo.recolectarDatos();
+
+    console.log('Campos generales:', this.camposGenerales);
+    console.log('Campos física:', this.camposFisica);
+    console.log('Campos online:', this.camposOnline);
+    
   }
   ClickCancelar() {
-    console.log('Botón "cancelar" presionado');
-  }
-  ClickBorrar() {
-    console.log('Botón "borrar" presionado');
+    this.router.navigate(['/tf']);
   }
   
   //! Boton agregar foto
@@ -156,5 +166,23 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   }
   private isMobile(): boolean {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  
+  //! Recolectar datos de los componentes hijos
+  onDatosRecolectados(camposGenerales: any[]) {
+    this.camposGenerales = camposGenerales[0];
+    this.camposFisica = camposGenerales[1];
+    this.camposOnline = camposGenerales[2];
+  }
+  
+  //! Modal
+  openModal() {
+    this.estaAbierto = true;
+  }
+  cerrarModal() {
+    this.estaAbierto = false;
+    if (this.redireccionar) {
+      this.router.navigate(['/ven']);
+    }
   }
 }

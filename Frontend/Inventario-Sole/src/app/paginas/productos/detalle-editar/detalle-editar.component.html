@@ -21,6 +21,7 @@
                         [detalleGeneral]="camposGenerales"
                         [detalleFisica]="camposFisica"
                         [detalleOnline]="camposOnline"
+                        (datosRecolectados)="onDatosRecolectados($event)"
                     ></app-comp-detalle-nuevo-prod>
                 </div>
             </div>
@@ -39,12 +40,11 @@
     </div>
 </div>
 
+<!--! Botones flotantes  -->
 <app-comp-botones-flotantes 
     [mostrarAceptar]="mostrarAceptar"  
     [mostrarCancelar]="mostrarCancelar" 
-    [mostrarBorrar]="mostrarBorrar" 
-    (ClickAceptar)="ClickAceptar()" 
-    (ClickCancelar)="ClickCancelar()" 
-    (ClickBorrar)="ClickBorrar()"
+    (clickAceptar)="ClickAceptar()" 
+    (clickCancelar)="ClickCancelar()"
 >
 </app-comp-botones-flotantes>
