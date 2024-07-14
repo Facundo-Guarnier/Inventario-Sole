@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CompFiltroCheckboxComponent implements OnInit {
 
-  @Input() filtro: string = "";
+  @Input() filtro:{nombre:string, identificador: string} = {nombre: '', identificador: ''};
 
   constructor() { }
 

@@ -15,9 +15,6 @@ import { formatDate } from '@angular/common';
 
 export class PagVentasVistaGeneralComponent implements OnInit {
   
-  //! NavBar
-  pagActual = 'ven';
-  
   //! Tabla de datos
   acciones = {
     editar: true,
@@ -95,6 +92,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     this.recargarLista();
   }
   
+  //! Generar opciones de fecha
   generarOpcionesFecha(): string[] {
     const hoy = new Date();
     const opciones: string[] = [];
@@ -122,7 +120,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
     return opciones;
   }
-  
   formatearFecha(fecha: Date): string {
     return formatDate(fecha, 'dd-MM-yyyy', 'en-US');
   }

@@ -12,7 +12,7 @@ export class CompBarraLateralComponent implements OnInit {
 
   //! Valores del componente padre
   @Input() filtrosLista: Filtro[] = [];
-  @Input() filtrosCheckbox: string[] = [];
+  @Input() filtrosCheckbox: {nombre:string, identificador: string}[] = [];
   
   urlActual: string[] = this.router.url.split('?')[0].split('/').slice(1);
   
