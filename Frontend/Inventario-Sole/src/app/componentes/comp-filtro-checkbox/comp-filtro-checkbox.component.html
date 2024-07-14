@@ -1,10 +1,15 @@
 <div class="input-group mb-3 w-100">
     <div class="input-group-text flex-grow-1">
-        <label class="form-check-label " for="filtroCheckbox">
-            {{filtro}}
+        <label class="form-check-label" [for]="'filtroCheckbox_' + filtro.identificador">
+            {{filtro.nombre}}
         </label>
     </div>
     <div class="input-group-text">
-        <input class="form-check-input mt-0" type="checkbox" id="filtroCheckbox">
+        <input class="form-check-input mt-0" 
+            type="checkbox" 
+            [id]="'filtroCheckbox_' + filtro.identificador"
+            [(ngModel)]="filtro.seleccionado"
+            (change)="ClickFiltro(filtro)"
+        >
     </div> 
 </div>

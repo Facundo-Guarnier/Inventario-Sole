@@ -152,6 +152,10 @@ class Productos(Resource):
         if online:
             filtro['online'] = online
         if liquidacion:
+            if liquidacion == "true":
+                liquidacion = True
+            elif liquidacion == "false":
+                liquidacion = False
             filtro['liquidacion'] = liquidacion
         if fotos:
             filtro['fotos'] = fotos

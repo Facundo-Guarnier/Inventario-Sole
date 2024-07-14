@@ -28,50 +28,12 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     eliminar: false,
     detalle: true
   }
-  datos: any[] = [
-    // {
-    //   "ID producto": "AB120",
-    //   "Marca": "Adidas",
-    //   "Descripción": "Pantalon blanco deportivo con rayas negras",
-    //   "Talle": "M",
-    //   "Precio": 89000,
-    //   "Cantidad": 50,
-    //   "Liquidación": false
-    // }, 
-    // {
-    //   "ID producto": "AB121",
-    //   "Marca": "Nike",
-    //   "Descripción": "Remera azul deportiva",
-    //   "Talle": "M",
-    //   "Precio": 45000,
-    //   "Cantidad": 7,
-    //   "Liquidación": true
-    // },
-    // {
-    //   "ID producto": "AB122",
-    //   "Marca": "AAA",
-    //   "Descripción": "Remera deportiva Remera azul deportiva Remera  asd asd ada dasd ad aazul  a sda  asd asd 151 81 562deportiva Remera azul deportiva",
-    //   "Talle": "XL",
-    //   "Precio": 900000,
-    //   "Cantidad": 2,
-    //   "Liquidación": false
-    // },
-    // {
-    //   "ID producto": "AB123",
-    //   "Marca": "Adidas",
-    //   "Descripción": "Campera",
-    //   "Talle": "M",
-    //   "Precio": 10000,
-    //   "Cantidad": 1,
-    //   "Liquidación": true
-    // }
-  ];
+  datos: any[] = [];
   
   //! Busqueda
   filtrosBusqueda: any[] = []
-  filtrosLista: Filtro[] = []
-  filtrosCheckbox: {nombre:string, identificador: string}[] = [
-    {nombre: 'Liquidación', identificador: "liquidacion"},
+  filtrosCheckbox: {nombre:string, identificador: string, seleccionado:boolean}[] = [
+    {nombre: 'Liquidación', identificador: "liquidacion", seleccionado: false},
   ]
   
   //* ------------------------------------------------------------

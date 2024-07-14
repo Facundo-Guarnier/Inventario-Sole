@@ -8,15 +8,17 @@ import { Filtro } from '../../interfaces/filtro.interface'
   styleUrls: ['./comp-filtro-lista-seleccion.component.css']
 })
 export class CompFiltroListaSeleccionComponent implements OnInit {
-
+  
   @Input() filtro: Filtro = {nombre: '', identificador:"", opciones: []};
   @Output() clickFiltro = new EventEmitter<{nombre: string, valor: string}>();
-
+  
+  //* ------------------------------------------------------------
+  
   constructor() { }
-
+  
   ngOnInit(): void {
   }
-
+  
   //T* Funciones
   ClickFiltro(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -27,5 +29,4 @@ export class CompFiltroListaSeleccionComponent implements OnInit {
         valor: selectedValue 
       });
   }
-
 }
