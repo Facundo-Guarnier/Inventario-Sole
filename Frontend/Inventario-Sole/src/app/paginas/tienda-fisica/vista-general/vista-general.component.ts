@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filtro } from 'src/app/interfaces/filtro.interface';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiProductosService } from 'src/app/services/productos/api-producto.service';
 
 // import { CompBotonesFlotantesComponent } from '../../componentes/comp-botones-flotantes/comp-botones-flotantes.component';
@@ -40,15 +41,23 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     // { nombre: "Stock", identificador: "stock", seleccionado: true },
   ]
   
+  
+  //! Botones flotantes
+  mostrarAgregar = false;
+
   //* ------------------------------------------------------------
   
   constructor(
     private router: Router,
     private apiProductos: ApiProductosService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
     this.recargarLista();
+
+    this.mostrarAgregar = this.authService.isAdmin();
+    this.acciones.editar = this.authService.isAdmin();
   }
 
   //T* Funciones
