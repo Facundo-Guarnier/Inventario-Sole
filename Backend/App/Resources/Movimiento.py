@@ -61,7 +61,7 @@ class Movimiento(Resource):
             nuevo_movimiento["movimiento"] = data["movimiento"]
         
         if data.get("id_producto"):
-            nuevo_movimiento["id_producto"] = data["id_producto"]
+            nuevo_movimiento["id_producto"] = data["id_producto"].upper()
         
         if data.get("cantidad"):
             nuevo_movimiento["cantidad"] = data["cantidad"]
@@ -113,6 +113,7 @@ class Movimientos(Resource):
             - list: Movimientos encontrados
         """
         data = request.args.to_dict()
+        print(data)
         
         #! Validar data: id, movimiento, idProducto, cantidad, vendedor, comentario, fecha
         id = data.get("id")
@@ -140,7 +141,13 @@ class Movimientos(Resource):
         if comentario:
             filtro['comentario'] = comentario
         if fecha:
-            filtro['fecha'] = fecha
+            fecha_inicio, fecha_fin = fecha.split(' al ')
+            fecha_inicio = datetime.strptime(fecha_inicio, '%d-%m-%Y')
+            fecha_fin = datetime.strptime(fecha_fin, '%d-%m-%Y').replace(hour=23, minute=59, second=59)
+            filtro['fecha'] = {
+                '$gte': fecha_inicio.strftime('%Y-%m-%d %H:%M:%S'),
+                '$lte': fecha_fin.strftime('%Y-%m-%d %H:%M:%S')
+            }
         
         #! Búsqueda de palabra clave en los campos relevantes
         if palabra_clave:
@@ -154,7 +161,6 @@ class Movimientos(Resource):
                 {"fecha": {"$regex": palabra_clave, "$options": "i"}},
             ]
         
-        print(filtro)
         respuesta = MovimientoModel.buscar_x_atributo(filtro)
         
         if respuesta["estado"]:
@@ -185,12 +191,11 @@ class Movimientos(Resource):
         not vendedor:
             return ({"msg": "Faltan datos"}), 400
         
-        
         respuesta = MovimientoModel.crear(
             {
                 "id": UltimaID.calcular_proximo_id("movimiento"),
                 "movimiento": movimiento,
-                "idProducto": id_producto,
+                "idProducto": id_producto.upper(),
                 "cantidad": cantidad,
                 "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
                 "vendedor": vendedor,

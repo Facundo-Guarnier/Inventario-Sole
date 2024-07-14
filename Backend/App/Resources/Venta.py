@@ -71,6 +71,12 @@ class Venta(Resource):
             nueva_venta["metodo"] = data["metodo"]
         
         if data.get("productos"):
+            for producto in data["productos"]:
+                if not producto.get("idProducto") or \
+                not producto.get("cantidad") or \
+                not producto.get("precio"):
+                    return ({"msg": "Faltan datos de productos"}), 400
+                producto["idProducto"] = producto.get("idProducto").upper()     #! Convertir a mayúsculas
             nueva_venta["productos"] = data["productos"]
         
         #! Actualizar venta
@@ -118,8 +124,6 @@ class Ventas(Resource):
         Sin atributos, devuelve todas las ventas.
         """
         data = request.args.to_dict()
-        
-        print(data)
         
         #! Validar data
         id = data.get("id")
@@ -200,26 +204,40 @@ class Ventas(Resource):
         if not cliente or \
         not total or \
         not tienda or \
-        not metodo_pago or \
-        not productos:
+        not metodo_pago:
             return ({"msg": "Faltan datos"}), 400
         
-        respuesta = VentaModel.crear(
-            {
-                "id": UltimaID.calcular_proximo_id("venta"), #*+++++
-                "cliente": cliente,
-                "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
-                "total": total,
-                "tienda": tienda,
-                "metodo": metodo_pago,
-                "productos": productos
-            }
-        )
+        nueva_venta = {}
+        
+        if not productos:
+            return ({"msg": "Faltan datos de productos"}), 400
+        
+        for producto in productos:
+            if not producto.get("idProducto") or \
+            not producto.get("cantidad") or \
+            not producto.get("precio"):
+                return ({"msg": "Faltan datos de productos"}), 400
+            
+            producto["idProducto"] = producto.get("idProducto").upper()     #! Convertir a mayúsculas
+        nueva_venta["productos"] = productos
+        print(nueva_venta)
+        
+        nueva_venta.update({
+            "id": UltimaID.calcular_proximo_id("venta"),
+            "cliente": cliente,
+            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
+            "total": total,
+            "tienda": tienda,
+            "metodo": metodo_pago,
+        })
+        
+        print(nueva_venta)
+        respuesta = VentaModel.crear(nueva_venta)
         if respuesta["estado"]:
             if respuesta["respuesta"] == None:
                 return ({"msg": "Error al crear la venta"}), 400
             
             else:
-                self.ultima_id_resource.put("venta")        #*+++++
+                self.ultima_id_resource.put("venta")
                 return ({"msg": "Venta creada con éxito"}), 201
         return ({"msg": respuesta["respuesta"]}), 400
