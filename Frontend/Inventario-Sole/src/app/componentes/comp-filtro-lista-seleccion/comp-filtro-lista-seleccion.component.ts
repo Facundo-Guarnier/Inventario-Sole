@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Filtro } from '../../interfaces/filtro.interface'
 
 
@@ -10,10 +10,22 @@ import { Filtro } from '../../interfaces/filtro.interface'
 export class CompFiltroListaSeleccionComponent implements OnInit {
 
   @Input() filtro: Filtro = {nombre: '', opciones: []};
+  @Output() clickFiltro = new EventEmitter<{nombre: string, valor: string}>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  //T* Funciones
+  ClickFiltro(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedValue = selectElement.value;
+    this.clickFiltro.emit(
+      { 
+        nombre: this.filtro.nombre, 
+        valor: selectedValue 
+      });
   }
 
 }

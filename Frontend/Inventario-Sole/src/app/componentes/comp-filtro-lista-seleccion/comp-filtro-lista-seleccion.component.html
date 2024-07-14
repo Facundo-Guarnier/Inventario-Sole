@@ -1,6 +1,6 @@
 <div class="input-group mb-3"> 
     <label class="input-group-text" for="filtroSelect">{{filtro.nombre}}</label>
-    <select class="form-select" id="filtroSelect">
+    <select class="form-select" id="filtroSelect" (change)="ClickFiltro($event)">
         <option selected>Seleccionar...</option>
         <option *ngFor="let opcion of filtro.opciones" [value]="opcion">
             {{opcion}}

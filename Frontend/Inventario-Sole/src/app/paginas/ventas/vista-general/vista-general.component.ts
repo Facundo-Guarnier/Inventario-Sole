@@ -56,8 +56,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
         console.error('ERROR al cargar ventas:', error);
       }
     });
-    
-    this.filtrosBusqueda= ["a"]
   }
   
   //T* Funciones
@@ -68,7 +66,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
 
   //! Busqueda
   clickBuscar(datos: any[]){
-    console.log("Padre que lee al hijo:", datos);
+    console.log("BArra de busqueda:", datos);
     this.apiVentas.buscar_x_atributo({"palabra_clave": datos}).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
@@ -78,5 +76,15 @@ export class PagVentasVistaGeneralComponent implements OnInit {
         console.error('ERROR al cargar usuarios:', error);
       }
     });
+  }
+
+  leerFiltros(datos: {nombre: string, valor: string}){
+    if (datos["valor"] !== "Seleccionar...") {
+      this.filtrosBusqueda.push(datos);
+      console.log("Filtros de busqueda:", this.filtrosBusqueda); 
+    } else {
+      this.filtrosBusqueda = this.filtrosBusqueda.filter(filtro => filtro.nombre !== datos["nombre"]);
+      console.log("Filtros de busqueda:", this.filtrosBusqueda);
+    }
   }
 }

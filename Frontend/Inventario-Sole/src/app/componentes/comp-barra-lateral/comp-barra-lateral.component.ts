@@ -18,8 +18,10 @@ export class CompBarraLateralComponent implements OnInit {
   
   //! Busqueda
   @Output() clickBuscar = new EventEmitter<any>();
+  @Output() clickFiltro = new EventEmitter<{nombre: string, valor: string}>();
   busqueda: string = '';
-  @Input() filtros: any[]  = [];
+
+
   //* ------------------------------------------------------------
   
   constructor(
@@ -85,8 +87,13 @@ export class CompBarraLateralComponent implements OnInit {
     this.authService.logout();  
   }
 
+  //! Busqueda
   ClickBuscar(data: any) {
     this.clickBuscar.emit(data);
+  }
+
+  ClickFiltro(data: {nombre: string, valor: string}) {
+    this.clickFiltro.emit(data);
   }
 
 }

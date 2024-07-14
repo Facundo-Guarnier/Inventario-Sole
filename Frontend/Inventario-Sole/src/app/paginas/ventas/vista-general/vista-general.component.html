@@ -8,8 +8,8 @@
         <div class="col-lg-2 bg-primary sidebar barra-lateral-pag">
             <!--! Barra lateral -->
             <app-comp-barra-lateral
-            [filtros]="filtrosBusqueda"
             (clickBuscar)="clickBuscar($event)"
+            (clickFiltro)="leerFiltros($event)"
             ></app-comp-barra-lateral>
         </div>
         
