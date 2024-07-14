@@ -15,8 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    // Verifica el token cada minuto
-    interval(60000).subscribe(() => {
+    interval(10000).subscribe(() => {
       this.authService.checkTokenExpiration();
     });
   }

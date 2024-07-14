@@ -53,15 +53,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    let filtro = {}
-    this.apiVentas.buscar_x_atributo(filtro).subscribe({
-      next: (data) => {
-        this.datos = Object.values(data).flat();
-      },
-      error: (error) => {
-        console.error('ERROR al cargar ventas:', error);
-      }
-    });
+    this.recargarLista();
   }
   
   //T* Funciones
@@ -142,8 +134,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       acc[key] = filtro[key];
       return acc;
     }, {});
-  
-    console.log("Filtros de busqueda:", filtrosObj);
   
     this.apiVentas.buscar_x_atributo(filtrosObj).subscribe({
       next: (data) => {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiUsuariosService } from '../../../services/usuarios/api-usuario.service';
 import { AuthService } from '../../../services/auth/auth.service';
+import { Filtro } from 'src/app/interfaces/filtro.interface';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    this.apiUsuarios.buscar_x_atributo({}, this.authService.getToken()).subscribe({
+    this.apiUsuarios.buscar_todos(this.authService.getToken()).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
       },
@@ -48,5 +49,4 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   ClickAgregar(){
     this.router.navigate(['usu/crear']);
   };
-  
 }

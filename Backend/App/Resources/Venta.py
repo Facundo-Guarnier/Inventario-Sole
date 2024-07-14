@@ -220,7 +220,6 @@ class Ventas(Resource):
             
             producto["idProducto"] = producto.get("idProducto").upper()     #! Convertir a mayúsculas
         nueva_venta["productos"] = productos
-        print(nueva_venta)
         
         nueva_venta.update({
             "id": UltimaID.calcular_proximo_id("venta"),
@@ -231,7 +230,6 @@ class Ventas(Resource):
             "metodo": metodo_pago,
         })
         
-        print(nueva_venta)
         respuesta = VentaModel.crear(nueva_venta)
         if respuesta["estado"]:
             if respuesta["respuesta"] == None:

@@ -113,7 +113,6 @@ class Movimientos(Resource):
             - list: Movimientos encontrados
         """
         data = request.args.to_dict()
-        print(data)
         
         #! Validar data: id, movimiento, idProducto, cantidad, vendedor, comentario, fecha
         id = data.get("id")
