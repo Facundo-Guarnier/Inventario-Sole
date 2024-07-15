@@ -50,7 +50,7 @@ const routes: Routes = [
   { path: 'to/revisar-stock', component: PagTiendaOnlineRevisarStockComponent, canActivate: [AuthGuard]},
 
   { path: 'prod/crear', component: PagProductosCrearComponent, canActivate: [AuthGuard, AdminGuard]},
-  { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent, canActivate: [AuthGuard, AdminGuard]},
+  { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent, canActivate: [AuthGuard]},
 
   { path: "mov", component: PagMovimientosVistaGeneralComponent, canActivate: [AuthGuard]},
   { path: "mov/crear", component: PagMovimientosCrearComponent, canActivate: [AuthGuard]},

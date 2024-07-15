@@ -72,7 +72,11 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     });
     
     if (this.mostrarEditar === undefined) {
-      this.mostrarEditar = true;
+      this.mostrarEditar = false;
+    }
+    
+    if (!this.authService.isAdmin()) {
+      this.mostrarEditar = false;
     }
     
     if (this.mostrarEditar) {
