@@ -197,6 +197,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     }
     this.fileInput.nativeElement.click();
   }
+
   archivoSeleccionado(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) {
@@ -217,6 +218,10 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     this.camposGenerales = camposGenerales[0];
     this.camposFisica = camposGenerales[1];
     this.camposOnline = camposGenerales[2];
+  }
+  
+  onFotosActualizadas(fotos: string[]) {
+    this.fotos = fotos;
   }
   
   //! Modal

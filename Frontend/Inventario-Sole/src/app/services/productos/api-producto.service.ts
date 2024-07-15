@@ -31,6 +31,18 @@ export class ApiProductoService {
     return this.httpClient.delete(`${this.url}/${id}`, {headers: heads});
   }
   
+  subirFoto(file: File, token: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('foto', file);
+    return this.httpClient.post(`http://localhost:5000/api/imagen`, formData, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+  }
+
+  obtenerUrlFoto(filename: string): string {
+    return `http://localhost:5000/api/imagenes/${filename}`;
+  }
+
 }
 
 //* ------------------------------------------------------------

@@ -12,3 +12,5 @@ class Config:
     CONTRA_ADMIN = os.environ.get('CONTRA_ADMIN') or 'admin1234'
     
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-secret-string'
+    
+    UPLOAD_FOLDER = 'Images' 

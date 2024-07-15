@@ -1,11 +1,13 @@
 from datetime import datetime
-from flask import request
+from flask import app, request, url_for
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from App.Models import ProductoModel
 from App.Resources.UltimaID import UltimaID
 
+import os
+from werkzeug.utils import secure_filename
 
 class Producto(Resource):
     def get(self, id:str) -> dict:
@@ -73,6 +75,19 @@ class Producto(Resource):
         not fotos:
             return ({"msg": "Faltan datos"}), 400
         
+        # Manejar la carga de archivos
+        if 'fotos' in request.files:
+            fotos = request.files.getlist('fotos')
+            foto_urls = []
+            for foto in fotos:
+                if foto and self.allowed_file(foto.filename):
+                    filename = secure_filename(foto.filename)
+                    foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    foto_url = url_for('uploaded_file', filename=filename, _external=True)
+                    foto_urls.append(foto_url)
+            
+            data['fotos'] = foto_urls
+        
         #! Crear diccionario con los datos a actualizar
         nueva_producto = {
             "id": id,
@@ -119,6 +134,10 @@ class Producto(Resource):
             return ({"msg": "Producto eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
 
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 class Productos(Resource):
     def __init__(self):
