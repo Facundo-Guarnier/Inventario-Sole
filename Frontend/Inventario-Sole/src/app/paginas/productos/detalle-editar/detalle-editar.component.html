@@ -48,3 +48,12 @@
     (clickCancelar)="ClickCancelar()"
 >
 </app-comp-botones-flotantes>
+
+<!--! Modal  -->
+<app-comp-notificacion 
+    [estaAbierto]="estaAbierto" 
+    [titulo]="tituloModal" 
+    [mensaje]="mensajeModal"
+    (cerrarModal)="cerrarModal()">
+    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+</app-comp-notificacion>

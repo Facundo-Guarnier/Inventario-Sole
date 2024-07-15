@@ -52,32 +52,41 @@ class Producto(Resource):
         if not data:
             return ({"msg": "Faltan datos"}), 400
         
+        
+        #! Validar data
+        cod_ms = data.get("cod_ms")
+        marca = data.get("marca")
+        descripcion = data.get("descripcion")
+        talle = data.get("talle")
+        fisica = data.get("fisica")
+        online = data.get("online")
+        liquidacion = data.get("liquidacion")
+        fotos = data.get("fotos")
+        
+        if not cod_ms or \
+        not marca or \
+        not descripcion or \
+        not talle or \
+        not fisica or \
+        not online or \
+        liquidacion is None  or \
+        not fotos:
+            return ({"msg": "Faltan datos"}), 400
+        
         #! Crear diccionario con los datos a actualizar
-        nueva_producto = {}
+        nueva_producto = {
+            "id": id,
+            "cod_ms": cod_ms,
+            "marca": marca,
+            "descripcion": descripcion,
+            "talle": talle,
+            "fisica": fisica,
+            "online": online,
+            "liquidacion": liquidacion,
+            "fotos": fotos,
+        }
         
-        if data.get("cod_ms"):
-            nueva_producto["cod_ms"] = data["cod_ms"]
-        
-        if data.get("marca"):
-            nueva_producto["marca"] = data["marca"]
-        
-        if data.get("descripcion"):
-            nueva_producto["descripcion"] = data["descripcion"]
-        
-        if data.get("talle"):
-            nueva_producto["talle"] = data["talle"]
-        
-        if data.get("fisica"):
-            nueva_producto["fisica"] = data["fisica"]
-        
-        if data.get("online"):
-            nueva_producto["online"] = data["online"]
-        
-        if data.get("liquidacion"):
-            nueva_producto["liquidacion"] = data["liquidacion"]
-        
-        if data.get("fotos"):
-            nueva_producto["fotos"] = data["fotos"]
+        print(nueva_producto)
         
         #! Actualizar producto
         respuesta = ProductoModel.actualizar(id, data)

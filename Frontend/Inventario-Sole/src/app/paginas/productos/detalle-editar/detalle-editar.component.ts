@@ -91,7 +91,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     let id = this.router.url.split("?")[0].split('/').pop();
     if (id === undefined) {
       console.error('No se encontró el ID');
-      this.router.navigate(['/prod']);
+      this.router.navigate(['/tf']);
       return;
     }
     this.apiProducto.buscar_x_id(id).subscribe(
@@ -136,6 +136,73 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     console.log('Campos generales:', this.camposGenerales);
     console.log('Campos física:', this.camposFisica);
     console.log('Campos online:', this.camposOnline);
+    
+    //! Verificar que todos los campos no estén vacíos
+    if (this.camposGenerales.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
+    
+    if (this.camposFisica.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
+    
+    if (this.camposOnline.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
+    
+    //! Dar formato a los datos
+    let producto = {
+      id: this.camposGenerales[0].valor,
+      cod_ms: this.camposGenerales[1].valor,
+      marca: this.camposGenerales[2].valor,
+      descripcion: this.camposGenerales[3].valor,
+      talle: this.camposGenerales[4].valor,
+      liquidacion: this.camposGenerales[5].valor,
+      fisica: {
+        precio: this.camposFisica[0].valor,
+        cantidad: this.camposFisica[1].valor,
+      },
+      online: {
+        precio: this.camposOnline[0].valor,
+        cantidad: this.camposOnline[1].valor,
+      },
+      fotos: this.fotos,
+    };
+    
+    //! Verificar id
+    if (producto.id === null || producto.id === undefined) {
+      console.error('No se ha encontrado el ID');
+      return;
+    }
+    
+    //! Actualizar el producto
+    this.apiProducto.actualizar(producto.id, producto, this.authService.getToken()).subscribe(
+      (res: any) => {
+        console.log('Producto actualizado:', res);
+        this.tituloModal = "Producto actualizado";
+        this.mensajeModal = "El producto se ha actualizado correctamente.";
+        this.redireccionar = true;
+        this.openModal();
+      },
+      (err: any) => {
+        console.error('Error al actualizar el producto:', err);
+        this.tituloModal = "Error al actualizar";
+        this.mensajeModal = "Ha ocurrido un error al actualizar el producto.";
+        this.openModal();
+      }
+    );
   }
   ClickCancelar() {
     this.router.navigate(['/tf']);
@@ -181,7 +248,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   cerrarModal() {
     this.estaAbierto = false;
     if (this.redireccionar) {
-      this.router.navigate(['/ven']);
+      this.router.navigate(['/tf']);
     }
   }
 }
