@@ -44,13 +44,13 @@ const routes: Routes = [
   { path: 'ven/detalle-editar/:id', component: PagVentasDetalleEditarComponent, canActivate: [AuthGuard]},
   
   { path: 'tf', component: PagTiendaFisicaVistaGeneralComponent, canActivate: [AuthGuard]},
-  { path: 'tf/revisar-stock', component: PagTiendaFisicaRevisarStockComponent, canActivate: [AuthGuard]},
+  { path: 'tf/revisar-stock', component: PagTiendaFisicaRevisarStockComponent, canActivate: [AuthGuard, AdminGuard]},
 
   { path: 'to', component: PagTiendaOnlineVistaGeneralComponent, canActivate: [AuthGuard]},
   { path: 'to/revisar-stock', component: PagTiendaOnlineRevisarStockComponent, canActivate: [AuthGuard]},
 
-  { path: 'prod/crear', component: PagProductosCrearComponent, canActivate: [AuthGuard]},
-  { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent, canActivate: [AuthGuard]},
+  { path: 'prod/crear', component: PagProductosCrearComponent, canActivate: [AuthGuard, AdminGuard]},
+  { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent, canActivate: [AuthGuard, AdminGuard]},
 
   { path: "mov", component: PagMovimientosVistaGeneralComponent, canActivate: [AuthGuard]},
   { path: "mov/crear", component: PagMovimientosCrearComponent, canActivate: [AuthGuard]},

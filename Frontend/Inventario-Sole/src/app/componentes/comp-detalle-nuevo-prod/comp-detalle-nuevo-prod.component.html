@@ -14,28 +14,19 @@
             <!--! TextArea  -->
             <div *ngIf="campo.tipo == 'textarea-text'">
               <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-              <textarea class="form-control" id="{{campo.identificador}}" rows="2" [value]="campo.valor || ''" [disabled]="!mostrarEditar"></textarea>
+              <textarea class="form-control" id="{{campo.identificador}}" rows="2" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar"></textarea>
             </div>
             
             <!--! Input text -->
             <div *ngIf="campo.tipo == 'input-text'">
                 <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                <input type="text" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
-            </div>
-            
-            <!--! Selector  -->
-            <div *ngIf="campo.tipo == 'selector'">
-                <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                <select class="form-select" id="{{campo.identificador}}" [disabled]="!mostrarEditar">
-                    <option>Seleccionar...</option>
-                    <option *ngFor="let opcion of campo.opciones" [value]="opcion" [selected]="opcion === campo.valor || ''">{{opcion}}</option>
-                </select>
+                <input type="text" class="form-control" id="{{campo.identificador}}" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar">
             </div>
             
             <!--! ReadOnly  -->
             <div *ngIf="campo.tipo == 'readonly'">
                 <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                <input type="text" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" readonly>
+                <input type="text" class="form-control" id="{{campo.identificador}}" [(ngModel)]="campo.valor" readonly>
             </div>
             
             <!--! Boolean  -->
@@ -45,7 +36,7 @@
                 <input type="checkbox" 
                   class="form-check-input" 
                   id="{{campo.identificador}}" 
-                  [checked]="campo.valor"
+                  [(ngModel)]="campo.valor"
                   [disabled]="!mostrarEditar"
                 >
               </label>
@@ -60,13 +51,13 @@
           <h5>Física:</h5>
           <div class="mb-3" *ngFor="let campo of detalleFisica">
             <label for="precioFisico" class="form-label">{{campo.nombre}}</label>
-            <input type="number" class="form-control" id="precioFisico" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
+            <input type="number" class="form-control" id="precioFisico" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar">
           </div>
           
           <h5>Online:</h5>
           <div class="mb-3" *ngFor="let campo of detalleOnline">
             <label for="precioFisico" class="form-label">{{campo.nombre}}</label>
-            <input type="number" class="form-control" id="precioFisico" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
+            <input type="number" class="form-control" id="precioFisico" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar">
           </div>
           
         </div>

@@ -93,7 +93,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     this.apiProducto.buscar_x_id(id).subscribe(
       (res: any) => {
         let datos = res["msg"][0]
-        console.log('Datos:', datos);
         //! Detalles generales
         this.camposGenerales[0].valor = datos["id"];
         this.camposGenerales[1].valor = datos["cod_ms"];
@@ -140,7 +139,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   
   //! Boton agregar foto
   ClickAgregarFoto() {
-    console.log('Click en Agregar Foto');
     if (!this.fileInput) {
       console.error('No se ha cargado el input');
       return;

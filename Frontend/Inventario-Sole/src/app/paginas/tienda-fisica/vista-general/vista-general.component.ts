@@ -42,7 +42,8 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   
   //! Botones flotantes
   mostrarAgregar = false;
-
+  mostrarRevisarStock = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -50,14 +51,15 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     private apiProductos: ApiProductosService,
     private authService: AuthService,
   ) { }
-
+  
   ngOnInit(): void {
     this.recargarLista();
-
+    
     this.mostrarAgregar = this.authService.isAdmin();
     this.acciones.editar = this.authService.isAdmin();
+    this.mostrarRevisarStock = this.authService.isAdmin();
   }
-
+  
   //T* Funciones
   //! Botones flotantes
   ClickAgregar() {

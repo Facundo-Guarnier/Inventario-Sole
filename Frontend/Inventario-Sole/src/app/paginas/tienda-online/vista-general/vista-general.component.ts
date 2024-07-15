@@ -41,6 +41,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   
   //! Botones flotantes
   mostrarAgregar = false;
+  mostrarRevisarStock = false;
   
   //* ------------------------------------------------------------
   
@@ -55,6 +56,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
     
     this.mostrarAgregar = this.authService.isAdmin();
     this.acciones.editar = this.authService.isAdmin();
+    this.mostrarRevisarStock = this.authService.isAdmin();
   }
   
   //T* Funciones
