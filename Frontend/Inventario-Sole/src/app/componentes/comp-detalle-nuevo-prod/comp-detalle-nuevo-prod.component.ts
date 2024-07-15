@@ -28,81 +28,23 @@ export class CompDetalleNuevoComponent implements OnInit {
 
   //T* Funciones
   recolectarDatos(): void {
-    let datos: any = {};
-    let datosRecolectados = [];
-    
-    this.detalleGeneral.forEach(campo => {
-      if (campo.tipo === 'selector-multiple') {
-        datos[campo.identificador] = campo.seleccionados || [];
-      } else {
-        const element = document.getElementById(campo.identificador) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-        
-        if (element) {
-          let valor: any;
-          
-          if (element.tagName === 'INPUT' && (element as HTMLInputElement).type === 'number') {
-            valor = (element as HTMLInputElement).valueAsNumber;
-          } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-            valor = element.value;
-          } else if (element.tagName === 'SELECT') {
-            valor = (element as HTMLSelectElement).value;
-          }
-          
-          datos[campo.identificador] = valor;
-        }
-      }
-    });
-
-    datosRecolectados.push(datos);
-
-    let datosFisica: any = {};
-    this.detalleFisica.forEach(campo => {
-      if (campo.tipo === 'selector-multiple') {
-        datosFisica[campo.identificador] = campo.seleccionados || [];
-      } else {
-        const element = document.getElementById(campo.identificador) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-        
-        if (element) {
-          let valor: any;
-          
-          if (element.tagName === 'INPUT' && (element as HTMLInputElement).type === 'number') {
-            valor = (element as HTMLInputElement).valueAsNumber;
-          } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-            valor = element.value;
-          } else if (element.tagName === 'SELECT') {
-            valor = (element as HTMLSelectElement).value;
-          }
-          
-          datosFisica[campo.identificador] = valor;
-        }
-      }
-    });
-
-    datosRecolectados.push(datosFisica);
-
-    let datosOnline: any = {};
-    this.detalleOnline.forEach(campo => {
-      if (campo.tipo === 'selector-multiple') {
-        datosOnline[campo.identificador] = campo.seleccionados || [];
-      } else {
-        const element = document.getElementById(campo.identificador) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-        
-        if (element) {
-          let valor: any;
-          
-          if (element.tagName === 'INPUT' && (element as HTMLInputElement).type === 'number') {
-            valor = (element as HTMLInputElement).valueAsNumber;
-          } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-            valor = element.value;
-          } else if (element.tagName === 'SELECT') {
-            valor = (element as HTMLSelectElement).value;
-          }
-          
-          datosOnline[campo.identificador] = valor;
-        }
-      }
-    });
-
+    let datosRecolectados = [
+      this.recolectarGrupo(this.detalleGeneral),
+      this.recolectarGrupo(this.detalleFisica),
+      this.recolectarGrupo(this.detalleOnline)
+    ];
+  
     this.datosRecolectados.emit(datosRecolectados);
+  }
+  
+  private recolectarGrupo(grupo: any[]): any {
+    return grupo.reduce((acc, campo) => {
+      if (campo.tipo === 'selector-multiple') {
+        acc[campo.identificador] = campo.seleccionados || [];
+      } else {
+        acc[campo.identificador] = campo.valor;
+      }
+      return acc;
+    }, {});
   }
 }

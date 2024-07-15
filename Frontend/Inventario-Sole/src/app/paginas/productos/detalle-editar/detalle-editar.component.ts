@@ -129,13 +129,10 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   //T* Funciones
   //! Botones flotantes
   ClickAceptar() {
-    console.log('Botón "aceptar" presionado');
     this.compDetalleNuevo.recolectarDatos();
-
     console.log('Campos generales:', this.camposGenerales);
     console.log('Campos física:', this.camposFisica);
     console.log('Campos online:', this.camposOnline);
-    
   }
   ClickCancelar() {
     this.router.navigate(['/tf']);
