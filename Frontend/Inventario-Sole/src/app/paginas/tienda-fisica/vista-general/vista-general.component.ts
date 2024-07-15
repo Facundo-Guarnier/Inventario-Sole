@@ -17,7 +17,6 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   columnas = [
     { nombre: 'ID producto', identificador: "id", tipo: 'text' },
     { nombre: 'Marca', identificador: "marca", tipo: 'text' },
-    { nombre: 'Descripción', identificador: "descripcion", tipo: 'text' },
     { nombre: 'Talle', identificador: "talle", tipo: 'text' },
     { nombre: 'Precio', identificador: "precio", tipo: 'currency' },
     { nombre: 'Cantidad', identificador: "cantidad", tipo: 'number' },
@@ -121,8 +120,6 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
           
           return productoModificado;
         });
-    
-        console.log('Datos:', this.datos);
       },
       error: (error) => {
         console.error('ERROR al cargar ventas:', error);
