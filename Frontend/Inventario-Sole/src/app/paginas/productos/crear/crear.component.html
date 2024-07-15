@@ -15,12 +15,13 @@
             <div class="mb-3">
                 
                 <div class="container-fluid"> 
-                    <h1 style="color: aliceblue;">Crear un nuevo producto </h1>
+                    <h1 style="color: aliceblue;">Crear un nuevo producto</h1>
                     <app-comp-detalle-nuevo-prod
                         [mostrarEditar]="mostrarEditar"
                         [detalleGeneral]="camposGenerales"
                         [detalleFisica]="camposFisica"
                         [detalleOnline]="camposOnline"
+                        (datosRecolectados)="onDatosRecolectados($event)"
                     ></app-comp-detalle-nuevo-prod>
                 </div>
             </div>
@@ -47,3 +48,12 @@
     (clickCancelar)="clickCancelar()"
 >
 </app-comp-botones-flotantes>
+
+<!--! Modal  -->
+<app-comp-notificacion 
+    [estaAbierto]="estaAbierto" 
+    [titulo]="tituloModal" 
+    [mensaje]="mensajeModal"
+    (cerrarModal)="cerrarModal()">
+    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+</app-comp-notificacion>

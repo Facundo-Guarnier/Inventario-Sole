@@ -138,29 +138,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     console.log('Campos online:', this.camposOnline);
     
     //! Verificar que todos los campos no estén vacíos
-    if (this.camposGenerales.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
-      console.error('Faltan campos por llenar');
-      this.tituloModal = "Faltan campos por llenar";
-      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
-      this.openModal();
-      return;
-    }
-    
-    if (this.camposFisica.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
-      console.error('Faltan campos por llenar');
-      this.tituloModal = "Faltan campos por llenar";
-      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
-      this.openModal();
-      return;
-    }
-    
-    if (this.camposOnline.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
-      console.error('Faltan campos por llenar');
-      this.tituloModal = "Faltan campos por llenar";
-      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
-      this.openModal();
-      return;
-    }
+    this.verificarCamposVacios();
     
     //! Dar formato a los datos
     let producto = {
@@ -182,7 +160,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     };
     
     //! Verificar id
-    if (producto.id === null || producto.id === undefined) {
+    if (producto.id === null || producto.id === undefined || producto.id === "" || typeof producto.id !== 'string') {
       console.error('No se ha encontrado el ID');
       return;
     }
@@ -249,6 +227,33 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     this.estaAbierto = false;
     if (this.redireccionar) {
       this.router.navigate(['/tf']);
+    }
+  }
+  
+  //! Verificar campos vacíos
+  verificarCamposVacios() {
+    if (this.camposGenerales.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
+    
+    if (this.camposFisica.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
+    
+    if (this.camposOnline.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
     }
   }
 }

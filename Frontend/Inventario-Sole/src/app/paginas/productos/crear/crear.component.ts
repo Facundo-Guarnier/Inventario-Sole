@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiProductosService } from 'src/app/services/productos/api-producto.service';
@@ -13,6 +14,7 @@ import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service
 export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
+  @ViewChild(CompDetalleNuevoComponent) compDetalleNuevo!: CompDetalleNuevoComponent;
 
   //! Producto
   camposGenerales: Campo[] = [
@@ -21,7 +23,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     { nombre: "Marca", identificador: "marca", tipo: "input-text"},
     { nombre: "Descripcion", identificador: "descripcion", tipo: "textarea-text"},
     { nombre: "Talle", identificador: "talle", tipo: "input-text"},
-    { nombre: "Liquidacion", identificador: "liquidacion", tipo: "boolean" },
+    { nombre: "Liquidacion", identificador: "liquidacion", tipo: "boolean", valor: false },
   ];
   
   camposFisica: Campo[] = [
@@ -37,6 +39,12 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   fotos: any[] = [];
   id = "";
   mostrarEditar = true;
+  
+  //! Modal
+  estaAbierto = false;
+  tituloModal = "titulo";
+  mensajeModal = "mensaje";
+  redireccionar: boolean = false;
   
   //* ------------------------------------------------------------
 
@@ -71,6 +79,12 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Botones flotantes
   clickAceptar() {
     console.log('Click en Aceptar');
+    this.compDetalleNuevo.recolectarDatos();
+    console.log('Campos generales:', this.camposGenerales);
+    console.log('Campos física:', this.camposFisica);
+    console.log('Campos online:', this.camposOnline);
+    
+    this.verificarCamposVacios()
   }
   clickCancelar() {
     this.router.navigate(['/tf']);
@@ -102,5 +116,50 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   }
   private isMobile(): boolean {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  
+  //! Recolectar datos de los componentes hijos
+  onDatosRecolectados(camposGenerales: any[]) {
+    this.camposGenerales = camposGenerales[0];
+    this.camposFisica = camposGenerales[1];
+    this.camposOnline = camposGenerales[2];
+  }
+  
+  //! Modal
+  openModal() {
+    this.estaAbierto = true;
+  }
+  cerrarModal() {
+    this.estaAbierto = false;
+    if (this.redireccionar) {
+      this.router.navigate(['/tf']);
+    }
+  }
+  
+  //! Verificar campos vacíos
+  verificarCamposVacios() {
+    if (this.camposGenerales.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
+    
+    if (this.camposFisica.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
+    
+    if (this.camposOnline.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
+      console.error('Faltan campos por llenar');
+      this.tituloModal = "Faltan campos por llenar";
+      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.openModal();
+      return;
+    }
   }
 }
