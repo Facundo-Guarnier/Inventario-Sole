@@ -1,3 +1,4 @@
+import os
 from flask_jwt_extended import JWTManager
 from flask_pymongo import PyMongo
 from flask_restful import Api
@@ -50,7 +51,15 @@ def create_app(config_class=Config):
     
     app = Flask(__name__)
     app.config.from_object(config_class)
-    # CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+    
+    # Crear la carpeta de uploads si no existe
+    if not os.path.exists(Config.UPLOAD_FOLDER):
+        try:
+            os.makedirs(Config.UPLOAD_FOLDER)
+        except FileExistsError:
+            # La carpeta ya existe, lo cual está bien
+            pass
+    
     CORS(app)
     
     mongo.init_app(app)
@@ -69,7 +78,7 @@ def create_app(config_class=Config):
     api.add_resource(Resources.ProductoResource, '/api/producto/<id>') #! buscar_x_id, actualizar, eliminar
     api.add_resource(Resources.ProductosResource, '/api/productos') #! buscar_x_atributo, buscar_todos, crear
     
-    api.add_resource(Resources.FotoResource, '/api/fotos/<filename>') #! buscar foto
+    api.add_resource(Resources.FotoResource, '/api/foto/<filename>') #! buscar foto
     api.add_resource(Resources.FotosResource, '/api/fotos') #! subir foto
     
     api.add_resource(Resources.VentaResource, '/api/venta/<id>') #! buscar_x_id, actualizar, eliminar
