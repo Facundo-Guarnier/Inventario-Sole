@@ -34,7 +34,8 @@ export class ApiFotosService {
   ) { }
   
   subirFoto(file: File, token: any): Observable<any> {
-    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    let heads = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + token);
     const formData = new FormData();
     formData.append('foto', file);
     return this.httpClient.post(`${this.url}`, formData, {headers: heads});

@@ -1,5 +1,5 @@
 import os
-from flask import app, current_app, request, send_from_directory
+from flask import current_app, request, send_from_directory
 from flask_cors import cross_origin
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
@@ -36,6 +36,7 @@ class Fotos(Resource):
         #     return ({"filename": filename}), 201
 
         # return ({"msg": "Tipo de archivo no permitido"}), 400
+        
         if 'foto' not in request.files:
             return ({"error": "No file part"}), 400
         file = request.files['foto']
@@ -43,6 +44,6 @@ class Fotos(Resource):
             return ({"error": "No selected file"}), 400
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
             return ({"filename": filename}), 200
         return ({"error": "File type not allowed"}), 400
