@@ -50,7 +50,8 @@ def create_app(config_class=Config):
     
     app = Flask(__name__)
     app.config.from_object(config_class)
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+    # CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+    CORS(app)
     
     mongo.init_app(app)
     
@@ -68,8 +69,8 @@ def create_app(config_class=Config):
     api.add_resource(Resources.ProductoResource, '/api/producto/<id>') #! buscar_x_id, actualizar, eliminar
     api.add_resource(Resources.ProductosResource, '/api/productos') #! buscar_x_atributo, buscar_todos, crear
     
-    api.add_resource(Resources.FotosResource, '/api/imagen/<filename>') #! buscar foto
-    api.add_resource(Resources.FotoResource, '/api/imagenes') #! subir foto
+    api.add_resource(Resources.FotoResource, '/api/fotos/<filename>') #! buscar foto
+    api.add_resource(Resources.FotosResource, '/api/fotos') #! subir foto
     
     api.add_resource(Resources.VentaResource, '/api/venta/<id>') #! buscar_x_id, actualizar, eliminar
     api.add_resource(Resources.VentasResource, '/api/ventas') #! buscar_x_atributo, buscar_todos, crear

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ApiFotoService, ApiFotosService } from 'src/app/services/fotos/api-foto.service';
 
 @Component({
   selector: 'app-comp-campo-fotos',
@@ -13,17 +14,19 @@ export class CompCampoFotosComponent {
   @Output() fotosActualizadas = new EventEmitter<string[]>();
 
   constructor(
-    private apiProductoService: ApiProductoService,
-    private authService: AuthService
+    // private apiProductoService: ApiProductoService,
+    private authService: AuthService,
+    private apiFoto: ApiFotoService,
+    private apiFotos: ApiFotosService,
   ) {}
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     console.log('Archivo seleccionado:', file);
     if (file) {
-      this.apiProductoService.subirFoto(file, this.authService.getToken()).subscribe(
+      this.apiFotos.subirFoto(file, this.authService.getToken()).subscribe(
         (response) => {
-          const nuevaUrl = this.apiProductoService.obtenerUrlFoto(response.filename);
+          const nuevaUrl = this.apiFoto.obtenerUrlFoto(response.filename);
           this.listaFotos.push(nuevaUrl);
           this.fotosActualizadas.emit(this.listaFotos);
         },

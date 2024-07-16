@@ -16,5 +16,5 @@ from .Usuario import Usuarios as UsuariosResource
 from .Venta import Venta as VentaResource
 from .Venta import Ventas as VentasResource
 
-from .Fotos import Fotos as FotosResource
-from .Fotos import Foto as FotoResource
+from .Foto import Fotos as FotosResource
+from .Foto import Foto as FotoResource
