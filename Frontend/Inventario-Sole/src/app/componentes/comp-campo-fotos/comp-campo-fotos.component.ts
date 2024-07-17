@@ -13,6 +13,7 @@ export class CompCampoFotosComponent {
   @Input() mostrarEditar: boolean = false;
   @Input() listaFotos: {filename: string, url: SafeUrl}[] = [];
   @Output() fotosActualizadas = new EventEmitter<{filename: string, url: SafeUrl}[]>();
+  @Input() productoId: string = '';
 
   constructor(
     private authService: AuthService,
@@ -24,7 +25,7 @@ export class CompCampoFotosComponent {
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      this.apiFotos.subirFoto(file, this.authService.getToken()).subscribe(
+      this.apiFotos.subirFoto(file, this.productoId, this.authService.getToken()).subscribe(
         (response) => {
           if (response && response.filename) {
             this.obtenerYMostrarFoto(response.filename);

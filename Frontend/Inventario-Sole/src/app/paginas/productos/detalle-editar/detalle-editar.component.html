@@ -28,6 +28,7 @@
                 <div class="container-fluid"> 
                     <app-comp-campo-fotos
                         [mostrarEditar]="mostrarEditar"
+                        [productoId]="id"
                         [listaFotos]="fotos"
                         (fotosActualizadas)="onFotosActualizadas($event)"
                     >

@@ -41,11 +41,13 @@ export class ApiFotosService {
     private httpClient: HttpClient
   ) { }
   
-  subirFoto(file: File, token: string): Observable<any> {
-    let heads = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    const formData = new FormData();
+  subirFoto(file: File, productoId: string, token: string): Observable<any> {
+    let formData = new FormData();
     formData.append('foto', file);
-    return this.httpClient.post(`${this.url}`, formData, {headers: heads});
+    formData.append('producto_id', productoId);
+    
+    let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.httpClient.post(`${this.url}`, formData, {headers: headers});
   }
 
 }

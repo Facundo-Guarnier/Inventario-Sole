@@ -50,7 +50,9 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
   ];
   
+  //! Fotos
   fotos: {filename: string, url: SafeUrl}[] = [];
+  id:string = ""
   
   //! Modal
   estaAbierto = false;
@@ -98,6 +100,8 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       this.router.navigate(['/tf']);
       return;
     }
+    this.id = id
+
     this.apiProducto.buscar_x_id(id).subscribe(
       (res: any) => {
         let datos = res["msg"][0]
