@@ -144,7 +144,7 @@ class Productos(Resource):
         fisica = data.get("fisica")
         online = data.get("online")
         liquidacion = data.get("liquidacion")
-        fotos = data.get("fotos")
+        # fotos = data.get("fotos")
         palabra_clave = data.get("palabra_clave")
         
         #! Añadir condiciones al filtro si se proporcionan
@@ -170,23 +170,36 @@ class Productos(Resource):
             elif liquidacion == "false" or liquidacion == "False" or liquidacion == "No" or liquidacion == "no":
                 liquidacion = False
             filtro['liquidacion'] = liquidacion
-        if fotos:
-            filtro['fotos'] = fotos
+        # if fotos:
+        #     filtro['fotos'] = fotos
         
         #! Búsqueda de palabra clave en los campos relevantes
         if palabra_clave:
-            filtro['$or'] = [
-                {"id": {"$regex": palabra_clave, "$options": "i"}},
-                {"cod_ms": {"$regex": palabra_clave, "$options": "i"}},
-                {"marca": {"$regex": palabra_clave, "$options": "i"}},
-                {"descripcion": {"$regex": palabra_clave, "$options": "i"}},
-                {"talle": {"$regex": palabra_clave, "$options": "i"}},
-                {"fisica": {"$regex": palabra_clave, "$options": "i"}},
-                {"online": {"$regex": palabra_clave, "$options": "i"}},
-                {"liquidacion": {"$regex": palabra_clave, "$options": "i"}},
-                {"fotos": {"$regex": palabra_clave, "$options": "i"}},
-                
-            ]
+            try:
+                #! Si la palabra clave es un número, busca en los campos numéricos
+                numero_clave = float(palabra_clave)
+                filtro['$or'] = [
+                    {"id": {"$regex": palabra_clave, "$options": "i"}},
+                    {"cod_ms": {"$regex": palabra_clave, "$options": "i"}},
+                    {"marca": {"$regex": palabra_clave, "$options": "i"}},
+                    {"descripcion": {"$regex": palabra_clave, "$options": "i"}},
+                    {"talle": {"$regex": palabra_clave, "$options": "i"}},
+                    {"fisica.precio": numero_clave},
+                    {"fisica.cantidad": numero_clave},
+                    {"online.precio": numero_clave},
+                    {"online.cantidad": numero_clave},
+                    {"liquidacion": {"$regex": palabra_clave, "$options": "i"}},
+                ]
+            except ValueError:
+                #! Si no se puede convertir a número, usa solo búsqueda de texto
+                filtro['$or'] = [
+                    {"id": {"$regex": palabra_clave, "$options": "i"}},
+                    {"cod_ms": {"$regex": palabra_clave, "$options": "i"}},
+                    {"marca": {"$regex": palabra_clave, "$options": "i"}},
+                    {"descripcion": {"$regex": palabra_clave, "$options": "i"}},
+                    {"talle": {"$regex": palabra_clave, "$options": "i"}},
+                    {"liquidacion": {"$regex": palabra_clave, "$options": "i"}},
+                ]
         respuesta = ProductoModel.buscar_x_atributo(filtro)
         
         if respuesta["estado"]:
