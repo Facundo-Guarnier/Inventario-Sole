@@ -112,11 +112,15 @@ export class AuthService {
     return null;
   }
   
-  getToken(): string | null {
+  getToken(): string {
     /*
     Se obtiene el token del localStorage.
     */
-    return localStorage.getItem(this.tokenKey);
+    let token = localStorage.getItem(this.tokenKey);
+    if (token) {
+      return token;
+    }
+    return "";
   }
   
   getRoles(): string[] {

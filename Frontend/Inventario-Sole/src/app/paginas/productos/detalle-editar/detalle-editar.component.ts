@@ -1,10 +1,11 @@
 import { identifierName } from '@angular/compiler';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ApiFotoService } from 'src/app/services/fotos/api-foto.service';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 
 
@@ -64,6 +65,8 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private apiProducto: ApiProductoService,
+    private apiFoto: ApiFotoService,
+    private sanitizer: DomSanitizer,
   ) {}
   
   ngOnInit(): void {
@@ -114,8 +117,11 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         this.camposOnline[0].valor = datos["online"]["precio"];
         this.camposOnline[1].valor = datos["online"]["cantidad"];
         
-        //! Fotos
-        this.fotos = datos["fotos"];
+        // Fotos
+        this.fotos = datos["fotos"].map((foto: string) => ({
+          filename: foto,
+          url: this.sanitizer.bypassSecurityTrustUrl(this.apiFoto.obtenerUrlFoto(foto))
+        }));
       },
       
       (err: any) => {

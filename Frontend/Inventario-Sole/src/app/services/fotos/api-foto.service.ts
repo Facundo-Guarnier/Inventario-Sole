@@ -18,7 +18,7 @@ export class ApiFotoService {
     return `${this.url}/${filename}`;
   }
 
-  obtenerFoto(filename: string, token: any): Observable<Blob> {
+  obtenerFoto(filename: string, token: string): Observable<Blob> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get(`${this.url}/${filename}`, {
       responseType: 'blob',
@@ -41,9 +41,8 @@ export class ApiFotosService {
     private httpClient: HttpClient
   ) { }
   
-  subirFoto(file: File, token: any): Observable<any> {
-    let heads = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + token);
+  subirFoto(file: File, token: string): Observable<any> {
+    let heads = new HttpHeaders().set('Authorization', 'Bearer ' + token);
     const formData = new FormData();
     formData.append('foto', file);
     return this.httpClient.post(`${this.url}`, formData, {headers: heads});

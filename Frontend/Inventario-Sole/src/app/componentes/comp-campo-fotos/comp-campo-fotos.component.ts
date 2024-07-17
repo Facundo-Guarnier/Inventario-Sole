@@ -40,12 +40,12 @@ export class CompCampoFotosComponent {
   }
 
   obtenerYMostrarFoto(filename: string): void {
+
     this.apiFoto.obtenerFoto(filename, this.authService.getToken()).subscribe(
-      (blob: Blob) => {
-        const url = URL.createObjectURL(blob);
+      (response: Blob) => {
+        const url = URL.createObjectURL(response);
         const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url);
         this.listaFotos.push({filename: filename, url: safeUrl});
-        // Cambia esta línea:
         this.fotosActualizadas.emit(this.listaFotos);
       },
       (error) => {

@@ -5,7 +5,7 @@ from flask_restful import Resource
 from werkzeug.utils import secure_filename
 
 class Foto(Resource):
-    @jwt_required()
+    # @jwt_required()
     def get(self, filename):
         try:
             upload_folder = current_app.config['UPLOAD_FOLDER']
