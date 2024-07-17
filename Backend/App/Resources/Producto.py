@@ -75,19 +75,6 @@ class Producto(Resource):
         not fotos:
             return ({"msg": "Faltan datos"}), 400
         
-        # Manejar la carga de archivos
-        # if 'fotos' in request.files:
-        #     fotos = request.files.getlist('fotos')
-        #     foto_urls = []
-        #     for foto in fotos:
-        #         if foto and self.allowed_file(foto.filename):
-        #             filename = secure_filename(foto.filename)
-        #             foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #             foto_url = url_for('uploaded_file', filename=filename, _external=True)
-        #             foto_urls.append(foto_url)
-            
-        #     data['fotos'] = foto_urls
-        
         #! Crear diccionario con los datos a actualizar
         nueva_producto = {
             "id": id,
@@ -100,8 +87,6 @@ class Producto(Resource):
             "liquidacion": liquidacion,
             "fotos": fotos,
         }
-        
-        print(nueva_producto)
         
         #! Actualizar producto
         respuesta = ProductoModel.actualizar(id, data)
@@ -203,7 +188,7 @@ class Productos(Resource):
                 
             ]
         respuesta = ProductoModel.buscar_x_atributo(filtro)
-        print(filtro)
+        
         if respuesta["estado"]:
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
@@ -250,6 +235,7 @@ class Productos(Resource):
                 "fotos": fotos,
             }
         )
+        
         if respuesta["estado"]:
             if respuesta["respuesta"] == None:
                 return ({"msg": "Error al crear el producto"}), 400
