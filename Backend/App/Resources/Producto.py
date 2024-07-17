@@ -144,8 +144,8 @@ class Productos(Resource):
         fisica = data.get("fisica")
         online = data.get("online")
         liquidacion = data.get("liquidacion")
-        # fotos = data.get("fotos")
         palabra_clave = data.get("palabra_clave")
+        tienda = data.get("tienda")
         
         #! Añadir condiciones al filtro si se proporcionan
         filtro = {}
@@ -165,13 +165,20 @@ class Productos(Resource):
         if online:
             filtro['online'] = online
         if liquidacion:
-            if liquidacion == "true" or liquidacion == "True" or liquidacion == "Si" or liquidacion == "si" or liquidacion == "Sí" or liquidacion == "sí":
+            if liquidacion.lower() in ["true", "si", "sí"]:
                 liquidacion = True
-            elif liquidacion == "false" or liquidacion == "False" or liquidacion == "No" or liquidacion == "no":
+            elif liquidacion.lower() in ["false", "no"]:
                 liquidacion = False
             filtro['liquidacion'] = liquidacion
-        # if fotos:
-        #     filtro['fotos'] = fotos
+        
+        #! Filtro por tienda con stock
+        if tienda:
+            if tienda.lower() == "todos":   #! No filtra para mostrar todos los productos (con/sin stock)
+                pass
+            elif tienda.lower() == "fisica":
+                filtro['fisica.cantidad'] = {"$gte": 1}
+            elif tienda.lower() == "online":
+                filtro['online.cantidad'] = {"$gte": 1}
         
         #! Búsqueda de palabra clave en los campos relevantes
         if palabra_clave:

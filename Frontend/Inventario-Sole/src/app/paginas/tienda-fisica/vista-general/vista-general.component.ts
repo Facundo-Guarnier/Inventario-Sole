@@ -37,7 +37,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   ];
   filtrosCheckbox: {nombre:string, identificador: string, seleccionado:boolean}[] = [
     // {nombre: 'Liquidación', identificador: "liquidacion", seleccionado: false},
-    // { nombre: "Stock", identificador: "stock", seleccionado: true },
+    { nombre: "Todos (con/sin stock)", identificador: "stock", seleccionado: false },
   ]
   
   
@@ -110,7 +110,17 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
       acc[key] = filtro[key];
       return acc;
     }, {});
-  
+    
+    //! Filtrar por stock, para que se puedan mostrar los productos que no tienen stock
+    if (filtrosObj["stock"] === "true") {
+      delete filtrosObj["stock"];
+      filtrosObj['tienda'] = 'todos';
+    
+    } else {
+      filtrosObj['tienda'] = 'fisica';
+      delete filtrosObj["stock"];
+    }
+    
     this.apiProductos.buscar_x_atributo(filtrosObj).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat().map((producto: any) => {

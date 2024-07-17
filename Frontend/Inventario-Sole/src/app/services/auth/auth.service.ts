@@ -141,7 +141,6 @@ export class AuthService {
     */
     try {
       const decodedToken = this.decodeToken();
-      console.log(decodedToken);
       return decodedToken.sub;
     } catch (e) {
       return null;

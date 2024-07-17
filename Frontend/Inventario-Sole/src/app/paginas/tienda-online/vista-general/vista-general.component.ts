@@ -36,7 +36,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   ];
   filtrosCheckbox: {nombre:string, identificador: string, seleccionado:boolean}[] = [
     // {nombre: 'Liquidación', identificador: "liquidacion", seleccionado: false},
-    // { nombre: "Stock", identificador: "stock", seleccionado: true },
+    { nombre: "Todos (con/sin stock)", identificador: "stock", seleccionado: false },
   ]
   
   //! Botones flotantes
@@ -108,7 +108,17 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
       acc[key] = filtro[key];
       return acc;
     }, {});
-  
+    
+    //! Filtrar por stock, para que se puedan mostrar los productos que no tienen stock
+    if (filtrosObj["stock"] === "true") {
+      delete filtrosObj["stock"];
+      filtrosObj['tienda'] = 'todos';
+    
+    } else {
+      filtrosObj['tienda'] = 'online';
+      delete filtrosObj["stock"];
+    }
+    
     this.apiProductos.buscar_x_atributo(filtrosObj).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat().map((producto: any) => {
@@ -121,8 +131,6 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
           
           return productoModificado;
         });
-    
-        console.log('Datos:', this.datos);
       },
       error: (error) => {
         console.error('ERROR al cargar ventas:', error);
