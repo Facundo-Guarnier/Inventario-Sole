@@ -18,7 +18,7 @@ class Producto:
         try:
             return {
                 "estado": True,
-                "respuesta": json.loads(json_util.dumps(db_mongo.db.productos.find(filtro)))
+                "respuesta": json.loads(json_util.dumps(db_mongo.db.productos.find(filtro).sort("_id", -1)))
             }
         
         except Exception as e:

@@ -17,7 +17,7 @@ class Movimiento:
         try:
             return {
                 "estado": True,
-                "respuesta": json.loads(json_util.dumps(db_mongo.db.movimientos.find(filtro)))
+                "respuesta": json.loads(json_util.dumps(db_mongo.db.movimientos.find(filtro).sort("_id", -1)))
             }
         
         except Exception as e:
