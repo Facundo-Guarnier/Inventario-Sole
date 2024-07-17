@@ -1,3 +1,5 @@
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+
 /*T* Estilos generales */
 .bg-primary { /* Acento primario */
     background-color: #0d6efd !important; 

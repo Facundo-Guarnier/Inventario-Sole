@@ -1,0 +1,18 @@
+.sidebar-container {
+    height: 100%;
+    overflow-y: auto;
+  }
+  
+  .user-info-section {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .user-info-section h5 {
+    color: #495057;
+  }
+  
+  .user-info-section p {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }

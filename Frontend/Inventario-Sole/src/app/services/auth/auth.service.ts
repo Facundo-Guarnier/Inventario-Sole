@@ -18,7 +18,7 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private jwtHelper: JwtHelperService,
+    public jwtHelper: JwtHelperService,
   ) { 
     this.checkToken();
   }
