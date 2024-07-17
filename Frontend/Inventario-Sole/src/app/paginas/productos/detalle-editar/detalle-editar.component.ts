@@ -49,7 +49,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
   ];
   
-  fotos: SafeUrl[] = [];
+  fotos: {filename: string, url: SafeUrl}[] = [];
   
   //! Modal
   estaAbierto = false;
@@ -137,6 +137,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     console.log('Campos generales:', this.camposGenerales);
     console.log('Campos física:', this.camposFisica);
     console.log('Campos online:', this.camposOnline);
+    console.log('Fotos:', this.fotos);
     
     //! Verificar que todos los campos no estén vacíos
     this.verificarCamposVacios();
@@ -157,7 +158,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         precio: this.camposOnline[0].valor,
         cantidad: this.camposOnline[1].valor,
       },
-      fotos: this.fotos,
+      fotos: this.fotos.map(foto => foto.filename),
     };
     
     //! Verificar id
@@ -198,7 +199,12 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     }
     this.fileInput.nativeElement.click();
   }
-
+  private isMobile(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  onFotosActualizadas(fotos: {filename: string, url: SafeUrl}[]) {
+    this.fotos = fotos;
+  }
   archivoSeleccionado(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) {
@@ -210,19 +216,12 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       // TODO: Agregar aquí la lógica para subir la imagen
     }
   }
-  private isMobile(): boolean {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
   
   //! Recolectar datos de los componentes hijos
   onDatosRecolectados(camposGenerales: any[]) {
     this.camposGenerales = camposGenerales[0];
     this.camposFisica = camposGenerales[1];
     this.camposOnline = camposGenerales[2];
-  }
-  
-  onFotosActualizadas(fotos: SafeUrl[]) {
-    this.fotos = fotos;
   }
   
   //! Modal

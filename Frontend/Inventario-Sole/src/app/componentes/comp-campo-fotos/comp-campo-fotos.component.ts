@@ -11,8 +11,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 export class CompCampoFotosComponent {
   @Input() mostrarEditar: boolean = false;
-  @Input() listaFotos: SafeUrl[] = [];
-  @Output() fotosActualizadas = new EventEmitter<SafeUrl[]>();
+  @Input() listaFotos: {filename: string, url: SafeUrl}[] = [];
+  @Output() fotosActualizadas = new EventEmitter<{filename: string, url: SafeUrl}[]>();
 
   constructor(
     private authService: AuthService,
@@ -44,7 +44,8 @@ export class CompCampoFotosComponent {
       (blob: Blob) => {
         const url = URL.createObjectURL(blob);
         const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url);
-        this.listaFotos.push(safeUrl);
+        this.listaFotos.push({filename: filename, url: safeUrl});
+        // Cambia esta línea:
         this.fotosActualizadas.emit(this.listaFotos);
       },
       (error) => {
@@ -52,9 +53,9 @@ export class CompCampoFotosComponent {
       }
     );
   }
-
+  
   eliminarFoto(index: number): void {
-    URL.revokeObjectURL(this.listaFotos[index].toString());
+    URL.revokeObjectURL(this.listaFotos[index].url.toString());
     this.listaFotos.splice(index, 1);
     this.fotosActualizadas.emit(this.listaFotos);
   }

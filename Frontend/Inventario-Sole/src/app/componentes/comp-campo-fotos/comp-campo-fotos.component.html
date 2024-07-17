@@ -1,5 +1,4 @@
 
-<!--* Cloude  -->
 <div class="card text-white bg-dark">
     <div class="card-header bg-primary">
       Fotos
@@ -13,7 +12,7 @@
       <div class="row">
         <div class="col-md-4" *ngFor="let foto of listaFotos; let i = index">
           <div class="position-relative">
-            <img [src]="foto" class="img-fluid" alt="Foto del producto">
+            <img [src]="foto.filename" class="img-fluid" alt="Foto del producto">
             <button *ngIf="mostrarEditar" class="btn btn-danger btn-sm position-absolute top-0 end-0" 
                     (click)="eliminarFoto(i)">
               X

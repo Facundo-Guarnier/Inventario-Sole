@@ -76,17 +76,17 @@ class Producto(Resource):
             return ({"msg": "Faltan datos"}), 400
         
         # Manejar la carga de archivos
-        if 'fotos' in request.files:
-            fotos = request.files.getlist('fotos')
-            foto_urls = []
-            for foto in fotos:
-                if foto and self.allowed_file(foto.filename):
-                    filename = secure_filename(foto.filename)
-                    foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    foto_url = url_for('uploaded_file', filename=filename, _external=True)
-                    foto_urls.append(foto_url)
+        # if 'fotos' in request.files:
+        #     fotos = request.files.getlist('fotos')
+        #     foto_urls = []
+        #     for foto in fotos:
+        #         if foto and self.allowed_file(foto.filename):
+        #             filename = secure_filename(foto.filename)
+        #             foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #             foto_url = url_for('uploaded_file', filename=filename, _external=True)
+        #             foto_urls.append(foto_url)
             
-            data['fotos'] = foto_urls
+        #     data['fotos'] = foto_urls
         
         #! Crear diccionario con los datos a actualizar
         nueva_producto = {
