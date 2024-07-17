@@ -1,5 +1,6 @@
 import { identifierName } from '@angular/compiler';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
@@ -48,7 +49,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
   ];
   
-  fotos: any[] = [];
+  fotos: SafeUrl[] = [];
   
   //! Modal
   estaAbierto = false;
@@ -220,7 +221,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     this.camposOnline = camposGenerales[2];
   }
   
-  onFotosActualizadas(fotos: string[]) {
+  onFotosActualizadas(fotos: SafeUrl[]) {
     this.fotos = fotos;
   }
   

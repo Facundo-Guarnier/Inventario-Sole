@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiFotoService, ApiFotosService } from 'src/app/services/fotos/api-foto.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-comp-campo-fotos',
@@ -10,28 +11,23 @@ import { ApiFotoService, ApiFotosService } from 'src/app/services/fotos/api-foto
 })
 export class CompCampoFotosComponent {
   @Input() mostrarEditar: boolean = false;
-  @Input() listaFotos: string[] = [];
-  @Output() fotosActualizadas = new EventEmitter<string[]>();
+  @Input() listaFotos: SafeUrl[] = [];
+  @Output() fotosActualizadas = new EventEmitter<SafeUrl[]>();
 
   constructor(
-    // private apiProductoService: ApiProductoService,
     private authService: AuthService,
     private apiFoto: ApiFotoService,
     private apiFotos: ApiFotosService,
+    private sanitizer: DomSanitizer
   ) {}
 
-
-  //* Cloude 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
       this.apiFotos.subirFoto(file, this.authService.getToken()).subscribe(
         (response) => {
-          console.log('Respuesta del servidor:', response);
           if (response && response.filename) {
-            const nuevaUrl = this.apiFoto.obtenerUrlFoto(response.filename);
-            this.listaFotos.push(nuevaUrl);
-            this.fotosActualizadas.emit(this.listaFotos);
+            this.obtenerYMostrarFoto(response.filename);
           } else {
             console.error('La respuesta del servidor no contiene un nombre de archivo válido');
           }
@@ -43,40 +39,23 @@ export class CompCampoFotosComponent {
     }
   }
 
+  obtenerYMostrarFoto(filename: string): void {
+    this.apiFoto.obtenerFoto(filename, this.authService.getToken()).subscribe(
+      (blob: Blob) => {
+        const url = URL.createObjectURL(blob);
+        const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+        this.listaFotos.push(safeUrl);
+        this.fotosActualizadas.emit(this.listaFotos);
+      },
+      (error) => {
+        console.error('Error al obtener la foto:', error);
+      }
+    );
+  }
+
   eliminarFoto(index: number): void {
+    URL.revokeObjectURL(this.listaFotos[index].toString());
     this.listaFotos.splice(index, 1);
     this.fotosActualizadas.emit(this.listaFotos);
   }
-  
-
-
-
-
-  //* Gemini
-  // onFileSelected(event: any): void {
-  //   this.selectedFile = event.target.files[0] as File;
-  // }
-
-  // subirFoto(): void {
-  //   if (this.selectedFile) {
-  //     this.apiFotos.subirFoto(this.selectedFile, this.authService.getToken())
-  //       .subscribe(
-  //         (res: any) => {
-  //           console.log('Respuesta del servidor:', res);
-  //           this.listaFotos.push(this.apiFoto.obtenerUrlFoto(res.filename));
-  //           this.fotosActualizadas.emit(this.listaFotos);
-  //         },
-  //         (error: any) => {
-  //           console.error('Error al subir la foto:', error);
-  //         }
-  //       );
-  //   }
-  // }
-
-  // eliminarFoto(index: number): void {
-  //   if (this.mostrarEditar) {
-  //     this.listaFotos.splice(index, 1);
-  //     this.fotosActualizadas.emit(this.listaFotos);
-  //   }
-  // }
 }

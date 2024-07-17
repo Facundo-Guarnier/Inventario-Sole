@@ -18,6 +18,14 @@ export class ApiFotoService {
     return `${this.url}/${filename}`;
   }
 
+  obtenerFoto(filename: string, token: any): Observable<Blob> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.url}/${filename}`, {
+      responseType: 'blob',
+      headers: headers
+    });
+  }
+
 }
 
 //* ------------------------------------------------------------
