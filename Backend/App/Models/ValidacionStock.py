@@ -4,22 +4,21 @@ from bson import json_util, ObjectId
 import json
 
 class ValidacionStock:
-    #TODO: Documentar bien estos métodos y revisar si la lógica va en Resources o en Models
     @staticmethod
     def obtener_productos_para_validar(fecha_ronda, tienda):
         return json.loads(json_util.dumps(db_mongo.db.productos.find(
             {
                 "$or": [
                     {
-                        "validacion.ultima_fecha": {"$ne": fecha_ronda},
-                        f"{tienda}.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                        f"{tienda}.validacion.ultima_fecha": {"$ne": fecha_ronda},
+                        f"{tienda}.cantidad": {"$gte": 1},
                     },
                     {
-                        "validacion.ultima_fecha": fecha_ronda,
-                        "validacion.estado": {"$ne": "Validado"},
-                        f"{tienda}.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                        f"{tienda}.validacion.ultima_fecha": fecha_ronda,
+                        f"{tienda}.validacion.estado": {"$ne": "Validado"},
+                        f"{tienda}.cantidad": {"$gte": 1},
                     }, 
-                    {"validacion": {"$exists": False}}
+                    
                 ]
                 },
                 {   #! Se excluyen los campos que no se necesitan
@@ -36,11 +35,14 @@ class ValidacionStock:
         if not producto:
             return {"estado": False, "mensaje": "Producto no encontrado"}
         
-        validacion = producto.get("validacion", {
-            "ultima_fecha": None,
-            "cantidad_validada": 0,
-            "estado": "no_iniciado"
-        })
+        validacion = producto.get(tienda).get("validacion", {
+                "ultima_fecha": None,
+                "cantidad_validada": 0,
+                "estado": "no_iniciado"
+            }
+        )
+        
+        print("+++++++++++++Validacion: ", validacion)
         
         fecha_actual = ValidacionStock.obtener_ronda_actual()
         cantidad_fisica = producto[tienda]["cantidad"] 
@@ -63,7 +65,7 @@ class ValidacionStock:
         
         db_mongo.db.productos.update_one(
             {"id": id_producto},
-            {"$set": {"validacion": validacion}}
+            {"$set": {f"{tienda}.validacion": validacion}}
         )
         
         return {
@@ -75,7 +77,6 @@ class ValidacionStock:
     
     @staticmethod
     def deshacer_validacion(id_producto, tienda):
-        
         producto = db_mongo.db.productos.find_one({"id": id_producto})
         
         if not producto:
@@ -115,7 +116,7 @@ class ValidacionStock:
         
         db_mongo.db.productos.update_one(
             {"id": id_producto},
-            {"$set": {"validacion": validacion}}
+            {"$set": {f"{tienda}.validacion": validacion}}
         )
         
         return {

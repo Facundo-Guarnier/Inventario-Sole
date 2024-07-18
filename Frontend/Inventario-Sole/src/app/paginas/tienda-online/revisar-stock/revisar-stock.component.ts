@@ -50,6 +50,7 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
       (respuesta) => {
         console.log('Nueva ronda iniciada:', respuesta);
         this.recargarLista();
+        this.notificaciones = [];
       },
       (error) => console.error('Error al iniciar nueva ronda:', error)
     );
@@ -59,6 +60,7 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
     this.ApiRondaValidacionStock.obtenerProductosParaValidar("online").subscribe({
       next: (data) => {
         this.fecha_ronda = data["fecha_ronda"];
+        console.log('Data:', data);
         
         //! Modificar datos para mostrar en la tabla
         this.datos = Object.values(data["productos"]).flat().map((producto: any) => {
@@ -67,21 +69,24 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
           if (productoModificado.online) {
             productoModificado.cantidad_fisica = productoModificado.online.cantidad;
           }
-          if (productoModificado.validacion) {
-            productoModificado.ultima_fecha = productoModificado.validacion.ultima_fecha;
+          
+          if (productoModificado.online.validacion) {
+            productoModificado.ultima_fecha = productoModificado.online.validacion.ultima_fecha;
             
             if (productoModificado.ultima_fecha !== this.fecha_ronda) {
               productoModificado.estado = 'Pendiente';
               productoModificado.cantidad_validada = 0;
               
             } else {
-              productoModificado.cantidad_validada = productoModificado.validacion.cantidad_validada;
-              productoModificado.estado = productoModificado.validacion.estado;
+              productoModificado.cantidad_validada = productoModificado.online.validacion.cantidad_validada;
+              productoModificado.estado = productoModificado.online.validacion.estado;
             }
-            delete productoModificado.validacion;
             delete productoModificado.fisica;
             delete productoModificado.online;
             
+          } else {
+            productoModificado.estado = 'Pendiente';
+            productoModificado.cantidad_validada = 0;
           }
           return productoModificado;
         });

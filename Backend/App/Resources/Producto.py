@@ -249,6 +249,10 @@ class Productos(Resource):
             "estado": "En proceso"
         }
         
+        #! Agregar validación a física y online
+        fisica["validacion"] = validacion.copy()
+        online["validacion"] = validacion.copy()
+        
         respuesta = ProductoModel.crear(
             {
                 "id": UltimaID.calcular_proximo_id("producto"),
@@ -259,15 +263,13 @@ class Productos(Resource):
                 "fisica": fisica,
                 "online": online,
                 "liquidacion": liquidacion,
-                "fotos": fotos,
-                "validacion": validacion
+                "fotos": fotos
             }
         )
         
         if respuesta["estado"]:
             if respuesta["respuesta"] == None:
                 return ({"msg": "Error al crear el producto"}), 400
-            
             else:
                 self.ultima_id_resource.put("producto")
                 return ({"msg": "Producto creado con éxito"}), 201

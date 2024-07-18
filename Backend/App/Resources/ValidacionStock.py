@@ -12,7 +12,6 @@ class RondaValidacionStock(Resource):
         
         data = request.args.to_dict()
         tienda = data.get('tienda')
-        print("+++ tienda", tienda)
         
         if not tienda:
             return ({"error": "Datos incompletos"}), 400
@@ -44,16 +43,11 @@ class ValidarStock(Resource):
         deshacer = data.get('deshacer', False)
         tienda = data.get('tienda')
         
-        print("+++ id_producto", id_producto)
-        print("+++ deshacer", deshacer)
-        print("+++ tienda", tienda)
-        
         if not id_producto or not tienda:
             return ({"error": "Datos incompletos"}), 400
         
         if deshacer:
             resultado = ValidacionStockModel.deshacer_validacion(id_producto, tienda)
-        
         else:
             resultado = ValidacionStockModel.validar_unidad(id_producto, tienda)
         
