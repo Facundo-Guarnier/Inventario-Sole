@@ -15,10 +15,10 @@ export class ApiRondaValidacionStock {
   ) { }
   
   
-  iniciarRondaValidacion(token:string): Observable<any> {
+  iniciarRondaValidacion(token:string, tienda:string): Observable<any> {
     let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
 
-    return this.httpClient.post(`${this.url}`, {} , {headers: heads} );
+    return this.httpClient.post(`${this.url}`, { tienda: tienda } , {headers: heads} );
   }
   
   obtenerProductosParaValidar(tienda:string): Observable<any> {

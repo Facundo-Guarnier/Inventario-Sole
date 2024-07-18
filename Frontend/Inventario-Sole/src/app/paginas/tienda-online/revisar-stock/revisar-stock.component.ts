@@ -46,7 +46,7 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
   
   //T* Funciones
   iniciarNuevaRonda() {
-    this.ApiRondaValidacionStock.iniciarRondaValidacion(this.AuthService.getToken()).subscribe(
+    this.ApiRondaValidacionStock.iniciarRondaValidacion(this.AuthService.getToken(), "online").subscribe(
       (respuesta) => {
         console.log('Nueva ronda iniciada:', respuesta);
         this.recargarLista();

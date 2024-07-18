@@ -16,7 +16,7 @@ class RondaValidacionStock(Resource):
         if not tienda:
             return ({"error": "Datos incompletos"}), 400
         
-        fecha_ronda = ValidacionStockModel.obtener_ronda_actual()
+        fecha_ronda = ValidacionStockModel.obtener_ronda_actual(tienda)
         if not fecha_ronda:
             return ({"error": "No hay una ronda de validación activa"}), 400
         
@@ -28,7 +28,13 @@ class RondaValidacionStock(Resource):
         """
         Inicia una nueva ronda de validación.
         """
-        resultado = ValidacionStockModel.iniciar_nueva_ronda()
+        data = request.json
+        tienda = data.get('tienda')
+        
+        if not tienda:
+            return ({"error": "Datos incompletos"}), 400
+        
+        resultado = ValidacionStockModel.iniciar_nueva_ronda(tienda)
         return (resultado), 200
 
 

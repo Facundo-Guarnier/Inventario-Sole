@@ -44,7 +44,7 @@ class ValidacionStock:
         
         print("+++++++++++++Validacion: ", validacion)
         
-        fecha_actual = ValidacionStock.obtener_ronda_actual()
+        fecha_actual = ValidacionStock.obtener_ronda_actual(tienda)
         cantidad_fisica = producto[tienda]["cantidad"] 
         
         #! Si la fecha actual es distinta a la fecha de la última validación, se reinicia la validación
@@ -83,7 +83,7 @@ class ValidacionStock:
             return {"estado": False, "mensaje": "Producto no encontrado"}
         
         cantidad_fisica = producto[tienda]["cantidad"] 
-        fecha_actual = ValidacionStock.obtener_ronda_actual()
+        fecha_actual = ValidacionStock.obtener_ronda_actual(tienda)
         
         validacion = producto.get("validacion", {})
         
@@ -127,16 +127,16 @@ class ValidacionStock:
         }
     
     @staticmethod
-    def iniciar_nueva_ronda():
+    def iniciar_nueva_ronda(tienda):
         fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         db_mongo.db.ultimasIDs.update_one(
-            {"coleccion": "validacion"},
+            {"coleccion": f"validacion-{tienda}"},
             {"$set": {"fecha": fecha_actual}},
             upsert=True
         )
         return {"estado": True, "fecha_inicio": fecha_actual}
     
     @staticmethod
-    def obtener_ronda_actual():
-        ronda = db_mongo.db.ultimasIDs.find_one({"coleccion": "validacion"})
+    def obtener_ronda_actual(tienda):
+        ronda = db_mongo.db.ultimasIDs.find_one({ "coleccion": f"validacion-{tienda}" })
         return ronda["fecha"] if ronda else None

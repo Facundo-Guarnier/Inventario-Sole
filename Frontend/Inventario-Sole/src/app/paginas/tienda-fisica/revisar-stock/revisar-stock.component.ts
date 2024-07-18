@@ -46,7 +46,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
   //T* Funciones
   iniciarNuevaRonda() {
-    this.ApiRondaValidacionStock.iniciarRondaValidacion(this.AuthService.getToken()).subscribe(
+    this.ApiRondaValidacionStock.iniciarRondaValidacion(this.AuthService.getToken(), "fisica").subscribe(
       (respuesta) => {
         console.log('Nueva ronda iniciada:', respuesta);
         this.recargarLista();
