@@ -15,12 +15,14 @@ export class ApiRondaValidacionStock {
   ) { }
   
   
-  iniciarRondaValidacion(): Observable<any> {
-    return this.httpClient.post(`${this.url}`, {});
+  iniciarRondaValidacion(token:string): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+
+    return this.httpClient.post(`${this.url}`, {} , {headers: heads} );
   }
   
-  obtenerProductosParaValidar(): Observable<any> {
-    return this.httpClient.get(`${this.url}`);
+  obtenerProductosParaValidar(tienda:string): Observable<any> {
+    return this.httpClient.get(`${this.url}`, { params: { tienda: tienda } });
   }
 }
 
@@ -37,11 +39,13 @@ export class ApiValidarStock {
     private httpClient: HttpClient
   ) { }
   
-  validarUnidad(idProducto: string): Observable<any> {
-    return this.httpClient.post(`${this.url}`, { id: idProducto });
+  validarUnidad(idProducto: string, tienda:string, token:string): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.post(`${this.url}`, { id: idProducto, tienda: tienda }, {headers: heads});
   }
 
-  deshacerValidacion(idProducto: string): Observable<any> {
-    return this.httpClient.post(`${this.url}`, { deshacer: true, id: idProducto });
+  deshacerValidacion(idProducto: string, tienda:string, token:string): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.post(`${this.url}`, { deshacer: true, id: idProducto, tienda: tienda }, {headers: heads});
   }
 }

@@ -5,19 +5,26 @@ from App.Models import ValidacionStockModel
 
 
 class RondaValidacionStock(Resource):
-    # /api/validacion/iniciar-ronda' ->  /api/ronda-validacion
     def get(self):
         """
         Obtiene los productos que deben ser validados en la ronda actual.
         """
+        
+        data = request.args.to_dict()
+        tienda = data.get('tienda')
+        print("+++ tienda", tienda)
+        
+        if not tienda:
+            return ({"error": "Datos incompletos"}), 400
+        
         fecha_ronda = ValidacionStockModel.obtener_ronda_actual()
         if not fecha_ronda:
             return ({"error": "No hay una ronda de validación activa"}), 400
         
-        productos = list(ValidacionStockModel.obtener_productos_para_validar(fecha_ronda))
+        productos = list(ValidacionStockModel.obtener_productos_para_validar(fecha_ronda, tienda))
         return {"fecha_ronda":fecha_ronda, "productos":productos}, 200
     
-    # /api/validacion/iniciar-ronda' ->  /api/ronda-validacion
+    @jwt_required()
     def post(self):
         """
         Inicia una nueva ronda de validación.
@@ -27,7 +34,7 @@ class RondaValidacionStock(Resource):
 
 
 class ValidarStock(Resource):
-    # /api/validacion/validar-unidad -> /api/validar
+    @jwt_required()
     def post(self):
         """
         Valida una unidad de un producto.
@@ -35,16 +42,19 @@ class ValidarStock(Resource):
         data = request.json
         id_producto = data.get('id')
         deshacer = data.get('deshacer', False)
+        tienda = data.get('tienda')
         
         print("+++ id_producto", id_producto)
         print("+++ deshacer", deshacer)
+        print("+++ tienda", tienda)
         
-        if deshacer:
-            resultado = ValidacionStockModel.deshacer_validacion(id_producto)
-            return (resultado), 200 if resultado["estado"] else 400
-        
-        if not id_producto:
+        if not id_producto or not tienda:
             return ({"error": "Datos incompletos"}), 400
         
-        resultado = ValidacionStockModel.validar_unidad(id_producto)
+        if deshacer:
+            resultado = ValidacionStockModel.deshacer_validacion(id_producto, tienda)
+        
+        else:
+            resultado = ValidacionStockModel.validar_unidad(id_producto, tienda)
+        
         return (resultado), 200 if resultado["estado"] else 400

@@ -10,13 +10,7 @@ import { Notificacion } from 'src/app/interfaces/notificacion.interface';
 })
 export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
-  notificaciones: Notificacion[] = [
-    { mensaje: 'Producto 1 validado', puedeDeshacer: true, idProducto: '1' },
-    { mensaje: 'Producto 2 no validado', puedeDeshacer: false, idProducto: '1' },
-    { mensaje: 'Producto 3 no validado', puedeDeshacer: false, idProducto: '1' },
-    { mensaje: 'Producto 4 validado', puedeDeshacer: true, idProducto: '1' },
-    { mensaje: 'Producto 5 no validado', puedeDeshacer: false, idProducto: '1' },
-  ];
+  notificaciones: Notificacion[] = [];
   fecha_ronda: string = '';
   id_a_validar: string = '';
   
@@ -43,6 +37,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   constructor(
     private ApiRondaValidacionStock: ApiRondaValidacionStock,
     private ApiValidarStock: ApiValidarStock,
+    private AuthService: AuthService,
   ) {}
   
   ngOnInit() {
@@ -51,7 +46,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
   //T* Funciones
   iniciarNuevaRonda() {
-    this.ApiRondaValidacionStock.iniciarRondaValidacion().subscribe(
+    this.ApiRondaValidacionStock.iniciarRondaValidacion(this.AuthService.getToken()).subscribe(
       (respuesta) => {
         console.log('Nueva ronda iniciada:', respuesta);
         this.recargarLista();
@@ -61,7 +56,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   }
   
   recargarLista() {
-    this.ApiRondaValidacionStock.obtenerProductosParaValidar().subscribe({
+    this.ApiRondaValidacionStock.obtenerProductosParaValidar("fisica").subscribe({
       next: (data) => {
         this.fecha_ronda = data["fecha_ronda"];
         
@@ -106,7 +101,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     //   return;
     // }
     
-    this.ApiValidarStock.validarUnidad(this.id_a_validar).subscribe(
+    this.ApiValidarStock.validarUnidad(this.id_a_validar, "fisica", this.AuthService.getToken()).subscribe(
       (respuesta) => {
         console.log('Unidad validada:', respuesta);
         this.agregarNotificacion({
@@ -139,7 +134,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     const notificacion = this.notificaciones[index];
     if (notificacion.puedeDeshacer && notificacion.idProducto) {
       console.log('Deshaciendo validación:', notificacion.idProducto);
-      this.ApiValidarStock.deshacerValidacion(notificacion.idProducto).subscribe(
+      this.ApiValidarStock.deshacerValidacion(notificacion.idProducto, "fisica", this.AuthService.getToken()).subscribe(
         (respuesta) => {
           console.log('Validación deshecha:', respuesta);
           this.notificaciones[index] = {

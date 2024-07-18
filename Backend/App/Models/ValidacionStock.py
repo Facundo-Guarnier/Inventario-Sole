@@ -6,18 +6,18 @@ import json
 class ValidacionStock:
     #TODO: Documentar bien estos métodos y revisar si la lógica va en Resources o en Models
     @staticmethod
-    def obtener_productos_para_validar(fecha_ronda):
+    def obtener_productos_para_validar(fecha_ronda, tienda):
         return json.loads(json_util.dumps(db_mongo.db.productos.find(
             {
                 "$or": [
                     {
                         "validacion.ultima_fecha": {"$ne": fecha_ronda},
-                        "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                        f"{tienda}.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
                     },
                     {
                         "validacion.ultima_fecha": fecha_ronda,
                         "validacion.estado": {"$ne": "validado"},
-                        "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                        f"{tienda}.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
                     }, 
                     {"validacion": {"$exists": False}}
                 ]
@@ -27,10 +27,10 @@ class ValidacionStock:
                     "liquidacion": 0,
                     "fotos": 0
                 }
-            )))
+            ).sort("_id", -1)))
     
     @staticmethod
-    def validar_unidad(id_producto):
+    def validar_unidad(id_producto, tienda):
         producto = db_mongo.db.productos.find_one({"id": id_producto})
         
         if not producto:
@@ -43,7 +43,7 @@ class ValidacionStock:
         })
         
         fecha_actual = ValidacionStock.obtener_ronda_actual()
-        cantidad_fisica = producto["fisica"]["cantidad"] 
+        cantidad_fisica = producto[tienda]["cantidad"] 
         
         #! Si la fecha actual es distinta a la fecha de la última validación, se reinicia la validación
         if fecha_actual != validacion["ultima_fecha"]:
@@ -74,15 +74,14 @@ class ValidacionStock:
         }
     
     @staticmethod
-    def deshacer_validacion(id_producto):
+    def deshacer_validacion(id_producto, tienda):
         
         producto = db_mongo.db.productos.find_one({"id": id_producto})
-        print("++++++++++", producto)
         
         if not producto:
             return {"estado": False, "mensaje": "Producto no encontrado"}
         
-        cantidad_fisica = producto["fisica"]["cantidad"] 
+        cantidad_fisica = producto[tienda]["cantidad"] 
         fecha_actual = ValidacionStock.obtener_ronda_actual()
         
         validacion = producto.get("validacion", {})
