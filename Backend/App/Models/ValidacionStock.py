@@ -7,20 +7,27 @@ class ValidacionStock:
     #TODO: Documentar bien estos métodos y revisar si la lógica va en Resources o en Models
     @staticmethod
     def obtener_productos_para_validar(fecha_ronda):
-        return json.loads(json_util.dumps(db_mongo.db.productos.find({
-            "$or": [
-                {
-                    "validacion.ultima_fecha": {"$ne": fecha_ronda},
-                    "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+        return json.loads(json_util.dumps(db_mongo.db.productos.find(
+            {
+                "$or": [
+                    {
+                        "validacion.ultima_fecha": {"$ne": fecha_ronda},
+                        "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                    },
+                    {
+                        "validacion.ultima_fecha": fecha_ronda,
+                        "validacion.estado": {"$ne": "validado"},
+                        "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                    }, 
+                    {"validacion": {"$exists": False}}
+                ]
                 },
-                {
-                    "validacion.ultima_fecha": fecha_ronda,
-                    "validacion.estado": {"$ne": "validado"},
-                    "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
-                }, 
-                {"validacion": {"$exists": False}}
-            ]
-        })))
+                {   #! Se excluyen los campos que no se necesitan
+                    "_id": 0,
+                    "liquidacion": 0,
+                    "fotos": 0
+                }
+            )))
     
     @staticmethod
     def validar_unidad(id_producto):
