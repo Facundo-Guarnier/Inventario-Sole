@@ -143,7 +143,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
         (respuesta) => {
           console.log('Validación deshecha:', respuesta);
           this.notificaciones[index] = {
-            mensaje: `Deshecho: ${notificacion.mensaje}`,
+            mensaje: `Deshecho validación de producto '${notificacion.idProducto}'.`,
             puedeDeshacer: false
           };
           this.recargarLista();

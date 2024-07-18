@@ -85,7 +85,7 @@ class ValidacionStock:
         cantidad_fisica = producto[tienda]["cantidad"] 
         fecha_actual = ValidacionStock.obtener_ronda_actual(tienda)
         
-        validacion = producto.get("validacion", {})
+        validacion = producto.get(tienda).get("validacion")
         
         if not validacion:
             return {"estado": False, "mensaje": "No hay validación para deshacer"}
