@@ -246,7 +246,7 @@ class Productos(Resource):
         validacion = {
             "ultima_fecha": datetime.now().strftime("%Y-%m-%d"),
             "cantidad_validada": 0,
-            "estado": "pendiente"       #TODO: Está bien este estado?
+            "estado": "En proceso"
         }
         
         respuesta = ProductoModel.crear(

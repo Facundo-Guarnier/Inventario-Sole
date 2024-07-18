@@ -16,7 +16,7 @@ class ValidacionStock:
                     },
                     {
                         "validacion.ultima_fecha": fecha_ronda,
-                        "validacion.estado": {"$ne": "validado"},
+                        "validacion.estado": {"$ne": "Validado"},
                         f"{tienda}.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
                     }, 
                     {"validacion": {"$exists": False}}
@@ -49,17 +49,17 @@ class ValidacionStock:
         if fecha_actual != validacion["ultima_fecha"]:
             validacion["ultima_fecha"] = fecha_actual
             validacion["cantidad_validada"] = 0
-            validacion["estado"] = "en_proceso"
+            validacion["estado"] = "En proceso"
         
         validacion["cantidad_validada"] += 1    #! Se suma una unidad
         
         #! Entrar en discrepancia si ya está validado
-        if validacion["estado"] == "validado" or validacion["cantidad_validada"] > cantidad_fisica:
-            validacion["estado"] = "discrepancia"
+        if validacion["estado"] == "Validado" or validacion["cantidad_validada"] > cantidad_fisica:
+            validacion["estado"] = "Discrepancia"
         
         #! Si la cantidad validada es igual a la cantidad física, se marca como validado
         if validacion["cantidad_validada"] == cantidad_fisica:
-            validacion["estado"] = "validado"
+            validacion["estado"] = "Validado"
         
         db_mongo.db.productos.update_one(
             {"id": id_producto},
@@ -92,7 +92,7 @@ class ValidacionStock:
         
         #! Si la cantidad validada es 0, no hay nada que deshacer
         if validacion["cantidad_validada"] == 0:
-            validacion["estado"] = "en_proceso"
+            validacion["estado"] = "En proceso"
             return  {
                 "estado": False,
                 "mensaje": "No hay unidades validadas para deshacer",
@@ -104,13 +104,13 @@ class ValidacionStock:
         
         #! 
         if validacion["cantidad_validada"] < cantidad_fisica:
-            validacion["estado"] = "en_proceso"
+            validacion["estado"] = "En proceso"
         
         elif validacion["cantidad_validada"] == cantidad_fisica:
-            validacion["estado"] = "validado"
+            validacion["estado"] = "Validado"
         
         elif validacion["cantidad_validada"] > cantidad_fisica:
-            validacion["estado"] = "discrepancia"
+            validacion["estado"] = "Discrepancia"
         
         
         db_mongo.db.productos.update_one(
