@@ -5,13 +5,15 @@
     </div>
     
     <div class="row contenido-principal" >
+        <!--! Barra lateral -->
         <div class="col-lg-3 bg-primary sidebar barra-lateral-pag">
-            <!--! Barra lateral -->
             <app-comp-barra-lateral></app-comp-barra-lateral>
-            <div class="card shadow-sm mb-4">
+
+            <!--! Zona de validacion  -->
+            <div class="card shadow-sm mb-4 zona-personalizada">
                 <div class="card-body">
-                    <h2 class="card-title">Validación de stock</h2>
-                    <h5 class="card-subtitle mb-3 text-muted">Ronda actual: {{fecha_ronda}}</h5>
+                    <h5 class="card-title">Validación de stock</h5>
+                    <p class="mb-2"><strong>Ronda actual:</strong> {{ fecha_ronda }}</p>
                     
                     <button (click)="iniciarNuevaRonda()" class="btn btn-primary w-100 mb-3">
                         Iniciar Nueva Ronda de Validación
@@ -19,21 +21,26 @@
                     
                     <div class="input-group mb-3">
                         <input [(ngModel)]="id_a_validar" class="form-control" placeholder="ID del producto">
-                        <button (click)="validarUnidad()" class="btn btn-outline-secondary">Revisar</button>
+                        <button (click)="validarUnidad()" class="btn btn-secondary boton-revisar">Revisar</button>
                     </div>
                 </div>
             </div>
             
-            <div class="card shadow-sm">
+            <!--! Zona de notificaion/historial -->
+            <div class="card shadow-sm zona-personalizada">
                 <div class="card-body">
-                    <h3 class="card-title">Historial</h3>
+                    <h5 class="card-title">Historial</h5>
                     <ul class="list-group list-group-flush">
-                        <li *ngFor="let notificacion of notificaciones" class="list-group-item">
-                            {{ notificacion }}
+                        <li *ngFor="let notificacion of notificaciones; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="mb-2">{{ notificacion.mensaje }}</p>
+                            <button (click)="deshacerAccion(i)" class="btn btn-sm btn-danger boton-deshacer" [disabled]="!notificacion.puedeDeshacer">
+                                Deshacer
+                            </button>
                         </li>
                     </ul>
                 </div>
             </div>
+        
         </div>
         
         <div class="col-lg-9 content cuerpo-pag" > 

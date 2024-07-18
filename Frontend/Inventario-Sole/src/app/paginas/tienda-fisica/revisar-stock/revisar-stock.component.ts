@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiValidarStock, ApiRondaValidacionStock } from 'src/app/services/validacion-stock/api-validacion-stock.service';
+import { Notificacion } from 'src/app/interfaces/notificacion.interface';
 
 @Component({
   selector: 'pag-tienda-fisica-revisar-stock',
@@ -9,14 +10,16 @@ import { ApiValidarStock, ApiRondaValidacionStock } from 'src/app/services/valid
 })
 export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
-  notificaciones: string[] = [];
+  notificaciones: Notificacion[] = [
+    { mensaje: 'Producto 1 validado', puedeDeshacer: true, idProducto: '1' },
+    { mensaje: 'Producto 2 no validado', puedeDeshacer: false, idProducto: '1' },
+    { mensaje: 'Producto 3 no validado', puedeDeshacer: false, idProducto: '1' },
+    { mensaje: 'Producto 4 validado', puedeDeshacer: true, idProducto: '1' },
+    { mensaje: 'Producto 5 no validado', puedeDeshacer: false, idProducto: '1' },
+  ];
   fecha_ronda: string = '';
-
-
-
-
   id_a_validar: string = '';
-
+  
   columnas = [
     { nombre: 'ID producto', identificador: "id", tipo: 'text' },
     { nombre: 'Cantidad fisica', identificador: "cantidad_fisica", tipo: 'number' },
@@ -106,23 +109,53 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     this.ApiValidarStock.validarUnidad(this.id_a_validar).subscribe(
       (respuesta) => {
         console.log('Unidad validada:', respuesta);
-        this.agregarNotificacion(`Producto '${this.id_a_validar}' validado. Unidades restantes: ${respuesta.unidades_restantes}`);
-        this.recargarLista();  //TODO: No se si es lo mas optimo hacer esto cada vez que se valida una unidad
+        this.agregarNotificacion({
+          mensaje: `Producto '${this.id_a_validar}' validado. Unidades restantes: ${respuesta.unidades_restantes}`,
+          puedeDeshacer: true,
+          idProducto: this.id_a_validar
+        });
+        this.recargarLista();
         this.id_a_validar = '';
       },
-      
       (error) => {
-        this.agregarNotificacion(`Error en '${this.id_a_validar}': ${error.error.mensaje}`);
-        console.error('Error al validar unidad:', this.id_a_validar )
+        this.agregarNotificacion({
+          mensaje: `Error en '${this.id_a_validar}': ${error.error.mensaje}`,
+          puedeDeshacer: false
+        });
+        console.error('Error al validar unidad:', this.id_a_validar );
         this.id_a_validar = '';
       }
     );
   }
   
-  private agregarNotificacion(mensaje: string) {
-    this.notificaciones.unshift(mensaje);
+  private agregarNotificacion(notificacion: Notificacion) {
+    this.notificaciones.unshift(notificacion);
     if (this.notificaciones.length > 5) {
       this.notificaciones.pop();
+    }
+  }
+  
+  deshacerAccion(index: number) {
+    const notificacion = this.notificaciones[index];
+    if (notificacion.puedeDeshacer && notificacion.idProducto) {
+      console.log('Deshaciendo validación:', notificacion.idProducto);
+      this.ApiValidarStock.deshacerValidacion(notificacion.idProducto).subscribe(
+        (respuesta) => {
+          console.log('Validación deshecha:', respuesta);
+          this.notificaciones[index] = {
+            mensaje: `Deshecho: ${notificacion.mensaje}`,
+            puedeDeshacer: false
+          };
+          this.recargarLista();
+        },
+        (error) => {
+          console.error('Error al deshacer validación:', error);
+          this.notificaciones[index] = {
+            mensaje: `Error al deshacer validación: ${error.error.mensaje}`,
+            puedeDeshacer: false
+          };
+        }
+      );
     }
   }
 

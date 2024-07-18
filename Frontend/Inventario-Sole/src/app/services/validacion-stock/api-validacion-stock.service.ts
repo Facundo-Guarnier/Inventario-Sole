@@ -40,4 +40,8 @@ export class ApiValidarStock {
   validarUnidad(idProducto: string): Observable<any> {
     return this.httpClient.post(`${this.url}`, { id: idProducto });
   }
+
+  deshacerValidacion(idProducto: string): Observable<any> {
+    return this.httpClient.post(`${this.url}`, { deshacer: true, id: idProducto });
+  }
 }

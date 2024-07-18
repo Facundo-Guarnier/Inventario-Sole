@@ -1,0 +1,37 @@
+/*! Zonas */
+.zona-personalizada {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+} 
+
+.zona-personalizada h5 {
+    color: #495057;
+}
+
+.zona-personalizada p {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/*! Boton deshacer  */
+.boton-deshacer:disabled {
+    background-color: #e4acb2;
+    border: 1px #e4acb2;
+    /* color: #6c757d; */
+}
+
+/*! Revisar */
+.boton-revisar{
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.boton-revisar:hover,
+.boton-revisar:active {
+    background-color: #28579f; 
+    border-color: #28579f;
+    color: #ffffff;
+
+}

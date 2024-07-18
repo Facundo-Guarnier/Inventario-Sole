@@ -34,6 +34,14 @@ class ValidarStock(Resource):
         """
         data = request.json
         id_producto = data.get('id')
+        deshacer = data.get('deshacer', False)
+        
+        print("+++ id_producto", id_producto)
+        print("+++ deshacer", deshacer)
+        
+        if deshacer:
+            resultado = ValidacionStockModel.deshacer_validacion(id_producto)
+            return (resultado), 200 if resultado["estado"] else 400
         
         if not id_producto:
             return ({"error": "Datos incompletos"}), 400

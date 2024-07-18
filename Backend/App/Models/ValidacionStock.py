@@ -74,6 +74,59 @@ class ValidacionStock:
         }
     
     @staticmethod
+    def deshacer_validacion(id_producto):
+        
+        producto = db_mongo.db.productos.find_one({"id": id_producto})
+        print("++++++++++", producto)
+        
+        if not producto:
+            return {"estado": False, "mensaje": "Producto no encontrado"}
+        
+        cantidad_fisica = producto["fisica"]["cantidad"] 
+        fecha_actual = ValidacionStock.obtener_ronda_actual()
+        
+        validacion = producto.get("validacion", {})
+        
+        if not validacion:
+            return {"estado": False, "mensaje": "No hay validación para deshacer"}
+        
+        
+        #! Si la cantidad validada es 0, no hay nada que deshacer
+        if validacion["cantidad_validada"] == 0:
+            validacion["estado"] = "en_proceso"
+            return  {
+                "estado": False,
+                "mensaje": "No hay unidades validadas para deshacer",
+                "unidades_validadas": validacion["cantidad_validada"],
+                "estado_validacion": validacion["estado"]
+            }
+        
+        validacion["cantidad_validada"] -= 1
+        
+        #! 
+        if validacion["cantidad_validada"] < cantidad_fisica:
+            validacion["estado"] = "en_proceso"
+        
+        elif validacion["cantidad_validada"] == cantidad_fisica:
+            validacion["estado"] = "validado"
+        
+        elif validacion["cantidad_validada"] > cantidad_fisica:
+            validacion["estado"] = "discrepancia"
+        
+        
+        db_mongo.db.productos.update_one(
+            {"id": id_producto},
+            {"$set": {"validacion": validacion}}
+        )
+        
+        return {
+            "estado": True,
+            "mensaje": "Validación deshecha correctamente",
+            "unidades_validadas": validacion["cantidad_validada"],
+            "estado_validacion": validacion["estado"]
+        }
+    
+    @staticmethod
     def iniciar_nueva_ronda():
         fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         db_mongo.db.ultimasIDs.update_one(
