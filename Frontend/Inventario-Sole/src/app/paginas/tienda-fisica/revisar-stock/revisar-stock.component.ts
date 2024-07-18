@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { ApiProductosService, ApiRevisarStockService } from 'src/app/services/productos/api-producto.service';
 
 @Component({
   selector: 'pag-tienda-fisica-revisar-stock',
@@ -8,61 +10,69 @@ import { Component, OnInit } from '@angular/core';
 export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
   columnas = [
-    { nombre: 'ID producto', identificador: "", tipo: 'text' },
-    { nombre: 'Marca', identificador: "", tipo: 'text' },
-    { nombre: 'Descripción', identificador: "", tipo: 'text' },
-    { nombre: 'Talle', identificador: "", tipo: 'text' },
-    { nombre: 'Cantidad', identificador: "", tipo: 'number' },
+    { nombre: 'ID producto', identificador: "id", tipo: 'text' },
+    { nombre: 'Marca', identificador: "marca", tipo: 'text' },
+    { nombre: 'Descripción', identificador: "descripcion", tipo: 'text' },
+    { nombre: 'Talle', identificador: "talle", tipo: 'text' },
+    { nombre: 'Cantidad', identificador: "cantidad", tipo: 'number' },
   ];
-
+  
   acciones = {
     editar: false,
     eliminar: false,
     detalle: false
   }
   
-  datos: any[] = [
-    {
-      "ID producto": "AB120",
-      "Marca": "Adidas",
-      "Descripción": "Pantalon blanco deportivo con rayas negras",
-      "Talle": "M",
-      "Precio": 89000,
-      "Cantidad": 50,
-      "Liquidación": false
-    }, 
-    {
-      "ID producto": "AB121",
-      "Marca": "Nike",
-      "Descripción": "Remera azul deportiva",
-      "Talle": "M",
-      "Precio": 45000,
-      "Cantidad": 7,
-      "Liquidación": true
-    },
-    {
-      "ID producto": "AB122",
-      "Marca": "AAA",
-      "Descripción": "Remera deportiva Remera azul deportiva Remera  asd asd ada dasd ad aazul  a sda  asd asd 151 81 562deportiva Remera azul deportiva",
-      "Talle": "XL",
-      "Precio": 900000,
-      "Cantidad": 2,
-      "Liquidación": false
-    },
-    {
-      "ID producto": "AB123",
-      "Marca": "Adidas",
-      "Descripción": "Campera",
-      "Talle": "M",
-      "Precio": 10000,
-      "Cantidad": 1,
-      "Liquidación": true
-    }
-    
-  ];
-  constructor() { }
-
+  datos: any[] = [];
+  
+  
+  idProducto: string = '';
+  mensaje: string = '';
+  
+  //* ------------------------------------------------------------
+  
+  constructor(
+    private apiRevisarStock: ApiRevisarStockService,
+    private authService: AuthService,
+    private apiProductos: ApiProductosService,
+  ) { }
+  
   ngOnInit(): void {
+
+    //! Buscar todos los productos de la tienda
+    this.apiProductos.buscar_x_atributo({"tienda": "fisica"}).subscribe({
+      next: (data) => {
+        this.datos = Object.values(data).flat().map((producto: any) => {
+          const productoModificado = { ...producto };
+          
+          if (productoModificado.fisica) {
+            productoModificado.precio = productoModificado.fisica.precio;
+            productoModificado.cantidad = productoModificado.fisica.cantidad;
+          }
+          
+          return productoModificado;
+        });
+      },
+      error: (error) => {
+        console.error('ERROR al cargar productos:', error);
+      }
+    });
+
+  }
+
+  revisarStock() {
+    
+    this.apiRevisarStock.revisarStock(this.idProducto, this.authService.getToken()).subscribe(
+      response => {
+        console.log('Revisar stock', response);
+        
+        //! Eliminar de datos
+        this.datos = this.datos.filter(producto => producto.id !== this.idProducto);
+        console.log('Datos', this.datos);
+      },
+      error => {
+      }
+    );
   }
 
 }

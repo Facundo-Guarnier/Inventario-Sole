@@ -52,12 +52,12 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
     
-    # Crear la carpeta de uploads si no existe
+    #! Crear la carpeta de uploads si no existe
     if not os.path.exists(Config.UPLOAD_FOLDER):
         try:
             os.makedirs(Config.UPLOAD_FOLDER)
         except FileExistsError:
-            # La carpeta ya existe, lo cual está bien
+            #! La carpeta ya existe, lo cual está bien
             pass
     
     CORS(app)
@@ -86,6 +86,7 @@ def create_app(config_class=Config):
     
     api.add_resource(Resources.UltimaIDResource, '/api/ultimaid/<coleccion>') #! buscar_id, aumentar_id
     
+    api.add_resource(Resources.RevisarStockResource, '/api/revisar-stock') #! revisar stock
     
     api.init_app(app)
     jwt.init_app(app)

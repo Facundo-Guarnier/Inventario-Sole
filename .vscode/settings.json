@@ -13,6 +13,7 @@
         "Notificacion",
         "opcion",
         "seleccion",
-        "sqlalchemy"
+        "sqlalchemy",
+        "ultimaid"
     ]
 }

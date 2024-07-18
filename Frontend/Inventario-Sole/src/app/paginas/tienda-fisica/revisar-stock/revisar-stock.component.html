@@ -5,12 +5,16 @@
     </div>
     
     <div class="row contenido-principal" >
-        <div class="col-lg-2 bg-primary sidebar barra-lateral-pag">
+        <div class="col-lg-3 bg-primary sidebar barra-lateral-pag">
             <!--! Barra lateral -->
+            <h2>Revisar Stock</h2>
+            <input [(ngModel)]="idProducto" placeholder="ID del producto">
+            <button (click)="revisarStock()">Revisar</button>
+            <p *ngIf="mensaje">{{mensaje}}</p>
             <app-comp-barra-lateral></app-comp-barra-lateral>
         </div>
         
-        <div class="col-lg-10 content cuerpo-pag" > 
+        <div class="col-lg-9 content cuerpo-pag" > 
             <div class="container-fluid"> 
                 <!--! Cuerpo -->
                 <h1 style="color: aliceblue;">Productos si confirmar</h1>
@@ -20,6 +24,8 @@
                     [acciones]="acciones"
                     [tipo]="'prod'"
                 ></app-comp-tabla-datos>
+
+
             </div>
         </div>
     

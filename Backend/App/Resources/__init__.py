@@ -18,3 +18,5 @@ from .Venta import Ventas as VentasResource
 
 from .Foto import Fotos as FotosResource
 from .Foto import Foto as FotoResource
+
+from .RevisarStock import RevisarStock as RevisarStockResource

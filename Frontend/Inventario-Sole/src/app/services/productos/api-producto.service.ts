@@ -54,5 +54,23 @@ export class ApiProductosService {
     let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
     return this.httpClient.post(`${this.url}`, producto, {headers: heads});
   }
+}
 
+//* ------------------------------------------------------------
+
+@Injectable({
+  providedIn: "root",
+})
+
+export class ApiRevisarStockService {
+  url = "http://localhost:5000/api/revisar-stock"
+  
+  constructor(
+    private httpClient: HttpClient
+  ) { }
+  
+  revisarStock(id: string, token: string): Observable<any> {
+    let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
+    return this.httpClient.post(`${this.url}`, { id }, {headers: heads});
+  }
 }
