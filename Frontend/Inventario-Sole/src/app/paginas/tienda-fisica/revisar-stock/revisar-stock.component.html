@@ -1,48 +1,55 @@
-<!-- validacion-stock.component.html -->
-<div class="container">
-    <h2>Validación de Stock</h2>
-    <h3>Validación actual: {{fecha_ronda}}</h3>
-    <button (click)="iniciarNuevaRonda()" class="btn btn-primary mb-3">Iniciar Nueva Ronda de Validación</button>
-
+<div class="container-fluid vh-100"> 
+    <h1 style="color: aliceblue;"> TF revisar stock works! </h1>
     <div class="row">
-      <div class="col-md-8">
-        <h3>Productos para Validar</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Descripción</th>
-              <th>Ultima validacion</th>
-              <th>Cantidad Física</th>
-              <th>Cantidad Validada</th>
-              <th>Estado</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let producto of productosParaValidar">
-              <td>{{ producto.id }}</td>
-              <td>{{ producto.descripcion }}</td>
-              <td>{{ producto.validacion?.ultima_fecha }}</td>
-              <td>{{ producto.fisica.cantidad }}</td>
-              <td>{{ producto.validacion?.cantidad_validada || 0 }}</td>
-              <td>{{ producto.validacion?.estado || 'No iniciado' }}</td>
-              <td>
-                <button (click)="validarUnidad(producto.id)" class="btn btn-sm btn-success">
-                  Validar Unidad
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="col-md-4">
-        <h3>Notificaciones</h3>
-        <ul class="list-group">
-          <li *ngFor="let notificacion of notificaciones" class="list-group-item">
-            {{ notificacion }}
-          </li>
-        </ul>
-      </div>
+        <app-comp-navbar></app-comp-navbar> 
     </div>
-  </div>
+    
+    <div class="row contenido-principal" >
+        <div class="col-lg-3 bg-primary sidebar barra-lateral-pag">
+            <!--! Barra lateral -->
+            <app-comp-barra-lateral></app-comp-barra-lateral>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Validación de stock</h2>
+                    <h5 class="card-subtitle mb-3 text-muted">Ronda actual: {{fecha_ronda}}</h5>
+                    
+                    <button (click)="iniciarNuevaRonda()" class="btn btn-primary w-100 mb-3">
+                        Iniciar Nueva Ronda de Validación
+                    </button>
+                    
+                    <div class="input-group mb-3">
+                        <input [(ngModel)]="id_a_validar" class="form-control" placeholder="ID del producto">
+                        <button (click)="revisarStock()" class="btn btn-outline-secondary">Revisar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Historial</h3>
+                    <ul class="list-group list-group-flush">
+                        <li *ngFor="let notificacion of notificaciones" class="list-group-item">
+                            {{ notificacion }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-9 content cuerpo-pag" > 
+            <div class="container-fluid"> 
+                
+                <!--! Cuerpo -->
+                <h1 style="color: aliceblue;">Productos para Validar</h1>
+                <app-comp-tabla-datos 
+                    [columnas]="columnas"
+                    [datos]="datos"
+                    [acciones]="acciones"
+                    [tipo]="'prod'"
+                ></app-comp-tabla-datos>
+                
+            </div>
+        </div>
+    
+    </div>
+</div>

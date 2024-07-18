@@ -15,7 +15,7 @@ class ValidacionStock:
                 },
                 {
                     "validacion.ultima_fecha": fecha_ronda,
-                    "validacion.estado": "en_proceso",
+                    "validacion.estado": {"$ne": "validado"},
                     "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
                 }, 
                 {"validacion": {"$exists": False}}
