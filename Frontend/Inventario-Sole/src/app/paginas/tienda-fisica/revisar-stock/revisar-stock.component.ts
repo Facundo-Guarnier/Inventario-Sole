@@ -11,6 +11,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
   productosParaValidar: any[] = [];
   notificaciones: string[] = [];
+  fecha_ronda: string = '';
 
   constructor(
     private ApiRondaValidacionStock: ApiRondaValidacionStock,
@@ -33,8 +34,9 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
 
   cargarProductosParaValidar() {
     this.ApiRondaValidacionStock.obtenerProductosParaValidar().subscribe(
-      (productos) => {
-        this.productosParaValidar = productos;
+      (respuesta) => {
+        this.productosParaValidar = respuesta["productos"];
+        this.fecha_ronda = respuesta["fecha_ronda"];
       },
       (error) => console.error('Error al cargar productos:', error)
     );
@@ -46,6 +48,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
         console.log('Unidad validada:', respuesta);
         this.actualizarProductoEnLista(idProducto, respuesta);
         this.agregarNotificacion(`Producto ${idProducto} validado. Unidades restantes: ${respuesta.unidades_restantes}`);
+        this.cargarProductosParaValidar();  //TODO: No se si es lo mas optimo hacer esto cada vez que se valida una unidad
       },
       (error) => console.error('Error al validar unidad:', error)
     );

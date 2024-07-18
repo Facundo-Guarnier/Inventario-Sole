@@ -4,12 +4,20 @@ from bson import json_util, ObjectId
 import json
 
 class ValidacionStock:
-    #TODO: Documentar bien estos métodos y revisar si datetime va en Resources o en Models
+    #TODO: Documentar bien estos métodos y revisar si la lógica va en Resources o en Models
     @staticmethod
     def obtener_productos_para_validar(fecha_ronda):
         return json.loads(json_util.dumps(db_mongo.db.productos.find({
             "$or": [
-                {"validacion.ultima_fecha": {"$ne": fecha_ronda}},
+                {
+                    "validacion.ultima_fecha": {"$ne": fecha_ronda},
+                    "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                },
+                {
+                    "validacion.ultima_fecha": fecha_ronda,
+                    "validacion.estado": "en_proceso",
+                    "fisica.cantidad": {"$gte": 1}, #TODO: Cambiar a tienda fisica o online
+                }, 
                 {"validacion": {"$exists": False}}
             ]
         })))
@@ -17,6 +25,7 @@ class ValidacionStock:
     @staticmethod
     def validar_unidad(id_producto):
         producto = db_mongo.db.productos.find_one({"id": id_producto})
+        
         if not producto:
             return {"estado": False, "mensaje": "Producto no encontrado"}
         
@@ -26,16 +35,24 @@ class ValidacionStock:
             "estado": "no_iniciado"
         })
         
-        fecha_actual = datetime.now().strftime("%Y-%m-%d")
-        cantidad_fisica = producto["fisica"]["cantidad"]
+        fecha_actual = ValidacionStock.obtener_ronda_actual()
+        cantidad_fisica = producto["fisica"]["cantidad"] 
         
-        if validacion["estado"] == "validado":
+        #! Si la fecha actual es distinta a la fecha de la última validación, se reinicia la validación
+        if fecha_actual != validacion["ultima_fecha"]:
+            validacion["ultima_fecha"] = fecha_actual
+            validacion["cantidad_validada"] = 0
+            validacion["estado"] = "en_proceso"
+        
+        validacion["cantidad_validada"] += 1    #! Se suma una unidad
+        
+        #! Entrar en discrepancia si ya está validado
+        if validacion["estado"] == "validado" or validacion["cantidad_validada"] > cantidad_fisica:
             validacion["estado"] = "discrepancia"
         
-        elif validacion["cantidad_validada"] < cantidad_fisica:
-            validacion["cantidad_validada"] += 1
-            validacion["ultima_fecha"] = fecha_actual
-            validacion["estado"] = "en_proceso" if validacion["cantidad_validada"] < cantidad_fisica else "validado"
+        #! Si la cantidad validada es igual a la cantidad física, se marca como validado
+        if validacion["cantidad_validada"] == cantidad_fisica:
+            validacion["estado"] = "validado"
         
         db_mongo.db.productos.update_one(
             {"id": id_producto},
@@ -51,7 +68,7 @@ class ValidacionStock:
     
     @staticmethod
     def iniciar_nueva_ronda():
-        fecha_actual = datetime.now().strftime("%Y-%m-%d")
+        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         db_mongo.db.ultimasIDs.update_one(
             {"coleccion": "validacion"},
             {"$set": {"fecha": fecha_actual}},

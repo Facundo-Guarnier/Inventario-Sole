@@ -1,8 +1,9 @@
 <!-- validacion-stock.component.html -->
 <div class="container">
     <h2>Validación de Stock</h2>
+    <h3>Validación actual: {{fecha_ronda}}</h3>
     <button (click)="iniciarNuevaRonda()" class="btn btn-primary mb-3">Iniciar Nueva Ronda de Validación</button>
-  
+
     <div class="row">
       <div class="col-md-8">
         <h3>Productos para Validar</h3>
@@ -11,6 +12,7 @@
             <tr>
               <th>ID</th>
               <th>Descripción</th>
+              <th>Ultima validacion</th>
               <th>Cantidad Física</th>
               <th>Cantidad Validada</th>
               <th>Estado</th>
@@ -21,6 +23,7 @@
             <tr *ngFor="let producto of productosParaValidar">
               <td>{{ producto.id }}</td>
               <td>{{ producto.descripcion }}</td>
+              <td>{{ producto.validacion?.ultima_fecha }}</td>
               <td>{{ producto.fisica.cantidad }}</td>
               <td>{{ producto.validacion?.cantidad_validada || 0 }}</td>
               <td>{{ producto.validacion?.estado || 'No iniciado' }}</td>

@@ -15,7 +15,7 @@ class RondaValidacionStock(Resource):
             return ({"error": "No hay una ronda de validación activa"}), 400
         
         productos = list(ValidacionStockModel.obtener_productos_para_validar(fecha_ronda))
-        return (productos), 200
+        return {"fecha_ronda":fecha_ronda, "productos":productos}, 200
     
     # /api/validacion/iniciar-ronda' ->  /api/ronda-validacion
     def post(self):
