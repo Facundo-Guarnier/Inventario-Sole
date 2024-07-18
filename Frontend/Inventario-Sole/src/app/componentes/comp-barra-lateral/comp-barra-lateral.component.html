@@ -1,37 +1,41 @@
 <div class="sidebar-container">
-    <!-- Sección de información del usuario -->
+    
+    <!--! Sección de información del usuario -->
     <div class="user-info-section mb-4 p-3 bg-light border rounded" *ngIf="authService.isLoggedIn()">
-      <h5 class="mb-3">Información de Usuario</h5>
-      <p class="mb-2"><strong>Usuario:</strong> {{ userName }}</p>
-      <p class="mb-2"><strong>Tiempo restante:</strong> {{ remainingTime }}</p>
-      <button (click)="logout()" class="btn btn-danger btn-sm mt-2">
-        <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
-      </button>
+        <h5 class="mb-3">Información de Usuario</h5>
+        <p class="mb-2"><strong>Usuario:</strong> {{ userName }}</p>
+        <p class="mb-2"><strong>Tiempo restante:</strong> {{ remainingTime }}</p>
+        <button (click)="logout()" class="btn btn-danger btn-sm mt-2">
+            <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
+        </button>
     </div>
     
-    <!-- Componentes existentes -->
+    <!--! Barra de busqueda -->
     <app-comp-busqueda 
-    *ngIf="mostrarBusqueda()"
+    *ngIf="mostrarBusqueda"
     (clickBuscar)="ClickBuscar($event)"
     ></app-comp-busqueda>
-  
+    
+    <!--! Filtros desplegables  -->
     <ng-container *ngFor="let filtro of filtrosLista">
         <app-comp-filtro-lista-seleccion
-            *ngIf="mostrarFiltroListaSeleccion()"
+            *ngIf="mostrarFiltroListaSeleccion"
             [filtro]="filtro"
             (clickFiltro)="ClickFiltro($event)"
         ></app-comp-filtro-lista-seleccion>
     </ng-container>
-  
+    
+    <!--! Filtros CheckBox  -->
     <ng-container *ngFor="let filtro of filtrosCheckbox">
         <app-comp-filtro-checkbox
-            *ngIf="mostrarFiltroCheckbox()"
+            *ngIf="mostrarFiltroCheckbox"
             [filtro]="filtro"
             (clickFiltro)="ClickFiltro($event)"
         ></app-comp-filtro-checkbox>
     </ng-container>
-  
+    
+    <!--! Detalle lateral - No se usa -->
     <app-comp-detalle-lateral
-        *ngIf="mostrarDetalleLateral()"
+        *ngIf="mostrarDetalleLateral"
     ></app-comp-detalle-lateral>
-  </div>
+</div>

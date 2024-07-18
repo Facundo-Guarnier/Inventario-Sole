@@ -21,12 +21,17 @@ export class CompBarraLateralComponent implements OnInit {
   @Output() clickBuscar = new EventEmitter<string>();
   @Output() clickFiltro = new EventEmitter<{nombre: string, valor: string}>();
   busqueda: string = '';
-
+  
   //! Usuario
   userName: string | null = null;
   remainingTime: string = '';
   private timerSubscription: Subscription | null = null;
-
+  
+  //! Mostar u ocultar 
+  @Input() mostrarBusqueda: boolean = true;
+  @Input() mostrarFiltroListaSeleccion: boolean = true;
+  @Input() mostrarFiltroCheckbox: boolean = true;
+  @Input() mostrarDetalleLateral: boolean = false;
   //* ------------------------------------------------------------
   
   constructor(
@@ -44,17 +49,18 @@ export class CompBarraLateralComponent implements OnInit {
       this.timerSubscription.unsubscribe();
     }
   }
-
+  
+  //T* Funciones
   updateUserInfo(): void {
     this.userName = this.authService.getAlias();
   }
-
+  
   startTimer(): void {
     this.timerSubscription = interval(1000).subscribe(() => {
       this.updateRemainingTime();
     });
   }
-
+  
   updateRemainingTime(): void {
     const token = this.authService.getToken();
     if (token) {
@@ -73,50 +79,12 @@ export class CompBarraLateralComponent implements OnInit {
       }
     }
   }
-
+  
   logout() {
     this.authService.logout();
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
-  }
-
-
-
-
-
-  //T* Funciones
-  //! Para mostar u ocultar los filtros
-  mostrarBusqueda(): boolean {
-    //! Activa o desactiva la barra de busqueda en base a la pag actual.
-    if (this.urlActual.length > 1) {
-      return false
-    }
-    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov', "usu"].includes(this.urlActual[0]);
-  }
-  
-  mostrarFiltroListaSeleccion(): boolean {
-    //! Activa o desactiva el filtro de lista de seleccion en base a la pag actual.
-    if (this.urlActual.length > 1) {
-      return false
-    }
-    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov', "usu"].includes(this.urlActual[0]);
-  }
-  
-  mostrarFiltroCheckbox(): boolean {
-    //! Activa o desactiva el filtro de checkbox en base a la pag actual.
-    if (this.urlActual.length > 1) {
-      return false
-    }
-    return ['tf', 'to', 'gc', 'reg', 'ven', 'mov', "usu"].includes(this.urlActual[0]);
-  }
-  
-  mostrarDetalleLateral(): boolean {
-    //! Activa o desactiva el detalle lateral en base a la página actual.
-    // if (this.urlActual.length > 1) {
-    //   return ["prod"].includes(this.urlActual[0]) && this.urlActual[1].includes('detalle-editar');
-    // }
-    return false;
   }
   
   //! Busqueda
