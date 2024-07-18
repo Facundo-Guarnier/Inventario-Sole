@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ApiProductosService, ApiRevisarStockService } from 'src/app/services/productos/api-producto.service';
+import { ApiValidarStock, ApiRondaValidacionStock } from 'src/app/services/validacion-stock/api-validacion-stock.service';
 
 @Component({
   selector: 'pag-tienda-fisica-revisar-stock',
@@ -9,70 +9,66 @@ import { ApiProductosService, ApiRevisarStockService } from 'src/app/services/pr
 })
 export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
-  columnas = [
-    { nombre: 'ID producto', identificador: "id", tipo: 'text' },
-    { nombre: 'Marca', identificador: "marca", tipo: 'text' },
-    { nombre: 'Descripción', identificador: "descripcion", tipo: 'text' },
-    { nombre: 'Talle', identificador: "talle", tipo: 'text' },
-    { nombre: 'Cantidad', identificador: "cantidad", tipo: 'number' },
-  ];
-  
-  acciones = {
-    editar: false,
-    eliminar: false,
-    detalle: false
-  }
-  
-  datos: any[] = [];
-  
-  
-  idProducto: string = '';
-  mensaje: string = '';
-  
-  //* ------------------------------------------------------------
-  
+  productosParaValidar: any[] = [];
+  notificaciones: string[] = [];
+
   constructor(
-    private apiRevisarStock: ApiRevisarStockService,
-    private authService: AuthService,
-    private apiProductos: ApiProductosService,
-  ) { }
-  
-  ngOnInit(): void {
+    private ApiRondaValidacionStock: ApiRondaValidacionStock,
+    private ApiValidarStock: ApiValidarStock,
+  ) {}
 
-    //! Buscar todos los productos de la tienda
-    this.apiProductos.buscar_x_atributo({"tienda": "fisica"}).subscribe({
-      next: (data) => {
-        this.datos = Object.values(data).flat().map((producto: any) => {
-          const productoModificado = { ...producto };
-          
-          if (productoModificado.fisica) {
-            productoModificado.precio = productoModificado.fisica.precio;
-            productoModificado.cantidad = productoModificado.fisica.cantidad;
-          }
-          
-          return productoModificado;
-        });
-      },
-      error: (error) => {
-        console.error('ERROR al cargar productos:', error);
-      }
-    });
-
+  ngOnInit() {
+    this.cargarProductosParaValidar();
   }
 
-  revisarStock() {
-    
-    this.apiRevisarStock.revisarStock(this.idProducto, this.authService.getToken()).subscribe(
-      response => {
-        console.log('Revisar stock', response);
-        
-        //! Eliminar de datos
-        this.datos = this.datos.filter(producto => producto.id !== this.idProducto);
-        console.log('Datos', this.datos);
+  iniciarNuevaRonda() {
+    this.ApiRondaValidacionStock.iniciarRondaValidacion().subscribe(
+      (respuesta) => {
+        console.log('Nueva ronda iniciada:', respuesta);
+        this.cargarProductosParaValidar();
       },
-      error => {
-      }
+      (error) => console.error('Error al iniciar nueva ronda:', error)
     );
   }
 
+  cargarProductosParaValidar() {
+    this.ApiRondaValidacionStock.obtenerProductosParaValidar().subscribe(
+      (productos) => {
+        this.productosParaValidar = productos;
+      },
+      (error) => console.error('Error al cargar productos:', error)
+    );
+  }
+
+  validarUnidad(idProducto: string) {
+    this.ApiValidarStock.validarUnidad(idProducto).subscribe(
+      (respuesta) => {
+        console.log('Unidad validada:', respuesta);
+        this.actualizarProductoEnLista(idProducto, respuesta);
+        this.agregarNotificacion(`Producto ${idProducto} validado. Unidades restantes: ${respuesta.unidades_restantes}`);
+      },
+      (error) => console.error('Error al validar unidad:', error)
+    );
+  }
+
+  private actualizarProductoEnLista(idProducto: string, respuesta: any) {
+    const index = this.productosParaValidar.findIndex(p => p._id === idProducto);
+    if (index !== -1) {
+      this.productosParaValidar[index].validacion = {
+        ...this.productosParaValidar[index].validacion,
+        cantidad_validada: this.productosParaValidar[index].fisica.cantidad - respuesta.unidades_restantes,
+        estado: respuesta.estado_validacion
+      };
+      if (respuesta.unidades_restantes === 0) {
+        this.productosParaValidar.splice(index, 1);
+      }
+    }
+  }
+
+  private agregarNotificacion(mensaje: string) {
+    this.notificaciones.unshift(mensaje);
+    if (this.notificaciones.length > 5) {
+      this.notificaciones.pop();
+    }
+  }
 }

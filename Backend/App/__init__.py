@@ -86,7 +86,8 @@ def create_app(config_class=Config):
     
     api.add_resource(Resources.UltimaIDResource, '/api/ultimaid/<coleccion>') #! buscar_id, aumentar_id
     
-    api.add_resource(Resources.RevisarStockResource, '/api/revisar-stock') #! revisar stock
+    api.add_resource(Resources.RondaValidacionStockResource, '/api/ronda-validacion') #! iniciar, obtener_productos
+    api.add_resource(Resources.ValidarStockResource, '/api/validar') #! validar_unidad
     
     api.init_app(app)
     jwt.init_app(app)

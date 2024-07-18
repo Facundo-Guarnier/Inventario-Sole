@@ -8,3 +8,4 @@ from .Regalo import Regalo as RegaloModel
 from .UltimaID import UltimaID as UltimaIDModel
 from .Usuario import Usuario as UsuarioModel
 from .Venta import Venta as VentaModel
+from .ValidacionStock import ValidacionStock as ValidacionStockModel

@@ -222,7 +222,7 @@ class Productos(Resource):
             - dict: Producto creado
         """
         data = request.json
-        
+    
         cod_ms = data.get("cod_ms")
         marca = data.get("marca")
         descripcion = data.get("descripcion")
@@ -242,6 +242,13 @@ class Productos(Resource):
         not fotos:
             return ({"msg": "Faltan datos"}), 400
         
+        #! Crear el objeto de validación con la fecha actual
+        validacion = {
+            "ultima_fecha": datetime.now().strftime("%Y-%m-%d"),
+            "cantidad_validada": 0,
+            "estado": "pendiente"       #TODO: Está bien este estado?
+        }
+        
         respuesta = ProductoModel.crear(
             {
                 "id": UltimaID.calcular_proximo_id("producto"),
@@ -253,6 +260,7 @@ class Productos(Resource):
                 "online": online,
                 "liquidacion": liquidacion,
                 "fotos": fotos,
+                "validacion": validacion
             }
         )
         
