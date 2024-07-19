@@ -27,9 +27,9 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   
   //! Paginamiento 
   paginaActual = 1;
-  porPagina = 10;
-  totalDatos = 17;
-  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  porPagina = 20;
+  totalDatos = 0;
+  totalPaginas = 0;
   
   //* ------------------------------------------------------------
   
@@ -40,9 +40,16 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+    this.recargarLista();
+  }
+  
+  //T* Funciones
+  recargarLista() {
     this.apiUsuarios.buscar_todos(this.authService.getToken(), this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
-        this.datos = Object.values(data).flat();
+        this.datos = Object.values(data["usuarios"]).flat();
+        this.totalDatos = data["total"];
+        this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },
       error: (error) => {
         console.error('ERROR al cargar usuarios:', error);
@@ -50,9 +57,14 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
     });
   }
   
-  //T* Funcniones
   //! Botones flotantes
   ClickAgregar(){
     this.router.navigate(['usu/crear']);
   };
+  
+  //! Paginamiento
+  clickPagina(numero: number){
+    this.paginaActual = numero;
+    this.recargarLista();
+  }
 }

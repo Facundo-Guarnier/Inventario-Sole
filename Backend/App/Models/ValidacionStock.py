@@ -5,7 +5,7 @@ import json
 
 class ValidacionStock:
     @staticmethod
-    def obtener_productos_para_validar(fecha_ronda, tienda):
+    def obtener_productos_para_validar(fecha_ronda, tienda, saltear:int = 0, por_pagina:int = 10):
         return json.loads(json_util.dumps(db_mongo.db.productos.find(
             {
                 "$or": [
@@ -26,7 +26,11 @@ class ValidacionStock:
                     "liquidacion": 0,
                     "fotos": 0
                 }
-            ).sort("_id", -1)))
+            )
+            .skip(saltear)      #! Saltea los primeros 'x' registros
+            .limit(por_pagina)  #! Limita la cantidad de registros
+            .sort("_id", -1)    #! Ordena de forma descendente (el mas reciente primero)
+        ))
     
     @staticmethod
     def validar_unidad(id_producto, tienda):
@@ -140,3 +144,42 @@ class ValidacionStock:
     def obtener_ronda_actual(tienda):
         ronda = db_mongo.db.ultimasIDs.find_one({ "coleccion": f"validacion-{tienda}" })
         return ronda["fecha"] if ronda else None
+    
+    @staticmethod
+    def total(fecha_ronda, tienda) -> dict:
+        """
+        Devuelve el total de ventas.
+        """
+        
+        try: 
+            return {
+                "estado": True,
+                "respuesta": db_mongo.db.productos.count_documents({
+                        "$or": [
+                            {
+                                f"{tienda}.validacion.ultima_fecha": {"$ne": fecha_ronda},
+                                f"{tienda}.cantidad": {"$gte": 1},
+                            },
+                            {
+                                f"{tienda}.validacion.ultima_fecha": fecha_ronda,
+                                f"{tienda}.validacion.estado": {"$ne": "Validado"},
+                                f"{tienda}.cantidad": {"$gte": 1},
+                            }, 
+                            
+                        ]
+                    },
+                    {   #! Se excluyen los campos que no se necesitan
+                        "_id": 0,
+                        "liquidacion": 0,
+                        "fotos": 0
+                    }
+                )
+            }
+        
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error en la DB {str(e)}",
+            }
+            
+        return 

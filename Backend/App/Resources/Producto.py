@@ -136,16 +136,34 @@ class Productos(Resource):
         data = request.args.to_dict()
         
         #! Validar data
-        id = data.get("id")
-        cod_ms = data.get("cod_ms")
-        marca = data.get("marca")
-        descripcion = data.get("descripcion")
-        talle = data.get("talle")
-        fisica = data.get("fisica")
-        online = data.get("online")
-        liquidacion = data.get("liquidacion")
-        palabra_clave = data.get("palabra_clave")
-        tienda = data.get("tienda")
+        try:
+            id = data.get("id")
+            cod_ms = data.get("cod_ms")
+            marca = data.get("marca")
+            descripcion = data.get("descripcion")
+            talle = data.get("talle")
+            fisica = data.get("fisica")
+            online = data.get("online")
+            liquidacion = data.get("liquidacion")
+            palabra_clave = data.get("palabra_clave")
+            tienda = data.get("tienda")
+            pagina = int(request.args.get('pagina', 1))
+            por_pagina = int(request.args.get('por_pagina', 10))
+        
+        except Exception as e:
+            return ({"msg": "Error en los parámetros enviados"}), 400
+        
+        #! Paginación
+        saltear = (pagina - 1) * por_pagina
+        cantidad_total = ProductoModel.total()
+        
+        if cantidad_total["estado"]:
+            if cantidad_total["respuesta"] == None:
+                return ({"msg": "Error al cargar el total de ventas"}), 400
+            else:
+                cantidad_total = cantidad_total["respuesta"] 
+        else: 
+            return {"msg": cantidad_total["respuesta"]}, 404
         
         #! Añadir condiciones al filtro si se proporcionan
         filtro = {}
@@ -207,11 +225,18 @@ class Productos(Resource):
                     {"talle": {"$regex": palabra_clave, "$options": "i"}},
                     {"liquidacion": {"$regex": palabra_clave, "$options": "i"}},
                 ]
-        respuesta = ProductoModel.buscar_x_atributo(filtro)
+        respuesta = ProductoModel.buscar_x_atributo(
+            filtro=filtro, 
+            saltear=saltear, 
+            por_pagina=por_pagina,
+        )
         
         if respuesta["estado"]:
-            return ({"msg": respuesta["respuesta"]}), 200
-        return ({"msg": respuesta["respuesta"]}), 404
+            return {
+                "msg": respuesta["respuesta"],
+                "total": cantidad_total,
+                }, 200
+        return {"msg": respuesta["respuesta"]}, 404
     
     @jwt_required()
     def post(self) -> dict:
@@ -222,7 +247,7 @@ class Productos(Resource):
             - dict: Producto creado
         """
         data = request.json
-    
+        
         cod_ms = data.get("cod_ms")
         marca = data.get("marca")
         descripcion = data.get("descripcion")

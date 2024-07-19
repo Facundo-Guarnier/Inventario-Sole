@@ -102,12 +102,35 @@ class Usuarios(Resource):
         Returns:
             - dict: Lista de usuarios
         """
-        filtro = {}
-        respuesta = UsuarioModel.buscar_x_atributo(filtro)
+        #! Validar data
+        try: 
+            pagina = int(request.args.get('pagina', 1))
+            por_pagina = int(request.args.get('por_pagina', 10))
+            
+        except Exception as e:
+            return ({"msg": "Error en los parámetros enviados"}), 400
+        
+        #! Paginación
+        saltear = (pagina - 1) * por_pagina
+        cantidad_total = UsuarioModel.total()
+        
+        if cantidad_total["estado"]:
+            if cantidad_total["respuesta"] == None:
+                return ({"msg": "Error al cargar el total de ventas"}), 400
+            else:
+                cantidad_total = cantidad_total["respuesta"] 
+        else: 
+            return {"msg": cantidad_total["respuesta"]}, 404
+        
+        respuesta = UsuarioModel.buscar_x_atributo(
+            filtro={}, 
+            saltear=saltear, 
+            por_pagina=por_pagina,
+        )
         if respuesta["estado"]:
             usuarios = respuesta["respuesta"]
             for usuario in usuarios:
                 del usuario['_id']
                 del usuario['contraseña']
-            return {"usuarios": usuarios}, 200
+            return {"usuarios": usuarios, "total": cantidad_total,}, 200
         return {"msg": respuesta["respuesta"]}, 404

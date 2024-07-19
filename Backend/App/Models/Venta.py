@@ -19,7 +19,7 @@ class Venta:
                 "estado": True,
                 "respuesta": json.loads(json_util.dumps(
                     db_mongo.db
-                    .ventas             #! Colección de 'ventas'
+                    .ventas             #! Colección
                     .find(filtro)       #! Busca por los datos en base a 'filtro'
                     .skip(saltear)      #! Saltea los primeros 'x' registros
                     .limit(por_pagina)  #! Limita la cantidad de registros

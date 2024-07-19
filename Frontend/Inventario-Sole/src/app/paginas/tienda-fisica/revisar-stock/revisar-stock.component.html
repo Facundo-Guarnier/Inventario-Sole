@@ -10,7 +10,7 @@
             <app-comp-barra-lateral
             [mostrarBusqueda]="false"
             ></app-comp-barra-lateral>
-
+            
             <!--! Zona de validacion  -->
             <div class="card shadow-sm mb-4 zona-personalizada">
                 <div class="card-body">
@@ -46,9 +46,9 @@
         </div>
         
         <div class="col-lg-9 content cuerpo-pag" > 
+            
+            <!--! Cuerpo -->
             <div class="container-fluid"> 
-                
-                <!--! Cuerpo -->
                 <h1 style="color: aliceblue;">Productos para Validar</h1>
                 <app-comp-tabla-datos 
                     [columnas]="columnas"
@@ -57,8 +57,15 @@
                     [tipo]="'prod'"
                 ></app-comp-tabla-datos>
                 
+                <!--! Paginamiento  -->
+                <app-comp-paginamiento 
+                [paginaActual]="paginaActual"
+                [totalPaginas]="totalPaginas"
+                (clickPagina)="clickPagina($event)"
+                >
+                </app-comp-paginamiento>
             </div>
+            
         </div>
-    
     </div>
 </div>

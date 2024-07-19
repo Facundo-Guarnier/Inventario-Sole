@@ -40,9 +40,9 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   
   //! Paginamiento 
   paginaActual = 1;
-  porPagina = 10;
-  totalDatos = 17;
-  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  porPagina = 20;
+  totalDatos = 0;
+  totalPaginas = 0;
   
   //* ------------------------------------------------
   
@@ -54,14 +54,15 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   
   ngOnInit(): void {
     //! Cargar todos los movimientos
-    this.apiMovimientos.buscar_x_atributo({}, this.paginaActual, this.porPagina).subscribe(
-      (data: any) => {
-        this.datos = data["msg"];
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    );
+    // this.apiMovimientos.buscar_x_atributo({}, this.paginaActual, this.porPagina).subscribe(
+    //   (data: any) => {
+    //     this.datos = data["msg"];
+    //   },
+    //   (error: any) => {
+    //     console.error(error);
+    //   }
+    // );
+    this.recargarLista();
   }
   
   //T* Funciones
@@ -145,11 +146,19 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   
     this.apiMovimientos.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
-        this.datos = Object.values(data).flat();
+        this.datos = Object.values(data["msg"]).flat();
+        this.totalDatos = data["total"];
+        this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },
       error: (error) => {
         console.error('ERROR al cargar ventas:', error);
       }
     });
+  }
+  
+  //! Paginamiento
+  clickPagina(numero: number){
+    this.paginaActual = numero;
+    this.recargarLista();
   }
 }

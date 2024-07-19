@@ -114,15 +114,34 @@ class Movimientos(Resource):
         """
         data = request.args.to_dict()
         
-        #! Validar data: id, movimiento, idProducto, cantidad, vendedor, comentario, fecha
-        id = data.get("id")
-        movimiento = data.get("movimiento")
-        id_producto = data.get("idProducto")
-        cantidad = data.get("cantidad")
-        vendedor = data.get("vendedor")
-        comentario = data.get("comentario")
-        fecha = data.get("fecha")
-        palabra_clave = data.get("palabra_clave")
+        #! Validar data
+        try:
+            id = data.get("id")
+            movimiento = data.get("movimiento")
+            id_producto = data.get("idProducto")
+            cantidad = data.get("cantidad")
+            vendedor = data.get("vendedor")
+            comentario = data.get("comentario")
+            fecha = data.get("fecha")
+            palabra_clave = data.get("palabra_clave")
+            
+            pagina = int(request.args.get('pagina', 1))
+            por_pagina = int(request.args.get('por_pagina', 10))
+        
+        except Exception as e:
+            return ({"msg": "Error en los parámetros enviados"}), 400
+        
+        #! Paginación
+        saltear = (pagina - 1) * por_pagina
+        cantidad_total = MovimientoModel.total()
+        
+        if cantidad_total["estado"]:
+            if cantidad_total["respuesta"] == None:
+                return ({"msg": "Error al cargar el total de ventas"}), 400
+            else:
+                cantidad_total = cantidad_total["respuesta"] 
+        else: 
+            return {"msg": cantidad_total["respuesta"]}, 404
         
         #! Añadir condiciones al filtro si se proporcionan
         filtro = {}
@@ -160,11 +179,18 @@ class Movimientos(Resource):
                 {"fecha": {"$regex": palabra_clave, "$options": "i"}},
             ]
         
-        respuesta = MovimientoModel.buscar_x_atributo(filtro)
+        respuesta = MovimientoModel.buscar_x_atributo(
+            filtro=filtro, 
+            saltear=saltear, 
+            por_pagina=por_pagina,
+        )
         
         if respuesta["estado"]:
-            return ({"msg": respuesta["respuesta"]}), 200
-        return ({"msg": respuesta["respuesta"]}), 404
+            return {
+                "msg": respuesta["respuesta"],
+                "total": cantidad_total,
+                }, 200
+        return {"msg": respuesta["respuesta"]}, 404
     
     @jwt_required()
     def post(self) -> dict:

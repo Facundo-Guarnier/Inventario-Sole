@@ -41,11 +41,11 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   ]
   filtrosCheckbox: string[] = []
   
-  //! Paginamiento 
+  //! Paginamiento s
   paginaActual = 1;
-  porPagina = 17;
+  porPagina = 20;
   totalDatos = 0;
-  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  totalPaginas = 0;
   
   //* ------------------------------------------------------------
   
@@ -57,7 +57,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   ngOnInit(): void {
     this.recargarLista();
-    console.log("Total de paginas:", this.totalPaginas);
   }
   
   //T* Funciones
@@ -139,11 +138,10 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       acc[key] = filtro[key];
       return acc;
     }, {});
-  
+    
     this.apiVentas.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.datos = Object.values(data["msg"]).flat();
-        console.log('Data:', data);
         this.totalDatos = data["total"];
         this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },

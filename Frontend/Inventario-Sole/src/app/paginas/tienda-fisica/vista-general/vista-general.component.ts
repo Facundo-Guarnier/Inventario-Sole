@@ -47,9 +47,9 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   
   //! Paginamiento 
   paginaActual = 1;
-  porPagina = 10;
-  totalDatos = 17;
-  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  porPagina = 20;
+  totalDatos = 0;
+  totalPaginas = 0;
   
   //* ------------------------------------------------------------
   
@@ -129,7 +129,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     
     this.apiProductos.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
-        this.datos = Object.values(data).flat().map((producto: any) => {
+        this.datos = Object.values(data["msg"]).flat().map((producto: any) => {
           const productoModificado = { ...producto };
           
           if (productoModificado.fisica) {
@@ -139,10 +139,19 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
           
           return productoModificado;
         });
+        
+        this.totalDatos = data["total"];
+        this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },
       error: (error) => {
         console.error('ERROR al cargar ventas:', error);
       }
     });
+  }
+  
+  //! Paginamiento
+  clickPagina(numero: number){
+    this.paginaActual = numero;
+    this.recargarLista();
   }
 }

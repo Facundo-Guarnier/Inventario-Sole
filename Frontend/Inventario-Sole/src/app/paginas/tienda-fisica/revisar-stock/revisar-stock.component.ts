@@ -34,9 +34,9 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
   //! Paginamiento 
   paginaActual = 1;
-  porPagina = 10;
-  totalDatos = 17;
-  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  porPagina = 20;
+  totalDatos = 0;
+  totalPaginas = 0;
   
   //* ------------------------------------------------------------
   
@@ -54,7 +54,6 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   iniciarNuevaRonda() {
     this.ApiRondaValidacionStock.iniciarRondaValidacion(this.AuthService.getToken(), "fisica").subscribe(
       (respuesta) => {
-        console.log('Nueva ronda iniciada:', respuesta);
         this.recargarLista();
         this.notificaciones = [];
       },
@@ -66,7 +65,6 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     this.ApiRondaValidacionStock.obtenerProductosParaValidar("fisica", this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.fecha_ronda = data["fecha_ronda"];
-        console.log('Data:', data);
         
         //! Modificar datos para mostrar en la tabla
         this.datos = Object.values(data["productos"]).flat().map((producto: any) => {
@@ -96,6 +94,8 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
           }
           return productoModificado;
         });
+        this.totalDatos = data["total"];
+        this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },
       
       error: (error) => { 
@@ -114,7 +114,6 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     
     this.ApiValidarStock.validarUnidad(this.id_a_validar, "fisica", this.AuthService.getToken()).subscribe(
       (respuesta) => {
-        console.log('Unidad validada:', respuesta);
         this.agregarNotificacion({
           mensaje: `Producto '${this.id_a_validar}' validado. Unidades restantes: ${respuesta.unidades_restantes}`,
           puedeDeshacer: true,
@@ -144,10 +143,8 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   deshacerAccion(index: number) {
     const notificacion = this.notificaciones[index];
     if (notificacion.puedeDeshacer && notificacion.idProducto) {
-      console.log('Deshaciendo validación:', notificacion.idProducto);
       this.ApiValidarStock.deshacerValidacion(notificacion.idProducto, "fisica", this.AuthService.getToken()).subscribe(
         (respuesta) => {
-          console.log('Validación deshecha:', respuesta);
           this.notificaciones[index] = {
             mensaje: `Deshecho validación de producto '${notificacion.idProducto}'.`,
             puedeDeshacer: false
@@ -164,5 +161,10 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
       );
     }
   }
-
+  
+  //! Paginamiento
+  clickPagina(numero: number){
+    this.paginaActual = numero;
+    this.recargarLista();
+  }
 }
