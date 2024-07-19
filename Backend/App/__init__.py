@@ -95,4 +95,7 @@ def create_app(config_class=Config):
     from App.Auth import Autenticacion
     app.register_blueprint(Autenticacion.auth)
     
+    from App.BackupDataBase import BackupDataBase
+    app.register_blueprint(BackupDataBase.backup)
+    
     return app

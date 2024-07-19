@@ -17,5 +17,8 @@ class Config:
     
     #! Imágenes
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
-    IMG_SIZE = (960, 960)
-    IMG_QUALITY = 85
+    IMG_SIZE = os.environ.get('IMG_SIZE') or (960, 960)
+    IMG_QUALITY = os.environ.get('IMG_QUALITY') or 85
+    
+    #! Backup de la DB
+    CONTRA_BACKUP = os.environ.get('CONTRA_BACKUP') or '01234567890123aesfsdfD890123456sfsdfEWF4'
