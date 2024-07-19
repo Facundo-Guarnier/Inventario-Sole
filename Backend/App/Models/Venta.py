@@ -4,7 +4,7 @@ import json
 
 class Venta: 
     @staticmethod
-    def buscar_x_atributo(filtro: dict) -> list:
+    def buscar_x_atributo(filtro: dict, saltear:int = 0, por_pagina:int = 10) -> list:
         """
         Busca ventas.
         
@@ -17,7 +17,14 @@ class Venta:
         try:
             return {
                 "estado": True,
-                "respuesta": json.loads(json_util.dumps(db_mongo.db.ventas.find(filtro).sort("_id", -1)))
+                "respuesta": json.loads(json_util.dumps(
+                    db_mongo.db
+                    .ventas             #! Colección de 'ventas'
+                    .find(filtro)       #! Busca por los datos en base a 'filtro'
+                    .skip(saltear)      #! Saltea los primeros 'x' registros
+                    .limit(por_pagina)  #! Limita la cantidad de registros
+                    .sort("_id", -1)    #! Ordena de forma descendente (el mas reciente primero)
+                    ))
             }
         
         except Exception as e:
@@ -86,6 +93,24 @@ class Venta:
                 "respuesta": db_mongo.db.ventas.delete_one({"id": id}),
             }
             
+        except Exception as e:
+            return {
+                "estado": False,
+                "respuesta": f"Hubo un error en la DB {str(e)}",
+            }
+    
+    @staticmethod
+    def total() -> dict:
+        """
+        Devuelve el total de ventas.
+        """
+        
+        try: 
+            return {
+                "estado": True,
+                "respuesta": db_mongo.db.ventas.count_documents({}),
+            }
+        
         except Exception as e:
             return {
                 "estado": False,

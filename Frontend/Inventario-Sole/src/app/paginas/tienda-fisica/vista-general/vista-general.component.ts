@@ -45,6 +45,12 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   mostrarAgregar = false;
   mostrarRevisarStock = false;
   
+  //! Paginamiento 
+  paginaActual = 1;
+  porPagina = 10;
+  totalDatos = 17;
+  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -121,7 +127,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
       delete filtrosObj["stock"];
     }
     
-    this.apiProductos.buscar_x_atributo(filtrosObj).subscribe({
+    this.apiProductos.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat().map((producto: any) => {
           const productoModificado = { ...producto };

@@ -25,6 +25,12 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   ];
   datos: any[] = [];
   
+  //! Paginamiento 
+  paginaActual = 1;
+  porPagina = 10;
+  totalDatos = 17;
+  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -34,7 +40,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    this.apiUsuarios.buscar_todos(this.authService.getToken()).subscribe({
+    this.apiUsuarios.buscar_todos(this.authService.getToken(), this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
       },

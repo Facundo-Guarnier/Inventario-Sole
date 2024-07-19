@@ -17,12 +17,11 @@ export class ApiRondaValidacionStock {
   
   iniciarRondaValidacion(token:string, tienda:string): Observable<any> {
     let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
-
     return this.httpClient.post(`${this.url}`, { tienda: tienda } , {headers: heads} );
   }
   
-  obtenerProductosParaValidar(tienda:string): Observable<any> {
-    return this.httpClient.get(`${this.url}`, { params: { tienda: tienda } });
+  obtenerProductosParaValidar(tienda:string, pagina:number, por_pagina:number ): Observable<any> {
+    return this.httpClient.get(`${this.url}`, { params: {tienda: tienda, pagina: pagina, por_pagina: por_pagina } });
   }
 }
 

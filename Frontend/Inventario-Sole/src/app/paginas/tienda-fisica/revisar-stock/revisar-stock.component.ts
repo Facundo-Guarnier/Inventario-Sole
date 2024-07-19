@@ -32,6 +32,12 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   
   datos: any[] = [];
   
+  //! Paginamiento 
+  paginaActual = 1;
+  porPagina = 10;
+  totalDatos = 17;
+  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -57,7 +63,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   }
   
   recargarLista() {
-    this.ApiRondaValidacionStock.obtenerProductosParaValidar("fisica").subscribe({
+    this.ApiRondaValidacionStock.obtenerProductosParaValidar("fisica", this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.fecha_ronda = data["fecha_ronda"];
         console.log('Data:', data);

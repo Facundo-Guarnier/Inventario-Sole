@@ -44,8 +44,8 @@ export class ApiMovimientosService {
     private httpClient: HttpClient
   ) { }
   
-  buscar_x_atributo(filtro:{}): Observable<any> {
-    return this.httpClient.get(`${this.url}`, { params: filtro });
+  buscar_x_atributo(filtro:{}, pagina:number, por_pagina:number ): Observable<any> {
+    return this.httpClient.get(`${this.url}`, { params: {...filtro, pagina: pagina, por_pagina: por_pagina } });
   }  
   
   crear(movimiento: {}, token:any): Observable<any> {

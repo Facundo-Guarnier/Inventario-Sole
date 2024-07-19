@@ -38,6 +38,12 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
     ]
     filtrosCheckbox: string[] = []
   
+  //! Paginamiento 
+  paginaActual = 1;
+  porPagina = 10;
+  totalDatos = 17;
+  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  
   //* ------------------------------------------------
   
   constructor(
@@ -48,7 +54,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   
   ngOnInit(): void {
     //! Cargar todos los movimientos
-    this.apiMovimientos.buscar_x_atributo({}).subscribe(
+    this.apiMovimientos.buscar_x_atributo({}, this.paginaActual, this.porPagina).subscribe(
       (data: any) => {
         this.datos = data["msg"];
       },
@@ -137,7 +143,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
       return acc;
     }, {});
   
-    this.apiMovimientos.buscar_x_atributo(filtrosObj).subscribe({
+    this.apiMovimientos.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.datos = Object.values(data).flat();
       },

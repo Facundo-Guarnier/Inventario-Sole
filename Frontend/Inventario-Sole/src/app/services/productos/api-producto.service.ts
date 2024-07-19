@@ -7,9 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: "root",
 })
 
-@Injectable({
-  providedIn: 'root'
-})
 export class ApiProductoService {
   url = "http://localhost:5000/api/producto"
   
@@ -46,8 +43,8 @@ export class ApiProductosService {
     private httpClient: HttpClient
   ) { }
   
-  buscar_x_atributo(filtro:{}): Observable<any> {
-    return this.httpClient.get(`${this.url}`, { params: filtro });
+  buscar_x_atributo(filtro:{}, pagina:number, por_pagina:number ): Observable<any> {
+    return this.httpClient.get(`${this.url}`, { params: {...filtro, pagina: pagina, por_pagina: por_pagina } });
   }  
   
   crear(producto: {}, token:any): Observable<any> {

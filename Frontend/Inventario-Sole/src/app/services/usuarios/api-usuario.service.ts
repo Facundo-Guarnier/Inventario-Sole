@@ -45,8 +45,8 @@ export class ApiUsuariosService {
     private httpClient: HttpClient
   ) { }
   
-  buscar_todos(token:any): Observable<any> {
+  buscar_todos(token:any, pagina:number, por_pagina:number ): Observable<any> {
     let heads = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').set('Authorization', 'Bearer ' + token)
-    return this.httpClient.get(`${this.url}`, { headers: heads});
+    return this.httpClient.get( `${this.url}`, { headers: heads, params: { pagina: pagina, por_pagina: por_pagina } } );
   }
 }

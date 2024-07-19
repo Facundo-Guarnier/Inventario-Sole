@@ -56,6 +56,7 @@ import { CompNotificacionComponent } from './componentes/comp-notificacion/comp-
 import { PagUsuarioIniciarSesionComponent } from './paginas/usuarios/iniciar-sesion/iniciar-sesion.component';
 import { AuthService } from './services/auth/auth.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { CompPaginamientoComponent } from './componentes/comp-paginamiento/comp-paginamiento.component';
 
 // Función para obtener el token del localStorage
 export function tokenGetter() {
@@ -112,6 +113,7 @@ export function tokenGetter() {
     PagUsuarioCrearComponent,
     CompNotificacionComponent,
     PagUsuarioIniciarSesionComponent,
+    CompPaginamientoComponent,
 
   ],
 
