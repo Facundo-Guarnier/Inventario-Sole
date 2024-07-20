@@ -26,13 +26,24 @@ def initialize_database(app):
             mongo.db.create_collection(collection)
             print(f"Colección '{collection}' creada.")
             
+            if collection == "ultimasIDs":
+                mongo.db.usuarios.insert_one({"coleccion": "giftcard", "id": "00000"})
+                mongo.db.usuarios.insert_one({"coleccion": "movimientos", "id": "00000"})
+                mongo.db.usuarios.insert_one({"coleccion": "productos", "id": "00000"})
+                mongo.db.usuarios.insert_one({"coleccion": "regalos", "id": "00000"})
+                mongo.db.usuarios.insert_one({"coleccion": "usuarios", "id": "00000"})
+                mongo.db.usuarios.insert_one({"coleccion": "ventas", "id": "00000"})
+                
+                mongo.db.usuarios.insert_one({"coleccion": "validacion-online", "fecha": "2024-01-01 00:00:00"})
+                mongo.db.usuarios.insert_one({"coleccion": "validacion-fisica", "fecha": "2024-01-01 00:00:00"})
+        
         else:
             print(f"Colección '{collection}' ya existente.")
     
-    admin = mongo.db.usuarios.find_one({"roles": {"$in": ["admin"]}})    
+    admin = mongo.db.usuarios.find_one({"alias": "admin"})    
+    from werkzeug.security import generate_password_hash
     if admin == None:
         mongo.db.usuarios.delete_one({"alias": "admin"})
-        from werkzeug.security import generate_password_hash
         mongo.db.usuarios.insert_one(
             {
             "alias": "admin",
@@ -43,7 +54,14 @@ def initialize_database(app):
         print("Admin creado.")
     
     else:
-        print("Admin ya existente.")
+        print("Admin actualizado.")
+        mongo.db.usuarios.update_one(
+            {"alias": "admin"},
+            {"$set": {
+                "roles": ["Admin"],
+                'contraseña': generate_password_hash(app.config['CONTRA_ADMIN']),
+            }},
+        )
 
 
 
