@@ -27,15 +27,15 @@ def initialize_database(app):
             print(f"Colección '{collection}' creada.")
             
             if collection == "ultimasIDs":
-                mongo.db.usuarios.insert_one({"coleccion": "giftcard", "id": "00000"})
-                mongo.db.usuarios.insert_one({"coleccion": "movimientos", "id": "00000"})
-                mongo.db.usuarios.insert_one({"coleccion": "productos", "id": "00000"})
-                mongo.db.usuarios.insert_one({"coleccion": "regalos", "id": "00000"})
-                mongo.db.usuarios.insert_one({"coleccion": "usuarios", "id": "00000"})
-                mongo.db.usuarios.insert_one({"coleccion": "ventas", "id": "00000"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "giftcard", "id": "00000"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "movimiento", "id": "00000"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "producto", "id": "00000"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "regalo", "id": "00000"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "usuario", "id": "00000"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "venta", "id": "00000"})
                 
-                mongo.db.usuarios.insert_one({"coleccion": "validacion-online", "fecha": "2024-01-01 00:00:00"})
-                mongo.db.usuarios.insert_one({"coleccion": "validacion-fisica", "fecha": "2024-01-01 00:00:00"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "validacion-online", "fecha": "2024-01-01 00:00:00"})
+                mongo.db.ultimasIDs.insert_one({"coleccion": "validacion-fisica", "fecha": "2024-01-01 00:00:00"})
         
         else:
             print(f"Colección '{collection}' ya existente.")
