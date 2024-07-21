@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-config
+
+data:
+  MONGO_URI: "mongodb://mongodb-service:37000/db-inventario-sole3.db"
+  MONGO_DBNAME: "db-inventario-sole3.db"
+  MONGO_COLLECTIONS: "usuarios,productos,movimientos,ventas,regalos,gift_cards,ultimasIDs"
+  IMG_SIZE: "960,960"
+  IMG_QUALITY: "85"
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flask-secrets
+type: Opaque
+stringData:
+  SECRET_KEY: "tu_secret_key"
+  JWT_SECRET_KEY: "tu_jwt_secret_key"
+  CONTRA_ADMIN: "admin123"
+  CONTRA_BACKUP: "tu_contra_backup"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-backend
+  template:
+    metadata:
+      labels:
+        app: flask-backend
+    spec:
+      containers:
+      - name: flask-backend
+        image: facundoguarnier/inventario-sole-backend:v0.1
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: flask-config
+        - secretRef:
+            name: flask-secrets
+        volumeMounts:
+        - name: uploads
+          mountPath: /app/uploads
+      volumes:
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: uploads-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-backend-service
+spec:
+  selector:
+    app: flask-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: uploads-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  # nfs: # Ejemplo usando NFS, ajusta según tu entorno
+  #   server: nfs-server.default.svc.cluster.local
+  #   path: "/path/to/uploads"
+  hostPath:
+    path: "/path/to/uploads"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uploads-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
