@@ -101,7 +101,7 @@ class Producto:
             }
     
     @staticmethod
-    def total() -> dict:
+    def total(filtro: dict) -> dict:
         """
         Devuelve el total de ventas.
         """
@@ -109,7 +109,7 @@ class Producto:
         try: 
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.productos.count_documents({}),
+                "respuesta": db_mongo.db.productos.count_documents(filtro),
             }
         
         except Exception as e:

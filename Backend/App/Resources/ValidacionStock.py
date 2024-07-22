@@ -10,18 +10,39 @@ class RondaValidacionStock(Resource):
         Obtiene los productos que deben ser validados en la ronda actual.
         """
         
-        data = request.args.to_dict()
-        tienda = data.get('tienda')
+        try: 
+            data = request.args.to_dict()
+            tienda = data.get('tienda')
+            pagina = int(request.args.get('pagina', 1))
+            por_pagina = int(request.args.get('por_pagina', 10))
         
-        if not tienda:
+        except Exception as e:
+            return ({"error": "Datos inválidos"}), 400
+        
+        #! Validar data
+        if not tienda or not pagina or not por_pagina:
             return ({"error": "Datos incompletos"}), 400
         
+        #! Obtener ronda actual
         fecha_ronda = ValidacionStockModel.obtener_ronda_actual(tienda)
         if not fecha_ronda:
             return ({"error": "No hay una ronda de validación activa"}), 400
         
-        productos = list(ValidacionStockModel.obtener_productos_para_validar(fecha_ronda, tienda))
-        return {"fecha_ronda":fecha_ronda, "productos":productos}, 200
+        #! Paginación
+        saltear = (pagina - 1) * por_pagina
+        cantidad_total = ValidacionStockModel.total(fecha_ronda, tienda)
+        
+        if cantidad_total["estado"]:
+            if cantidad_total["respuesta"] == None:
+                return ({"msg": "Error al cargar el total de ventas"}), 400
+            else:
+                cantidad_total = cantidad_total["respuesta"] 
+        else: 
+            return {"msg": cantidad_total["respuesta"]}, 404
+        
+        #! Obtener productos para validar
+        productos = list(ValidacionStockModel.obtener_productos_para_validar(fecha_ronda, tienda, saltear, por_pagina))
+        return {"fecha_ronda":fecha_ronda, "productos":productos, "total": cantidad_total}, 200
     
     @jwt_required()
     def post(self):

@@ -19,8 +19,7 @@ class ValidacionStock:
                         f"{tienda}.cantidad": {"$gte": 1},
                     }, 
                     
-                ]
-                },
+                ]},
                 {   #! Se excluyen los campos que no se necesitan
                     "_id": 0,
                     "liquidacion": 0,
@@ -154,7 +153,8 @@ class ValidacionStock:
         try: 
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.productos.count_documents({
+                "respuesta": json.loads(json_util.dumps(db_mongo.db.productos.count_documents(
+                    {
                         "$or": [
                             {
                                 f"{tienda}.validacion.ultima_fecha": {"$ne": fecha_ronda},
@@ -167,13 +167,13 @@ class ValidacionStock:
                             }, 
                             
                         ]
-                    },
-                    {   #! Se excluyen los campos que no se necesitan
-                        "_id": 0,
-                        "liquidacion": 0,
-                        "fotos": 0
+                    # },
+                    # {   #! Se excluyen los campos que no se necesitan
+                    #     "_id": 0,
+                    #     "liquidacion": 0,
+                    #     "fotos": 0
                     }
-                )
+                ))) 
             }
         
         except Exception as e:

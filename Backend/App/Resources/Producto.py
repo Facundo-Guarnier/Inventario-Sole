@@ -153,17 +153,6 @@ class Productos(Resource):
         except Exception as e:
             return ({"msg": "Error en los parámetros enviados"}), 400
         
-        #! Paginación
-        saltear = (pagina - 1) * por_pagina
-        cantidad_total = ProductoModel.total()
-        
-        if cantidad_total["estado"]:
-            if cantidad_total["respuesta"] == None:
-                return ({"msg": "Error al cargar el total de ventas"}), 400
-            else:
-                cantidad_total = cantidad_total["respuesta"] 
-        else: 
-            return {"msg": cantidad_total["respuesta"]}, 404
         
         #! Añadir condiciones al filtro si se proporcionan
         filtro = {}
@@ -225,6 +214,20 @@ class Productos(Resource):
                     {"talle": {"$regex": palabra_clave, "$options": "i"}},
                     {"liquidacion": {"$regex": palabra_clave, "$options": "i"}},
                 ]
+        
+        #! Paginación
+        saltear = (pagina - 1) * por_pagina
+        cantidad_total = ProductoModel.total(filtro)
+        
+        if cantidad_total["estado"]:
+            if cantidad_total["respuesta"] == None:
+                return ({"msg": "Error al cargar el total de ventas"}), 400
+            else:
+                cantidad_total = cantidad_total["respuesta"] 
+        else: 
+            return {"msg": cantidad_total["respuesta"]}, 404
+        
+        #! Buscar productos
         respuesta = ProductoModel.buscar_x_atributo(
             filtro=filtro, 
             saltear=saltear, 

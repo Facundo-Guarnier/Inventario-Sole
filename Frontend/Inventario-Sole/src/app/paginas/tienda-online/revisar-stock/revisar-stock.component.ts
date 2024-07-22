@@ -34,9 +34,9 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
   
   //! Paginamiento 
   paginaActual = 1;
-  porPagina = 10;
-  totalDatos = 17;
-  totalPaginas =  Math.ceil(this.totalDatos/this.porPagina);
+  porPagina = 20;
+  totalDatos = 0;
+  totalPaginas = 0;
   
   //* ------------------------------------------------------------
   
@@ -66,7 +66,6 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
     this.ApiRondaValidacionStock.obtenerProductosParaValidar("online", this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.fecha_ronda = data["fecha_ronda"];
-        console.log('Data:', data);
         
         //! Modificar datos para mostrar en la tabla
         this.datos = Object.values(data["productos"]).flat().map((producto: any) => {
@@ -96,6 +95,9 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
           }
           return productoModificado;
         });
+        
+        this.totalDatos = Math.max(1, data["total"]);
+        this.totalPaginas = Math.max(1, Math.ceil(this.totalDatos/this.porPagina));
       },
       
       error: (error) => { 
@@ -164,5 +166,10 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
       );
     }
   }
-
+  
+  //! Paginamiento
+  clickPagina(numero: number){
+    this.paginaActual = numero;
+    this.recargarLista();
+  }
 }

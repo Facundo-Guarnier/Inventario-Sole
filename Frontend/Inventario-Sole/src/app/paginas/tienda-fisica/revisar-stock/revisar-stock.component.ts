@@ -94,7 +94,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
           }
           return productoModificado;
         });
-        this.totalDatos = data["total"];
+        this.totalDatos = Math.max(1, data["total"]);
         this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },
       

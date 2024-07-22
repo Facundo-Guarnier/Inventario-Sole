@@ -48,7 +48,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
     this.apiUsuarios.buscar_todos(this.authService.getToken(), this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.datos = Object.values(data["usuarios"]).flat();
-        this.totalDatos = data["total"];
+        this.totalDatos = Math.max(1, data["total"]);
         this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },
       error: (error) => {

@@ -112,7 +112,7 @@ class Usuarios(Resource):
         
         #! Paginación
         saltear = (pagina - 1) * por_pagina
-        cantidad_total = UsuarioModel.total()
+        cantidad_total = UsuarioModel.total({})
         
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] == None:

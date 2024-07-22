@@ -102,7 +102,7 @@ class Movimiento:
             }
     
     @staticmethod
-    def total() -> dict:
+    def total(filtro: dict) -> dict:
         """
         Devuelve el total de ventas.
         """
@@ -110,7 +110,7 @@ class Movimiento:
         try: 
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.movimientos.count_documents({}),
+                "respuesta": db_mongo.db.movimientos.count_documents(filtro),
             }
         
         except Exception as e:

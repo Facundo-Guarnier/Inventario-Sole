@@ -56,6 +56,14 @@
                     [acciones]="acciones"
                     [tipo]="'prod'"
                 ></app-comp-tabla-datos>
+
+                <!--! Paginamiento  -->
+                <app-comp-paginamiento 
+                [paginaActual]="paginaActual"
+                [totalPaginas]="totalPaginas"
+                (clickPagina)="clickPagina($event)"
+                >
+                </app-comp-paginamiento>
                 
             </div>
         </div>

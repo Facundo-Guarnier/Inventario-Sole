@@ -142,7 +142,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     this.apiVentas.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.datos = Object.values(data["msg"]).flat();
-        this.totalDatos = data["total"];
+        this.totalDatos = Math.max(1, data["total"]);
         this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
       },
       error: (error) => {
