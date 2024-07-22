@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 
 export class ApiVentaService {
-  url = "http://localhost:5000/api/venta"
+  url = "/api/venta"
   
   constructor(
     private httpClient: HttpClient
@@ -37,7 +37,7 @@ export class ApiVentaService {
 })
 
 export class ApiVentasService {
-  url = "http://localhost:5000/api/ventas"
+  url = "/api/ventas"
   
   constructor(
     private httpClient: HttpClient

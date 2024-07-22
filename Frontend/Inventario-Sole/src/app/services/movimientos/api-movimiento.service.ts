@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 
 export class ApiMovimientoService {
-  url = "http://localhost:5000/api/movimiento"
+  url = "/api/movimiento"
   
   constructor(
     private httpClient: HttpClient
@@ -38,7 +38,7 @@ export class ApiMovimientoService {
 })
 
 export class ApiMovimientosService {
-  url = "http://localhost:5000/api/movimientos"
+  url = "/api/movimientos"
   
   constructor(
     private httpClient: HttpClient

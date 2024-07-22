@@ -9,8 +9,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 
 export class ApiUsuarioService {
-  url = "http://localhost:5000/api/usuario"
-  // url = environment.apiUrl + '/api/usuario';
+  url = "/api/usuario"
   
   constructor(
     private httpClient: HttpClient,
@@ -41,8 +40,7 @@ export class ApiUsuarioService {
 })
 
 export class ApiUsuariosService {
-  url = "http://localhost:5000/api/usuarios"
-  // url = environment.apiUrl + '/api/usuarios';
+  url = "/api/usuarios"
   
   constructor(
     private httpClient: HttpClient

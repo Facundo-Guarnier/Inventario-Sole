@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 
 export class ApiFotoService {
-  url = "http://localhost:5000/api/foto"
+  url = "/api/foto"
   
   constructor(
     private httpClient: HttpClient
@@ -35,7 +35,7 @@ export class ApiFotoService {
 })
 
 export class ApiFotosService {
-  url = "http://localhost:5000/api/fotos"
+  url = "/api/fotos"
   
   constructor(
     private httpClient: HttpClient

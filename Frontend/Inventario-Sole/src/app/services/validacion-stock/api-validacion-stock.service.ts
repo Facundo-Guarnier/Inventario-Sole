@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 
 export class ApiRondaValidacionStock {
-  url = "http://localhost:5000/api/ronda-validacion"
+  url = "/api/ronda-validacion"
   
   constructor(
     private httpClient: HttpClient
@@ -32,7 +32,7 @@ export class ApiRondaValidacionStock {
 })
 
 export class ApiValidarStock {
-  url = "http://localhost:5000/api/validar"
+  url = "/api/validar"
   
   constructor(
     private httpClient: HttpClient

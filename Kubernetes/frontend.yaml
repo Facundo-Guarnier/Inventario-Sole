@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: angular-frontend
 spec:
-  replicas: 1  # Podemos reducir a 1 réplica si el tráfico es bajo
+  replicas: 1
   selector:
     matchLabels:
       app: angular-frontend
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: angular-frontend
-        image: facundoguarnier/inventario-sole-frontend:v0.7.4
+        image: facundoguarnier/inventario-sole-frontend:v0.8
         ports:
         - containerPort: 80
         env:
@@ -32,6 +32,7 @@ spec:
     app: angular-frontend
   ports:
     - protocol: TCP
-      port: 8000
+      port: 80
       targetPort: 80
-  type: LoadBalancer
+      nodePort: 30080
+  type: NodePort

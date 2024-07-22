@@ -11,9 +11,8 @@ import { environment } from 'src/environments/environment.prod';
 })
 
 export class AuthService {
-  // url = "http://localhost:5000/api/auth";
-  url = environment.apiUrl + "/api/auth";
-  
+  url = "/api/auth";
+
   private userRoleSubject = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRoleSubject.asObservable();
   private tokenKey = 'token';
