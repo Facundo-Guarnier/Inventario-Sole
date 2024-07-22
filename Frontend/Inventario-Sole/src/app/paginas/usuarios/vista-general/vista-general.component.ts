@@ -31,6 +31,10 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   totalDatos = 0;
   totalPaginas = 0;
   
+  //! Vista
+  showNavbar = false;
+  showSidebar = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -66,5 +70,20 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   clickPagina(numero: number){
     this.paginaActual = numero;
     this.recargarLista();
+  }
+  
+  //! Botones de vista
+  toggleNavbar() {
+    this.showNavbar = !this.showNavbar;
+    if (this.showNavbar) {
+      this.showSidebar = false;
+    }
+  }
+  
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+    if (this.showSidebar) {
+      this.showNavbar = false;
+    }
   }
 }

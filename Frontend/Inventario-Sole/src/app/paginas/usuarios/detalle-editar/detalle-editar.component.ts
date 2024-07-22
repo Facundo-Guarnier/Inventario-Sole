@@ -38,6 +38,10 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   mostrarAceptar = true;
   mostrarCancelar = true;
   
+  //! Vista
+  showNavbar = false;
+  showSidebar = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -185,5 +189,20 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
   //! Recibir datos del componente hijo
   onDatosRecolectadosUsuario(datos: any[]) {
     this.nuevoDetalleUsuario = datos;
+  }
+  
+  //! Botones de vista
+  toggleNavbar() {
+    this.showNavbar = !this.showNavbar;
+    if (this.showNavbar) {
+      this.showSidebar = false;
+    }
+  }
+  
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+    if (this.showSidebar) {
+      this.showNavbar = false;
+    }
   }
 }

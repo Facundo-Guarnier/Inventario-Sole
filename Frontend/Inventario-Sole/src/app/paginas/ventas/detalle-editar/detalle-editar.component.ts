@@ -58,6 +58,10 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   mostrarAceptar = false;
   mostrarCancelar = false;
   
+  //! Vista
+  showNavbar = false;
+  showSidebar = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -237,6 +241,21 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     this.estaAbierto = false;
     if (this.redireccionar) {
       this.router.navigate(['/ven']);
+    }
+  }
+  
+  //! Botones de vista
+  toggleNavbar() {
+    this.showNavbar = !this.showNavbar;
+    if (this.showNavbar) {
+      this.showSidebar = false;
+    }
+  }
+  
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+    if (this.showSidebar) {
+      this.showNavbar = false;
     }
   }
 }

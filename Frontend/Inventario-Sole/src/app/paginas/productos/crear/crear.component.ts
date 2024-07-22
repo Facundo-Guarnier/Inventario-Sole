@@ -60,6 +60,10 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   mensajeModal = "mensaje";
   redireccionar: boolean = false;
   
+  //! Vista
+  showNavbar = false;
+  showSidebar = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -84,7 +88,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         console.error("Error al buscar la última ID:", err);
       }
     );
-
+    
     this.tituloGeneral = "Crear producto";
   }
   
@@ -223,6 +227,21 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
       this.openModal();
       return;
+    }
+  }
+  
+  //! Botones de vista
+  toggleNavbar() {
+    this.showNavbar = !this.showNavbar;
+    if (this.showNavbar) {
+      this.showSidebar = false;
+    }
+  }
+  
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+    if (this.showSidebar) {
+      this.showNavbar = false;
     }
   }
 }

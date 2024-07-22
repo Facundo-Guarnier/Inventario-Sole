@@ -33,6 +33,10 @@ export class PagMovimientosCrearComponent implements OnInit {
   mensajeModal = "mensaje";
   redireccionar: boolean = false;
   
+  //! Vista
+  showNavbar = false;
+  showSidebar = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -137,6 +141,21 @@ export class PagMovimientosCrearComponent implements OnInit {
     this.estaAbierto = false;
     if (this.redireccionar) {
       this.router.navigate(['/mov']);
+    }
+  }
+  
+  //! Botones de vista
+  toggleNavbar() {
+    this.showNavbar = !this.showNavbar;
+    if (this.showNavbar) {
+      this.showSidebar = false;
+    }
+  }
+  
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+    if (this.showSidebar) {
+      this.showNavbar = false;
     }
   }
 }

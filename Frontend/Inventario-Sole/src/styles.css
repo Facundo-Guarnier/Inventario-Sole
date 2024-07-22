@@ -74,10 +74,50 @@ body {  /* Fondo */
     background-color: #28579f !important;
 }
 
-.contenido-principal {
-    height: calc(100vh - 80px); 
-}
-
 .cuerpo-pag {
     padding: 1% !important;
+}
+
+/*T* Barras */
+.mobile-top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #0d6efd;
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1040;
+}
+
+.mobile-top-bar button {
+    padding: 5px 10px;
+}
+
+@media (max-width: 991.98px) {
+    .content {
+        padding-top: 60px;
+    }
+
+    .barra-lateral-pag {
+        top: 56px;
+    }
+}
+
+.botones-vista {
+    background-color: white
+} 
+
+.botones-vista {
+    background-color: #1362da;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.botones-vista:hover,
+.botones-vista:active {
+    color: white !important;
+    background-color: #28579f !important;
+    border-color: #0d6efd !important;
 }

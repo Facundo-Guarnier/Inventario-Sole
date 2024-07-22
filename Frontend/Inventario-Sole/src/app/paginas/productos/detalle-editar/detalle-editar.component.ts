@@ -61,6 +61,10 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   mensajeModal = "mensaje";
   redireccionar: boolean = false;
   
+  //! Vista
+  showNavbar = false;
+  showSidebar = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -102,7 +106,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       return;
     }
     this.id = id
-
+    
     this.apiProducto.buscar_x_id(id).subscribe(
       (res: any) => {
         let datos = res["msg"][0]
@@ -270,6 +274,21 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
       this.openModal();
       return;
+    }
+  }
+  
+  //! Botones de vista
+  toggleNavbar() {
+    this.showNavbar = !this.showNavbar;
+    if (this.showNavbar) {
+      this.showSidebar = false;
+    }
+  }
+  
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+    if (this.showSidebar) {
+      this.showNavbar = false;
     }
   }
 }

@@ -50,6 +50,10 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   porPagina = 20;
   totalDatos = 0;
   totalPaginas = 0;
+
+  //! Vista
+  showNavbar = false;
+  showSidebar = false;
   
   //* ------------------------------------------------------------
   
@@ -153,5 +157,20 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   clickPagina(numero: number){
     this.paginaActual = numero;
     this.recargarLista();
+  }
+  
+  //! Botones de vista
+  toggleNavbar() {
+    this.showNavbar = !this.showNavbar;
+    if (this.showNavbar) {
+      this.showSidebar = false;
+    }
+  }
+  
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+    if (this.showSidebar) {
+      this.showNavbar = false;
+    }
   }
 }
