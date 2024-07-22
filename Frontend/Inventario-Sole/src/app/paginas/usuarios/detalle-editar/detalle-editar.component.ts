@@ -105,7 +105,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
       (error) => {
         console.error("Error en la solicitud:", error);
         this.tituloModal = "Error al editar"
-        this.mensajeModal = "No se pudo editar el usuario. Revise los campos e intente de nuevo."
+        this.mensajeModal = "No se pudo editar el usuario. Error: " + error["error"]["msg"];
         this.openModal()
       }
     );

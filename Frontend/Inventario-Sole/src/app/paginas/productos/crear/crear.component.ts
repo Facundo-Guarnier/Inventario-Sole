@@ -102,10 +102,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Botones flotantes
   ClickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
-    console.log('Campos generales:', this.camposGenerales);
-    console.log('Campos física:', this.camposFisica);
-    console.log('Campos online:', this.camposOnline);
-    console.log('Fotos:', this.fotos);
     
     //! Verificar que todos los campos no estén vacíos
     this.verificarCamposVacios();
@@ -147,7 +143,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       (err: any) => {
         console.error('Error al crear el producto:', err);
         this.tituloModal = "Error al crear";
-        this.mensajeModal = "Ha ocurrido un error al crear el producto.";
+        this.mensajeModal = "Ha ocurrido un error al crear el producto. Error: " + err["error"]["msg"];
         this.openModal();
       }
     );

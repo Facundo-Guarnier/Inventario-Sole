@@ -194,7 +194,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       (err: any) => {
         console.error('Error al actualizar el producto:', err);
         this.tituloModal = "Error al actualizar";
-        this.mensajeModal = "Ha ocurrido un error al actualizar el producto.";
+        this.mensajeModal = "Ha ocurrido un error al actualizar el producto. Error: " + err["error"]["msg"];
         this.openModal();
       }
     );

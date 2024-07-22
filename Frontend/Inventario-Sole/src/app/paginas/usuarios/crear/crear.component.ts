@@ -64,7 +64,7 @@ export class PagUsuarioCrearComponent implements OnInit {
       (error) => {
         console.error("Error en la solicitud:", error);
         this.tituloModal = "Error al crear el usuario"
-        this.mensajeModal = "No se pudo crear el usuario. Revise los campos e intenta de nuevo."
+        this.mensajeModal = "No se pudo crear el usuario. Error: " + error["error"]["msg"]
         this.openModal()
       }
     );

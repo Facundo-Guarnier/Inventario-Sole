@@ -60,9 +60,8 @@ export class PagMovimientosCrearComponent implements OnInit {
     
     if (this.hasEmptyFields(this.detalleMovimiento, optionalFields)) {
       this.tituloModal = "Error al crear el movimiento"
-      this.mensajeModal = "No se pudo crear el movimiento. Revise los campos e intente de nuevo."
+      this.mensajeModal = "No se pudo crear el movimiento. Hay campos vacíos. Revise los campos e intente de nuevo."
       this.openModal()
-      console.error("Hay campos vacíos.");
       return;
     }
     
@@ -78,7 +77,7 @@ export class PagMovimientosCrearComponent implements OnInit {
       (err) => {
         console.error("Error al crear el movimiento:", err);
         this.tituloModal = "Error al crear el movimiento"
-        this.mensajeModal = "No se pudo crear el movimiento. Revise los campos e intente de nuevo."
+        this.mensajeModal = "No se pudo crear el movimiento. Error: " + err["error"]["msg"];
         this.openModal()
       }
     );

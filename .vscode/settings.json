@@ -15,6 +15,7 @@
         "seleccion",
         "sqlalchemy",
         "ultimaid",
+        "Vacios",
         "validacion"
     ]
 }

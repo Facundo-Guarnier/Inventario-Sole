@@ -153,7 +153,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
       (error) => {
         console.error("Error en la solicitud:", error);
         this.tituloModal = "Error al actualizar la venta"
-        this.mensajeModal = "No se pudo actualizar la venta. Revise los campos e intenta de nuevo."
+        this.mensajeModal = "No se pudo actualizar la venta. Error: " + error["error"]["msg"];
         this.openModal()
       }
     );

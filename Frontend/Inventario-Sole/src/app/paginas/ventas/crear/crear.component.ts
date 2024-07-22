@@ -110,7 +110,7 @@ export class PagVentasCrearComponent implements OnInit {
       (err) => {
         console.error("Error al crear la venta:", err);
         this.tituloModal = "Error al crear la venta"
-        this.mensajeModal = "No se pudo crear la venta. Revise los campos e intente de nuevo."
+        this.mensajeModal = "No se pudo crear la venta. Error: " + err["error"]["msg"];
         this.openModal()
       }
     );
