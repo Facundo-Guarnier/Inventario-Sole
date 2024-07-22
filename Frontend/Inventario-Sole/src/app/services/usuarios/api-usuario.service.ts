@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 
 @Injectable({
@@ -9,6 +10,7 @@ import { Observable } from 'rxjs';
 
 export class ApiUsuarioService {
   url = "http://localhost:5000/api/usuario"
+  // url = environment.apiUrl + '/api/usuario';
   
   constructor(
     private httpClient: HttpClient,
@@ -40,6 +42,7 @@ export class ApiUsuarioService {
 
 export class ApiUsuariosService {
   url = "http://localhost:5000/api/usuarios"
+  // url = environment.apiUrl + '/api/usuarios';
   
   constructor(
     private httpClient: HttpClient

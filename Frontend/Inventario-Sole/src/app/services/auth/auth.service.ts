@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, take, BehaviorSubject, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment.prod';
 
 
 @Injectable({
@@ -11,6 +12,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 export class AuthService {
   url = "http://localhost:5000/api/auth";
+
   private userRoleSubject = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRoleSubject.asObservable();
   private tokenKey = 'token';
@@ -22,11 +24,12 @@ export class AuthService {
   ) { 
     this.checkToken();
   }
-
+  
   login(dataLogin: any): Observable<any> {  
     /*
     Se realiza la petición POST al servidor con los datos de login.
     */
+    console.log("LA URL PARA EL BACKEND:", this.url + '/acceder')
     return this.httpClient.post(this.url + '/acceder', dataLogin).pipe(
       take(1),
       tap((response: any) => {

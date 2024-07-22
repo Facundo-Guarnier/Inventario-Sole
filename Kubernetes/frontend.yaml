@@ -14,16 +14,23 @@ spec:
     spec:
       containers:
       - name: angular-frontend
-        image: tuusuario/angular-frontend:v1
+        image: facundoguarnier/inventario-sole-frontend:v0.7
         ports:
         - containerPort: 80
+        # env:
+        # - name: API_URL
+        #   value: "http://backend-service:5003"
+
+
+# SI no funciona la conexion con el backend, uso la variable de entorno API_URL para los services en el frontend. 
+
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: angular-frontend-service
+  name: frontend-service
 spec:
   selector:
     app: angular-frontend
@@ -32,27 +39,3 @@ spec:
       port: 8000
       targetPort: 80
   type: LoadBalancer
-
----
-
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: angular-frontend-ingress
-#   annotations:
-#     kubernetes.io/ingress.class: nginx
-#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-# spec:
-#   rules:
-#   - http:
-#       paths:
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: angular-frontend-service
-#             port: 
-#               number: 80
-
----
-
