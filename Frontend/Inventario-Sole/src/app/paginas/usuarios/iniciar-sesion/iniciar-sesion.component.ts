@@ -15,6 +15,7 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
   alias: string = '';
   contra: string = '';
   errorMessage: string = '';
+  showPassword: boolean = false;
   
   //* ------------------------------------------------------------
   
@@ -45,5 +46,9 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
         this.errorMessage = 'Usuario o contraseña incorrectos';
       }
     );
+  }
+  
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }
