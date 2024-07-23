@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiUsuariosService } from '../../../services/usuarios/api-usuario.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Filtro } from 'src/app/interfaces/filtro.interface';
+import { ApiBackupService } from 'src/app/services/backup/api-backup.service';
 
 
 @Component({
@@ -35,12 +36,19 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   showNavbar = false;
   showSidebar = false;
   
+  //! Modal
+  estaAbierto = false;
+  tituloModal = "titulo";
+  mensajeModal = "mensaje";
+  redireccionar: boolean = false;
+  
   //* ------------------------------------------------------------
   
   constructor(
     private router: Router,
     private apiUsuarios: ApiUsuariosService,
     private authService: AuthService,
+    private apiBackup: ApiBackupService,
   ) { }
   
   ngOnInit(): void {
@@ -84,6 +92,49 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
     this.showSidebar = !this.showSidebar;
     if (this.showSidebar) {
       this.showNavbar = false;
+    }
+  }
+  
+  //! Descargar base de datos
+  downloadDatabase() {
+    this.apiBackup.downloadDB().subscribe(
+      (data: Blob) => {
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        
+        //! Archivo
+        const fecha = new Date();
+        const fechaFormateada = fecha.toISOString().replace(/T/, '_').replace(/\..+/, '').replace(/:/g, '-');
+        link.download = `BaseDatos-Backup_${fechaFormateada}.json`;
+        
+        link.click();
+        window.URL.revokeObjectURL(url);
+        
+        //! Modal
+        this.tituloModal = "Base de datos descargada"
+        this.mensajeModal = "La base de datos ha sido descargada correctamente."
+        this.redireccionar = false;
+        this.openModal()
+      },
+      error => {
+        this.tituloModal = "Error al descargar la base de datos"
+        this.mensajeModal = "No se pudo descargar la base de datos. Error: " + error["message"]
+        this.redireccionar = false;
+        this.openModal()
+      }
+    );
+  }
+  
+  //! Modal
+  openModal() {
+    this.estaAbierto = true;
+  }
+  cerrarModal() {
+    this.estaAbierto = false;
+    if (this.redireccionar) {
+      this.router.navigate(['/usu']);
     }
   }
 }

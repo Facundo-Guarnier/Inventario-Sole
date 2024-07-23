@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
       - name: flask-backend
-        image: facundoguarnier/inventario-sole-backend:v0.2
+        image: facundoguarnier/inventario-sole-backend:v0.3
         ports:
         - containerPort: 5000
         envFrom:

@@ -21,6 +21,10 @@
             <app-comp-barra-lateral
             [mostrarBusqueda]="false"
             ></app-comp-barra-lateral>
+            
+            <button class="btn btn-warning" (click)="downloadDatabase()" style="width: 100%;">
+                <i class="fas fa-download"></i> Descargar Base de Datos
+            </button>
         </div>
         
         <div class="col-lg-9 content cuerpo-pag" > 
@@ -55,3 +59,12 @@
     (clickAgregar)="ClickAgregar()"
 >
 </app-comp-botones-flotantes>
+
+<!--! Modal  -->
+<app-comp-notificacion 
+    [estaAbierto]="estaAbierto" 
+    [titulo]="tituloModal" 
+    [mensaje]="mensajeModal"
+    (cerrarModal)="cerrarModal()">
+    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+</app-comp-notificacion>
