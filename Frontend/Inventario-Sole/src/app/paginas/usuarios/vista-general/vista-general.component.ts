@@ -42,6 +42,10 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   mensajeModal = "mensaje";
   redireccionar: boolean = false;
   
+  
+  //! DB
+  selectedFile: File | null = null;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -99,7 +103,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
   downloadDatabase() {
     this.apiBackup.downloadDB().subscribe(
       (data: Blob) => {
-        const blob = new Blob([data], { type: 'application/json' });
+        const blob = new Blob([data], { type: 'application/bin' });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -107,7 +111,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
         //! Archivo
         const fecha = new Date();
         const fechaFormateada = fecha.toISOString().replace(/T/, '_').replace(/\..+/, '').replace(/:/g, '-');
-        link.download = `BaseDatos-Backup_${fechaFormateada}.json`;
+        link.download = `BaseDatos-Backup_${fechaFormateada}.bin`;
         
         link.click();
         window.URL.revokeObjectURL(url);
@@ -125,6 +129,43 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
         this.openModal()
       }
     );
+  }
+  
+  //! Subir base de datos
+  uploadDatabase() {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+      
+      this.apiBackup.uploadDB(formData).subscribe(
+        response => {
+          console.log('Base de datos subida con éxito', response);
+          this.tituloModal = "Base de datos subida"
+          this.mensajeModal = "La base de datos ha sido subida correctamente."
+          this.redireccionar = false;
+          this.openModal()
+        },
+        error => {
+          console.error('Error al subir la base de datos', error);
+          this.tituloModal = "Error al subir la base de datos"
+          this.mensajeModal = "No se pudo subir la base de datos. Error: " + error["message"]
+          this.redireccionar = false;
+          this.openModal()
+        }
+      );
+    }
+  }
+  onFileSelected(event: any) {
+    const file = event.target.files[0] as File;
+    if (file && file.name.endsWith('.bin')) {
+      this.selectedFile = file;
+    } else {
+      this.tituloModal = "Error al subir la base de datos"
+      this.mensajeModal = "Por favor, seleccione un archivo .bin"
+      this.redireccionar = false;
+      this.openModal()
+      this.selectedFile = null;
+    }
   }
   
   //! Modal

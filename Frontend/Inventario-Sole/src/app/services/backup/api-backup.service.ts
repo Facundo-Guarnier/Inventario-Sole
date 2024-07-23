@@ -20,6 +20,11 @@ export class ApiBackupService {
       responseType: 'blob'
     });
   }
+
+  uploadDB(formData: FormData): Observable<any> {
+    return this.httpClient.post(`${this.url}/upload_database`, formData);
+  }
+
 }
 
 //* ------------------------------------------------------------

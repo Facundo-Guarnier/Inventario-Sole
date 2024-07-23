@@ -1,3 +1,4 @@
+#T* ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,20 +12,20 @@ data:
   IMG_QUALITY: "85"
 
 ---
-
+#T* Secret
 apiVersion: v1
 kind: Secret
 metadata:
   name: flask-secrets
 type: Opaque
 stringData:
-  SECRET_KEY: "tu_secret_key"
-  JWT_SECRET_KEY: "tu_jwt_secret_key"
+  SECRET_KEY: "MiClaveSuperSecretaQueNadieSabe12"
+  JWT_SECRET_KEY: "OtraClaveSecretaQueNAdieSabe13"
   CONTRA_ADMIN: "admin123"
-  CONTRA_BACKUP: "tu_contra_backup"
+  CONTRA_BACKUP: "LaContraMasDificilDelMundo123"
 
 ---
-
+#T* Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -58,7 +59,7 @@ spec:
           claimName: uploads-pvc
 
 ---
-
+#T* Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -74,7 +75,7 @@ spec:
   type: NodePort
 
 ---
-
+#T* PersistentVolume
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -93,7 +94,7 @@ spec:
     path: "/path/to/uploads"
 
 ---
-
+#T* PersistentVolumeClaim
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
