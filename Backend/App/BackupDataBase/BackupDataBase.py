@@ -1,4 +1,4 @@
-import base64, io, json, os
+import base64, io, json, os, shutil
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -11,7 +11,7 @@ backup = Blueprint('api/bdb', __name__, url_prefix='/api/bdb')
 
 
 @backup.route('/download_database')
-def download_database():
+def download_database() -> dict:
     """
     Descarga la base de datos en formato JSON y la encripta.
     """
@@ -29,6 +29,10 @@ def download_database():
         for collection_name in db_mongo.db.list_collection_names():
             collection = db_mongo.db[collection_name]
             data[collection_name] = list(collection.find({}, {'_id': False}))
+        
+        #! Añadir datos de imágenes
+        uploads_path = str(current_app.config.get('UPLOAD_FOLDER'))
+        data['images'] = get_images_data(uploads_path)
         
         json_data = json.dumps(data, default=str)
         
@@ -52,7 +56,7 @@ def download_database():
 
 
 @backup.route('/upload_database', methods=['POST'])
-def upload_database():
+def upload_database() -> dict:
     """
     Recibe un archivo de base de datos encriptado (.bin), lo desencripta y lo aplica a la base de datos.
     """
@@ -83,7 +87,7 @@ def upload_database():
         return jsonify({'msg': str(e)}), 500
 
 
-def get_fernet_key(password):
+def get_fernet_key(password:str) -> bytes:
     """
     Genera una clave Fernet a partir de una contraseña.
     """
@@ -95,11 +99,10 @@ def get_fernet_key(password):
         salt=salt,
         iterations=100000,
     )
-    key = base64.urlsafe_b64encode(kdf.derive(password))
-    return key
+    return base64.urlsafe_b64encode(kdf.derive(password))
 
 
-def apply_encrypted_database(file_path):
+def apply_encrypted_database(file_path:str) -> None:
     """
     Desencripta el archivo de la base de datos y aplica los cambios a MongoDB.
     """
@@ -121,16 +124,47 @@ def apply_encrypted_database(file_path):
         #! Cargar los datos JSON
         data = json.loads(decrypted_data.decode())
         
-        #! Aplicar los datos a MongoDB
+        #! Aplicar datos a MongoDB
         for collection_name, documents in data.items():
-            collection = db_mongo.db[collection_name]
-            
-            #! Eliminar todos los documentos existentes
-            collection.delete_many({})
-            
-            #! Insertar los nuevos documentos
-            if documents:
-                collection.insert_many(documents)
+            if collection_name != 'images':
+                collection = db_mongo.db[collection_name]
+                collection.delete_many({})
+                if documents:
+                    collection.insert_many(documents)
+        
+        #! Restaurar imágenes
+        if 'images' in data:
+            uploads_path = current_app.config.get('UPLOAD_FOLDER')
+            # Limpiar la carpeta de uploads
+            shutil.rmtree(uploads_path)
+            os.makedirs(uploads_path)
+            save_images_data(data['images'], uploads_path)
     
     except Exception as e:
         raise Exception(f"Error al aplicar la base de datos: {str(e)}")
+
+
+def get_images_data(uploads_path:str) -> dict:
+    """
+    Obtiene los datos de las imágenes en la carpeta de uploads.
+    """
+    images_data = {}
+    for root, dirs, files in os.walk(uploads_path):
+        for file in files:
+            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                file_path = os.path.join(root, file)
+                relative_path = os.path.relpath(file_path, uploads_path)
+                with open(file_path, 'rb') as img_file:
+                    images_data[relative_path] = base64.b64encode(img_file.read()).decode('utf-8')
+    return images_data
+
+
+def save_images_data(images_data:dict, uploads_path:str) -> None:
+    """
+    Guarda las imágenes en la carpeta de uploads.
+    """
+    for relative_path, img_data in images_data.items():
+        file_path = os.path.join(uploads_path, relative_path)
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, 'wb') as img_file:
+            img_file.write(base64.b64decode(img_data))
