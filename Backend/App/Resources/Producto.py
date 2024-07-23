@@ -75,6 +75,22 @@ class Producto(Resource):
         not fotos:
             return ({"msg": "Faltan datos"}), 400
         
+        #! Validar tiendas
+        try: 
+            fisica["precio"] = float(fisica["precio"])
+            fisica["cantidad"] = int(fisica["cantidad"])
+            online["precio"] = float(online["precio"])
+            online["cantidad"] = int(online["cantidad"])
+        
+        except Exception as e:
+            return ({"msg": "Error en los parámetros enviados"}), 400
+        
+        if fisica["precio"] <= 0 or \
+        fisica["cantidad"] < 0 or \
+        online["precio"] <= 0 or \
+        online["cantidad"] < 0:
+            return ({"msg": "Los precios y cantidades deben ser mayores a 0"}), 400
+        
         #! Crear diccionario con los datos a actualizar
         nueva_producto = {
             "id": id,
@@ -269,6 +285,22 @@ class Productos(Resource):
         liquidacion is None  or \
         not fotos:
             return ({"msg": "Faltan datos"}), 400
+        
+        #! Validar tiendas
+        try: 
+            fisica["precio"] = float(fisica["precio"])
+            fisica["cantidad"] = int(fisica["cantidad"])
+            online["precio"] = float(online["precio"])
+            online["cantidad"] = int(online["cantidad"])
+        
+        except Exception as e:
+            return ({"msg": "Error en los parámetros enviados"}), 400
+        
+        if fisica["precio"] <= 0 or \
+        fisica["cantidad"] < 0 or \
+        online["precio"] <= 0 or \
+        online["cantidad"] < 0:
+            return ({"msg": "Los precios y cantidades deben ser mayores a 0"}), 400
         
         #! Crear el objeto de validación con la fecha actual
         validacion = {

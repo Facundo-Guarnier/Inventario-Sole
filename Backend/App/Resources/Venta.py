@@ -58,32 +58,53 @@ class Venta(Resource):
         #! Crear diccionario con los datos a actualizar
         nueva_venta = {}
         
-        if data.get("cliente"):
+        try: 
             nueva_venta["cliente"] = data["cliente"]
-        
-        if data.get("total"):
-            nueva_venta["total"] = data["total"]
-        
-        if data.get("tienda"):
+            nueva_venta["total"] = float(data["total"])
             nueva_venta["tienda"] = data["tienda"]
-        
-        if data.get("metodo"):
             nueva_venta["metodo"] = data["metodo"]
+            
+        except KeyError as e:
+            return {"msg": f"Falta el campo {str(e)}"}, 400
+        except ValueError as e:
+            return {"msg": "Valor inválido en los parámetros enviados"}, 400
+        except Exception as e:
+            return {"msg": f"Error en los parámetros enviados: {str(e)}"}, 400
+        
+        
+        if nueva_venta["total"] <= 0:
+            return ({"msg": "El total no puede ser negativo"}), 400
         
         if data.get("productos"):
+            productos_actualizados = []
             for producto in data["productos"]:
-                if not producto.get("idProducto") or \
-                not producto.get("cantidad") or \
-                not producto.get("precio"):
-                    return ({"msg": "Faltan datos de productos"}), 400
-                producto["idProducto"] = producto.get("idProducto").upper()     #! Convertir a mayúsculas
-            nueva_venta["productos"] = data["productos"]
+                try:
+                    id_producto = producto["idProducto"].upper()
+                    cantidad = int(producto["cantidad"])
+                    precio = float(producto["precio"])
+                    
+                    if cantidad <= 0 or precio <= 0:
+                        raise ValueError("La cantidad y el precio deben ser mayores que cero")
+                    
+                    productos_actualizados.append({
+                        "idProducto": id_producto,
+                        "cantidad": cantidad,
+                        "precio": precio
+                    })
+                except KeyError as e:
+                    return {"msg": f"Falta el parámetro {str(e)} en productos"}, 400
+                except ValueError as e:
+                    return {"msg": f"Error en los datos del producto: {str(e)}"}, 400
+                except Exception as e:
+                    return {"msg": f"Error procesando los productos: {str(e)}"}, 400
+        
+        nueva_venta["productos"] = productos_actualizados
         
         #! Actualizar venta
-        respuesta = VentaModel.actualizar(id, data)
+        respuesta = VentaModel.actualizar(id, nueva_venta)
         if respuesta["estado"]:
-            return ({"msg": "Venta actualizada"}), 200
-        return ({"msg": respuesta["respuesta"]}), 400
+            return {"msg": "Venta actualizada"}, 200
+        return {"msg": respuesta["respuesta"]}, 400
     
     @jwt_required()
     def delete(self, id:str) -> dict:
@@ -221,48 +242,65 @@ class Ventas(Resource):
             - dict: Venta creada
         """
         data = request.json
+        if not data:
+            return {"msg": "Faltan datos"}, 400
         
-        cliente = data.get("cliente")
-        total = data.get("total")
-        tienda = data.get("tienda")
-        metodo_pago = data.get("metodo")
-        productos = data.get("productos")
+        try:
+            cliente = data["cliente"]
+            total = float(data["total"])
+            tienda = data["tienda"]
+            metodo_pago = data["metodo"]
+            productos = data["productos"]
+        except KeyError as e:
+            return {"msg": f"Falta el parámetro {str(e)}"}, 400
+        except ValueError:
+            return {"msg": "El total debe ser un número válido"}, 400
+        except Exception as e:
+            return {"msg": f"Error en los parámetros enviados: {str(e)}"}, 400
         
-        if not cliente or \
-        not total or \
-        not tienda or \
-        not metodo_pago:
-            return ({"msg": "Faltan datos"}), 400
-        
-        nueva_venta = {}
+        if total <= 0:
+            return {"msg": "El total no puede ser negativo o cero"}, 400
         
         if not productos:
-            return ({"msg": "Faltan datos de productos"}), 400
+            return {"msg": "Faltan datos de productos"}, 400
         
+        productos_actualizados = []
         for producto in productos:
-            if not producto.get("idProducto") or \
-            not producto.get("cantidad") or \
-            not producto.get("precio"):
-                return ({"msg": "Faltan datos de productos"}), 400
-            
-            producto["idProducto"] = producto.get("idProducto").upper()     #! Convertir a mayúsculas
-        nueva_venta["productos"] = productos
+            try:
+                id_producto = producto["idProducto"].upper()
+                cantidad = int(producto["cantidad"])
+                precio = float(producto["precio"])
+                
+                if cantidad <= 0 or precio <= 0:
+                    raise ValueError("La cantidad y el precio deben ser mayores que cero")
+                
+                productos_actualizados.append({
+                    "idProducto": id_producto,
+                    "cantidad": cantidad,
+                    "precio": precio
+                })
+            except KeyError as e:
+                return {"msg": f"Falta el parámetro {str(e)} en productos"}, 400
+            except ValueError as e:
+                return {"msg": f"Error en los datos del producto: {str(e)}"}, 400
+            except Exception as e:
+                return {"msg": f"Error procesando los productos: {str(e)}"}, 400
         
-        nueva_venta.update({
+        nueva_venta = {
             "id": UltimaID.calcular_proximo_id("venta"),
             "cliente": cliente,
-            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  #! Ej: 2021-09-01 12:00:00
+            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "total": total,
             "tienda": tienda,
             "metodo": metodo_pago,
-        })
+            "productos": productos_actualizados
+        }
         
         respuesta = VentaModel.crear(nueva_venta)
         if respuesta["estado"]:
-            if respuesta["respuesta"] == None:
-                return ({"msg": "Error al crear la venta"}), 400
-            
+            if respuesta["respuesta"] is None:
+                return {"msg": "Error al crear la venta"}, 400
             else:
                 self.ultima_id_resource.put("venta")
-                return ({"msg": "Venta creada con éxito"}), 201
-        return ({"msg": respuesta["respuesta"]}), 400
+                return {"msg": "Venta creada con éxito"}, 201
+        return {"msg": respuesta["respuesta"]}, 400
