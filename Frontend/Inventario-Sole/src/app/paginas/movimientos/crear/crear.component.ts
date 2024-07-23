@@ -21,6 +21,7 @@ export class PagMovimientosCrearComponent implements OnInit {
   campos: Campo[] = [
     { nombre: "Vendedor", identificador: "vendedor", tipo: "readonly" },
     { nombre: "Movimiento", identificador: "movimiento", tipo: "selector", opciones: ["Entrada", "Salida"] },
+    { nombre: "Tienda", identificador: "tienda", tipo: "selector", opciones: ["Fisica", "Online"] },
     { nombre: "ID producto", identificador: "idProducto", tipo: "input-text" },
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}

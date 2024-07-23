@@ -220,6 +220,7 @@ class Movimientos(Resource):
             cantidad = float(data["cantidad"])
             vendedor = data["vendedor"]
             comentario = data.get("comentario")
+            tienda = data.get("tienda").lower()
         except KeyError as e:
             return {"msg": f"Falta el parámetro {str(e)}"}, 400
         except ValueError:
@@ -230,10 +231,10 @@ class Movimientos(Resource):
         if cantidad <= 0:
             return ({"msg": "La cantidad no puede ser negativa o cero"}), 400
         
-        respuesta = Producto.buscar_x_atributo({"id": id_producto})
-        print(respuesta)
-        if respuesta["estado"] and respuesta["respuesta"] is None:
-            return {"msg": "El producto no existe"}, 404
+        respuesta1 = Producto.buscar_x_atributo({"id": id_producto})
+        if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
+                return {"msg": "El producto no existe"}, 404
+        
         
         #! Crear nuevo movimiento
         nueva_venta = {
@@ -243,14 +244,36 @@ class Movimientos(Resource):
             "cantidad": cantidad,
             "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "vendedor": vendedor,
-            "comentario": comentario
+            "comentario": comentario,
+            "tienda": tienda,
         }
         
-        respuesta = MovimientoModel.crear(nueva_venta)
-        if respuesta["estado"]:
-            if respuesta["respuesta"] is None:
+        
+        if  movimiento == "Entrada":
+            print("ENTRADA:", respuesta1["respuesta"][0][tienda]["cantidad"] + cantidad)
+            respuesta3 = Producto.actualizar(id_producto, { tienda: { 
+                "cantidad": respuesta1["respuesta"][0][tienda]["cantidad"] + cantidad,
+                "precio": respuesta1["respuesta"][0][tienda]["precio"]
+            } } )
+        elif movimiento == "Salida":
+            if respuesta1["respuesta"][0][tienda]["cantidad"] >= cantidad:
+                print("SALIDA:", respuesta1["respuesta"][0][tienda]["cantidad"] - cantidad)
+                respuesta3 = Producto.actualizar(id_producto, { tienda: { 
+                    "cantidad": respuesta1["respuesta"][0][tienda]["cantidad"] - cantidad,
+                    "precio": respuesta1["respuesta"][0][tienda]["precio"]
+                } } )
+            else:
+                return {"msg": "No hay suficientes productos en el inventario"}, 400
+        else:
+            return {"msg": "El movimiento no es válido"}, 400
+        
+        
+        respuesta2 = MovimientoModel.crear(nueva_venta)
+        
+        if respuesta2["estado"]:
+            if respuesta2["respuesta"] is None:
                 return {"msg": "No se pudo crear el movimiento"}, 404
             else:
                 self.ultima_id_resource.put("movimiento")
                 return {"msg": "Movimiento creado"}, 201
-        return {"msg": respuesta["respuesta"]}, 404
+        return {"msg": respuesta2["respuesta"]}, 404
