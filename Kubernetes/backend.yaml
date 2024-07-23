@@ -9,7 +9,7 @@ data:
   MONGO_DBNAME: "db-inventario-sole3.db"
   MONGO_COLLECTIONS: "usuarios,productos,movimientos,ventas,regalos,gift_cards,ultimasIDs"
   IMG_SIZE: "960,960"
-  IMG_QUALITY: "85"
+  IMG_QUALITY: "75"
 
 ---
 #T* Secret

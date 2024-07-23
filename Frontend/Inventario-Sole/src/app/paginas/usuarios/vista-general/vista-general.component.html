@@ -16,26 +16,28 @@
     
     <div class="row g-0 contenido-principal">
         
-        <!--! Barra lateral -->
         <div class="col-lg-3 col-md-12 sidebar barra-lateral-pag" [ngClass]="{'d-none d-lg-block': !showSidebar}">
-            <app-comp-barra-lateral
-            [mostrarBusqueda]="false"
-            ></app-comp-barra-lateral>
+            <app-comp-barra-lateral [mostrarBusqueda]="false"></app-comp-barra-lateral>
             
-            <!-- <button class="btn btn-warning" (click)="downloadDatabase()" style="width: 100%;">
-                <i class="fas fa-download"></i> Descargar Base de Datos
-            </button> -->
-            
-            <button class="btn btn-warning" (click)="downloadDatabase()">
-                <i class="fas fa-download"></i> Descargar Base de Datos
-            </button>
-            
-            <input type="file" (change)="onFileSelected($event)" accept=".bin">
-            
-            <button class="btn btn-danger" (click)="uploadDatabase()" [disabled]="!selectedFile">
-                <i class="fas fa-upload"></i>Subir Base de Datos
-            </button>
-            
+            <div class="d-grid gap-2 mt-3">
+                <button class="btn btn-warning btn-lg" (click)="downloadDatabase()">
+                    <i class="bi bi-download"></i> Descargar Base de Datos
+                </button>
+                
+                <div class="mt-2">
+                    <label for="fileInput" class="btn btn-secondary btn-lg btn-block">
+                        Seleccionar archivo
+                    </label>
+                    <input id="fileInput" type="file" class="d-none" (change)="onFileSelected($event)" accept=".bin">
+                    <div *ngIf="selectedFile" class="mt-2">
+                        <small class="text-muted">{{ selectedFile.name }}</small>
+                    </div>
+                </div>
+                
+                <button class="btn btn-danger btn-lg mt-2" (click)="uploadDatabase()" [disabled]="!selectedFile">
+                    <i class="bi bi-upload"></i> Subir Base de Datos
+                </button>
+            </div>
         </div>
         
         <div class="col-lg-9 content cuerpo-pag" > 

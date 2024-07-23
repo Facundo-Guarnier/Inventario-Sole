@@ -1,16 +1,19 @@
 import base64, io, json, os, shutil
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from werkzeug.utils import secure_filename
-
 from flask import Blueprint, current_app, jsonify, request, send_file
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+from werkzeug.utils import secure_filename
+from cryptography.fernet import Fernet
+
+from App.Auth.Decorators import admin_required
+from flask_jwt_extended import jwt_required
+
 from .. import mongo as db_mongo
 
 backup = Blueprint('api/bdb', __name__, url_prefix='/api/bdb')
 
-
 @backup.route('/download_database')
+@admin_required
 def download_database() -> dict:
     """
     Descarga la base de datos en formato JSON y la encripta.
@@ -54,8 +57,8 @@ def download_database() -> dict:
     except Exception as e:
         return jsonify({'msg': str(e)}), 500
 
-
 @backup.route('/upload_database', methods=['POST'])
+@admin_required
 def upload_database() -> dict:
     """
     Recibe un archivo de base de datos encriptado (.bin), lo desencripta y lo aplica a la base de datos.

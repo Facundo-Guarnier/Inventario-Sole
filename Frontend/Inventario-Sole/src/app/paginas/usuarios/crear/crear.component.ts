@@ -21,7 +21,7 @@ export class PagUsuarioCrearComponent implements OnInit {
   titulo1 = "Detalle de la usuario";
   campos1: Campo[] = [
     { nombre: "Alias", identificador: "alias", tipo: "input-text" },
-    { nombre: "Roles", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User", "Ver y nada mas"]},
+    { nombre: "Roles", identificador: "roles", tipo: "selector-multiple", opciones: ["Admin", "User"]},
     { nombre: "Contraseña", identificador: "contraseña", tipo: "input-text"},
   ];
   detalleUsuario: any[] = [];
