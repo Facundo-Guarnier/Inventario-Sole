@@ -1,0 +1,29 @@
+#T* ConfigMap
+#! Configuración de MongoDB
+MONGO_DBNAME=db-inventario-sole.db2
+MONGO_URI=mongodb://localhost:27017/db-inventario-sole2.db
+MONGO_COLLECTIONS=usuarios,productos,movimientos,ventas,regalos,gift_cards,ultimasIDs
+
+#! Configuración de imágenes
+IMG_SIZE=960,960
+IMG_QUALITY=75
+
+
+#T* Secret
+#! Clave secreta general
+SECRET_KEY=MiClaveSuperSecretaQueNadieSabe12
+
+#! Clave secreta para JWT
+JWT_SECRET_KEY=OtraClaveSecretaQueNAdieSabe13
+
+#! Contraseña de administrador
+CONTRA_ADMIN=admin123
+
+#! Clave para el backup de la base de datos
+CONTRA_BACKUP=LaContraMasDificilDelMundo123
+
+#! Mercado Shops
+MESH_CLIENT_ID=5373...
+MESH_CLIENT_SECRET=HTW...
+MESH_REDIRECT_URI=https://...
+MESH_AUTH_CODE=TG-66...
