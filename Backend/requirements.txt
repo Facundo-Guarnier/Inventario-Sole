@@ -7,3 +7,4 @@ flask_restful==0.3.10
 Werkzeug==3.0.3
 pillow==10.3.0
 cryptography==42.0.8
+requests==2.32.3
