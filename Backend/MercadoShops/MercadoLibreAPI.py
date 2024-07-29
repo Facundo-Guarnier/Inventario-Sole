@@ -115,7 +115,7 @@ class MercadoLibreAPI:
     
     
     def publish_clothing_item(self):
-        picture_paths = ["/home/guarnold/Repositorios_GitHub/Inventario-Sole/Backend/uploads/00001/resized_Pic_20240204_130256_4096x2160.png"],
+        picture_paths = ["/home/guarnold/Repositorios_GitHub/Inventario-Sole/Backend/uploads/00001/resized_Pic_20240204_130256_4096x2160.png"]
         picture_ids = [self.upload_image(path) for path in picture_paths]
         
         item_data = {
