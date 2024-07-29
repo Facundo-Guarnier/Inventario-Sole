@@ -40,8 +40,8 @@ class MercadoLibreAPI:
     
     
     def refresh_access_token(self):
-        print("+++++++++++++++")
         if time.time() >= self.expires_at - 1800:  #! Recargar el token 30 minutos antes de que expire
+            print("Refrescando token...")
             url = "https://api.mercadolibre.com/oauth/token"
             data = {
                 "grant_type": "refresh_token",
@@ -114,31 +114,36 @@ class MercadoLibreAPI:
         return response.json()
     
     
-    def publish_clothing_item(self, title, category_id, price, currency_id, available_quantity, 
-                          condition, description, picture_paths, brand, color, size):
-        # Primero, subimos las imágenes
+    def publish_clothing_item(self):
+        picture_paths = ["/home/guarnold/Repositorios_GitHub/Inventario-Sole/Backend/uploads/00001/resized_Pic_20240204_130256_4096x2160.png"],
         picture_ids = [self.upload_image(path) for path in picture_paths]
         
         item_data = {
-            "title": title,
-            "category_id": category_id,
-            "price": price,
-            "currency_id": currency_id,
-            "available_quantity": available_quantity,
+            "title": "Remera de algodón para mujer",
+            "category_id": "MLA109042",
+            "price": 150000,
+            "currency_id": "ARS",
+            "available_quantity": 10,
             "buying_mode": "buy_it_now",
-            "condition": condition,
-            
+            "condition": "new",
             "channels": ["mshops"],
-            # "status": "inactive",
             "status": "paused",
-            
             "listing_type_id": "gold_special",
-            "description": {"plain_text": description},
+            "description": {"plain_text": "Remera de algodón suave y cómoda para uso diario."},
             "pictures": [{"id": pic_id} for pic_id in picture_ids],
+            
+            #* MLA109042: Marca(BRAND):? , Modelo(MODEL), Genero(GENDER):339665, Tipo de prenda(GARMENT_TYPE): Remera o Chomba, Color(COLOR):?, Tipo de manga(SLEEVE_TYPE),
             "attributes": [
-                {"id": "BRAND", "value_name": brand},
-                {"id": "COLOR", "value_name": color},
-                {"id": "SIZE", "value_name": size}
+                {"id": "BRAND", "value_name": "Genérica"},
+                {"id": "MODEL", "value_name": "Básico"},#*
+                {"id": "GENDER", "value_name": "Mujer"},#*
+                {"id": "GARMENT_TYPE", "value_name": "Remera"},#*
+                {"id": "COLOR", "value_name": "Blanco"},
+                {"id": "SIZE", "value_name": 38},
+                {"id": "SLEEVE_TYPE", "value_name": "Sin manga"},#*
+                
+                # {"id": "AGE_GROUP", "value_name": "Adultos"},#*
+                {"id": "SIZE_GRID_ID", "value_name": "Remeras"},#*
             ]
         }
         
@@ -146,14 +151,14 @@ class MercadoLibreAPI:
 
 
     def upload_image(self, image_path):
-        # URL para subir imágenes
+        #! URL para subir imágenes
         upload_url = "https://api.mercadolibre.com/pictures/items/upload"
         
         headers = {
             "Authorization": f"Bearer {self.access_token}"
         }
         
-        # Abrir y preparar el archivo
+        #! Abrir y preparar el archivo
         with open(image_path, 'rb') as image_file:
             files = {
                 'file': (os.path.basename(image_path), image_file, 'image/jpeg')
@@ -166,10 +171,7 @@ class MercadoLibreAPI:
             print(f"Respuesta completa: {response.text}")
             raise Exception(f"Error al cargar la imagen: {response.text}")
         
-        upload_info = response.json()
-        
-        # Devolvemos el ID de la imagen
-        return upload_info["id"]
+        return response.json()["id"]
 
 
 if __name__ == "__main__":
@@ -187,29 +189,23 @@ if __name__ == "__main__":
     ml_api.authenticate(auth_code)
     ml_api.refresh_access_token()
     
-    print(ml_api)
+    # print(ml_api)
     
-    #* ---------------------------------
+    #* --------------------------------- Mi detalle
     # print("RESULTADO:", json.dumps(ml_api.get("/users/me"), indent=2))
     
-    #* ---------------------------------
+    #* --------------------------------- Ver mis productos
     # print(ml_api.get("/users/me/items/search?status=active"))
     
-    #* ---------------------------------
-    # result = ml_api.publish_clothing_item(
-    #     title="Item de test2 - No Ofertar",
-    #     category_id="MLA3530",  # Categoría para Ropa y Accesorios > Camisetas
-    #     price=1500000,
-    #     currency_id="ARS",
-    #     available_quantity=0,
-    #     condition="new",
-    #     description="Camiseta de algodón 100%, muy cómoda y duradera.",
-    #     picture_paths=["/home/guarnold/Repositorios_GitHub/Inventario-Sole/Backend/uploads/00001/resized_Pic_20240204_130256_4096x2160.png"],
-    #     brand="MiMarca",
-    #     color="Negro",
-    #     size="M"
-    # )
+    #* --------------------------------- Publicar
+    print(json.dumps(ml_api.publish_clothing_item(), indent=2))
     
-    # print(json.dumps(result, indent=2))
+    #* --------------------------------- Categorías
+    # print(json.dumps(ml_api.get("/sites/MLA/categories"), indent=2))  #! Ropa y Accesorios: MLA1430
     
-    #* ---------------------------------
+    #* --------------------------------- Sub-Categorías
+    # print(json.dumps(ml_api.get("/categories/MLA1430"), indent=2))   #! Remeras, Musculosas y Chombas: MLA109042
+    
+    #* ---------------------------------  SIZE_GRID_ID.
+    # r = ml_api.get(f"/categories/MLA109042/attributes")
+    # print(json.dumps(r, indent=2))
