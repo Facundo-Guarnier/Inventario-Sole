@@ -1,7 +1,5 @@
-import base64
-import datetime, os, requests, time, json
+import datetime, os, requests, time, json, base64, mimetypes
 from requests_toolbelt.multipart.encoder import MultipartEncoder
-import mimetypes
 from ConfigMESH import Config
 
 class MercadoLibreAPI:
@@ -55,6 +53,8 @@ class MercadoLibreAPI:
                 self.access_token = token_info["access_token"]
                 self.refresh_token = token_info["refresh_token"]
                 self.expires_at = time.time() + token_info["expires_in"]
+                print("Token refrescado.\n")
+                self.save_tokens()
             else:
                 raise Exception("Token refresh failed")
     
@@ -131,21 +131,20 @@ class MercadoLibreAPI:
             "listing_type_id": "gold_special",
             "description": {"plain_text": "Remera de algodón suave y cómoda para uso diario."},
             "pictures": [{"id": pic_id} for pic_id in picture_ids],
-            
-            #* MLA109042: Marca(BRAND):? , Modelo(MODEL), Genero(GENDER):339665, Tipo de prenda(GARMENT_TYPE): Remera o Chomba, Color(COLOR):?, Tipo de manga(SLEEVE_TYPE),
             "attributes": [
                 {"id": "BRAND", "value_name": "Genérica"},
-                {"id": "MODEL", "value_name": "Básico"},#*
-                {"id": "GENDER", "value_name": "Mujer"},#*
-                {"id": "GARMENT_TYPE", "value_name": "Remera"},#*
+                {"id": "MODEL", "value_name": "Básico"},
+                {"id": "GENDER", "value_name": "Mujer"},
+                {"id": "GARMENT_TYPE", "value_name": "Remera"},
                 {"id": "COLOR", "value_name": "Blanco"},
                 {"id": "SIZE", "value_name": 38},
-                {"id": "SLEEVE_TYPE", "value_name": "Sin manga"},#*
-                
-                # {"id": "AGE_GROUP", "value_name": "Adultos"},#*
-                {"id": "SIZE_GRID_ID", "value_name": "Remeras"},#*
+                {"id": "SLEEVE_TYPE", "value_name": "Sin manga"},
+                {"id": "AGE_GROUP", "value_name": "Adultos"},  # Ajusta este valor según la respuesta de la API
+                {"id": "SIZE_GRID_ID", "value_name": "Remeras"},  # Ajusta este valor según la respuesta de la API
             ]
         }
+        
+        
         
         return self.post("/items", item_data)
 
@@ -189,7 +188,7 @@ if __name__ == "__main__":
     ml_api.authenticate(auth_code)
     ml_api.refresh_access_token()
     
-    # print(ml_api)
+    print(ml_api)
     
     #* --------------------------------- Mi detalle
     # print("RESULTADO:", json.dumps(ml_api.get("/users/me"), indent=2))
@@ -198,7 +197,7 @@ if __name__ == "__main__":
     # print(ml_api.get("/users/me/items/search?status=active"))
     
     #* --------------------------------- Publicar
-    print(json.dumps(ml_api.publish_clothing_item(), indent=2))
+    # print(json.dumps(ml_api.publish_clothing_item(), indent=2))
     
     #* --------------------------------- Categorías
     # print(json.dumps(ml_api.get("/sites/MLA/categories"), indent=2))  #! Ropa y Accesorios: MLA1430
