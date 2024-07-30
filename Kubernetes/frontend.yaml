@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: angular-frontend
-        image: facundoguarnier/inventario-sole-frontend:v0.12
+        image: facundoguarnier/inventario-sole-frontend:v0.14
         ports:
         - containerPort: 80
         env:

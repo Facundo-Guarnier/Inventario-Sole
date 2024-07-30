@@ -33,7 +33,7 @@
                     </button>
                     
                     <div class="input-group mb-3">
-                        <input [(ngModel)]="id_a_validar" class="form-control" placeholder="ID del producto">
+                        <input [(ngModel)]="id_a_validar" class="form-control" placeholder="ID del producto" (keyup.enter)="validarUnidad()">
                         <button (click)="validarUnidad()" class="btn btn-secondary boton-revisar">Revisar</button>
                     </div>
                 </div>
