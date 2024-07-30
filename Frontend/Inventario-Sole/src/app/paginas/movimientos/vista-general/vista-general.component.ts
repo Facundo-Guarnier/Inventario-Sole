@@ -20,6 +20,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
     { nombre: 'Fecha', identificador: "fecha", tipo: 'date' },
     { nombre: "Cantidad", identificador: "cantidad", tipo: "number" },
     { nombre: "Vendedor", identificador: "vendedor", tipo: "text" },
+    { nombre: "Tienda", identificador: "tienda", tipo: "text" },
     { nombre: "Comentario", identificador: "comentario", tipo: "text" },
   ];
   acciones = {

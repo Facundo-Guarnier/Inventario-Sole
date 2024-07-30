@@ -132,6 +132,7 @@ class Movimientos(Resource):
             vendedor = data.get("vendedor")
             comentario = data.get("comentario")
             fecha = data.get("fecha")
+            tienda = data.get("tienda")
             palabra_clave = data.get("palabra_clave")
             
             pagina = int(request.args.get('pagina', 1))
@@ -155,6 +156,8 @@ class Movimientos(Resource):
             filtro['vendedor'] = vendedor
         if comentario:
             filtro['comentario'] = comentario
+        if tienda:
+            filtro['tienda'] = tienda
         if fecha:
             fecha_inicio, fecha_fin = fecha.split(' al ')
             fecha_inicio = datetime.strptime(fecha_inicio, '%d-%m-%Y')

@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
       - name: flask-backend
-        image: facundoguarnier/inventario-sole-backend:v0.4
+        image: facundoguarnier/inventario-sole-backend:v0.5
         ports:
         - containerPort: 5000
         envFrom:
@@ -106,3 +106,6 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: standard
+
+
+#! docker build -t facundoguarnier/inventario-sole-backend:v0.4 .
