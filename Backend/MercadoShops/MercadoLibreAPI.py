@@ -48,6 +48,7 @@ class MercadoLibreAPI:
                 "refresh_token": self.refresh_token
             }
             response = requests.post(url, data=data)
+            print(response.json())
             if response.status_code == 200:
                 token_info = response.json()
                 self.access_token = token_info["access_token"]
@@ -144,7 +145,28 @@ class MercadoLibreAPI:
             ]
         }
         
+        # Datos de ejemplo para la guía de tallas
+        sizes_data = [
+            {"size": "S", "BUST_CIRCUMFERENCE_FROM": "80 cm"},
+            {"size": "M", "BUST_CIRCUMFERENCE_FROM": "85 cm"},
+            # ... más tallas
+        ]
+        # Crear la guía de tallas
+        size_chart_id = ml_api.create_size_chart(
+            domain_id="MLA1430", 
+            site_id="MLA", 
+            # brand_name="Genérica",  
+            gender_name="Mujer", 
+            sizes_data=sizes_data 
+        )
+        print(f"Guía de tallas creada con ID: {size_chart_id}")
         
+        
+        
+        item_data["attributes"].append({
+            "id": "SIZE_GRID_ID",
+            "value_name": str(size_chart_id)  
+        })
         
         return self.post("/items", item_data)
 
@@ -171,6 +193,121 @@ class MercadoLibreAPI:
             raise Exception(f"Error al cargar la imagen: {response.text}")
         
         return response.json()["id"]
+
+
+
+    def get_size_chart_technical_spec(self, domain_id, gender_id):
+        """Obtiene la ficha técnica de la guía de tallas para el dominio y género especificados."""
+        url = f"https://api.mercadolibre.com/domains/{domain_id}/technical_specs/?section=grids"
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "attributes": [
+                {
+                    "id": "GENDER",
+                    "value_id": gender_id
+                }
+            ]
+        }
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        print("Ficha técnica:", (response))
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Error al obtener la ficha técnica de la guía de tallas: {response.text}")
+
+    def create_size_chart(self, domain_id, site_id, gender_name, sizes_data):
+        """Crea una guía de tallas personalizada genérica."""
+
+        # Obtener la ficha técnica para determinar los atributos de medidas 
+        technical_spec = self.get_size_chart_technical_spec(domain_id, "339665")
+
+        # Buscar los atributos de medidas en la ficha técnica
+        body_measure_attributes = []
+        clothing_measure_attributes = []
+        
+        for component in technical_spec["input"]["groups"][0]["components"][0]["components"]:
+            for attribute in component["attributes"]:
+                if "BODY_MEASURE" in attribute.get("tags", []):
+                    body_measure_attributes.append(attribute["id"])
+                if "CLOTHING_MEASURE" in attribute.get("tags", []):
+                    clothing_measure_attributes.append(attribute["id"])
+
+        # Elegir el tipo de medida (puedes cambiar esto si es necesario)
+        measure_type = "BODY_MEASURE"  
+        measure_attributes = body_measure_attributes
+
+        # Construir las filas de la guía de tallas
+        rows = []
+        for size_data in sizes_data:
+            row_attributes = [
+                {
+                    "id": "SIZE",
+                    "values": [
+                        {
+                            "name": size_data["size"] 
+                        }
+                    ]
+                }
+            ]
+            # Agregar atributos de medidas
+            for measure_attr in measure_attributes:
+                if measure_attr in size_data:
+                    row_attributes.append({
+                        "id": measure_attr,
+                        "values": [
+                            {
+                                "name": size_data[measure_attr] 
+                            }
+                        ]
+                    })
+            rows.append({"attributes": row_attributes})
+
+        # JSON para la solicitud de creación de la guía de tallas
+        data = {
+            "names": {
+                site_id: f"Guía de Tallas - {gender_name}" 
+            },
+            "domain_id": domain_id, 
+            "site_id": site_id,
+            "measure_type": measure_type,
+            "attributes": [
+                {
+                    "id": "GENDER",
+                    "values": [
+                        {
+                            "name": gender_name 
+                        }
+                    ]
+                }
+            ],
+            "main_attribute": {
+                "attributes": [
+                    {
+                        "site_id": site_id,
+                        "id": "SIZE" 
+                    }
+                ]
+            },
+            "rows": rows
+        }
+
+        url = "https://api.mercadolibre.com/catalog/charts"
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json"
+        }
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        if response.status_code in [200, 201]:
+            return response.json()["id"]
+        else:
+            raise Exception(f"Error al crear la guía de tallas: {response.text}")
+
+
+
 
 
 if __name__ == "__main__":
