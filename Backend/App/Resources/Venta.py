@@ -5,6 +5,7 @@ from flask_restful import Resource
 
 from App.Models import VentaModel
 from App.Resources.UltimaID import UltimaID
+from App.Models.Producto import Producto
 
 
 class Venta(Resource):
@@ -82,6 +83,11 @@ class Venta(Resource):
                     id_producto = producto["idProducto"].upper()
                     cantidad = int(producto["cantidad"])
                     precio = float(producto["precio"])
+                    
+                    #! Revisar si el producto existe
+                    respuesta1 = Producto.buscar_x_atributo({"id": id_producto})
+                    if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
+                            return {"msg": "El producto no existe"}, 404
                     
                     if cantidad <= 0 or precio <= 0:
                         raise ValueError("La cantidad y el precio deben ser mayores que cero")
@@ -270,6 +276,11 @@ class Ventas(Resource):
                 id_producto = producto["idProducto"].upper()
                 cantidad = int(producto["cantidad"])
                 precio = float(producto["precio"])
+                
+                #! Revisar si el producto existe
+                respuesta1 = Producto.buscar_x_atributo({"id": id_producto})
+                if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
+                        return {"msg": "El producto no existe"}, 404
                 
                 if cantidad <= 0 or precio <= 0:
                     raise ValueError("La cantidad y el precio deben ser mayores que cero")

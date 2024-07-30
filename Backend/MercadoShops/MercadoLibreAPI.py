@@ -31,6 +31,9 @@ class MercadoLibreAPI:
                 self.refresh_token = token_info["refresh_token"]
                 self.expires_at = time.time() + token_info["expires_in"]
             else:
+                print("+++++++++++++++++++++++++")
+                print(response.json())
+                print("+++++++++++++++++++++++++")
                 raise Exception(f"Autenticación fallida: {response.text}")
             self.save_tokens()
         else:
@@ -325,13 +328,13 @@ if __name__ == "__main__":
     ml_api.authenticate(auth_code)
     ml_api.refresh_access_token()
     
-    print(ml_api)
+    # print(ml_api)
     
     #* --------------------------------- Mi detalle
     # print("RESULTADO:", json.dumps(ml_api.get("/users/me"), indent=2))
     
     #* --------------------------------- Ver mis productos
-    # print(ml_api.get("/users/me/items/search?status=active"))
+    print(ml_api.get("/users/me/items/search?status=active"))
     
     #* --------------------------------- Publicar
     # print(json.dumps(ml_api.publish_clothing_item(), indent=2))
