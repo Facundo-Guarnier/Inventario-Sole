@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from './services/auth/auth.guard';
+import { AdminGuard } from './services/auth/admin.guard';
+
 //! Importar las páginas
 import { PagProductosCrearComponent } from './paginas/productos/crear/crear.component';
 import { PagProductosDetalleEditarComponent } from './paginas/productos/detalle-editar/detalle-editar.component';
@@ -31,8 +34,10 @@ import { PagUsuarioVistaGeneralComponent } from './paginas/usuarios/vista-genera
 import { PagUsuarioCrearComponent } from './paginas/usuarios/crear/crear.component';
 import { PagUsuarioDetalleEditarComponent } from './paginas/usuarios/detalle-editar/detalle-editar.component';
 import { PagUsuarioIniciarSesionComponent } from './paginas/usuarios/iniciar-sesion/iniciar-sesion.component';
-import { AuthGuard } from './services/auth/auth.guard';
-import { AdminGuard } from './services/auth/admin.guard';
+
+import { PagDevolucionesVistaGeneralComponent } from './paginas/devoluciones/vista-general/vista-general.component';
+import { PagDevolucionesCrearComponent } from './paginas/devoluciones/crear/crear.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -67,6 +72,9 @@ const routes: Routes = [
   { path: "usu", component: PagUsuarioVistaGeneralComponent, canActivate: [AuthGuard, AdminGuard]},
   { path: "usu/crear", component: PagUsuarioCrearComponent, canActivate: [AuthGuard, AdminGuard]},
   { path: "usu/detalle-editar/:alias", component: PagUsuarioDetalleEditarComponent, canActivate: [AuthGuard, AdminGuard]},
+
+  { path: "dev", component: PagDevolucionesVistaGeneralComponent, canActivate: [AuthGuard]},
+  { path: "dev/crear", component: PagDevolucionesCrearComponent, canActivate: [AuthGuard]},
 
   { path: '**', redirectTo: '/mov' }
 ];

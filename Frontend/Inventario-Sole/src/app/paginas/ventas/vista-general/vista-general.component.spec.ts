@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PagVentasComponent } from './vista-general.component';
+import { PagVentasVistaGeneralComponent } from './vista-general.component';
 
-describe('PagVentasComponent', () => {
-  let component: PagVentasComponent;
-  let fixture: ComponentFixture<PagVentasComponent>;
+describe('PagVentasVistaGeneralComponent', () => {
+  let component: PagVentasVistaGeneralComponent;
+  let fixture: ComponentFixture<PagVentasVistaGeneralComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PagVentasComponent ]
+      declarations: [ PagVentasVistaGeneralComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PagVentasComponent);
+    fixture = TestBed.createComponent(PagVentasVistaGeneralComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
