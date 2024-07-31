@@ -94,7 +94,7 @@ class Devoluciones(Resource):
             "id_producto":id_producto,
             "cantidad":cantidad,
             "tienda":tienda,
-            "fecha_devolucion":datetime.now(),
+            "fecha_devolucion": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "descripcion_producto":respuesta1["respuesta"][0]["descripcion"],
         }
         

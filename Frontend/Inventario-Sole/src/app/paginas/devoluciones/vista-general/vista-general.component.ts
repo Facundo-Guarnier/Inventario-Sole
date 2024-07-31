@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filtro } from 'src/app/interfaces/filtro.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ApiDevolucionesService } from 'src/app/services/devoluciones/api-devoluciones.service';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 
 @Component({
@@ -20,17 +21,15 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
   }
   
   columnas = [
-    { nombre: 'ID producto', identificador: "id", tipo: 'text' },
-    { nombre: 'Descripcion', identificador: "descripcion", tipo: 'text' },
+    { nombre: 'ID producto', identificador: "id_producto", tipo: 'text' },
+    { nombre: 'Descripcion', identificador: "descripcion_producto", tipo: 'text' },
+    { nombre: "Fecha", identificador: "fecha_devolucion", tipo: 'date' },
     { nombre: 'Cantidad', identificador: "cantidad", tipo: 'number' },
     { nombre: 'Tienda', identificador: "tienda", tipo: 'text' },
   ];
   
   datos: any[] = [
-    {"id": "AAAA1", "descripcion": "Producto 1", "cantidad": 1, "tienda": "Fisica"},
-    {"id": "AAAA2", "descripcion": "Producto 2", "cantidad": 1, "tienda": "Online"},
-    {"id": "AAAA3", "descripcion": "Producto 3", "cantidad": 1, "tienda": "Fisica"},
-    {"id": "AAAA4", "descripcion": "Producto 4", "cantidad": 3, "tienda": "Online"},
+    // {"id": "AAAA1", "descripcion": "Producto 1", "cantidad": 1, "tienda": "Fisica"},
   ];
   
   //! Busqueda
@@ -56,7 +55,8 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private productoService : ApiProductoService,
+    // private apiProductoService: ApiProductoService,
+    private apiDevolucionesService: ApiDevolucionesService,
   ) { }
   
   ngOnInit(): void {
@@ -144,7 +144,17 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     }, {});
     
     //! Buscar todas las devoluciones
-    //TODO
+    this.apiDevolucionesService.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe(
+      (data) => {
+        this.datos = Object.values(data["msg"]).flat();;
+        this.totalDatos = data.total;
+        this.totalPaginas = Math.ceil(this.totalDatos / this.porPagina);
+        console.log("Devoluciones:", this.datos);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
   
   //! Paginamiento

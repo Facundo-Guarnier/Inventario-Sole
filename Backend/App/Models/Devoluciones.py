@@ -45,7 +45,7 @@ class Devolucion:
         try: 
             return {
                 "estado": True,
-                "respuesta": str(db_mongo.db.devolucion.insert_one(data)),
+                "respuesta": str(db_mongo.db.devoluciones.insert_one(data)),
             } 
         
         except Exception as e:
@@ -64,7 +64,7 @@ class Devolucion:
         try: 
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.devolucion.count_documents(filtro),
+                "respuesta": db_mongo.db.devoluciones.count_documents(filtro),
             }
         
         except Exception as e:
