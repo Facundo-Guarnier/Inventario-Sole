@@ -30,14 +30,14 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   }
   datos: any[] = [];
   
-    //! Busqueda
-    filtrosBusqueda: any[] = []
-    filtrosLista: Filtro[] = [
-      {nombre: 'Movimiento', identificador:"movimiento", opciones: ['Entrada', 'Salida']},
-      {nombre: 'Tienda', identificador:"tienda", opciones: ['Fisica', 'Online']},
-      {nombre: 'Rango de fecha', identificador:"fecha", opciones: this.generarOpcionesFecha()},
-    ]
-    filtrosCheckbox: string[] = []
+  //! Busqueda
+  filtrosBusqueda: any[] = []
+  filtrosLista: Filtro[] = [
+    {nombre: 'Movimiento', identificador:"movimiento", opciones: ['Entrada', 'Salida']},
+    {nombre: 'Tienda', identificador:"tienda", opciones: ['Fisica', 'Online']},
+    {nombre: 'Rango de fecha', identificador:"fecha", opciones: this.generarOpcionesFecha()},
+  ]
+  filtrosCheckbox: string[] = []
   
   //! Paginamiento 
   paginaActual = 1;
@@ -48,6 +48,9 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   //! Vista
   showNavbar = false;
   showSidebar = false;
+  
+  //! Botones flotantes
+  mostrarAgregar = false;
   
   //* ------------------------------------------------
   
