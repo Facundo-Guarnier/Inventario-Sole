@@ -6,9 +6,14 @@ from flask_restful import Resource
 from App.Models import VentaModel
 from App.Resources.UltimaID import UltimaID
 from App.Models.Producto import Producto
+from App.Resources.Movimiento import Movimientos
 
 
 class Venta(Resource):
+    def __init__(self) -> None:
+        self.movimientos = Movimientos()
+    
+    
     def get(self, id:str) -> dict:
         """
         Busca una venta por su id.
@@ -45,11 +50,11 @@ class Venta(Resource):
             return ({"msg": "Falta el ID"}), 400
         
         #! Buscar si existe la venta
-        venta = VentaModel.buscar_x_atributo({"id": id})
-        if not venta["estado"]:
-            return ({"msg": venta["respuesta"]}), 404
-        if venta["respuesta"] == None:
+        venta_actual = VentaModel.buscar_x_atributo({"id": id})
+        if not venta_actual["estado"] or venta_actual["respuesta"] is None:
             return ({"msg": "No se encontró la venta"}), 404
+        
+        venta_actual = venta_actual["respuesta"][0]     #? Esta bien?
         
         #! Obtener datos a actualizar
         data = request.json
@@ -72,12 +77,16 @@ class Venta(Resource):
         except Exception as e:
             return {"msg": f"Error en los parámetros enviados: {str(e)}"}, 400
         
-        
         if nueva_venta["total"] <= 0:
             return ({"msg": "El total no puede ser negativo"}), 400
         
+        movimientos_pendientes = []
+        
+        #! Revisar si hay cambios en los productos
         if data.get("productos"):
-            productos_actualizados = []
+            productos2 = []
+            productos_actuales = {p["idProducto"]: p["cantidad"] for p in venta_actual["productos"]}
+            
             for producto in data["productos"]:
                 try:
                     id_producto = producto["idProducto"].upper()
@@ -87,30 +96,81 @@ class Venta(Resource):
                     #! Revisar si el producto existe
                     respuesta1 = Producto.buscar_x_atributo({"id": id_producto})
                     if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
-                            return {"msg": "El producto no existe"}, 404
+                            return {"msg": f"El producto {id_producto} no existe"}, 404
                     
+                    
+                    #! Revisar si la cantidad y el precio son válidos
                     if cantidad <= 0 or precio <= 0:
                         raise ValueError("La cantidad y el precio deben ser mayores que cero")
                     
-                    productos_actualizados.append({
+                    productos2.append({
                         "idProducto": id_producto,
                         "cantidad": cantidad,
                         "precio": precio
                     })
+                    
+                    #! Calcular la diferencia en cantidad
+                    diferencia = cantidad - productos_actuales.get(id_producto, 0)
+                    
+                    #! Verificar si hay suficiente stock para la nueva cantidad
+                    if diferencia > 0:
+                        stock_actual = respuesta1["respuesta"][0][str(nueva_venta["tienda"]).lower()]["cantidad"]
+                        if stock_actual < diferencia:
+                            return {"msg": f"No hay suficiente stock del producto {id_producto}. Se necesitan {diferencia} unidades adicionales, pero solo hay {stock_actual} disponibles."}, 400
+                    
+                    productos2.append({
+                        "idProducto": id_producto,
+                        "cantidad": cantidad,
+                        "precio": precio
+                    })
+                    
+                    if diferencia != 0:
+                        movimientos_pendientes.append({
+                            "movimiento": "Salida" if diferencia > 0 else "Entrada",
+                            "idProducto": id_producto,
+                            "cantidad": abs(diferencia),
+                            "vendedor": "-",
+                            "comentario": f"Ajuste de venta: {id}",
+                            "tienda": nueva_venta["tienda"]
+                        })
+                    
                 except KeyError as e:
                     return {"msg": f"Falta el parámetro {str(e)} en productos"}, 400
                 except ValueError as e:
                     return {"msg": f"Error en los datos del producto: {str(e)}"}, 400
                 except Exception as e:
                     return {"msg": f"Error procesando los productos: {str(e)}"}, 400
+            
+            #! Productos eliminados de la venta
+            for id_producto, cantidad in productos_actuales.items():
+                if id_producto not in [p["idProducto"] for p in productos2]:
+                    movimientos_pendientes.append({
+                        "movimiento": "Entrada",
+                        "idProducto": id_producto,
+                        "cantidad": cantidad,
+                        "vendedor": "-",
+                        "comentario": f"Producto eliminado de la venta: {id}",
+                        "tienda": nueva_venta["tienda"]
+                    })
+            
+            nueva_venta["productos"] = productos2
         
-        nueva_venta["productos"] = productos_actualizados
+        #! Realizar los movimientos
+        for mov in movimientos_pendientes:
+            print("-------------------------", mov)
+            respuesta_movimiento = self.movimientos.post(data=mov)
+            if respuesta_movimiento[1] != 201:
+                #TODO lógica para revertir los movimientos ya realizados
+                print("+++++++++++++++++++++++++", respuesta_movimiento)
+                return {"msg": f"Error al actualizar el stock del producto {mov['idProducto']}"}, 500
         
         #! Actualizar venta
         respuesta = VentaModel.actualizar(id, nueva_venta)
         if respuesta["estado"]:
-            return {"msg": "Venta actualizada"}, 200
-        return {"msg": respuesta["respuesta"]}, 400
+            return {"msg": "Venta actualizada y stock ajustado"}, 200
+        else:
+            #TODO lógica para revertir los movimientos ya realizados
+            return {"msg": "Error al actualizar la venta"}, 500
     
     @jwt_required()
     def delete(self, id:str) -> dict:
@@ -144,6 +204,7 @@ class Venta(Resource):
 class Ventas(Resource):
     def __init__(self):
         self.ultima_id_resource = UltimaID()
+        self.movimientos = Movimientos()
     
     def get(self) -> list:
         """
@@ -251,12 +312,14 @@ class Ventas(Resource):
         if not data:
             return {"msg": "Faltan datos"}, 400
         
+        #! Validar datos
         try:
             cliente = data["cliente"]
             total = float(data["total"])
             tienda = data["tienda"]
             metodo_pago = data["metodo"]
             productos = data["productos"]
+            vendedor = data.get("vendedor", "-")
         except KeyError as e:
             return {"msg": f"Falta el parámetro {str(e)}"}, 400
         except ValueError:
@@ -270,7 +333,8 @@ class Ventas(Resource):
         if not productos:
             return {"msg": "Faltan datos de productos"}, 400
         
-        productos_actualizados = []
+        productos2 = []
+        movimientos_pendientes = []
         for producto in productos:
             try:
                 id_producto = producto["idProducto"].upper()
@@ -280,23 +344,48 @@ class Ventas(Resource):
                 #! Revisar si el producto existe
                 respuesta1 = Producto.buscar_x_atributo({"id": id_producto})
                 if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
-                        return {"msg": "El producto no existe"}, 404
+                        return {"msg": f"El producto {id_producto} no existe"}, 404
                 
+                #! Revisar si hay suficiente stock
+                if respuesta1["respuesta"][0][str(tienda).lower()]["cantidad"] < cantidad:
+                    return {"msg": f"No hay suficiente stock del producto {id_producto}"}, 400
+                
+                #! Revisar si la cantidad y el precio son válidos
                 if cantidad <= 0 or precio <= 0:
                     raise ValueError("La cantidad y el precio deben ser mayores que cero")
                 
-                productos_actualizados.append({
+                productos2.append({
                     "idProducto": id_producto,
                     "cantidad": cantidad,
                     "precio": precio
                 })
+                
+                #! Generar movimiento de salida para este producto
+                movimientos_pendientes.append({
+                    "movimiento": "Salida",
+                    "idProducto": id_producto,
+                    "cantidad": cantidad,
+                    "vendedor": vendedor,
+                    "comentario": f"Venta: {self.ultima_id_resource.calcular_proximo_id('venta')}",
+                    "tienda": tienda
+                })
+            
             except KeyError as e:
                 return {"msg": f"Falta el parámetro {str(e)} en productos"}, 400
             except ValueError as e:
-                return {"msg": f"Error en los datos del producto: {str(e)}"}, 400
+                return {"msg": f"Fallo en los datos del producto: {str(e)}"}, 400
             except Exception as e:
-                return {"msg": f"Error procesando los productos: {str(e)}"}, 400
+                return {"msg": f"Fallo procesando los productos: {str(e)}"}, 400
         
+        #! Hacer los movimientos
+        for mov in movimientos_pendientes:
+            respuesta_movimiento = self.movimientos.post(data=mov)
+            
+            if respuesta_movimiento[1] != 201:
+                #TODO lógica para revertir los movimientos ya realizados
+                return {"msg": f"Error al actualizar el stock del producto {id_producto}"}, 500
+        
+        #! Crear venta
         nueva_venta = {
             "id": UltimaID.calcular_proximo_id("venta"),
             "cliente": cliente,
@@ -304,7 +393,7 @@ class Ventas(Resource):
             "total": total,
             "tienda": tienda,
             "metodo": metodo_pago,
-            "productos": productos_actualizados
+            "productos": productos2
         }
         
         respuesta = VentaModel.crear(nueva_venta)
@@ -313,5 +402,6 @@ class Ventas(Resource):
                 return {"msg": "Error al crear la venta"}, 400
             else:
                 self.ultima_id_resource.put("venta")
-                return {"msg": "Venta creada con éxito"}, 201
+                return {"msg": "Venta creada con éxito y stock actualizado"}, 201
+        #TODO lógica para revertir los movimientos ya realizados
         return {"msg": respuesta["respuesta"]}, 400
