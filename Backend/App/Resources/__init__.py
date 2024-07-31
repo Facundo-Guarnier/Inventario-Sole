@@ -21,3 +21,5 @@ from .Foto import Foto as FotoResource
 
 from .ValidacionStock import ValidarStock as ValidarStockResource
 from .ValidacionStock import RondaValidacionStock as RondaValidacionStockResource
+
+from .Devoluciones import Devoluciones as DevolucionesResource

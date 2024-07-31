@@ -9,10 +9,10 @@ class Movimiento:
         Busca movimientos.
         
         Args:
-            - filtro (dict): Datos de la venta a buscar
+            - filtro (dict): Datos a buscar
         
         Returns:
-            - list: Ventas encontradas
+            - list: Movimientos encontradas
         """
         try:
             return {
@@ -104,7 +104,7 @@ class Movimiento:
     @staticmethod
     def total(filtro: dict) -> dict:
         """
-        Devuelve el total de ventas.
+        Devuelve el total de movimientos.
         """
         
         try: 

@@ -185,7 +185,7 @@ class Movimientos(Resource):
         
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] == None:
-                return ({"msg": "Error al cargar el total de ventas"}), 400
+                return ({"msg": "Error al cargar el total."}), 400
             else:
                 cantidad_total = cantidad_total["respuesta"] 
         else: 
@@ -240,7 +240,7 @@ class Movimientos(Resource):
         
         
         #! Crear nuevo movimiento
-        nueva_venta = {
+        nuevo_movimiento = {
             "id": UltimaID.calcular_proximo_id("movimiento"),
             "movimiento": movimiento,
             "idProducto": id_producto,
@@ -253,14 +253,14 @@ class Movimientos(Resource):
         
         
         if  movimiento == "Entrada":
-            print("ENTRADA:", respuesta1["respuesta"][0][tienda]["cantidad"] + cantidad)
+            # print("ENTRADA:", respuesta1["respuesta"][0][tienda]["cantidad"] + cantidad)
             respuesta3 = Producto.actualizar(id_producto, { tienda: { 
                 "cantidad": respuesta1["respuesta"][0][tienda]["cantidad"] + cantidad,
                 "precio": respuesta1["respuesta"][0][tienda]["precio"]
             } } )
         elif movimiento == "Salida":
             if respuesta1["respuesta"][0][tienda]["cantidad"] >= cantidad:
-                print("SALIDA:", respuesta1["respuesta"][0][tienda]["cantidad"] - cantidad)
+                # print("SALIDA:", respuesta1["respuesta"][0][tienda]["cantidad"] - cantidad)
                 respuesta3 = Producto.actualizar(id_producto, { tienda: { 
                     "cantidad": respuesta1["respuesta"][0][tienda]["cantidad"] - cantidad,
                     "precio": respuesta1["respuesta"][0][tienda]["precio"]
@@ -271,7 +271,7 @@ class Movimientos(Resource):
             return {"msg": "El movimiento no es válido"}, 400
         
         
-        respuesta2 = MovimientoModel.crear(nueva_venta)
+        respuesta2 = MovimientoModel.crear(nuevo_movimiento)
         
         if respuesta2["estado"]:
             if respuesta2["respuesta"] is None:

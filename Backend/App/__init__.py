@@ -107,6 +107,8 @@ def create_app(config_class=Config):
     api.add_resource(Resources.RondaValidacionStockResource, '/api/ronda-validacion') #! iniciar, obtener_productos
     api.add_resource(Resources.ValidarStockResource, '/api/validar') #! validar_unidad
     
+    api.add_resource(Resources.DevolucionesResource, '/api/devoluciones') #! buscar_x_atributo, crear
+    
     api.init_app(app)
     jwt.init_app(app)
     
