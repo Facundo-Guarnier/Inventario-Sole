@@ -206,14 +206,18 @@ class Movimientos(Resource):
         return {"msg": respuesta["respuesta"]}, 404
     
     @jwt_required()
-    def post(self) -> dict:
+    def post(self, data=None) -> dict:
         """
         Crea un movimiento.
+        
+        Args:
+            data (dict, optional): Datos del movimiento. Si no se proporciona, se usa request.json.
         
         Returns:
             - dict: Movimiento creado
         """
-        data = request.json
+        if data is None:
+            data = request.json
         if not data:
             return {"msg": "Faltan datos"}, 400
         

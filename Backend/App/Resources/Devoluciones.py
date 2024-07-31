@@ -4,15 +4,14 @@ from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
-from App.Resources.UltimaID import UltimaID
-from App.Models.Producto import Producto
-
 from App.Models import DevolucionModel
+from App.Models.Producto import Producto
+from App.Resources.Movimiento import Movimientos
 
 class Devoluciones(Resource):
-    def __init__(self) -> None:
-        self.ultima_id_resource = UltimaID()
-    
+    def __init__(self):
+        self.movimientos = Movimientos()
+        
     def get(self) -> list:
         """
         Busca todas las devoluciones en base a los atributos que se pasen.
@@ -62,7 +61,6 @@ class Devoluciones(Resource):
         Returns:
             - dict: Devolucion creada
         """
-    #{"id": "AAAA1", "descripcion": "Producto 1", "cantidad": 1, "tienda": "Fisica"},
         
         data = request.json
         if not data:
@@ -89,6 +87,22 @@ class Devoluciones(Resource):
                 return {"msg": "El producto no existe"}, 404
         
         
+        #! Crear movimiento
+        movimiento_data = {
+            "movimiento": "Entrada",
+            "idProducto": id_producto,
+            "cantidad": cantidad,
+            "vendedor": "-",
+            "comentario": "Devolución de producto",
+            "tienda": tienda
+        }
+        
+        respuesta_movimiento = self.movimientos.post(movimiento_data)
+        
+        if respuesta_movimiento[1] != 201:
+            return {"msg": "Error al actualizar el stock"}, 500
+        
+        
         #! Crear devolución
         nueva_Devolucion = {
             "id_producto":id_producto,
@@ -98,17 +112,12 @@ class Devoluciones(Resource):
             "descripcion_producto":respuesta1["respuesta"][0]["descripcion"],
         }
         
-        respuesta2 = Producto.actualizar(id_producto, { tienda: { 
-                "cantidad": respuesta1["respuesta"][0][tienda]["cantidad"] + cantidad,
-                "precio": respuesta1["respuesta"][0][tienda]["precio"]
-            } } )
-        
         respuesta3 = DevolucionModel.crear(nueva_Devolucion)
+        
         
         if respuesta3["estado"]:
             if respuesta3["respuesta"] is None:
                 return {"msg": "No se pudo crear la devolucion"}, 404
             else:
-                self.ultima_id_resource.put("devolucion")
                 return {"msg": "Devolucion creada"}, 201
         return {"msg": respuesta3["respuesta"]}, 404
