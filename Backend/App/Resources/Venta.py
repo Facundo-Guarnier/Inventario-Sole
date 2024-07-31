@@ -40,7 +40,7 @@ class Venta(Resource):
         Actualiza una venta.
         
         Args:
-            - id (int): ID de la venta
+            - id (str): ID de la venta
         
         Returns:
             - dict: Venta actualizada
@@ -54,7 +54,7 @@ class Venta(Resource):
         if not venta_actual["estado"] or venta_actual["respuesta"] is None:
             return ({"msg": "No se encontró la venta"}), 404
         
-        venta_actual = venta_actual["respuesta"][0]     #? Esta bien?
+        venta_actual = venta_actual["respuesta"][0]
         
         #! Obtener datos a actualizar
         data = request.json
@@ -98,16 +98,9 @@ class Venta(Resource):
                     if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
                             return {"msg": f"El producto {id_producto} no existe"}, 404
                     
-                    
                     #! Revisar si la cantidad y el precio son válidos
                     if cantidad <= 0 or precio <= 0:
                         raise ValueError("La cantidad y el precio deben ser mayores que cero")
-                    
-                    productos2.append({
-                        "idProducto": id_producto,
-                        "cantidad": cantidad,
-                        "precio": precio
-                    })
                     
                     #! Calcular la diferencia en cantidad
                     diferencia = cantidad - productos_actuales.get(id_producto, 0)
@@ -157,11 +150,9 @@ class Venta(Resource):
         
         #! Realizar los movimientos
         for mov in movimientos_pendientes:
-            print("-------------------------", mov)
             respuesta_movimiento = self.movimientos.post(data=mov)
             if respuesta_movimiento[1] != 201:
                 #TODO lógica para revertir los movimientos ya realizados
-                print("+++++++++++++++++++++++++", respuesta_movimiento)
                 return {"msg": f"Error al actualizar el stock del producto {mov['idProducto']}"}, 500
         
         #! Actualizar venta
@@ -171,6 +162,7 @@ class Venta(Resource):
         else:
             #TODO lógica para revertir los movimientos ya realizados
             return {"msg": "Error al actualizar la venta"}, 500
+    
     
     @jwt_required()
     def delete(self, id:str) -> dict:
