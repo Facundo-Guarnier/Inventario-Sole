@@ -50,7 +50,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   showSidebar = false;
   
   //! Botones flotantes
-  mostrarAgregar = false;
+  mostrarAgregar = true;
   
   //* ------------------------------------------------
   

@@ -123,7 +123,7 @@ class Venta(Resource):
                             "idProducto": id_producto,
                             "cantidad": abs(diferencia),
                             "vendedor": "-",
-                            "comentario": f"Ajuste de venta: {id}",
+                            "comentario": f"Venta: {id} - Ajuste de cantidad.",
                             "tienda": nueva_venta["tienda"]
                         })
                     
@@ -142,7 +142,7 @@ class Venta(Resource):
                         "idProducto": id_producto,
                         "cantidad": cantidad,
                         "vendedor": "-",
-                        "comentario": f"Producto eliminado de la venta: {id}",
+                        "comentario": f"Venta: {id} - Producto eliminado.",
                         "tienda": nueva_venta["tienda"]
                     })
             
@@ -180,11 +180,27 @@ class Venta(Resource):
             return ({"msg": "Falta el ID"}), 400
         
         #! Buscar si existe la venta
-        venta = VentaModel.buscar_x_atributo({"id": id})
-        if not venta["estado"]:
-            return ({"msg": venta["respuesta"]}), 404
-        if venta["respuesta"] == None:
+        venta_actual = VentaModel.buscar_x_atributo({"id": id})
+        if not venta_actual["estado"] or venta_actual["respuesta"] is None:
             return ({"msg": "No se encontró la venta"}), 404
+        
+        venta_actual = venta_actual["respuesta"][0]
+        productos_venta = venta_actual["productos"]
+        
+        #! Crear movimientos para la entrada de productos
+        for p in productos_venta:
+            respuesta = self.movimientos.post({
+                "movimiento": "Entrada",
+                "idProducto": p["idProducto"],
+                "cantidad": p["cantidad"],
+                "vendedor": "-",
+                "comentario": f"Venta: {id} - Venta eliminada",
+                "tienda": venta_actual["tienda"]
+            })
+            
+            if respuesta[1] != 201:
+                #TODO lógica para revertir los movimientos ya realizados
+                return {"msg": f"Error al actualizar el stock del producto {p['idProducto']} al cancelar la venta"}, 500
         
         #! Eliminar venta
         respuesta = VentaModel.eliminar(id)
@@ -358,7 +374,7 @@ class Ventas(Resource):
                     "idProducto": id_producto,
                     "cantidad": cantidad,
                     "vendedor": vendedor,
-                    "comentario": f"Venta: {self.ultima_id_resource.calcular_proximo_id('venta')}",
+                    "comentario": f"Venta: {self.ultima_id_resource.calcular_proximo_id('venta')} - Venta creada.",
                     "tienda": tienda
                 })
             
