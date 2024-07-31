@@ -58,6 +58,8 @@ import { AuthService } from './services/auth/auth.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CompPaginamientoComponent } from './componentes/comp-paginamiento/comp-paginamiento.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { PagDevolucionesVistaGeneralComponent } from './paginas/devoluciones/vista-general/vista-general.component';
+import { PagDevolucionesCrearComponent } from './paginas/devoluciones/crear/crear.component';
 
 // Función para obtener el token del localStorage
 export function tokenGetter() {
@@ -116,6 +118,8 @@ export function tokenGetter() {
     PagUsuarioIniciarSesionComponent,
     CompPaginamientoComponent,
     FilterPipe,
+    PagDevolucionesVistaGeneralComponent,
+    PagDevolucionesCrearComponent,
 
   ],
 
