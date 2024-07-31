@@ -26,7 +26,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     { nombre: "Fecha", identificador: "fecha", tipo: "readonly"},
     { nombre: "Cliente", identificador: "cliente", tipo: "input-text"},
     { nombre: "Tienda", identificador: "tienda", tipo: "selector", opciones: ["Fisica", "Online"] },
-    { nombre: "Total", identificador: "total", tipo: "input-number"},
+    { nombre: "Monto total", identificador: "total", tipo: "input-number"},
     { nombre: "Método", identificador: "metodo", tipo: "textarea-text"},
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
@@ -37,7 +37,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   campos2: Campo[] = [
     { nombre: "ID producto", identificador: "idProducto", tipo: "input-text" },
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
-    { nombre: "Precio", identificador: "precio", tipo: "input-number" },
+    { nombre: "Precio unitario", identificador: "precio", tipo: "input-number" },
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
   productos: any[] = [];

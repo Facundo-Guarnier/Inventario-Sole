@@ -5,6 +5,7 @@ import { CompBarraLateralComponent } from 'src/app/componentes/comp-barra-latera
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Filtro } from 'src/app/interfaces/filtro.interface';
 import { formatDate } from '@angular/common';
+import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 
 
 @Component({
@@ -24,14 +25,24 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   columnas = [
     { nombre: 'ID venta', identificador: "id", tipo: 'text' },
-    { nombre: 'Cliente', identificador: "cliente", tipo: 'text' },
-    { nombre: 'Fecha', identificador: "fecha", tipo: 'date' },
-    { nombre: 'Total', identificador: "total", tipo: 'number' },
+    // { nombre: 'Cliente', identificador: "cliente", tipo: 'text' },
+    // { nombre: 'Fecha', identificador: "fecha", tipo: 'date' },
+    { nombre: 'Monto total', identificador: "total", tipo: 'currency' },
     { nombre: 'Tienda', identificador: "tienda", tipo: 'text' },
-    { nombre: 'Metodo', identificador: "metodo", tipo: 'number' },
+    { nombre: 'Metodo', identificador: "metodo", tipo: 'text' },
   ];
   
   datos: any[] = [];
+  
+  columnasSecundarias = [
+    { nombre: 'ID producto', identificador: "id_producto", tipo: 'text' },
+    { nombre: 'Descripcion', identificador: "descripcion", tipo: 'text' },
+    { nombre: 'Cantidad', identificador: "cantidad", tipo: 'number' },
+    { nombre: 'Total p. original', identificador: "total_precio_original", tipo: 'currency' },
+    { nombre: 'Total p. venta', identificador: "total_precio_venta", tipo: 'currency' },
+  ];
+
+  datosSecundarios: any[] = [];
   
   //! Busqueda
   filtrosBusqueda: any[] = []
@@ -57,6 +68,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     private router: Router,
     private apiVentas: ApiVentasService,
     private authService: AuthService,
+    private productoService : ApiProductoService,
   ) { }
   
   ngOnInit(): void {
@@ -143,11 +155,35 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       return acc;
     }, {});
     
+    //! Buscar todas las ventas
     this.apiVentas.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
       next: (data) => {
         this.datos = Object.values(data["msg"]).flat();
         this.totalDatos = Math.max(1, data["total"]);
         this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
+        
+        //! Buscar los productos de cada venta
+        this.datos.forEach((venta) => {
+          venta.productos.forEach((producto:any) => {
+            this.productoService.buscar_x_id(producto.idProducto).subscribe({
+              next: (data) => {
+                this.datosSecundarios.push({
+                  "id": venta.id,
+                  "id_producto": data["msg"][0].id,
+                  "descripcion": data["msg"][0].descripcion,
+                  "total_precio_original": data["msg"][0][(venta.tienda).toLowerCase()]["precio"] * producto.cantidad,
+                  "total_precio_venta": producto.precio * producto.cantidad,
+                  "cantidad": producto.cantidad
+                })
+              },
+              error: (error) => {
+                console.error('ERROR al cargar productos:', error);
+              }
+            });
+          });
+        });
+        console.log("Datos Principales: ", this.datos);
+        console.log("Datos Secundarios", this.datosSecundarios );
       },
       error: (error) => {
         console.error('ERROR al cargar ventas:', error);

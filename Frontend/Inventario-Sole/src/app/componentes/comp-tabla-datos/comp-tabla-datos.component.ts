@@ -12,10 +12,14 @@ import { Accion } from '../../interfaces/accion.interface';
 
 export class CompTablaDatosComponent implements OnInit {
   
+  @Input() tipo: string = ""; //! Para saber a que ruta redirigir
+  
   @Input() columnas: Columna[] = [];
   @Input() datos: any[] = [];
   @Input() acciones: Accion = {}; //! Distingue boolean, currency, date (yyyy/mm/dd) o text
-  @Input() tipo: string = ""; //! Para saber a que ruta redirigir
+  
+  @Input() datosSecundarios: any[] = [];
+  @Input() columnasSecundarias: Columna[] = [];
   
   constructor(
     private router: Router
@@ -54,4 +58,8 @@ export class CompTablaDatosComponent implements OnInit {
     }
   }
   
+  //! Mostrar flecha de expandir/contraer datos secundarios 
+  mostrarFlecha(): boolean {
+    return this.datosSecundarios.length > 0;
+  }
 }

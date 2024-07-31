@@ -1,10 +1,8 @@
-<!-- Este componente será la base para mostrar todas las tablas de datos en tu aplicación. -->
-
 <div class="table-responsive">
     <table class="table table-dark table-striped">
         <thead>
             <tr>
-                <!--! Encabezados -->
+                <th *ngIf="mostrarFlecha()"></th> <!--! Columna para el botón de expandir -->
                 <th *ngFor="let columna of columnas" scope="col">
                     {{ columna.nombre }}
                 </th>
@@ -13,34 +11,73 @@
         </thead>
         
         <tbody>
-            <tr *ngFor="let item of datos">
-                <!--! Datos -->
-                <td *ngFor="let columna of columnas">
-                    <ng-container [ngSwitch]="columna.tipo">
-                        <span *ngSwitchCase="'currency'">{{ item[columna.identificador] | currency }}</span>
-                        <span *ngSwitchCase="'boolean'">
-                            <span *ngIf="item[columna.identificador]" class="badge bg-danger">Si</span>
-                            <span *ngIf="!item[columna.identificador]" class="badge bg-success">No</span>
-                        </span>
-                        <span *ngSwitchCase="'date'">{{ item[columna.identificador] | date:'yyyy-MM-dd hh:mm' }}</span>
-                        <span *ngSwitchDefault>{{ item[columna.identificador] }}</span>
-                    </ng-container>
-                </td>
+            <ng-container *ngFor="let item of datos; let i = index">
+                <!--! Fila principal -->
+                <tr>
+                    <td *ngIf="mostrarFlecha()">
+                        <button class="btn btn-sm btn-outline-light" (click)="item.expanded = !item.expanded">
+                            <i class="bi" [ngClass]="{'bi-chevron-down': !item.expanded, 'bi-chevron-up': item.expanded}"></i>
+                        </button>
+                    </td>
+                    <td *ngFor="let columna of columnas">
+                        <ng-container [ngSwitch]="columna.tipo">
+                            <span *ngSwitchCase="'currency'">{{ item[columna.identificador] | currency }}</span>
+                            <span *ngSwitchCase="'boolean'">
+                                <span *ngIf="item[columna.identificador]" class="badge bg-danger">Si</span>
+                                <span *ngIf="!item[columna.identificador]" class="badge bg-success">No</span>
+                            </span>
+                            <span *ngSwitchCase="'date'">{{ item[columna.identificador] | date:'yyyy-MM-dd hh:mm' }}</span>
+                            <span *ngSwitchDefault>{{ item[columna.identificador] }}</span>
+                        </ng-container>
+                    </td>
+                    
+                    <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle">
+                        <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm me-1 boton-info" (click)="detalleFila(item)">
+                            <i class="bi bi-info-lg"></i>
+                        </button>
+                        <button *ngIf="acciones.editar" type="button" class="btn btn-primary btn-sm me-1 boton-editar" (click)="editarFila(item)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button *ngIf="acciones.eliminar" type="button" class="btn btn-danger btn-sm me-1 boton-borrar" (click)="eliminarFila(item)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
                 
-                <!--! Botones de accion -->
-                <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle">
-                    <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm me-1 boton-info" (click)="detalleFila(item)">
-                        <i class="bi bi-info-lg"></i>
-                    </button>
-                    <button *ngIf="acciones.editar" type="button" class="btn btn-primary btn-sm me-1 boton-editar" (click)="editarFila(item)">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button *ngIf="acciones.eliminar" type="button" class="btn btn-danger btn-sm me-1 boton-borrar" (click)="eliminarFila(item)">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            </tr>
+                <!--! Fila expandible con la tabla de productos -->
+                <tr *ngIf="item.expanded && mostrarFlecha()">
+                    <td [attr.colspan]="columnas.length + 2" class="p-0">
+                        <div class="bg-dark p-1">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover table-bordered table-dark">
+                                    <thead>
+                                        <tr class="bg-secondary">
+                                            <th *ngFor="let columna of columnasSecundarias" class="text-nowrap">{{ columna.nombre }}</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <tr *ngFor="let producto of datosSecundarios | filter:item.id:'id'">
+                                            <td *ngFor="let columna of columnasSecundarias" class="align-middle">
+                                                <ng-container [ngSwitch]="columna.tipo">
+                                                    <span *ngSwitchCase="'currency'" class="text-end d-block">{{ producto[columna.identificador] | currency }}</span>
+                                                    <span *ngSwitchCase="'boolean'">
+                                                        <span *ngIf="producto[columna.identificador]" class="badge bg-success">Sí</span>
+                                                        <span *ngIf="!producto[columna.identificador]" class="badge bg-danger">No</span>
+                                                    </span>
+                                                    <span *ngSwitchCase="'date'" class="text-nowrap text-info">{{ producto[columna.identificador] | date:'yyyy-MM-dd HH:mm' }}</span>
+                                                    <span *ngSwitchDefault>{{ producto[columna.identificador] }}</span>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+            </ng-container>
         </tbody>
-        
     </table>
 </div>
