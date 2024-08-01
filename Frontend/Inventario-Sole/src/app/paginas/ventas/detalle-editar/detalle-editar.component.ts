@@ -78,24 +78,6 @@ export class PagVentasDetalleEditarComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    //! Obtener parametro de "editar" la URL
-    this.route.queryParams.subscribe(params => {
-      this.mostrarEditar = params['editar'] === 'true'; //! Se compara con true porque originalmente es un string
-    });
-    
-    if (this.mostrarEditar === undefined) {
-      this.mostrarEditar = true;
-    }
-    
-    if (this.mostrarEditar) {
-      this.tituloGeneral = "Editar detalle de la venta";
-      this.mostrarAceptar = true;
-      this.mostrarCancelar = true;
-      this.mostrarBorrar = true;
-    } else {
-      this.tituloGeneral = "Ver detalle de la venta";
-    }
-    
     //! Buscar la venta
     this.apiVenta.buscar_x_id(this.router.url.split("?")[0].split('/').pop()).subscribe(
       (res: any) => {
@@ -109,9 +91,31 @@ export class PagVentasDetalleEditarComponent implements OnInit {
         this.campos1[4].valor = datos["total"];
         this.campos1[5].valor = datos["metodo"];
         this.campos1[6].valor = datos["comentario"];
-        
+
         //! Productos de la venta
         this.datosOriginalesProductos = datos["productos"];
+        
+        
+        //! Ver si se puede editar la venta
+        this.route.queryParams.subscribe(params => {
+          this.mostrarEditar = params['editar'] === 'true'; //! Se compara con true porque originalmente es un string
+        });
+        if (this.mostrarEditar === undefined) {
+          this.mostrarEditar = true;
+        }
+        if (this.mostrarEditar) {
+          const hoy = new Date();
+          const fechaVenta = new Date(datos["fecha"]);
+          this.mostrarEditar = fechaVenta.toDateString() === hoy.toDateString();
+        }
+        if (this.mostrarEditar) {
+          this.tituloGeneral = "Editar detalle de la venta";
+          this.mostrarAceptar = true;
+          this.mostrarCancelar = true;
+          this.mostrarBorrar = true;
+        } else {
+          this.tituloGeneral = "Ver detalle de la venta";
+        }
       },
       
       (err: any) => {

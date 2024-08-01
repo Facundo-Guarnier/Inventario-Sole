@@ -80,3 +80,13 @@
     width: 120px; /* Ajusta según sea necesario */
     max-width: 120px;
 }
+
+.my-dark-table {
+    background-color: #212529; 
+    color: #fff;
+  }
+  
+  .my-dark-table th,
+  .my-dark-table td {
+    border-color: #373a3c;
+  }

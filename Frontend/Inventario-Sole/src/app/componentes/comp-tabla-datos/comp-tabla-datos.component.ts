@@ -21,6 +21,8 @@ export class CompTablaDatosComponent implements OnInit {
   @Input() datosSecundarios: any[] = [];
   @Input() columnasSecundarias: Columna[] = [];
   
+  //* ------------------------------------------------------------
+  
   constructor(
     private router: Router
   ) { }
@@ -28,6 +30,7 @@ export class CompTablaDatosComponent implements OnInit {
   ngOnInit(): void {
   }
   
+  //T* Funciones
   //! Botones
   editarFila(item: any) {
     if (this.tipo === 'mov') {

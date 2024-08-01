@@ -15,12 +15,11 @@
                 <!--! Fila principal -->
                 <tr>
                     <td *ngIf="mostrarFlecha()" class="col-expand">
-                        <button class="btn btn-sm btn-outline-light" (click)="item.expanded = !item.expanded">
+                        <button class="btn btn-sm btn-primary" (click)="item.expanded = !item.expanded">
                             <i class="bi" [ngClass]="{'bi-chevron-down': !item.expanded, 'bi-chevron-up': item.expanded}"></i>
                         </button>
                     </td>
-
-
+                    
                     <td *ngFor="let columna of columnas">
                         <ng-container [ngSwitch]="columna.tipo">
                             <span *ngSwitchCase="'currency'">{{ item[columna.identificador] | currency }}</span>
@@ -33,14 +32,11 @@
                         </ng-container>
                     </td>
                     
-
-
-
                     <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle" class="col-actions">
                         <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm me-1 boton-info" (click)="detalleFila(item)">
                             <i class="bi bi-info-lg"></i>
                         </button>
-                        <button *ngIf="acciones.editar" type="button" class="btn btn-primary btn-sm me-1 boton-editar" (click)="editarFila(item)">
+                        <button *ngIf="acciones.editar && (item.esEditable !== false)" type="button" class="btn btn-primary btn-sm me-1 boton-editar" (click)="editarFila(item)">
                             <i class="bi bi-pencil"></i>
                         </button>
                         <button *ngIf="acciones.eliminar" type="button" class="btn btn-danger btn-sm me-1 boton-borrar" (click)="eliminarFila(item)">
@@ -54,7 +50,7 @@
                     <td [attr.colspan]="columnas.length + 2" class="p-0">
                         <div class="bg-dark p-1">
                             <div class="table-responsive">
-                                <table class="table table-sm table-hover table-bordered table-dark">
+                                <table class="table table-sm table-hover table-bordered my-dark-table">
                                     <thead>
                                         <tr class="bg-secondary">
                                             <th *ngFor="let columna of columnasSecundarias" class="text-nowrap">{{ columna.nombre }}</th>

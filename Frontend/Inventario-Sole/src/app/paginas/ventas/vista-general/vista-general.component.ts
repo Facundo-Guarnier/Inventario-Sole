@@ -26,7 +26,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   columnas = [
     { nombre: 'ID venta', identificador: "id", tipo: 'text' },
     // { nombre: 'Cliente', identificador: "cliente", tipo: 'text' },
-    // { nombre: 'Fecha', identificador: "fecha", tipo: 'date' },
+    { nombre: 'Fecha', identificador: "fecha", tipo: 'date' },
     { nombre: 'Monto t. venta', identificador: "total", tipo: 'currency' },
     { nombre: 'Monto t. productos', identificador: "total_productos", tipo: 'currency' },
     { nombre: 'Tienda', identificador: "tienda", tipo: 'text' },
@@ -217,6 +217,8 @@ export class PagVentasVistaGeneralComponent implements OnInit {
         let total_productos = 0;
         const productosPromises = [];
         
+        venta.esEditable = this.isVentaDeHoy(venta.fecha)
+
         //! Procesar cada producto de la venta
         for (const producto of venta.productos) {
           
@@ -248,6 +250,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     } catch (error) {
       console.error('ERROR al cargar ventas:', error);
     }
+    console.log('Ventas:', this.datos);
   }
   
   //! Paginamiento
@@ -269,5 +272,12 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     if (this.showSidebar) {
       this.showNavbar = false;
     }
+  }
+
+  //! Mostrar ventas del dia
+  isVentaDeHoy(fecha: string): boolean {
+    const hoy = new Date();
+    const fechaVenta = new Date(fecha);
+    return fechaVenta.toDateString() === hoy.toDateString();
   }
 }
