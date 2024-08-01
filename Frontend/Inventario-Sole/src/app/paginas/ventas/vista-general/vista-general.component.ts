@@ -48,7 +48,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   filtrosBusqueda: any[] = []
   filtrosLista: Filtro[] = [
     {nombre: 'Tienda', identificador:"tienda", opciones: ['Fisica', 'Online']},
-    {nombre: 'Rango de fecha', identificador:"fecha", opciones: this.generarOpcionesFecha()},
+    {nombre: 'Rango de fecha', identificador:"fecha", opciones: ["Hoy", "Ayer", "Esta semana", "Semana pasada", "Este mes", "Mes pasado"]},
   ]
   filtrosCheckbox: string[] = []
   
@@ -93,6 +93,11 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   leerFiltros(datos: {nombre: string, valor: string}){
     if (datos.valor !== "Seleccionar...") {
+      
+      if (datos.nombre === "fecha") {
+        datos.valor = this.traducirFecha(datos.valor);
+      }
+      
       //! Crear un nuevo objeto con el formato deseado
       const nuevoFiltro = { [datos.nombre]: datos.valor };
       
@@ -106,6 +111,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
         //! Si no existe, añadirlo
         this.filtrosBusqueda.push(nuevoFiltro);
       }
+    
     } else {
       //! Eliminar el filtro si existe
       this.filtrosBusqueda = this.filtrosBusqueda.filter(filtro => Object.keys(filtro)[0] !== datos.nombre);
@@ -115,33 +121,49 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   }
   
   //! Generar opciones de fecha
-  generarOpcionesFecha(): string[] {
+  traducirFecha(fechaStr:string): string {
     const hoy = new Date();
-    const opciones: string[] = [];
+    let fecha = "";
     
-    //TODO: Mejorar esto
+    if (fechaStr === "Hoy") {
     //! Hoy
-    opciones.push(`${this.formatearFecha(hoy)} al ${this.formatearFecha(hoy)}`);
+    fecha = `${this.formatearFecha(hoy)} al ${this.formatearFecha(hoy)}`
     
+    } else if (fechaStr === "Ayer") {
     //! Ayer
     const ayer = new Date(hoy);
     ayer.setDate(hoy.getDate() - 1);
-    opciones.push(`${this.formatearFecha(ayer)} al ${this.formatearFecha(ayer)}`);
+    fecha = `${this.formatearFecha(ayer)} al ${this.formatearFecha(ayer)}`
     
+    } else if (fechaStr === "Esta semana") {
     //! Esta semana (domingo a hoy)
     const inicioSemana = new Date(hoy);
     inicioSemana.setDate(hoy.getDate() - hoy.getDay());
-    opciones.push(`${this.formatearFecha(inicioSemana)} al ${this.formatearFecha(hoy)}`);
+    fecha = `${this.formatearFecha(inicioSemana)} al ${this.formatearFecha(hoy)}`
     
+    } else if (fechaStr === "Semana pasada") {
+    //! Semana pasada
+    const inicioSemanaPasada = new Date(hoy);
+    inicioSemanaPasada.setDate(hoy.getDate() - hoy.getDay() - 7);
+    const finSemanaPasada = new Date(hoy);
+    finSemanaPasada.setDate(hoy.getDate() - hoy.getDay() - 1);
+    fecha = `${this.formatearFecha(inicioSemanaPasada)} al ${this.formatearFecha(finSemanaPasada)}`
+    
+    } else if (fechaStr === "Este mes") {
     //! Este mes
     const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    opciones.push(`${this.formatearFecha(inicioMes)} al ${this.formatearFecha(hoy)}`);
+    fecha = `${this.formatearFecha(inicioMes)} al ${this.formatearFecha(hoy)}`
     
-    //! Este año
-    const inicioAno = new Date(hoy.getFullYear(), 0, 1);
-    opciones.push(`${this.formatearFecha(inicioAno)} al ${this.formatearFecha(hoy)}`);
+    } else if (fechaStr === "Mes pasado") {
+    //! Mes pasado
+    const inicioMesPasado = new Date(hoy.getFullYear(), hoy.getMonth() - 1, 1);
+    const finMesPasado = new Date(hoy.getFullYear(), hoy.getMonth(), 0);
+    fecha = `${this.formatearFecha(inicioMesPasado)} al ${this.formatearFecha(finMesPasado)}`
     
-    return opciones;
+  } else {
+      console.error('ERROR: Fecha no reconocida');
+    }
+    return fecha;
   }
   formatearFecha(fecha: Date): string {
     return formatDate(fecha, 'dd-MM-yyyy', 'en-US');
@@ -182,8 +204,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
             });
           });
         });
-        console.log("Datos Principales: ", this.datos);
-        console.log("Datos Secundarios", this.datosSecundarios );
       },
       error: (error) => {
         console.error('ERROR al cargar ventas:', error);
