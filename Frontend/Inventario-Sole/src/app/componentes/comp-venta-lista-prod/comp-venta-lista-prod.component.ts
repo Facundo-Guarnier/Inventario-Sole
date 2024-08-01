@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Campo } from 'src/app/interfaces/campo.interface';
 
 @Component({
@@ -19,8 +19,15 @@ export class CompVentaListaProdComponent implements OnInit, OnChanges  {
   @Input() datosOriginales: any[] = [];
 
   productos: any[] = [{}];
+
+  //! Función para buscar el precio
+  @Input() buscarPrecioProducto!: (idProducto: string) => void;
   
-  constructor() { }
+  //* ------------------------------------------------------------
+  
+  constructor(
+    private cdr: ChangeDetectorRef,
+  ) { }
 
   ngOnInit(): void {
     this.actualizarProductos();
@@ -35,7 +42,8 @@ export class CompVentaListaProdComponent implements OnInit, OnChanges  {
       this.actualizarProductos();
     }
   }
-
+  
+  //T* Funciones
   actualizarProductos(): void {
     if (this.datosOriginales && this.datosOriginales.length > 0) {
       this.productos = [...this.datosOriginales];
@@ -69,4 +77,24 @@ export class CompVentaListaProdComponent implements OnInit, OnChanges  {
     return datosRecolectados;
   }
 
+  //! Actualizar el precio de un producto
+  actualizarPrecioProducto(idProducto: string, precio: number) {
+    const index = this.productos.findIndex(p => p.idProducto === idProducto);
+    if (index !== -1) {
+      this.productos[index] = {
+        ...this.productos[index],
+        precio_original: precio
+      };
+      this.cdr.detectChanges();
+    }
+  }
+  onInputChange(index: number, event: Event) {
+    const idProducto = (event.target as HTMLInputElement).value;
+    if (idProducto) {
+      this.buscarPrecioProducto(idProducto);
+    }
+  }
+  obtenerProductos() {
+    return this.productos;
+  }
 }

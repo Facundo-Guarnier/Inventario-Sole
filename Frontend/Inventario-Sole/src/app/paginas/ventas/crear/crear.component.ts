@@ -6,6 +6,7 @@ import { ApiVentasService } from 'src/app/services/ventas/api-venta.service';
 import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { ApiProductosService } from 'src/app/services/productos/api-producto.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class PagVentasCrearComponent implements OnInit {
   campos1: Campo[] = [
     { nombre: "ID Venta", identificador: "idVenta", tipo: "readonly" },
     { nombre: "Cliente", identificador: "cliente", tipo: "input-text" },
-    { nombre: "Tienda", identificador: "tienda", tipo: "selector", opciones: ["Fisica", "Online"] },
+    { nombre: "Tienda", identificador: "tienda", tipo: "selector-actualizar", opciones: ["Fisica", "Online"] },
     { nombre: "Monto total", identificador: "total", tipo: "input-number"},
     { nombre: "Método", identificador: "metodo", tipo: "textarea-text"},
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
@@ -36,9 +37,10 @@ export class PagVentasCrearComponent implements OnInit {
   //! Campos para los productos de la venta
   titulo2 = "Productos";
   campos2: Campo[] = [
-    { nombre: "ID producto", identificador: "idProducto", tipo: "input-text" },
+    { nombre: "ID producto", identificador: "idProducto", tipo: "input-actualizar" },
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
-    { nombre: "Precio unitario", identificador: "precio", tipo: "input-number" },
+    { nombre: "Precio unitario de venta", identificador: "precio", tipo: "input-number" },
+    { nombre: "Precio unitario original", identificador: "precio_original", tipo: "readonly" },
     { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text"}
   ];
   productos: any[] = [];
@@ -52,6 +54,9 @@ export class PagVentasCrearComponent implements OnInit {
   //! Vista
   showNavbar = false;
   showSidebar = false;
+
+  //! Actualizar en vivo el precio del producto
+  tiendaSeleccionada: string = '';
   
   //* ------------------------------------------------------------
   
@@ -60,6 +65,7 @@ export class PagVentasCrearComponent implements OnInit {
     private authService: AuthService,
     private ultimasIDs: UltimasIDsService,
     private router: Router,
+    private apiProductos: ApiProductosService,
   ) { }
   
   ngOnInit(): void {
@@ -192,5 +198,85 @@ export class PagVentasCrearComponent implements OnInit {
     if (this.showSidebar) {
       this.showNavbar = false;
     }
+  }
+
+  //! Buscar producto
+  async onSelectorChange(event: any) {
+    if (event.identificador === 'tienda') {
+      this.tiendaSeleccionada = event.valor.toLowerCase();
+      await this.actualizarTodosLosPrecios();
+    }
+  }
+
+  async actualizarTodosLosPrecios() {
+    const productos = this.compVentaLista.obtenerProductos();
+    const productosNoDisponibles: string[] = [];
+  
+    const promesas = productos.map(producto => {
+      if (producto.idProducto) {
+        return this.buscarPrecioProducto(producto.idProducto, productosNoDisponibles);
+      }
+      return Promise.resolve();
+    });
+  
+    await Promise.all(promesas);
+  
+    if (productosNoDisponibles.length > 0) {
+      this.tituloModal = "Productos no disponibles";
+      this.mensajeModal = `Los siguientes productos no están disponibles en la tienda seleccionada: ${productosNoDisponibles.join(', ')}`;
+      this.openModal();
+    }
+    productosNoDisponibles.forEach(producto => {
+      this.compVentaLista.quitarProducto(this.compVentaLista.productos.findIndex(p => p.idProducto === producto));
+    });
+
+  }
+
+  buscarPrecioProducto(idProducto: string, productosNoDisponibles?: string[]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.tiendaSeleccionada || this.tiendaSeleccionada === 'Seleccionar...') {
+        if (!productosNoDisponibles) {
+          this.tituloModal = "Error al buscar el producto";
+          this.mensajeModal = "Seleccione una tienda antes de buscar el producto.";
+          this.openModal();
+        }
+        resolve();
+        return;
+      }
+      
+      this.apiProductos.buscar_x_atributo({ id: idProducto }, 1, 20).subscribe(
+        (response) => {
+          const producto = response["msg"][0];
+          if (!producto) {
+            console.error('Producto no encontrado:', idProducto);
+            if (!productosNoDisponibles) {
+              this.tituloModal = "Error al buscar el producto";
+              this.mensajeModal = "Producto no encontrado.";
+              this.openModal();
+            }
+            resolve();
+            return;
+          }
+          
+          if (producto[this.tiendaSeleccionada]["cantidad"] <= 0) {
+            if (productosNoDisponibles) {
+              productosNoDisponibles.push(producto.nombre || idProducto);
+            } else {
+              this.tituloModal = "Error al buscar el producto";
+              this.mensajeModal = "Producto no disponible en la tienda seleccionada.";
+              this.openModal();
+            }
+            resolve();
+            return;
+          }
+          this.compVentaLista.actualizarPrecioProducto(idProducto, producto[this.tiendaSeleccionada]["precio"]);
+          resolve();
+        },
+        (error) => {
+          console.error('Error al buscar el producto:', error);
+          reject(error);
+        }
+      );
+    });
   }
 }

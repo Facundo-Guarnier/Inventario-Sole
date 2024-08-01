@@ -17,6 +17,8 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
   
   @Output() datosRecolectados = new EventEmitter<any>();
   
+  @Output() selectorChange = new EventEmitter<{identificador: string, valor: string}>();
+
   //* ------------------------------------------------------------
   
   constructor() { }
@@ -68,5 +70,14 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
         campo.seleccionados.splice(index, 1);
       }
     }
+  }
+
+  //! Actualizar un selector
+  onSelectorChange(campo: Campo, event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectorChange.emit({
+      identificador: campo.identificador,
+      valor: selectElement.value
+    });
   }
 }

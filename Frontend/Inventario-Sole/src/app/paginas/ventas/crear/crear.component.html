@@ -35,6 +35,7 @@
                         [titulo]="titulo1"
                         [campos]="campos1"
                         (datosRecolectados)="onDatosRecolectadosVenta($event)"
+                        (selectorChange)="onSelectorChange($event)"
                     ></app-comp-detalle-nuevo-generico>
                 </div>
             </div>
@@ -48,6 +49,7 @@
                         [titulo]="titulo2"
                         [campos]="campos2"
                         (datosRecolectados)="onDatosRecolectadosProductos($event)"
+                        [buscarPrecioProducto]="buscarPrecioProducto.bind(this)"
                     ></app-comp-venta-lista-prod>
                 </div>
             </div>

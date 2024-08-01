@@ -10,7 +10,7 @@
                 <div class="col"> 
                     
                     <!--! Campos -->
-                    <div class="mb-3" *ngFor="let campo of campos">
+                    <div class="mb-3" *ngFor="let campo of campos; let i = index">
                         
                         <!--! TextArea  -->
                         <div *ngIf="campo.tipo == 'textarea-text'">
@@ -36,6 +36,19 @@
                             <select class="form-select" id="{{campo.identificador}}" [disabled]="!mostrarEditar">
                                 <option>Seleccionar...</option>
                                 <option *ngFor="let opcion of campo.opciones" [value]="opcion" [selected]="opcion === campo.valor || ''">{{opcion}}</option>
+                            </select>
+                        </div>
+                        
+                        <!--! Selector con actualización -->
+                        <div *ngIf="campo.tipo == 'selector-actualizar'">
+                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
+                            <select class="form-select" id="{{campo.identificador}}" 
+                                    [disabled]="!mostrarEditar"
+                                    (change)="onSelectorChange(campo, $event)">
+                                <option>Seleccionar...</option>
+                                <option *ngFor="let opcion of campo.opciones" 
+                                        [value]="opcion" 
+                                        [selected]="opcion === campo.valor">{{opcion}}</option>
                             </select>
                         </div>
                         
