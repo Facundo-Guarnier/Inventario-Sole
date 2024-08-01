@@ -1,0 +1,8 @@
+apiVersion: longhorn.io/v1beta1
+kind: Volume
+metadata:
+  name: mongodb-volume
+spec:
+  size: 1Gi
+  numberOfReplicas: 3
+  staleReplicaTimeout: 20

@@ -1,0 +1,8 @@
+apiVersion: longhorn.io/v1beta1
+kind: Volume
+metadata:
+  name: uploads-volume
+spec:
+  size: 10Gi
+  numberOfReplicas: 2
+  staleReplicaTimeout: 20

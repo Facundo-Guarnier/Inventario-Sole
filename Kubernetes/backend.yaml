@@ -87,14 +87,25 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
-  # nfs: # Ejemplo usando NFS, ajusta según tu entorno
-  #   server: nfs-server.default.svc.cluster.local
-  #   path: "/path/to/uploads"
   hostPath:
     path: "/path/to/uploads"
 
 ---
 #T* PersistentVolumeClaim
+#! Sin longhorn
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: uploads-pvc
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 10Gi
+#   storageClassName: standard
+
+#! Con longhorn
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -105,7 +116,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: standard
+  storageClassName: longhorn
 
 
 #! docker build -t facundoguarnier/inventario-sole-backend:v0.4 .
