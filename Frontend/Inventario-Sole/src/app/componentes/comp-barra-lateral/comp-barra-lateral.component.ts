@@ -69,9 +69,10 @@ export class CompBarraLateralComponent implements OnInit {
         const now = new Date();
         const timeLeft = expirationTime.getTime() - now.getTime();
         if (timeLeft > 0) {
-          const minutes = Math.floor(timeLeft / 60000);
+          const hours = Math.floor(timeLeft / 3600000);
+          const minutes = Math.floor((timeLeft % 3600000) / 60000);
           const seconds = Math.floor((timeLeft % 60000) / 1000);
-          this.remainingTime = `${minutes}m ${seconds}s`;
+          this.remainingTime = `${hours}h ${minutes}m ${seconds}s`;
         } else {
           this.remainingTime = 'Expirado';
           this.authService.logout();
@@ -79,6 +80,7 @@ export class CompBarraLateralComponent implements OnInit {
       }
     }
   }
+  
   
   logout() {
     this.authService.logout();

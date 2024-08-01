@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
 from App.Models import UsuarioModel
+from datetime import timedelta
 
 auth = Blueprint('api/auth', __name__, url_prefix='/api/auth')
 
@@ -58,18 +59,27 @@ def acceder():
     usuario_db = UsuarioModel.buscar_x_alias(alias)
     
     if usuario_db["estado"] is False:
-        return jsonify({"msg": "Usuario o contraseña incorrectos1"}), 401
+        return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
     
     if usuario_db["respuesta"] is None:
-        return jsonify({"msg": "Usuario o contraseña incorrectos2"}), 401
-
+        return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
     
     if not check_password_hash(usuario_db["respuesta"]['contraseña'], contraseña):
-        return jsonify({"msg": "Usuario o contraseña incorrectos3"}), 401
+        return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401
     
     else:
         claims = {
             'roles': usuario_db["respuesta"]['roles']
         }
-        access_token = create_access_token(identity=alias, additional_claims=claims)
+
+        # Establecer la duración del token según el rol del usuario
+        role = usuario_db["respuesta"]['roles']
+        if 'Admin' in role:
+            expires = timedelta(minutes=20)
+        elif 'User' in role:
+            expires = timedelta(hours=8)
+        else:
+            expires = timedelta(hours=1)
+
+        access_token = create_access_token(identity=alias, additional_claims=claims, expires_delta=expires)
         return jsonify(access_token=access_token), 200
