@@ -62,6 +62,12 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   showNavbar = false;
   showSidebar = false;
   
+  //! Datos del dia/caja
+  totalProductosVendidos: number = 0;
+  montoTotal: number = 0;
+  
+  admin: boolean = this.authService.isAdmin();
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -73,9 +79,29 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   ngOnInit(): void {
     this.recargarLista();
+    this.calcularVentasDia();
   }
   
   //T* Funciones
+  calcularVentasDia(){
+    const hoy = new Date();
+    let fecha = `${this.formatearFecha(hoy)} al ${this.formatearFecha(hoy)}`
+    this.apiVentas.buscar_x_atributo({"fecha": fecha, "pagina":1, "por_pagina":999}, this.paginaActual, this.porPagina).subscribe({
+      next: (data) => {
+        const ventas = Object.values(data["msg"]).flat();
+        ventas.forEach((venta:any) => {
+          this.totalProductosVendidos += venta.productos.reduce((acc:any, producto:any) => acc + producto.cantidad, 0);
+          this.montoTotal += venta.total;
+        });
+        console.log("Monto total:", this.montoTotal);
+        console.log("Productos vendidos:", this.totalProductosVendidos);
+      },
+      error: (error) => {
+        console.error('ERROR al cargar ventas:', error);
+      }
+    });
+  }
+
   //! Botones flotantes
   ClickAgregar(){
     this.router.navigate(['ven/crear']);
@@ -176,6 +202,8 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       acc[key] = filtro[key];
       return acc;
     }, {});
+    
+    this.datosSecundarios = [];
     
     //! Buscar todas las ventas
     this.apiVentas.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({

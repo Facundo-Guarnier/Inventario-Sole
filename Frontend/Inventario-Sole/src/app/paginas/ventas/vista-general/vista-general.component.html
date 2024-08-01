@@ -23,6 +23,17 @@
             (clickBuscar)="clickBuscar($event)"
             (clickFiltro)="leerFiltros($event)"
             ></app-comp-barra-lateral>
+
+            <!--! Datos del dia/caja -->
+            <div *ngIf="admin">
+
+                <div class="user-info-section mb-4 p-3 bg-light border rounded" >
+                    <h5 class="mb-3">Datos del dia</h5>
+                    <p class="mb-2"><strong>Total productos vendidos:</strong>  {{totalProductosVendidos}}</p>
+                    <p class="mb-2"><strong>Monto total:</strong> {{ montoTotal | currency:'USD':'symbol':'1.2-2' }}</p>
+                </div>
+
+            </div>
         </div>
         
         <div class="col-lg-9 content cuerpo-pag" > 
