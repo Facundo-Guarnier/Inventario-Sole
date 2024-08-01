@@ -27,7 +27,8 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     { nombre: 'ID venta', identificador: "id", tipo: 'text' },
     // { nombre: 'Cliente', identificador: "cliente", tipo: 'text' },
     // { nombre: 'Fecha', identificador: "fecha", tipo: 'date' },
-    { nombre: 'Monto total', identificador: "total", tipo: 'currency' },
+    { nombre: 'Monto t. venta', identificador: "total", tipo: 'currency' },
+    { nombre: 'Monto t. productos', identificador: "total_productos", tipo: 'currency' },
     { nombre: 'Tienda', identificador: "tienda", tipo: 'text' },
     { nombre: 'Metodo', identificador: "metodo", tipo: 'text' },
   ];
@@ -38,8 +39,8 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     { nombre: 'ID producto', identificador: "id_producto", tipo: 'text' },
     { nombre: 'Descripcion', identificador: "descripcion", tipo: 'text' },
     { nombre: 'Cantidad', identificador: "cantidad", tipo: 'number' },
-    { nombre: 'Total p. original', identificador: "total_precio_original", tipo: 'currency' },
     { nombre: 'Total p. venta', identificador: "total_precio_venta", tipo: 'currency' },
+    { nombre: 'Total p. original', identificador: "total_precio_original", tipo: 'currency' },
   ];
 
   datosSecundarios: any[] = [];
@@ -93,8 +94,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
           this.totalProductosVendidos += venta.productos.reduce((acc:any, producto:any) => acc + producto.cantidad, 0);
           this.montoTotal += venta.total;
         });
-        console.log("Monto total:", this.montoTotal);
-        console.log("Productos vendidos:", this.totalProductosVendidos);
       },
       error: (error) => {
         console.error('ERROR al cargar ventas:', error);
@@ -196,47 +195,57 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   }
   
   //! Recargar lista
-  recargarLista(){
-    const filtrosObj = this.filtrosBusqueda.reduce((acc, filtro) => {
-      const key = Object.keys(filtro)[0];
-      acc[key] = filtro[key];
-      return acc;
-    }, {});
-    
-    this.datosSecundarios = [];
-    
-    //! Buscar todas las ventas
-    this.apiVentas.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).subscribe({
-      next: (data) => {
-        this.datos = Object.values(data["msg"]).flat();
-        this.totalDatos = Math.max(1, data["total"]);
-        this.totalPaginas = Math.ceil(this.totalDatos/this.porPagina);
-        
-        //! Buscar los productos de cada venta
-        this.datos.forEach((venta) => {
-          venta.productos.forEach((producto:any) => {
-            this.productoService.buscar_x_id(producto.idProducto).subscribe({
-              next: (data) => {
-                this.datosSecundarios.push({
-                  "id": venta.id,
-                  "id_producto": data["msg"][0].id,
-                  "descripcion": data["msg"][0].descripcion,
-                  "total_precio_original": data["msg"][0][(venta.tienda).toLowerCase()]["precio"] * producto.cantidad,
-                  "total_precio_venta": producto.precio * producto.cantidad,
-                  "cantidad": producto.cantidad
-                })
-              },
-              error: (error) => {
-                console.error('ERROR al cargar productos:', error);
-              }
+  async recargarLista(){
+    try {
+      const filtrosObj = this.filtrosBusqueda.reduce((acc, filtro) => {
+        const key = Object.keys(filtro)[0];
+        acc[key] = filtro[key];
+        return acc;
+      }, {});
+      
+      this.datosSecundarios = [];
+      
+      //! Buscar todas las ventas
+      const data = await this.apiVentas.buscar_x_atributo(filtrosObj, this.paginaActual, this.porPagina).toPromise();
+      
+      this.datos = Object.values(data["msg"]).flat();
+      this.totalDatos = Math.max(1, data["total"]);
+      this.totalPaginas = Math.ceil(this.totalDatos / this.porPagina);
+  
+      // Procesar cada venta
+      for (const venta of this.datos) {
+        let total_productos = 0;
+        const productosPromises = [];
+  
+        // Procesar cada producto de la venta
+        for (const producto of venta.productos) {
+          const productoPromise = this.productoService.buscar_x_id(producto.idProducto).toPromise()
+            .then(data => {
+              const productoData = data["msg"][0];
+              const datoSecundario = {
+                "id": venta.id,
+                "id_producto": productoData.id,
+                "descripcion": productoData.descripcion,
+                "total_precio_original": producto.precio_original * producto.cantidad,
+                "total_precio_venta": producto.precio * producto.cantidad,
+                "cantidad": producto.cantidad
+              };
+              this.datosSecundarios.push(datoSecundario);
+              total_productos += datoSecundario.total_precio_venta;
+              return datoSecundario;
             });
-          });
-        });
-      },
-      error: (error) => {
-        console.error('ERROR al cargar ventas:', error);
+          productosPromises.push(productoPromise);
+        }
+  
+        // Esperar a que todos los productos de esta venta se procesen
+        await Promise.all(productosPromises);
+        
+        // Actualizar el total de productos para esta venta
+        venta.total_productos = total_productos;
       }
-    });
+    } catch (error) {
+      console.error('ERROR al cargar ventas:', error);
+    }
   }
   
   //! Paginamiento

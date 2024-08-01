@@ -62,6 +62,7 @@
               <input type="text" class="form-control" 
                 [id]="campo.identificador + '_' + i" 
                 [value]="producto[campo.identificador] || ''"
+                [disabled]="!mostrarEditar"
                 readonly
               >
             </div>

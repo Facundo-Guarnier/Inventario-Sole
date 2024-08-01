@@ -34,6 +34,7 @@ class Venta(Resource):
             return ({"msg":respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
     
+    
     @jwt_required()
     def put(self, id:str) -> dict:
         """
@@ -92,6 +93,7 @@ class Venta(Resource):
                     id_producto = producto["idProducto"].upper()
                     cantidad = int(producto["cantidad"])
                     precio = float(producto["precio"])
+                    precio_original = float(producto["precio_original"])
                     
                     #! Revisar si el producto existe
                     respuesta1 = Producto.buscar_x_atributo({"id": id_producto})
@@ -114,7 +116,9 @@ class Venta(Resource):
                     productos2.append({
                         "idProducto": id_producto,
                         "cantidad": cantidad,
-                        "precio": precio
+                        "precio": precio,
+                        "precio_original": precio_original,
+                        "comentario": producto.get("comentario", "")
                     })
                     
                     if diferencia != 0:
@@ -213,6 +217,7 @@ class Ventas(Resource):
     def __init__(self):
         self.ultima_id_resource = UltimaID()
         self.movimientos = Movimientos()
+    
     
     def get(self) -> list:
         """
@@ -348,6 +353,7 @@ class Ventas(Resource):
                 id_producto = producto["idProducto"].upper()
                 cantidad = int(producto["cantidad"])
                 precio = float(producto["precio"])
+                precio_original = float(producto["precio_original"])
                 
                 #! Revisar si el producto existe
                 respuesta1 = Producto.buscar_x_atributo({"id": id_producto})
@@ -365,7 +371,9 @@ class Ventas(Resource):
                 productos2.append({
                     "idProducto": id_producto,
                     "cantidad": cantidad,
-                    "precio": precio
+                    "precio": precio,
+                    "precio_original": precio_original,
+                    "comentario": producto.get("comentario", "")
                 })
                 
                 #! Generar movimiento de salida para este producto

@@ -199,28 +199,28 @@ export class PagVentasCrearComponent implements OnInit {
       this.showNavbar = false;
     }
   }
-
-  //! Buscar producto
+  
+  //! Actualizar campos
   async onSelectorChange(event: any) {
     if (event.identificador === 'tienda') {
       this.tiendaSeleccionada = event.valor.toLowerCase();
       await this.actualizarTodosLosPrecios();
     }
   }
-
+  
   async actualizarTodosLosPrecios() {
     const productos = this.compVentaLista.obtenerProductos();
     const productosNoDisponibles: string[] = [];
-  
+    
     const promesas = productos.map(producto => {
       if (producto.idProducto) {
         return this.buscarPrecioProducto(producto.idProducto, productosNoDisponibles);
       }
       return Promise.resolve();
     });
-  
+    
     await Promise.all(promesas);
-  
+    
     if (productosNoDisponibles.length > 0) {
       this.tituloModal = "Productos no disponibles";
       this.mensajeModal = `Los siguientes productos no están disponibles en la tienda seleccionada: ${productosNoDisponibles.join(', ')}`;
@@ -229,9 +229,9 @@ export class PagVentasCrearComponent implements OnInit {
     productosNoDisponibles.forEach(producto => {
       this.compVentaLista.quitarProducto(this.compVentaLista.productos.findIndex(p => p.idProducto === producto));
     });
-
+    
   }
-
+  
   buscarPrecioProducto(idProducto: string, productosNoDisponibles?: string[]): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this.tiendaSeleccionada || this.tiendaSeleccionada === 'Seleccionar...') {
