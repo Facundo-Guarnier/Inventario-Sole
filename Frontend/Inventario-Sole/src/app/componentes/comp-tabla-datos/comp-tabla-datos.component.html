@@ -2,11 +2,11 @@
     <table class="table table-dark table-striped">
         <thead>
             <tr>
-                <th *ngIf="mostrarFlecha()"></th> <!--! Columna para el botón de expandir -->
+                <th *ngIf="mostrarFlecha()" class="col-expand"></th> <!--! Columna para el botón de expandir -->
                 <th *ngFor="let columna of columnas" scope="col">
                     {{ columna.nombre }}
                 </th>
-                <th *ngIf="acciones.editar || acciones.eliminar || acciones.detalle" scope="col">Acciones</th>
+                <th *ngIf="acciones.editar || acciones.eliminar || acciones.detalle" scope="col" class="col-actions">Acciones</th>
             </tr>
         </thead>
         
@@ -14,11 +14,13 @@
             <ng-container *ngFor="let item of datos; let i = index">
                 <!--! Fila principal -->
                 <tr>
-                    <td *ngIf="mostrarFlecha()">
+                    <td *ngIf="mostrarFlecha()" class="col-expand">
                         <button class="btn btn-sm btn-outline-light" (click)="item.expanded = !item.expanded">
                             <i class="bi" [ngClass]="{'bi-chevron-down': !item.expanded, 'bi-chevron-up': item.expanded}"></i>
                         </button>
                     </td>
+
+
                     <td *ngFor="let columna of columnas">
                         <ng-container [ngSwitch]="columna.tipo">
                             <span *ngSwitchCase="'currency'">{{ item[columna.identificador] | currency }}</span>
@@ -27,11 +29,14 @@
                                 <span *ngIf="!item[columna.identificador]" class="badge bg-success">No</span>
                             </span>
                             <span *ngSwitchCase="'date'">{{ item[columna.identificador] | date:'yyyy-MM-dd hh:mm' }}</span>
-                            <span *ngSwitchDefault>{{ item[columna.identificador] }}</span>
+                            <span *ngSwitchDefault class="truncate-multiline" [title]="item[columna.identificador]">{{ item[columna.identificador] }}</span>
                         </ng-container>
                     </td>
                     
-                    <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle">
+
+
+
+                    <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle" class="col-actions">
                         <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm me-1 boton-info" (click)="detalleFila(item)">
                             <i class="bi bi-info-lg"></i>
                         </button>

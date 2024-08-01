@@ -52,3 +52,31 @@
     background-color: #91232e;
     border-color: #dc3545;
 }
+
+
+
+.truncate-multiline {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 8.5em; /* Ajusta la altura según el tamaño de la fuente y el espaciado entre líneas */
+    line-height: 1.5em; /* Asegúrate de que este valor coincida con el tamaño de la fuente */
+    height: auto;
+
+    /* Propiedad estándar */
+    display: box;
+    box-orient: vertical;
+    line-clamp: 4;
+}
+
+.col-expand {
+    width: 50px; /* Ajusta según sea necesario */
+    max-width: 50px;
+}
+
+.col-actions {
+    width: 120px; /* Ajusta según sea necesario */
+    max-width: 120px;
+}
