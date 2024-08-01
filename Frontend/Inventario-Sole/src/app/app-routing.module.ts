@@ -58,7 +58,7 @@ const routes: Routes = [
   { path: 'prod/detalle-editar/:id', component: PagProductosDetalleEditarComponent, canActivate: [AuthGuard]},
 
   { path: "mov", component: PagMovimientosVistaGeneralComponent, canActivate: [AuthGuard]},
-  { path: "mov/crear", component: PagMovimientosCrearComponent, canActivate: [AuthGuard]},
+  { path: "mov/crear", component: PagMovimientosCrearComponent, canActivate: [AuthGuard, AdminGuard]},
   // { path: "mov/detalle", component: PagMovimientosDetalleComponent}, //* No se necesita crear un componente para el detalle de movimientos, creo que es redundante
 
   { path: "reg", component: PagRegalosVistaGeneralComponent, canActivate: [AuthGuard]},

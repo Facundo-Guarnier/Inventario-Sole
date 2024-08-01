@@ -49,7 +49,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   filtrosBusqueda: any[] = []
   filtrosLista: Filtro[] = [
     {nombre: 'Tienda', identificador:"tienda", opciones: ['Fisica', 'Online']},
-    {nombre: 'Rango de fecha', identificador:"fecha", opciones: ["Hoy", "Ayer", "Esta semana", "Semana pasada", "Este mes", "Mes pasado"]},
+    {nombre: 'Rango de fecha', identificador:"fecha", opciones: ["Hoy", "Ayer", "Esta semana", "Semana pasada", "Este mes", "Mes pasado"] },
   ]
   filtrosCheckbox: string[] = []
   
@@ -75,7 +75,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     private router: Router,
     private apiVentas: ApiVentasService,
     private authService: AuthService,
-    private productoService : ApiProductoService,
+    private apiProducto: ApiProductoService,
   ) { }
   
   ngOnInit(): void {
@@ -211,36 +211,38 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       this.datos = Object.values(data["msg"]).flat();
       this.totalDatos = Math.max(1, data["total"]);
       this.totalPaginas = Math.ceil(this.totalDatos / this.porPagina);
-  
-      // Procesar cada venta
+      
+      //! Procesar cada venta
       for (const venta of this.datos) {
         let total_productos = 0;
         const productosPromises = [];
-  
-        // Procesar cada producto de la venta
+        
+        //! Procesar cada producto de la venta
         for (const producto of venta.productos) {
-          const productoPromise = this.productoService.buscar_x_id(producto.idProducto).toPromise()
+          
+          //! Busca el producto en la DB para cargar la descripcion
+          const productoPromise = this.apiProducto.buscar_x_id(producto.idProducto).toPromise()
             .then(data => {
               const productoData = data["msg"][0];
               const datoSecundario = {
                 "id": venta.id,
-                "id_producto": productoData.id,
-                "descripcion": productoData.descripcion,
+                "id_producto": producto.idProducto,
+                "descripcion": productoData.descripcion,    //! Busca la descripcion del producto
                 "total_precio_original": producto.precio_original * producto.cantidad,
                 "total_precio_venta": producto.precio * producto.cantidad,
                 "cantidad": producto.cantidad
               };
               this.datosSecundarios.push(datoSecundario);
-              total_productos += datoSecundario.total_precio_venta;
+              total_productos += datoSecundario.total_precio_original;
               return datoSecundario;
             });
           productosPromises.push(productoPromise);
         }
-  
-        // Esperar a que todos los productos de esta venta se procesen
+        
+        //! Esperar a que todos los productos de esta venta se procesen
         await Promise.all(productosPromises);
         
-        // Actualizar el total de productos para esta venta
+        //! Actualizar el total de productos para esta venta
         venta.total_productos = total_productos;
       }
     } catch (error) {

@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filtro } from 'src/app/interfaces/filtro.interface';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiMovimientoService, ApiMovimientosService } from 'src/app/services/movimientos/api-movimiento.service';
 
 
@@ -50,7 +51,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   showSidebar = false;
   
   //! Botones flotantes
-  mostrarAgregar = true;
+  mostrarAgregar = this.authService.isAdmin();;
   
   //* ------------------------------------------------
   
@@ -58,6 +59,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
     private router: Router,
     private apiMovimientos: ApiMovimientosService,
     private apiMovimiento: ApiMovimientoService,
+    private authService: AuthService,
   ) { }
   
   ngOnInit(): void {
