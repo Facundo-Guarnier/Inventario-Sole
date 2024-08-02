@@ -61,19 +61,6 @@ spec:
 ---
 #T* PErsistentVolumeClaim
 #! Sin Longhorn
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: mongodb-pvc
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 1Gi
-#   storageClassName: standard
-
-#! Con Longhorn
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -84,4 +71,17 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: longhorn
+  storageClassName: standard
+
+#! Con Longhorn
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mongodb-pvc
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Gi
+#   storageClassName: longhorn
