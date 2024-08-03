@@ -16,6 +16,13 @@ spec:
       containers:
       - name: angular-frontend
         image: facundoguarnier/inventario-sole-frontend:v0.15
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "2500m"
+            memory: "1536Mi"
         ports:
         - containerPort: 80
         env:

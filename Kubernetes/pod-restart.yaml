@@ -1,0 +1,59 @@
+---
+#T* Service Account
+#! Es una entidad que permite a los pods acceder a los recursos de Kubernetes.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-restart-account
+
+---
+#T* Role
+#! Define un conjunto de permisos para acceder a los recursos de Kubernetes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-restart-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-restart-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: pod-restart-account
+roleRef:
+  kind: Role
+  name: pod-restart-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+#T* CronJob
+#! Se encarga de ejecutar un trabajo en un horario específico.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: restart-pods
+spec:
+  schedule: "0 2 * * *"  # Se ejecuta a las 2 AM todos los días
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: pod-restart-account
+          containers:
+          - name: kubectl
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              kubectl rollout restart deployment flask-backend
+              kubectl rollout restart deployment angular-frontend
+          restartPolicy: OnFailure

@@ -9,7 +9,7 @@ data:
   MONGO_DBNAME: "db-inventario-sole3.db"
   MONGO_COLLECTIONS: "usuarios,productos,movimientos,ventas,regalos,gift_cards,ultimasIDs"
   IMG_SIZE: "960,960"
-  IMG_QUALITY: "75"
+  IMG_QUALITY: "70"
 
 ---
 #T* Secret
@@ -43,6 +43,13 @@ spec:
       containers:
       - name: flask-backend
         image: facundoguarnier/inventario-sole-backend:v0.8
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "2500m"
+            memory: "2048Mi"
         ports:
         - containerPort: 5000
         envFrom:
