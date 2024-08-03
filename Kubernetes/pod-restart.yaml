@@ -41,7 +41,7 @@ kind: CronJob
 metadata:
   name: restart-pods
 spec:
-  schedule: "0 2 * * *"  # Se ejecuta a las 2 AM todos los días
+  schedule: "0 2 * * *"     #! Se ejecuta a las 2 AM todos los días
   jobTemplate:
     spec:
       template:
@@ -57,3 +57,6 @@ spec:
               kubectl rollout restart deployment flask-backend
               kubectl rollout restart deployment angular-frontend
           restartPolicy: OnFailure
+
+
+#! k get ServiceAccount,Role,RoleBinding,CronJob
