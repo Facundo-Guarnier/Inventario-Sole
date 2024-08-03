@@ -1,0 +1,7 @@
+.env
+ml_tokens.json
+uploads/
+__pycache__/
+*.pyc
+instance/
+Inventario-env
