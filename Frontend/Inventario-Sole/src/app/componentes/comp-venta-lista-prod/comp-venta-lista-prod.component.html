@@ -15,18 +15,20 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col" *ngFor="let campo of campos">
+        
+        <!--! Campos de datos  -->
+        <div class="row g-3">
+          <div class="col-12 col-sm-6 col-md-4" *ngFor="let campo of campos">
+            
+            <label [for]="campo.identificador + '_' + i" class="form-label text-truncate" title="{{campo.nombre}}">{{campo.nombre}}</label>
             
             <!-- ! Textarea -->
             <div *ngIf="campo.tipo == 'textarea-text'">
-              <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
               <textarea class="form-control" [id]="campo.identificador + '_' + i" rows="1" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar"></textarea>
             </div>
             
             <!--! Input con actualización en vivo  -->
             <div *ngIf="campo.tipo == 'input-actualizar'">
-              <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
               <input type="text" class="form-control" 
                 [id]="campo.identificador + '_' + i" 
                 [(ngModel)]="producto[campo.identificador]" 
@@ -37,19 +39,16 @@
             
             <!--! Input  -->
             <div *ngIf="campo.tipo == 'input-text' && campo.identificador != 'idProducto'">
-              <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
               <input type="text" class="form-control" [id]="campo.identificador + '_' + i" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar">
             </div>
             
             <!--! Number -->
             <div *ngIf="campo.tipo == 'input-number'">
-              <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
               <input type="number" class="form-control" [id]="campo.identificador + '_' + i" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar">
             </div>
             
             <!--! Selector  -->
             <div *ngIf="campo.tipo == 'selector'">
-              <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
               <select class="form-select" [id]="campo.identificador + '_' + i" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar">
                 <option selected>Seleccionar...</option>
                 <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{opcion}}</option>
@@ -58,19 +57,20 @@
             
             <!--! ReadOnly  -->
             <div *ngIf="campo.tipo == 'readonly'">
-              <label [for]="campo.identificador + '_' + i" class="form-label">{{campo.nombre}}</label>
               <input type="text" class="form-control" 
                 [id]="campo.identificador + '_' + i" 
                 [value]="producto[campo.identificador] || ''"
-                [disabled]="!mostrarEditar"
+                [disabled]="true"
                 readonly
               >
             </div>
             
           </div>
+          
           <hr class="custom-hr">
         </div>
       </div>
+      
       <button *ngIf="mostrarEditar" type="button" class="btn btn-primary mt-3" (click)="agregarProducto()" [disabled]="!mostrarEditar">
         Agregar otro producto
       </button>

@@ -71,8 +71,12 @@
                         <!--! ReadOnly  -->
                         <div *ngIf="campo.tipo == 'readonly'">
                             <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="text" class="form-control" id="{{campo.identificador}}" 
-                                [value]="campo.valor || ''" readonly>
+                            <input type="text" class="form-control" 
+                                id="{{campo.identificador}}" 
+                                [value]="campo.valor || ''" 
+                                [disabled]="true"
+                                readonly
+                            >
                         </div>
                     
                     </div>
