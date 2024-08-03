@@ -17,9 +17,28 @@ class Foto(Resource):
             current_app.logger.error(f"Error al obtener la foto: {str(e)}")
             return {"error": "Error interno del servidor"}, 500
 
+    def eliminar_fotos_viejas_producto(self, id_prod:str, fotos_nuevas: list) -> None:
+        """
+        Borra todas las votos que no estén en la lista de fotos_nuevas de la carpeta del producto.
+        
+        Args:
+            - id_prod (str): ID del producto.
+            - fotos_nuevas (list): Lista de nombres de las fotos nuevas. Ej: [resized_Pic_20240204_165151_4096x2160.png', ...]
+        """
+        try:
+            upload_folder = current_app.config['UPLOAD_FOLDER']
+            product_folder = os.path.join(upload_folder, id_prod)
+            for file in os.listdir(product_folder):
+                if file not in fotos_nuevas:
+                    os.remove(os.path.join(product_folder, file))
+        except Exception as e:
+            current_app.logger.error(f"Error al eliminar fotos antiguas: {str(e)}")
+
+
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 class Fotos(Resource):
     @jwt_required()

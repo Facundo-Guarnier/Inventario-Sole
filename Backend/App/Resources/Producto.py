@@ -10,7 +10,12 @@ from App.Resources.UltimaID import UltimaID
 import os
 from werkzeug.utils import secure_filename
 
+from App.Resources.Foto import Foto
+
 class Producto(Resource):
+    def __init__(self) -> None:
+        self.fotoResource = Foto()
+        
     def get(self, id:str) -> dict:
         """
         Busca una producto por su id.
@@ -46,8 +51,8 @@ class Producto(Resource):
             return ({"msg": "Falta el ID"}), 400
         
         #! Buscar si existe el producto
-        producto = ProductoModel.buscar_x_atributo({"id": id})
-        if not producto:
+        viejo_producto = ProductoModel.buscar_x_atributo({"id": id})
+        if not viejo_producto:
             return ({"msg": "No se encontró el producto"}), 404
         
         #! Obtener datos a actualizar
@@ -108,7 +113,16 @@ class Producto(Resource):
         #! Actualizar producto
         respuesta = ProductoModel.actualizar(id, data)
         if respuesta["estado"]:
+            
+            #! Borra las fotos que no se usan
+            fotos_nuevas_nombre = []
+            for f in nueva_producto["fotos"]:   #! Ej: [00026/resized_Pic_20240204_165151_4096x2160.png', ...]
+                foto = f.split("/")[-1]
+                fotos_nuevas_nombre.append(foto)
+            self.fotoResource.eliminar_fotos_viejas_producto(id, fotos_nuevas_nombre)
+            
             return ({"msg": "Producto actualizada"}), 200
+        
         return ({"msg": respuesta["respuesta"]}), 400
     
     @jwt_required()
