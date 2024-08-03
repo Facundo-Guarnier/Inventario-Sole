@@ -20,18 +20,28 @@
                         </button>
                     </td>
                     
+                    <!--! Datos  -->
                     <td *ngFor="let columna of columnas">
                         <ng-container [ngSwitch]="columna.tipo">
-                            <span *ngSwitchCase="'currency'">{{ item[columna.identificador] | currency }}</span>
+                            
+                            <!--! Currency  -->
+                            <span *ngSwitchCase="'currency'" title={{item[columna.identificador]}}>{{ item[columna.identificador] | currency }}</span>
+                            
+                            <!--! Boolean  -->
                             <span *ngSwitchCase="'boolean'">
-                                <span *ngIf="item[columna.identificador]" class="badge bg-danger">Si</span>
-                                <span *ngIf="!item[columna.identificador]" class="badge bg-success">No</span>
+                                <span *ngIf="item[columna.identificador]" class="badge bg-danger" title={{item[columna.identificador]}}>Si</span>
+                                <span *ngIf="!item[columna.identificador]" class="badge bg-success" title={{item[columna.identificador]}}>No</span>
                             </span>
-                            <span *ngSwitchCase="'date'">{{ item[columna.identificador] | date:'yyyy-MM-dd hh:mm' }}</span>
+                            
+                            <!--! Fecha  -->
+                            <span *ngSwitchCase="'date'" title={{item[columna.identificador]}}>{{ item[columna.identificador] | date:'yyyy-MM-dd hh:mm' }}</span>
+                            
+                            <!--! Texto  -->
                             <span *ngSwitchDefault class="truncate-multiline" [title]="item[columna.identificador]">{{ item[columna.identificador] }}</span>
                         </ng-container>
                     </td>
                     
+                    <!--! Acciones/botones  -->
                     <td *ngIf="acciones.editar || acciones.eliminar || acciones.detalle" class="col-actions">
                         <button *ngIf="acciones.detalle" type="button" class="btn btn-info btn-sm me-1 boton-info" (click)="detalleFila(item)">
                             <i class="bi bi-info-lg"></i>
@@ -51,27 +61,40 @@
                         <div class="bg-dark p-1">
                             <div class="table-responsive">
                                 <table class="table table-sm table-hover table-bordered my-dark-table">
+                                    
+                                    <!--! Encabezado -->
                                     <thead>
                                         <tr class="bg-secondary">
                                             <th *ngFor="let columna of columnasSecundarias" class="text-nowrap">{{ columna.nombre }}</th>
                                         </tr>
                                     </thead>
                                     
+                                    <!--! Datos  -->
                                     <tbody>
                                         <tr *ngFor="let producto of datosSecundarios | filter:item.id:'id'">
                                             <td *ngFor="let columna of columnasSecundarias" class="align-middle">
                                                 <ng-container [ngSwitch]="columna.tipo">
-                                                    <span *ngSwitchCase="'currency'" class="text-end d-block">{{ producto[columna.identificador] | currency }}</span>
+                                                    
+                                                    <!--! Currency  -->
+                                                    <span *ngSwitchCase="'currency'" class="text-end d-block" [title]="producto[columna.identificador]">{{ producto[columna.identificador] | currency }}</span>
+                                                    
+                                                    <!--! Boolean  -->
                                                     <span *ngSwitchCase="'boolean'">
-                                                        <span *ngIf="producto[columna.identificador]" class="badge bg-success">Sí</span>
-                                                        <span *ngIf="!producto[columna.identificador]" class="badge bg-danger">No</span>
+                                                        <span *ngIf="producto[columna.identificador]" class="badge bg-success" [title]="producto[columna.identificador]">Sí</span>
+                                                        <span *ngIf="!producto[columna.identificador]" class="badge bg-danger" [title]="producto[columna.identificador]">No</span>
                                                     </span>
-                                                    <span *ngSwitchCase="'date'" class="text-nowrap text-info">{{ producto[columna.identificador] | date:'yyyy-MM-dd HH:mm' }}</span>
-                                                    <span *ngSwitchDefault>{{ producto[columna.identificador] }}</span>
+                                                    
+                                                    <!--! Fecha  -->
+                                                    <span *ngSwitchCase="'date'" class="text-nowrap text-info" [title]="producto[columna.identificador]">{{ producto[columna.identificador] | date:'yyyy-MM-dd HH:mm' }}</span>
+                                                    
+                                                    <!--! Texto  -->
+                                                    <span *ngSwitchDefault [title]="producto[columna.identificador]">{{ producto[columna.identificador] }}</span>
+                                                    
                                                 </ng-container>
                                             </td>
                                         </tr>
                                     </tbody>
+                                    
                                 </table>
                             </div>
                         </div>
