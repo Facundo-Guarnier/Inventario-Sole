@@ -72,6 +72,7 @@ class Devoluciones(Resource):
             id_producto = data["id"].upper()
             cantidad = float(data["cantidad"])
             tienda = data.get("tienda").lower()
+            comentario = data.get("comentario", "-")
             
         except KeyError as e:
             return {"msg": f"Falta el parámetro {str(e)}"}, 400
@@ -111,6 +112,7 @@ class Devoluciones(Resource):
             "tienda":tienda,
             "fecha_devolucion": datetime.now(buenos_aires_tz).strftime("%Y-%m-%d %H:%M:%S"),
             "descripcion_producto":respuesta1["respuesta"][0]["descripcion"],
+            "comentario": comentario,
         }
         
         respuesta3 = DevolucionModel.crear(nueva_Devolucion)

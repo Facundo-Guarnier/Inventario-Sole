@@ -20,6 +20,7 @@ export class PagDevolucionesCrearComponent implements OnInit {
     { nombre: "ID producto", identificador: "id", tipo: "input-text" },
     { nombre: "Tienda", identificador: "tienda", tipo: "selector", opciones: ["Fisica", "Online"] },
     { nombre: "Cantidad", identificador: "cantidad", tipo: "input-number" },
+    { nombre: "Comentario", identificador: "comentario", tipo: "textarea-text" },
   ];
   detalleDevolucion = {} ;
   
