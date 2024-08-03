@@ -4,32 +4,41 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid"> 
         <ul class="navbar-nav w-100 justify-content-around">
+            
             <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'ven'" [attr.aria-current]="pagActual === 'ventas' ? 'page' : null" href="ven">Ventas</a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'dev'" [attr.aria-current]="pagActual === 'devoluciones' ? 'page' : null" href="dev">Devoluciones</a>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'mov'" [attr.aria-current]="pagActual === 'movimientos' ? 'page' : null" href="mov">Movimientos</a>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'tf'" [attr.aria-current]="pagActual === 'tiendaFisica' ? 'page' : null" href="tf">Tienda Física</a>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'to'" [attr.aria-current]="pagActual === 'tiendaOnline' ? 'page' : null" href="to">Tienda Online</a>
             </li>
-            <li class="nav-item">
+            
+            <!-- <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'reg'" [attr.aria-current]="pagActual === 'regalos' ? 'page' : null" href="reg">Regalos</a>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link" [class.active]="pagActual === 'gc'" [attr.aria-current]="pagActual === 'giftCard' ? 'page' : null" href="gc">Gift Card</a>
-            </li>
+            </li> -->
+            
             <div *ngIf="admin">
                 <li class="nav-item">
                     <a class="nav-link" [class.active]="pagActual === 'usu'" [attr.aria-current]="pagActual === 'usuarios' ? 'page' : null" href="usu">Usuarios</a>
                 </li>
             </div>
+            
         </ul>
     </div>
 </nav>

@@ -40,7 +40,6 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     { nombre: "Todos (con/sin stock)", identificador: "stock", seleccionado: false },
   ]
   
-  
   //! Botones flotantes
   mostrarAgregar = false;
   mostrarRevisarStock = false;
@@ -50,10 +49,13 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   porPagina = 20;
   totalDatos = 0;
   totalPaginas = 0;
-
+  
   //! Vista
   showNavbar = false;
   showSidebar = false;
+  
+  //! Mostrar la pagina actual
+  pagActual: string = '';
   
   //* ------------------------------------------------------------
   
@@ -69,6 +71,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     this.mostrarAgregar = this.authService.isAdmin();
     this.acciones.editar = this.authService.isAdmin();
     this.mostrarRevisarStock = this.authService.isAdmin();
+    this.pagActual = this.router.url.split('/')[1].split('?')[0];
   }
   
   //T* Funciones
@@ -171,6 +174,19 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
     this.showSidebar = !this.showSidebar;
     if (this.showSidebar) {
       this.showNavbar = false;
+    }
+  }
+  
+  //! Mostrar la pagina actual
+  getPaginaActual(): string {
+    switch(this.pagActual) {
+      case 'ven': return 'Ventas';
+      case 'dev': return 'Devoluciones';
+      case 'mov': return 'Movimientos';
+      case 'tf': return 'Tienda Física';
+      case 'to': return 'Tienda Online';
+      case 'usu': return 'Usuarios';
+      default: return 'Página Actual';
     }
   }
 }

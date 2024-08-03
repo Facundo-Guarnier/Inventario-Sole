@@ -69,6 +69,9 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   
   admin: boolean = this.authService.isAdmin();
   
+  //! Mostrar la pagina actual
+  pagActual: string = '';
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -81,6 +84,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   ngOnInit(): void {
     this.recargarLista();
     this.calcularVentasDia();
+    this.pagActual = this.router.url.split('/')[1].split('?')[0];
   }
   
   //T* Funciones
@@ -273,11 +277,24 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       this.showNavbar = false;
     }
   }
-
+  
   //! Mostrar ventas del dia
   isVentaDeHoy(fecha: string): boolean {
     const hoy = new Date();
     const fechaVenta = new Date(fecha);
     return fechaVenta.toDateString() === hoy.toDateString();
+  }
+  
+  //! Mostrar la pagina actual
+  getPaginaActual(): string {
+    switch(this.pagActual) {
+      case 'ven': return 'Ventas';
+      case 'dev': return 'Devoluciones';
+      case 'mov': return 'Movimientos';
+      case 'tf': return 'Tienda Física';
+      case 'to': return 'Tienda Online';
+      case 'usu': return 'Usuarios';
+      default: return 'Página Actual';
+    }
   }
 }

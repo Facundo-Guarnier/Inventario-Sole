@@ -51,6 +51,9 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
   showNavbar = false;
   showSidebar = false;
   
+  //! Mostrar la pagina actual
+  pagActual: string = '';
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -62,6 +65,7 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
   
   ngOnInit(): void {
     this.recargarLista();
+    this.pagActual = this.router.url.split('/')[1].split('?')[0];
   }
   
   //T* Funciones
@@ -176,6 +180,19 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     this.showSidebar = !this.showSidebar;
     if (this.showSidebar) {
       this.showNavbar = false;
+    }
+  }
+  
+  //! Mostrar la pagina actual
+  getPaginaActual(): string {
+    switch(this.pagActual) {
+      case 'ven': return 'Ventas';
+      case 'dev': return 'Devoluciones';
+      case 'mov': return 'Movimientos';
+      case 'tf': return 'Tienda Física';
+      case 'to': return 'Tienda Online';
+      case 'usu': return 'Usuarios';
+      default: return 'Página Actual';
     }
   }
 }
