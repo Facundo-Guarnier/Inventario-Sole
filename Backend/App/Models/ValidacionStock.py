@@ -1,4 +1,6 @@
 from datetime import datetime
+
+import pytz
 from .. import mongo as db_mongo
 from bson import json_util, ObjectId
 import json
@@ -131,7 +133,8 @@ class ValidacionStock:
     
     @staticmethod
     def iniciar_nueva_ronda(tienda):
-        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
+        fecha_actual = datetime.now(buenos_aires_tz).strftime("%Y-%m-%d %H:%M:%S")
         db_mongo.db.ultimasIDs.update_one(
             {"coleccion": f"validacion-{tienda}"},
             {"$set": {"fecha": fecha_actual}},

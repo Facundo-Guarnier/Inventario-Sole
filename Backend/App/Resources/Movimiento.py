@@ -1,5 +1,6 @@
 
 from datetime import datetime
+import pytz
 from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
@@ -242,14 +243,14 @@ class Movimientos(Resource):
         if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
                 return {"msg": "El producto no existe"}, 404
         
-        
+        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
         #! Crear nuevo movimiento
         nuevo_movimiento = {
             "id": UltimaID.calcular_proximo_id("movimiento"),
             "movimiento": movimiento,
             "idProducto": id_producto,
             "cantidad": cantidad,
-            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "fecha": datetime.now(buenos_aires_tz).strftime("%Y-%m-%d %H:%M:%S"),
             "vendedor": vendedor,
             "comentario": comentario,
             "tienda": tienda,

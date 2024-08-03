@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
+import pytz
 
 from App.Models import DevolucionModel
 from App.Models.Producto import Producto
@@ -102,13 +103,13 @@ class Devoluciones(Resource):
         if respuesta_movimiento[1] != 201:
             return {"msg": "Error al actualizar el stock"}, 500
         
-        
+        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
         #! Crear devolución
         nueva_Devolucion = {
             "id_producto":id_producto,
             "cantidad":cantidad,
             "tienda":tienda,
-            "fecha_devolucion": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "fecha_devolucion": datetime.now(buenos_aires_tz).strftime("%Y-%m-%d %H:%M:%S"),
             "descripcion_producto":respuesta1["respuesta"][0]["descripcion"],
         }
         

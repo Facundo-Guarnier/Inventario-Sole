@@ -5,7 +5,6 @@ from flask_restful import Resource
 from werkzeug.utils import secure_filename
 
 from PIL import Image
-import io
 
 class Foto(Resource):
     def get(self, id_prod, filename):

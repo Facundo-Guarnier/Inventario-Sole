@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
+import pytz
 
 from App.Models import VentaModel
 from App.Resources.UltimaID import UltimaID
@@ -401,11 +402,12 @@ class Ventas(Resource):
                 #TODO lógica para revertir los movimientos ya realizados
                 return {"msg": f"Error al actualizar el stock del producto {id_producto}"}, 500
         
+        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
         #! Crear venta
         nueva_venta = {
             "id": UltimaID.calcular_proximo_id("venta"),
             "cliente": cliente,
-            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "fecha": datetime.now(buenos_aires_tz).strftime("%Y-%m-%d %H:%M:%S"),
             "total": total,
             "tienda": tienda,
             "metodo": metodo_pago,

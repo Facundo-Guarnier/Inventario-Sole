@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import app, request, url_for
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
+import pytz
 
 from App.Models import ProductoModel
 from App.Resources.UltimaID import UltimaID
@@ -302,9 +303,10 @@ class Productos(Resource):
         online["cantidad"] < 0:
             return ({"msg": "Los precios y cantidades deben ser mayores a 0"}), 400
         
+        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
         #! Crear el objeto de validación con la fecha actual
         validacion = {
-            "ultima_fecha": datetime.now().strftime("%Y-%m-%d"),
+            "ultima_fecha": datetime.now(buenos_aires_tz).strftime("%Y-%m-%d"),
             "cantidad_validada": 0,
             "estado": "En proceso"
         }
