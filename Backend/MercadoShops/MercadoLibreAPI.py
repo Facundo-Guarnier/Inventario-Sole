@@ -64,6 +64,7 @@ class MercadoLibreAPI:
     
     
     def __save_tokens(self):
+        print("Guardando token en el archivo...")
         token_data = {
             "access_token": self.access_token,
             "refresh_token": self.refresh_token,

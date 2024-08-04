@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { SafeUrl } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ApiFotoService } from 'src/app/services/fotos/api-foto.service';
-import { ApiProductoService, ApiProductosService } from 'src/app/services/productos/api-producto.service';
+import { ApiMeliService } from 'src/app/services/meli/api-meli.service';
+import { ApiProductosService } from 'src/app/services/productos/api-producto.service';
 import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
 
 
@@ -34,7 +34,10 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   camposGenerales: Campo[] = [
     { nombre: "ID", identificador: "id", tipo: "readonly" },
     { nombre: "Código Mercado Shop", identificador: "cod_ms", tipo: "input-text" },
-    { nombre: "Marca", identificador: "marca", tipo: "input-text"},
+    
+    { nombre: "Titulo (sin talle, color o descuento)", identificador: "titulo", tipo: "input-text"},
+    { nombre: "Marca (si no es oficial, escriba 'generico')", identificador: "marca", tipo: "input-text"},
+    
     { nombre: "Descripcion", identificador: "descripcion", tipo: "textarea-text"},
     { nombre: "Talle", identificador: "talle", tipo: "input-text"},
     { nombre: "Liquidacion", identificador: "liquidacion", tipo: "boolean", valor: false },
@@ -68,13 +71,10 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private authService: AuthService,
-    private apiProducto: ApiProductoService,
     private apiProductos: ApiProductosService,
-    private apiFoto: ApiFotoService,
-    private sanitizer: DomSanitizer,
     private ultimasIDs: UltimasIDsService,
+    private apiMeli: ApiMeliService,
   ) {}
   
   ngOnInit(): void {
@@ -99,6 +99,27 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   }
   
   //T* Funciones
+
+
+
+  //! Actualizar campos
+  async onChange(event: {identificador: string, valor: string}) {
+    if (event.identificador === 'titulo') {
+      // this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + event.valor).subscribe(
+      this.apiMeli.get("/users/me", this.authService.getToken()).subscribe(
+        (res: any) => {
+          console.log('Respuesta de Meli:', res);
+        },
+        (err: any) => {
+          console.error('Error al buscar en Meli:', err);
+        }
+      );
+    }
+  }
+
+
+
+
   //! Botones flotantes
   ClickAceptar() {
     this.compDetalleNuevo.recolectarDatos();

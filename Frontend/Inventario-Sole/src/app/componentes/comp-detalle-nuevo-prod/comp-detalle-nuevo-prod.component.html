@@ -14,19 +14,31 @@
             <!--! TextArea  -->
             <div *ngIf="campo.tipo == 'textarea-text'">
               <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-              <textarea class="form-control" id="{{campo.identificador}}" rows="2" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar"></textarea>
+              <textarea class="form-control" id="{{campo.identificador}}" rows="2" 
+                [(ngModel)]="campo.valor" 
+                (ngModelChange)="OnChange(campo, $event)"
+                [disabled]="!mostrarEditar"
+              ></textarea>
             </div>
             
             <!--! Input text -->
             <div *ngIf="campo.tipo == 'input-text'">
                 <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                <input type="text" class="form-control" id="{{campo.identificador}}" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar">
-            </div>
+                <input type="text" class="form-control" id="{{campo.identificador}}" 
+                  [(ngModel)]="campo.valor" 
+                  (ngModelChange)="OnChange(campo, $event)"
+                  [disabled]="!mostrarEditar"
+                >
+              </div>
             
             <!--! ReadOnly  -->
             <div *ngIf="campo.tipo == 'readonly'">
                 <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                <input type="text" class="form-control" id="{{campo.identificador}}" [(ngModel)]="campo.valor" readonly>
+                <input type="text" class="form-control" id="{{campo.identificador}}" 
+                  [(ngModel)]="campo.valor" 
+                  (ngModelChange)="OnChange(campo, $event)"
+                  readonly
+                >
             </div>
             
             <!--! Boolean  -->
@@ -37,6 +49,7 @@
                   class="form-check-input" 
                   id="{{campo.identificador}}" 
                   [(ngModel)]="campo.valor"
+                  (ngModelChange)="OnChange(campo, $event)"
                   [disabled]="!mostrarEditar"
                 >
               </label>

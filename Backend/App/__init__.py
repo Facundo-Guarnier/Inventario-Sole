@@ -109,6 +109,9 @@ def create_app(config_class=Config):
     
     api.add_resource(Resources.DevolucionesResource, '/api/devoluciones') #! buscar_x_atributo, crear
     
+    api.add_resource(Resources.MeliResource, '/api/meli')
+    
+    
     api.init_app(app)
     jwt.init_app(app)
     

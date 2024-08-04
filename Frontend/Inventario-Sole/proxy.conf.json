@@ -3,18 +3,5 @@
         "target": "http://localhost:5000",
         "secure": false,
         "changeOrigin": true
-    },
-    
-    "/api/imagenes": {
-        "target": "http://localhost:5000",
-        "secure": false,
-        "changeOrigin": true
-    },
-    
-    "/api/image": {
-        "target": "http://localhost:5000",
-        "secure": false,
-        "changeOrigin": true
     }
-    
 }

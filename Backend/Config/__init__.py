@@ -26,3 +26,9 @@ class Config:
     
     #! Backup de la DB
     CONTRA_BACKUP = os.environ.get('CONTRA_BACKUP')
+    
+    #! Meli
+    MESH_CLIENT_ID = os.environ.get('MESH_CLIENT_ID')
+    MESH_CLIENT_SECRET = os.environ.get('MESH_CLIENT_SECRET')
+    MESH_REDIRECT_URI = os.environ.get('MESH_REDIRECT_URI')
+    MESH_AUTH_CODE = os.environ.get('MESH_AUTH_CODE')

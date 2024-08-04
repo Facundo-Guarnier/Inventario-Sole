@@ -18,6 +18,8 @@ export class CompDetalleNuevoComponent implements OnInit {
   @Input() detalleGeneral: Campo[] = [];
   @Input() detalleFisica: Campo[] = [];
   @Input() detalleOnline: Campo[] = [];
+
+  @Output() onChange = new EventEmitter<{identificador: string, valor: string}>();
   
   //* ------------------------------------------------------------
   
@@ -27,6 +29,28 @@ export class CompDetalleNuevoComponent implements OnInit {
   }
 
   //T* Funciones
+
+
+  //! Actualizar campos
+  OnChange(campo: Campo, event: any) {
+    let valor: any;
+    if (event.target) {
+      // Para inputs, textareas, etc.
+      valor = event.target.value;
+    } else {
+      // Para checkboxes y otros controles
+      valor = event;
+    }
+    this.onChange.emit({
+      identificador: campo.identificador,
+      valor: valor
+    });
+  }
+
+
+
+
+
   recolectarDatos(): void {
     let datosRecolectados = [
       this.detalleGeneral,
