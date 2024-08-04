@@ -104,18 +104,60 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
   //! Actualizar campos
   async onChange(event: {identificador: string, valor: string}) {
-    // if (event.identificador === 'titulo') {
-    //   this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + event.valor, this.authService.getToken()).subscribe(
-    //   // this.apiMeli.get("/users/me", this.authService.getToken()).subscribe(
-    //     (res: any) => {
-    //       console.log('Respuesta de Meli:', res);
-    //     },
-    //     (err: any) => {
-    //       console.error('Error al buscar en Meli:', err);
-    //     }
-    //   );
-    // }
-    console.log(event)
+    if (event.identificador === 'titulo') {
+      
+      //! Buscar el dominio del producto en base al titulo
+      this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + event.valor, this.authService.getToken()).subscribe(
+      // this.apiMeli.get("/users/me", this.authService.getToken()).subscribe(
+        (res: any) => {
+          // console.log('1 - Dominios:', res);   //![{domain_id: 'MLA-T_SHIRTS', domain_name: 'Remeras', category_id: 'MLA414238', category_name: 'Remeras, Musculosas y Chombas"}, ...]
+          
+          //TODO: ver bien cual de todos los dominios puede ser el correcto
+          let domain_id = res[0].domain_id.split('-')[1];
+          let category_id = res[0].category_id;
+          let category_name = res[0].category_name;
+          
+          let search_charts_payload:{} = {
+              "domain_id": "T_SHIRTS",
+              "site_id": "MLA",
+              "seller_id":  "327259941",    //TODO: Cambiar por la ID de la cuenta de la sole
+              "attributes": [
+                  {
+                      "id": "GENDER",
+                      "values": [
+                          {
+                              "name": "Mujer"
+                          }
+                      ]
+                  },
+                  {
+                      "id": "BRAND",
+                      "values": [
+                          {
+                              "name": "generico"
+                          }
+                      ]
+                  }
+              ]
+          };
+          
+          this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
+            (res: any) => {
+              console.log('2 - Guias de talles:', res);
+            },
+            (err: any) => {
+              console.error('Error al buscar en Meli:', err);
+            }
+          );
+
+
+        },
+        (err: any) => {
+          console.error('Error al buscar en Meli:', err);
+        }
+      );
+    }
+
   }
 
 

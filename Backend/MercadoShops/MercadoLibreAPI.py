@@ -254,31 +254,31 @@ if __name__ == "__main__":
     
     domain_id = "MLA-T_SHIRTS"
     # #T* Buscar una Guía de Talles:
-    # search_charts_payload = {
-    #     "domain_id": "T_SHIRTS",
-    #     "site_id": "MLA",
-    #     "seller_id":  "327259941",
-    #     "attributes": [
-    #         {
-    #             "id": "GENDER",
-    #             "values": [
-    #                 {
-    #                     "name": "Mujer"
-    #                 }
-    #             ]
-    #         },
-    #         {
-    #             "id": "BRAND",
-    #             "values": [
-    #                 {
-    #                     "name": "generico"
-    #                 }
-    #             ]
-    #         }
-    #     ]
-    # }
-    # search_charts_response = ml_api.post("/catalog/charts/search", search_charts_payload)
-    # print(f"\n\nSearch Chart:\n{json.dumps(search_charts_response, indent=2)}")
+    search_charts_payload = {
+        "domain_id": "T_SHIRTS",
+        "site_id": "MLA",
+        "seller_id":  "327259941",
+        "attributes": [
+            {
+                "id": "GENDER",
+                "values": [
+                    {
+                        "name": "Mujer"
+                    }
+                ]
+            },
+            {
+                "id": "BRAND",
+                "values": [
+                    {
+                        "name": "generico"
+                    }
+                ]
+            }
+        ]
+    }
+    search_charts_response = ml_api.post("/catalog/charts/search", search_charts_payload)
+    print(f"\n\nSearch Chart:\n{json.dumps(search_charts_response, indent=2)}")
     
     #T* Crear una Nueva Guía de Talles:
     # #! Consultar la ficha técnica del dominio

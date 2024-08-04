@@ -17,10 +17,9 @@ export class ApiMeliService {
     return this.httpClient.get(`${this.url}`, {headers: headers, params: {url: url}});
   }
 
-  post(url: string, body: any, token:string): Observable<any> {
+  post(url: string, datos: string, token:string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.post(`${this.url}`, body, {headers: headers, params: {url: url}});
+    return this.httpClient.post(`${this.url}`, {}, {headers: headers, params: {url: url, datos: datos}});
   }
-
 
 }

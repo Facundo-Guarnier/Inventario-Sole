@@ -18,7 +18,7 @@ class Meli(Resource):
         )
         self.meli_api.authenticate(code=current_app.config['MESH_AUTH_CODE'])
     
-    # @jwt_required
+    @jwt_required()
     def get(self) -> dict:
         
         data = request.args.to_dict()
@@ -30,29 +30,23 @@ class Meli(Resource):
         except:
             return {"msg": "Falta la URL"}, 400
         
-        print("+++++++++++++ Entraste en get:",url)
-        return self.meli_api.get(url)
+        return self.meli_api.get(url), 200
     
     
-    # @jwt_required
+    # @jwt_required()
     # @admin_required
     def post(self):
         
         data = request.args.to_dict()
         if not data:
-            return {"msg": "Faltan datos"}, 400
+            return {"msg": "Faltan datos1"}, 400
         
         try: 
             url = data["url"]
-            datos = data["datos"]
+            datos = json.loads(data["datos"])
         except:
-            return {"msg": "Faltan datos"}, 400
-        
-        print("+++++++++++++ Entraste en post:",url, datos)
-        return self.meli_api.post(url, datos)
-
-
-
+            return {"msg": "Faltan datos2"}, 400
+        return self.meli_api.post(url, datos), 200
 
 
 
@@ -77,7 +71,6 @@ class MercadoLibreAPI:
         elif code:
             print("Generando nuevo token...")
             url = "https://api.mercadolibre.com/oauth/token"
-            print("++++++++++++++++++++++++++++++1")
             data = {
                 "grant_type": "authorization_code",
                 "client_id": self.client_id,
@@ -86,18 +79,12 @@ class MercadoLibreAPI:
                 "redirect_uri": self.redirect_uri,
             }
             print(data)
-            print("++++++++++++++++++++++++++++++2")
             response = requests.post(url, data=data)
-            print("++++++++++++++++++++++++++++++3")
             try:
                 token_info = response.json()
-                print("++++++++++++++++++++++++++++++4")
                 self.access_token = token_info["access_token"]
-                print("++++++++++++++++++++++++++++++5")
                 self.refresh_token = token_info["refresh_token"]
-                print("++++++++++++++++++++++++++++++6")
                 self.expires_at = time.time() + token_info["expires_in"]
-                print("++++++++++++++++++++++++++++++7")
             except:
                 #TODO generar log de error
                 raise Exception(f"Autenticación fallida: {response.text}")
@@ -180,4 +167,3 @@ class MercadoLibreAPI:
             response = requests.post(url, headers=headers, data=data)
         
         return response.json()
-    
