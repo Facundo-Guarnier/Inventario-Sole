@@ -251,8 +251,8 @@ if __name__ == "__main__":
     # print(json.dumps(r, indent=2))
     
     
-    # domain_id = "MLA-T_SHIRTS"
-    # #!Buscar una Guía de Talles:
+    domain_id = "MLA-T_SHIRTS"
+    # #T* Buscar una Guía de Talles:
     # search_charts_payload = {
     #     "domain_id": "T_SHIRTS",
     #     "site_id": "MLA",
@@ -279,10 +279,12 @@ if __name__ == "__main__":
     # search_charts_response = ml_api.post("/catalog/charts/search", search_charts_payload)
     # print(f"\n\nSearch Chart:\n{json.dumps(search_charts_response, indent=2)}")
     
-    #! Crear una Nueva Guía de Talles:
+    #T* Crear una Nueva Guía de Talles:
+    # #! Consultar la ficha técnica del dominio
     # technical_specs_response = ml_api.get(f"/domains/{domain_id}/technical_specs")
     # # print(f"\n\nTechnical Specs:\n{json.dumps(technical_specs_response, indent=2)}")
     
+    # #! Consultar la ficha técnica de la guía de talles
     # required_attributes = []
     # for group in technical_specs_response["input"]["groups"]:
     #     for component in group["components"]:
@@ -300,6 +302,7 @@ if __name__ == "__main__":
     # grid_technical_specs_response = ml_api.post(f"/domains/{domain_id}/technical_specs?section=grids", grid_technical_specs_payload)
     # print(f"\n\nGrid Technical Specs:\n{json.dumps(grid_technical_specs_response, indent=2)}")
     
+    # #! Construir la guía de talles
     # create_chart_payload = {
     #     "names": {"MLA": "Guía de Talles para Remeras de Mujer"},
     #     "domain_id": domain_id,
@@ -336,8 +339,6 @@ if __name__ == "__main__":
     
     # create_chart_response = ml_api.post("/catalog/charts", create_chart_payload)
     # print(f"\n\nCreate Chart:\n{json.dumps(create_chart_response, indent=2)}")
-    
-    
     
     
     
