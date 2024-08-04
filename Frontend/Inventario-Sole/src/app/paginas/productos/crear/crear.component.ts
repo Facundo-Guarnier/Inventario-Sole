@@ -3,6 +3,7 @@ import { SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
+import { Dominio } from 'src/app/interfaces/dominio.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiMeliService } from 'src/app/services/meli/api-meli.service';
 import { ApiProductosService } from 'src/app/services/productos/api-producto.service';
@@ -36,10 +37,10 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     { nombre: "Código Mercado Shop", identificador: "cod_ms", tipo: "input-text" },
     
     { nombre: "Titulo (sin talle, color o descuento)", identificador: "titulo", tipo: "input-text"},
-    { nombre: "Marca (si no es oficial, escriba 'generico')", identificador: "marca", tipo: "input-text"},
+    // { nombre: "Marca (si no es oficial, escriba 'generico')", identificador: "marca", tipo: "input-text"},
     
-    { nombre: "Descripcion", identificador: "descripcion", tipo: "textarea-text"},
-    { nombre: "Talle", identificador: "talle", tipo: "input-text"},
+    // { nombre: "Descripcion", identificador: "descripcion", tipo: "textarea-text"},
+    // { nombre: "Talle", identificador: "talle", tipo: "input-text"},
     { nombre: "Liquidacion", identificador: "liquidacion", tipo: "boolean", valor: false },
   ];
   
@@ -66,7 +67,14 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Vista
   showNavbar = false;
   showSidebar = false;
-  
+
+  //! Variables según el dominio
+  dominios: Dominio[] = [
+    // {domain_id: 'MLA-T_SHIRTS', domain_name: 'Remeras', category_id: 'MLA414238', category_name: 'Remeras, Musculosas y Chombas'},
+  ];
+  dominioSeleccionado:Dominio = {};
+
+
   //* ------------------------------------------------------------
   
   constructor(
@@ -104,58 +112,94 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
   //! Actualizar campos
   async onChange(event: {identificador: string, valor: string}) {
+    console.log('Evento:', event);
     if (event.identificador === 'titulo') {
       
       //! Buscar el dominio del producto en base al titulo
       this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + event.valor, this.authService.getToken()).subscribe(
       // this.apiMeli.get("/users/me", this.authService.getToken()).subscribe(
         (res: any) => {
-          // console.log('1 - Dominios:', res);   //![{domain_id: 'MLA-T_SHIRTS', domain_name: 'Remeras', category_id: 'MLA414238', category_name: 'Remeras, Musculosas y Chombas"}, ...]
+          this.dominios = res;
+          console.log('Dominios:', this.dominios);
+          let dominios_nombre: string[] = this.dominios.map((dominio: any) => dominio.category_name);
           
-          //TODO: ver bien cual de todos los dominios puede ser el correcto
-          let domain_id = res[0].domain_id.split('-')[1];
-          let category_id = res[0].category_id;
-          let category_name = res[0].category_name;
+          //! Verificar si existe el campo dominio
+          //TODO: Agregar mas descripcion a los dominios, todos se llaman iguales pero son distintos (hombre, mujer, niño, bebe)
+          let campoDominio = this.camposGenerales.find(campo => campo.identificador === 'dominio');
+          if (campoDominio) {
+            campoDominio.opciones = dominios_nombre;
+          } else {
+            this.camposGenerales.push({ nombre: "Dominio", identificador: "dominio", tipo: "selector", opciones: dominios_nombre });
+          }
           
-          let search_charts_payload:{} = {
-              "domain_id": "T_SHIRTS",
-              "site_id": "MLA",
-              "seller_id":  "327259941",    //TODO: Cambiar por la ID de la cuenta de la sole
-              "attributes": [
-                  {
-                      "id": "GENDER",
-                      "values": [
-                          {
-                              "name": "Mujer"
-                          }
-                      ]
-                  },
-                  {
-                      "id": "BRAND",
-                      "values": [
-                          {
-                              "name": "generico"
-                          }
-                      ]
-                  }
-              ]
-          };
-          
-          this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
-            (res: any) => {
-              console.log('2 - Guias de talles:', res);
-            },
-            (err: any) => {
-              console.error('Error al buscar en Meli:', err);
-            }
-          );
-
-
         },
         (err: any) => {
           console.error('Error al buscar en Meli:', err);
         }
       );
+    }
+
+    if (event.identificador === "dominio") {
+      //! Debería buscar:
+      //! - los atributos obligatorios
+      //! - las guías de talles (si es que es obligatoria)
+
+      //TODO: ver bien cual de todos los dominios puede ser el correcto
+      this.dominioSeleccionado = this.dominios.find((dominio: Dominio) => dominio.category_name === event.valor) || {};
+      console.log('Dominio seleccionado:', this.dominioSeleccionado);
+      
+      
+      //! Buscar los atributos obligatorios
+      if (this.dominioSeleccionado && this.dominioSeleccionado["category_id"]) {
+        this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
+          (res: any) => {
+            console.log('1 - Atributos obligatorios:', res);
+          },
+          (err: any) => {
+            console.error('Error al buscar en Meli:', err);
+          }
+        );
+
+      }
+
+
+
+
+      //! Buscar las guías de talles
+      let search_charts_payload:{} = {
+          "domain_id": "T_SHIRTS",
+          "site_id": "MLA",
+          "seller_id":  "327259941",    //TODO: Cambiar por la ID de la cuenta de la sole
+          "attributes": [
+              {
+                  "id": "GENDER",
+                  "values": [
+                      {
+                          "name": "Mujer"
+                      }
+                  ]
+              },
+              {
+                  "id": "BRAND",
+                  "values": [
+                      {
+                          "name": "generico"
+                      }
+                  ]
+              }
+          ]
+      };
+      this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
+        (res: any) => {
+          console.log('2 - Guias de talles:', res);
+        },
+        (err: any) => {
+          console.error('Error al buscar en Meli:', err);
+        }
+      );
+
+
+
     }
 
   }

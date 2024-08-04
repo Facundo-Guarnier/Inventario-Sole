@@ -209,19 +209,19 @@ if __name__ == "__main__":
     #* --------------------------------- Predecir categoria
     
     # #! Posibles categorías
-    # domain_discovery_response:list = ml_api.get('/sites/MLA/domain_discovery/search?q=Remera Genérica mujer adulto')
-    # # print(f"\n\nDomain:\n{json.dumps(domain_discovery_response, indent=2)}")    #! Ej: {"domain_id": "MLA-T_SHIRTS","domain_name": "Remeras","category_id": "MLA4979","category_name": "Remeras, Musculosas y Chombas","attributes": []}
+    domain_discovery_response:list = ml_api.get('/sites/MLA/domain_discovery/search?q=Remera Genérica mujer adulto')
+    # print(f"\n\nDomain:\n{json.dumps(domain_discovery_response, indent=2)}")    #! Ej: {"domain_id": "MLA-T_SHIRTS","domain_name": "Remeras","category_id": "MLA4979","category_name": "Remeras, Musculosas y Chombas","attributes": []}
     
-    # #! Atributos obligatorios por categoría
-    # # domain_discovery_response=[domain_discovery_response[0]]
-    # for cat in domain_discovery_response:
-    #     print(f'\n\n{cat["category_id"]}')
+    #! Atributos obligatorios por categoría
+    # domain_discovery_response=[domain_discovery_response[0]]
+    for cat in domain_discovery_response:
+        print(f'\n\n{cat["category_id"]}')
         
-    #     atributos:list = ml_api.get(f"/categories/{cat['category_id']}/attributes")
+        atributos:list = ml_api.get(f"/categories/{cat['category_id']}/attributes")
         
-    #     for att in atributos:
-    #         if att["tags"].get("required", False):
-    #             print(f' {att["name"]}: {att["id"]}')     #! MLA4979, MLA109042, MLA6551, MLA414238, MLA417869, MLA417371
+        for att in atributos:
+            if att["tags"].get("required", False):
+                print(f' {att["name"]}: {att["id"]}')     #! MLA4979, MLA109042, MLA6551, MLA414238, MLA417869, MLA417371
 
     
     

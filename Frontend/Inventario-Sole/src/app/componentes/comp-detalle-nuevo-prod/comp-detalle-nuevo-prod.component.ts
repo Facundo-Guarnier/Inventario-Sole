@@ -30,7 +30,7 @@ export class CompDetalleNuevoComponent implements OnInit {
 
     //! Delay antes de activar el evento
     this.changeSubject.pipe(
-      debounceTime(1500), // espera X ms después de la última emisión
+      debounceTime(1100), // espera X ms después de la última emisión
       distinctUntilChanged((prev, curr) => 
         prev.identificador === curr.identificador && prev.valor === curr.valor
       )
