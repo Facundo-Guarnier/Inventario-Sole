@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { Campo } from 'src/app/interfaces/campo.interface';
 
 
@@ -21,9 +22,22 @@ export class CompDetalleNuevoComponent implements OnInit {
 
   @Output() onChange = new EventEmitter<{identificador: string, valor: string}>();
   
+  private changeSubject = new Subject<{identificador: string, valor: any}>();
+
   //* ------------------------------------------------------------
   
-  constructor() { }
+  constructor() {
+
+    //! Delay antes de activar el evento
+    this.changeSubject.pipe(
+      debounceTime(1500), // espera X ms después de la última emisión
+      distinctUntilChanged((prev, curr) => 
+        prev.identificador === curr.identificador && prev.valor === curr.valor
+      )
+    ).subscribe(change => {
+      this.onChange.emit(change);
+    });
+  }
   
   ngOnInit(): void {
   }
@@ -35,13 +49,11 @@ export class CompDetalleNuevoComponent implements OnInit {
   OnChange(campo: Campo, event: any) {
     let valor: any;
     if (event.target) {
-      // Para inputs, textareas, etc.
       valor = event.target.value;
     } else {
-      // Para checkboxes y otros controles
       valor = event;
     }
-    this.onChange.emit({
+    this.changeSubject.next({
       identificador: campo.identificador,
       valor: valor
     });

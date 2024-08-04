@@ -104,17 +104,18 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
   //! Actualizar campos
   async onChange(event: {identificador: string, valor: string}) {
-    if (event.identificador === 'titulo') {
-      // this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + event.valor).subscribe(
-      this.apiMeli.get("/users/me", this.authService.getToken()).subscribe(
-        (res: any) => {
-          console.log('Respuesta de Meli:', res);
-        },
-        (err: any) => {
-          console.error('Error al buscar en Meli:', err);
-        }
-      );
-    }
+    // if (event.identificador === 'titulo') {
+    //   this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + event.valor, this.authService.getToken()).subscribe(
+    //   // this.apiMeli.get("/users/me", this.authService.getToken()).subscribe(
+    //     (res: any) => {
+    //       console.log('Respuesta de Meli:', res);
+    //     },
+    //     (err: any) => {
+    //       console.error('Error al buscar en Meli:', err);
+    //     }
+    //   );
+    // }
+    console.log(event)
   }
 
 
