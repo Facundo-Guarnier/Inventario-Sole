@@ -13,7 +13,7 @@ class MercadoLibreAPI:
     
     
     def authenticate(self, code=None):
-        if self.load_tokens():
+        if self.__load_tokens():
             print("Token cargado desde el archivo.")
         elif code:
             url = "https://api.mercadolibre.com/oauth/token"
@@ -35,12 +35,12 @@ class MercadoLibreAPI:
                 print(response.json())
                 print("+++++++++++++++++++++++++")
                 raise Exception(f"Autenticación fallida: {response.text}")
-            self.save_tokens()
+            self.__save_tokens()
         else:
             raise Exception("No tokens found and no authorization code provided")
     
     
-    def refresh_access_token(self):
+    def __refresh_access_token(self):
         if time.time() >= self.expires_at - 1800:  #! Recargar el token 30 minutos antes de que expire
             print("Refrescando token...")
             url = "https://api.mercadolibre.com/oauth/token"
@@ -58,12 +58,12 @@ class MercadoLibreAPI:
                 self.refresh_token = token_info["refresh_token"]
                 self.expires_at = time.time() + token_info["expires_in"]
                 print("Token refrescado.\n")
-                self.save_tokens()
+                self.__save_tokens()
             else:
                 raise Exception("Token refresh failed")
     
     
-    def save_tokens(self):
+    def __save_tokens(self):
         token_data = {
             "access_token": self.access_token,
             "refresh_token": self.refresh_token,
@@ -73,7 +73,7 @@ class MercadoLibreAPI:
             json.dump(token_data, f)
     
     
-    def load_tokens(self):
+    def __load_tokens(self):
         if os.path.exists("ml_tokens.json"):
             with open("ml_tokens.json", "r") as f:
                 token_data = json.load(f)
@@ -94,7 +94,7 @@ class MercadoLibreAPI:
     
     
     def get(self, endpoint):
-        self.refresh_access_token()
+        self.__refresh_access_token()
         url = f"https://api.mercadolibre.com{endpoint}"
         headers = {"Authorization": f"Bearer {self.access_token}"}
         response = requests.get(url, headers=headers)
@@ -102,7 +102,7 @@ class MercadoLibreAPI:
     
     
     def post(self, endpoint, data, is_json=True):
-        self.refresh_access_token()
+        self.__refresh_access_token()
         url = f"https://api.mercadolibre.com{endpoint}"
         headers = {"Authorization": f"Bearer {self.access_token}"}
         
@@ -112,64 +112,48 @@ class MercadoLibreAPI:
         else:
             response = requests.post(url, headers=headers, data=data)
         
-        # if response.status_code != 200:
-        #     raise Exception(f"Error en la solicitud POST: {response.text}")
-        
         return response.json()
     
     
-    def publish_clothing_item(self):
-        picture_paths = ["/home/guarnold/Repositorios_GitHub/Inventario-Sole/Backend/uploads/00001/resized_Pic_20240204_130256_4096x2160.png"]
+    def publicar_producto(self):
+        picture_paths = ["/home/guarnold/Repositorios_GitHub/Inventario-Sole/Backend/uploads/00001/resized_1.png"]
         picture_ids = [self.upload_image(path) for path in picture_paths]
         
         item_data = {
-            "title": "Remera de algodón para mujer",
-            "category_id": "MLA109042",
+            "title": "Remera de algodón para mujer - Item de test - No ofertar",
+            # "category_id": "MLA109042",
+            "category_id": "MLA417371",
             "price": 150000,
             "currency_id": "ARS",
             "available_quantity": 10,
             "buying_mode": "buy_it_now",
             "condition": "new",
+            "listing_type_id": "gold_special",
+            "sale_terms": [
+                {"id": "WARRANTY_TYPE", "value_name": "Garantía del vendedor"},
+                {"id": "WARRANTY_TIME", "value_name": "10 días"}
+            ],
+            "pictures": [{"id": pic_id} for pic_id in picture_ids],
+            
             "channels": ["mshops"],
             "status": "paused",
-            "listing_type_id": "gold_special",
-            "description": {"plain_text": "Remera de algodón suave y cómoda para uso diario."},
-            "pictures": [{"id": pic_id} for pic_id in picture_ids],
+            # "description": {"plain_text": "Remera de algodón suave y cómoda para uso diario."}, #! La descripcion se envía después
+            
             "attributes": [
+                #! Atributos obligatorios
                 {"id": "BRAND", "value_name": "Genérica"},
                 {"id": "MODEL", "value_name": "Básico"},
                 {"id": "GENDER", "value_name": "Mujer"},
                 {"id": "GARMENT_TYPE", "value_name": "Remera"},
                 {"id": "COLOR", "value_name": "Blanco"},
-                {"id": "SIZE", "value_name": 38},
                 {"id": "SLEEVE_TYPE", "value_name": "Sin manga"},
-                {"id": "AGE_GROUP", "value_name": "Adultos"},  # Ajusta este valor según la respuesta de la API
-                {"id": "SIZE_GRID_ID", "value_name": "Remeras"},  # Ajusta este valor según la respuesta de la API
+                
+                #! Atributos opcionales
+                {"id": "SIZE", "value_name": 38},
+                {"id": "AGE_GROUP", "value_name": "Adultos"},
+                {"id": "SIZE_GRID_ID", "value_name": "Remeras"},
             ]
         }
-        
-        # Datos de ejemplo para la guía de tallas
-        sizes_data = [
-            {"size": "S", "BUST_CIRCUMFERENCE_FROM": "80 cm"},
-            {"size": "M", "BUST_CIRCUMFERENCE_FROM": "85 cm"},
-            # ... más tallas
-        ]
-        # Crear la guía de tallas
-        size_chart_id = ml_api.create_size_chart(
-            domain_id="MLA1430", 
-            site_id="MLA", 
-            # brand_name="Genérica",  
-            gender_name="Mujer", 
-            sizes_data=sizes_data 
-        )
-        print(f"Guía de tallas creada con ID: {size_chart_id}")
-        
-        
-        
-        item_data["attributes"].append({
-            "id": "SIZE_GRID_ID",
-            "value_name": str(size_chart_id)  
-        })
         
         return self.post("/items", item_data)
 
@@ -199,120 +183,6 @@ class MercadoLibreAPI:
 
 
 
-    def get_size_chart_technical_spec(self, domain_id, gender_id):
-        """Obtiene la ficha técnica de la guía de tallas para el dominio y género especificados."""
-        url = f"https://api.mercadolibre.com/domains/{domain_id}/technical_specs/?section=grids"
-        headers = {
-            "Authorization": f"Bearer {self.access_token}",
-            "Content-Type": "application/json"
-        }
-        data = {
-            "attributes": [
-                {
-                    "id": "GENDER",
-                    "value_id": gender_id
-                }
-            ]
-        }
-        response = requests.post(url, headers=headers, data=json.dumps(data))
-        print("Ficha técnica:", (response))
-        
-        if response.status_code == 200:
-            return response.json()
-        else:
-            raise Exception(f"Error al obtener la ficha técnica de la guía de tallas: {response.text}")
-
-    def create_size_chart(self, domain_id, site_id, gender_name, sizes_data):
-        """Crea una guía de tallas personalizada genérica."""
-
-        # Obtener la ficha técnica para determinar los atributos de medidas 
-        technical_spec = self.get_size_chart_technical_spec(domain_id, "339665")
-
-        # Buscar los atributos de medidas en la ficha técnica
-        body_measure_attributes = []
-        clothing_measure_attributes = []
-        
-        for component in technical_spec["input"]["groups"][0]["components"][0]["components"]:
-            for attribute in component["attributes"]:
-                if "BODY_MEASURE" in attribute.get("tags", []):
-                    body_measure_attributes.append(attribute["id"])
-                if "CLOTHING_MEASURE" in attribute.get("tags", []):
-                    clothing_measure_attributes.append(attribute["id"])
-
-        # Elegir el tipo de medida (puedes cambiar esto si es necesario)
-        measure_type = "BODY_MEASURE"  
-        measure_attributes = body_measure_attributes
-
-        # Construir las filas de la guía de tallas
-        rows = []
-        for size_data in sizes_data:
-            row_attributes = [
-                {
-                    "id": "SIZE",
-                    "values": [
-                        {
-                            "name": size_data["size"] 
-                        }
-                    ]
-                }
-            ]
-            # Agregar atributos de medidas
-            for measure_attr in measure_attributes:
-                if measure_attr in size_data:
-                    row_attributes.append({
-                        "id": measure_attr,
-                        "values": [
-                            {
-                                "name": size_data[measure_attr] 
-                            }
-                        ]
-                    })
-            rows.append({"attributes": row_attributes})
-
-        # JSON para la solicitud de creación de la guía de tallas
-        data = {
-            "names": {
-                site_id: f"Guía de Tallas - {gender_name}" 
-            },
-            "domain_id": domain_id, 
-            "site_id": site_id,
-            "measure_type": measure_type,
-            "attributes": [
-                {
-                    "id": "GENDER",
-                    "values": [
-                        {
-                            "name": gender_name 
-                        }
-                    ]
-                }
-            ],
-            "main_attribute": {
-                "attributes": [
-                    {
-                        "site_id": site_id,
-                        "id": "SIZE" 
-                    }
-                ]
-            },
-            "rows": rows
-        }
-
-        url = "https://api.mercadolibre.com/catalog/charts"
-        headers = {
-            "Authorization": f"Bearer {self.access_token}",
-            "Content-Type": "application/json"
-        }
-        response = requests.post(url, headers=headers, data=json.dumps(data))
-        if response.status_code in [200, 201]:
-            return response.json()["id"]
-        else:
-            raise Exception(f"Error al crear la guía de tallas: {response.text}")
-
-
-
-
-
 if __name__ == "__main__":
     conf = Config()
     
@@ -326,18 +196,49 @@ if __name__ == "__main__":
     #! Autenticar (necesitas obtener el código de autorización primero)
     auth_code = conf.MESH_AUTH_CODE
     ml_api.authenticate(auth_code)
-    ml_api.refresh_access_token()
     
     # print(ml_api)
     
     #* --------------------------------- Mi detalle
-    # print("RESULTADO:", json.dumps(ml_api.get("/users/me"), indent=2))
+    # print("\n\nMi detalle:\n", json.dumps(ml_api.get("/users/me"), indent=2))
+    
+    
+    
+    
+    #* --------------------------------- Predecir categoria
+    
+    # #! Posibles categorías
+    # domain_discovery_response:list = ml_api.get('/sites/MLA/domain_discovery/search?q=Remera Genérica mujer adulto')
+    # # print(f"\n\nDomain:\n{json.dumps(domain_discovery_response, indent=2)}")    #! Ej: {"domain_id": "MLA-T_SHIRTS","domain_name": "Remeras","category_id": "MLA4979","category_name": "Remeras, Musculosas y Chombas","attributes": []}
+    
+    # #! Atributos obligatorios por categoría
+    # # domain_discovery_response=[domain_discovery_response[0]]
+    # for cat in domain_discovery_response:
+    #     print(f'\n\n{cat["category_id"]}')
+        
+    #     atributos:list = ml_api.get(f"/categories/{cat['category_id']}/attributes")
+        
+    #     for att in atributos:
+    #         if att["tags"].get("required", False):
+    #             print(f' {att["name"]}: {att["id"]}')     #! MLA4979, MLA109042, MLA6551, MLA414238, MLA417869, MLA417371
+
+    
+    
     
     #* --------------------------------- Ver mis productos
-    print(ml_api.get("/users/me/items/search?status=active"))
+    # print(ml_api.get("/users/me/items/search?status=active"))
     
     #* --------------------------------- Publicar
-    # print(json.dumps(ml_api.publish_clothing_item(), indent=2))
+    # #! Crear publicación
+    # re= ml_api.publicar_producto()
+    # print(f"\nPublicación:\n{json.dumps(re, indent=2)}")
+    
+    # if re.get("error"):
+    #     exit()
+    # #! Agregar descripción (si o si se debe hacer después de crear la publicación)
+    # re = ml_api.post(f"/items/{re['id']}/description", {"plain_text": "Remera de algodón suave y cómoda para uso diario."})
+    
+    
     
     #* --------------------------------- Categorías
     # print(json.dumps(ml_api.get("/sites/MLA/categories"), indent=2))  #! Ropa y Accesorios: MLA1430
@@ -348,3 +249,95 @@ if __name__ == "__main__":
     #* ---------------------------------  SIZE_GRID_ID.
     # r = ml_api.get(f"/categories/MLA109042/attributes")
     # print(json.dumps(r, indent=2))
+    
+    
+    # domain_id = "MLA-T_SHIRTS"
+    # #!Buscar una Guía de Talles:
+    # search_charts_payload = {
+    #     "domain_id": "T_SHIRTS",
+    #     "site_id": "MLA",
+    #     "seller_id":  "327259941",
+    #     "attributes": [
+    #         {
+    #             "id": "GENDER",
+    #             "values": [
+    #                 {
+    #                     "name": "Mujer"
+    #                 }
+    #             ]
+    #         },
+    #         {
+    #             "id": "BRAND",
+    #             "values": [
+    #                 {
+    #                     "name": "generico"
+    #                 }
+    #             ]
+    #         }
+    #     ]
+    # }
+    # search_charts_response = ml_api.post("/catalog/charts/search", search_charts_payload)
+    # print(f"\n\nSearch Chart:\n{json.dumps(search_charts_response, indent=2)}")
+    
+    #! Crear una Nueva Guía de Talles:
+    # technical_specs_response = ml_api.get(f"/domains/{domain_id}/technical_specs")
+    # # print(f"\n\nTechnical Specs:\n{json.dumps(technical_specs_response, indent=2)}")
+    
+    # required_attributes = []
+    # for group in technical_specs_response["input"]["groups"]:
+    #     for component in group["components"]:
+    #         if "attributes" in component:
+    #             for attribute in component["attributes"]:
+    #                 if "grid_template_required" in attribute.get("tags", []):
+    #                     required_attributes.append(attribute["id"])
+    
+    # grid_technical_specs_payload = {
+    #     "attributes": [
+    #         {"id": attribute_id, "value_name": "Mujer"}  # Asegúrate de proporcionar los valores apropiados para cada atributo requerido
+    #         for attribute_id in required_attributes
+    #     ]
+    # }
+    # grid_technical_specs_response = ml_api.post(f"/domains/{domain_id}/technical_specs?section=grids", grid_technical_specs_payload)
+    # print(f"\n\nGrid Technical Specs:\n{json.dumps(grid_technical_specs_response, indent=2)}")
+    
+    # create_chart_payload = {
+    #     "names": {"MLA": "Guía de Talles para Remeras de Mujer"},
+    #     "domain_id": domain_id,
+    #     "site_id": "MLA",
+    #     "main_attribute": {  # Define el atributo principal para la guía de talles (ej: SIZE)
+    #         "attributes": [
+    #             {
+    #                 "site_id": "MLA",
+    #                 "id": "SIZE"  # O el ID del atributo que corresponda
+    #             }
+    #         ]
+    #     },
+    #     "attributes": [
+    #         {
+    #             "id": "GENDER",
+    #             "values": [
+    #                 {
+    #                     "name": "Mujer"
+    #                 }
+    #             ]
+    #         }
+    #         # ... (otros atributos requeridos)
+    #     ],
+    #     "rows": [
+    #         {
+    #             "attributes": [
+    #                 {"id": "SIZE", "values": [{"name": "S"}]},
+    #                 # ... (otros atributos requeridos para las filas)
+    #             ]
+    #         },
+    #         # ... (más filas con diferentes tallas)
+    #     ]
+    # }
+    
+    # create_chart_response = ml_api.post("/catalog/charts", create_chart_payload)
+    # print(f"\n\nCreate Chart:\n{json.dumps(create_chart_response, indent=2)}")
+    
+    
+    
+    
+    
