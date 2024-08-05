@@ -73,7 +73,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     // {domain_id: 'MLA-T_SHIRTS', domain_name: 'Remeras', category_id: 'MLA414238', category_name: 'Remeras, Musculosas y Chombas'},
   ];
   dominioSeleccionado:Dominio = {};
-
+  requiredAttributes: {}[] = [];
 
   //* ------------------------------------------------------------
   
@@ -125,12 +125,14 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
           
           //! Verificar si existe el campo dominio
           //TODO: Agregar mas descripcion a los dominios, todos se llaman iguales pero son distintos (hombre, mujer, niño, bebe)
-          let campoDominio = this.camposGenerales.find(campo => campo.identificador === 'dominio');
-          if (campoDominio) {
-            campoDominio.opciones = dominios_nombre;
-          } else {
-            this.camposGenerales.push({ nombre: "Dominio", identificador: "dominio", tipo: "selector", opciones: dominios_nombre });
+          let campoDominioIndex = this.camposGenerales.findIndex(campo => campo.identificador === 'dominio');
+          if (campoDominioIndex !== -1) {
+            //! Borrar el campo existente
+            this.camposGenerales.splice(campoDominioIndex, 1);
           }
+          //! Crear un nuevo campo "dominio"
+          this.camposGenerales.push({ nombre: "Dominio", identificador: "dominio", tipo: "selector", opciones: dominios_nombre });
+          
           
         },
         (err: any) => {
@@ -153,7 +155,12 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       if (this.dominioSeleccionado && this.dominioSeleccionado["category_id"]) {
         this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
           (res: any) => {
-            console.log('1 - Atributos obligatorios:', res);
+            
+            //! Almacenar los atributos requeridos
+            const requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
+            this.requiredAttributes = requiredAttributes;
+            console.log('1 - Atributos obligatorios:', this.requiredAttributes);
+
           },
           (err: any) => {
             console.error('Error al buscar en Meli:', err);

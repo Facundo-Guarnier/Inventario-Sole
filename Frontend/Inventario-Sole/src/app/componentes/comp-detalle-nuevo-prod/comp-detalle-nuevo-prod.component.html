@@ -61,7 +61,7 @@
             <select class="form-select" id="{{campo.identificador}}" [disabled]="!mostrarEditar" 
               [(ngModel)]="campo.valor" 
               (change)="OnChange(campo, $event)">
-              <option>Seleccionar...</option>
+              <!-- <option>Seleccionar...</option> -->
               <option *ngFor="let opcion of campo.opciones" 
                 [value]="opcion" 
                 [selected]="opcion === campo.valor || ''"
