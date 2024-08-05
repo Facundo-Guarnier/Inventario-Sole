@@ -152,22 +152,69 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       
       
       //! Buscar los atributos obligatorios
-      if (this.dominioSeleccionado && this.dominioSeleccionado["category_id"]) {
-        this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
-          (res: any) => {
-            
-            //! Almacenar los atributos requeridos
-            const requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
-            this.requiredAttributes = requiredAttributes;
-            console.log('1 - Atributos obligatorios:', this.requiredAttributes);
+      this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
+        (res: any) => {
+          
+          //! Almacenar los atributos requeridos
+          const requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
+          this.requiredAttributes = requiredAttributes;
+          console.log('1 - Atributos obligatorios:', this.requiredAttributes);
+          this.agregarAtributosObligatorios();
+          
+        },
+        (err: any) => {
+          console.error('Error al buscar en Meli:', err);
+        }
+      );
 
-          },
-          (err: any) => {
-            console.error('Error al buscar en Meli:', err);
-          }
-        );
-
-      }
+        // ej:
+        // this.requiredAttributes = [
+        //   {
+        //     "id": "GENDER",
+        //     "name": "Género",
+        //     "tags": {
+        //         "catalog_required": true,
+        //         "required": true,
+        //         "grid_template_required": true,
+        //         "grid_filter": true
+        //     },
+        //     "hierarchy": "PARENT_PK",
+        //     "relevance": 1,
+        //     "value_type": "list",
+        //     "values": [
+        //         {
+        //             "id": "339665",
+        //             "name": "Mujer"
+        //         },
+        //         {
+        //             "id": "339666",
+        //             "name": "Hombre"
+        //         },
+        //         {
+        //             "id": "339668",
+        //             "name": "Niñas"
+        //         },
+        //         {
+        //             "id": "371795",
+        //             "name": "Bebés"
+        //         },
+        //         {
+        //             "id": "110461",
+        //             "name": "Sin género"
+        //         },
+        //         {
+        //             "id": "339667",
+        //             "name": "Niños"
+        //         },
+        //         {
+        //             "id": "19159491",
+        //             "name": "Sin género infantil"
+        //         }
+        //     ],
+        //     "attribute_group_id": "OTHERS",
+        //     "attribute_group_name": "Otros"
+        // }
+        // ]
 
 
 
@@ -210,6 +257,38 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     }
 
   }
+
+
+
+
+  agregarAtributosObligatorios() {
+    this.requiredAttributes.forEach((attribute: any) => {
+      const campo: Campo = {
+        nombre: attribute.name,
+        identificador: attribute.id,
+        tipo: attribute.values && attribute.values.length > 0 ? 'selector' : 'input-text'
+      };
+  
+      if (campo.tipo === 'selector') {
+        campo.opciones = attribute.values.map((value: any) => value.name);
+      }
+  
+      // Verifica si el campo ya existe
+      const campoExistente = this.camposGenerales.find(c => c.identificador === campo.identificador);
+      if (!campoExistente) {
+        this.camposGenerales.push(campo);
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
 
 
 
