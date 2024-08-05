@@ -34,7 +34,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Producto
   camposGenerales: Campo[] = [
     { nombre: "ID", identificador: "id", tipo: "readonly" },
-    { nombre: "Código Mercado Shop", identificador: "cod_ms", tipo: "input-text" },
+    // { nombre: "Código Mercado Shop", identificador: "cod_ms", tipo: "input-text" },
     
     { nombre: "Titulo (sin talle, color o descuento)", identificador: "titulo", tipo: "input-text"},
     // { nombre: "Marca (si no es oficial, escriba 'generico')", identificador: "marca", tipo: "input-text"},
@@ -161,60 +161,15 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
           console.log('1 - Atributos obligatorios:', this.requiredAttributes);
           this.agregarAtributosObligatorios();
           
+
+          // Agregar en el backend los atributos obligatorios para guardarlos en la db
+
         },
         (err: any) => {
           console.error('Error al buscar en Meli:', err);
         }
       );
 
-        // ej:
-        // this.requiredAttributes = [
-        //   {
-        //     "id": "GENDER",
-        //     "name": "Género",
-        //     "tags": {
-        //         "catalog_required": true,
-        //         "required": true,
-        //         "grid_template_required": true,
-        //         "grid_filter": true
-        //     },
-        //     "hierarchy": "PARENT_PK",
-        //     "relevance": 1,
-        //     "value_type": "list",
-        //     "values": [
-        //         {
-        //             "id": "339665",
-        //             "name": "Mujer"
-        //         },
-        //         {
-        //             "id": "339666",
-        //             "name": "Hombre"
-        //         },
-        //         {
-        //             "id": "339668",
-        //             "name": "Niñas"
-        //         },
-        //         {
-        //             "id": "371795",
-        //             "name": "Bebés"
-        //         },
-        //         {
-        //             "id": "110461",
-        //             "name": "Sin género"
-        //         },
-        //         {
-        //             "id": "339667",
-        //             "name": "Niños"
-        //         },
-        //         {
-        //             "id": "19159491",
-        //             "name": "Sin género infantil"
-        //         }
-        //     ],
-        //     "attribute_group_id": "OTHERS",
-        //     "attribute_group_name": "Otros"
-        // }
-        // ]
 
 
 
@@ -268,12 +223,18 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         identificador: attribute.id,
         tipo: attribute.values && attribute.values.length > 0 ? 'selector' : 'input-text'
       };
-  
+      
+      //! Verificar si es un selector
       if (campo.tipo === 'selector') {
         campo.opciones = attribute.values.map((value: any) => value.name);
+        
+        //! Agregar la opción "generico" si no existe en la marca
+        if (campo.identificador === "BRAND" && campo.opciones && !campo.opciones.includes("generico")) {
+          campo.opciones.push("generico");
+        }
       }
-  
-      // Verifica si el campo ya existe
+      
+      //! Verifica si el campo ya existe
       const campoExistente = this.camposGenerales.find(c => c.identificador === campo.identificador);
       if (!campoExistente) {
         this.camposGenerales.push(campo);
@@ -298,7 +259,9 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     this.compDetalleNuevo.recolectarDatos();
     
     //! Verificar que todos los campos no estén vacíos
-    this.verificarCamposVacios();
+    if (this.verificarCamposVacios()) {
+      return;
+    }
     
     //! Dar formato a los datos
     let producto = {
@@ -400,7 +363,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       this.tituloModal = "Faltan campos por llenar";
       this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
       this.openModal();
-      return;
+      return true;
     }
     
     if (this.camposFisica.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
@@ -408,7 +371,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       this.tituloModal = "Faltan campos por llenar";
       this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
       this.openModal();
-      return;
+      return true;
     }
     
     if (this.camposOnline.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
@@ -416,8 +379,10 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       this.tituloModal = "Faltan campos por llenar";
       this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
       this.openModal();
-      return;
+      return true;
     }
+
+    return false;
   }
   
   //! Botones de vista
