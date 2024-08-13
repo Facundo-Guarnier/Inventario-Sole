@@ -1,5 +1,5 @@
 # TO DO list
-
+ 
 ## Preguntas
 
 * Movimientos es olo para la tienda fisica? 
