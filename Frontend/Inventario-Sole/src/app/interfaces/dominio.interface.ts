@@ -4,4 +4,5 @@ export interface Dominio {
     domain_name?: string;
     category_id?: string;
     category_name?: string;
+    path_completo?: string;
 }

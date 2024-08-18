@@ -10,6 +10,12 @@ import { ApiProductosService } from 'src/app/services/productos/api-producto.ser
 import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
 
 
+interface Attribute {
+  id: string;
+  name: string;
+  values?: { name: string }[];
+}
+
 @Component({
   selector: 'pag-productos-crear',
   templateUrl: './crear.component.html',
@@ -34,13 +40,9 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Producto
   camposGenerales: Campo[] = [
     { nombre: "ID", identificador: "id", tipo: "readonly" },
-    // { nombre: "Código Mercado Shop", identificador: "cod_ms", tipo: "input-text" },
-    
+    { nombre: "Código Mercado Shop", identificador: "cod_ms", tipo: "readonly" },
     { nombre: "Titulo (sin talle, color o descuento)", identificador: "titulo", tipo: "input-text"},
-    // { nombre: "Marca (si no es oficial, escriba 'generico')", identificador: "marca", tipo: "input-text"},
-    
     // { nombre: "Descripcion", identificador: "descripcion", tipo: "textarea-text"},
-    // { nombre: "Talle", identificador: "talle", tipo: "input-text"},
     { nombre: "Liquidacion", identificador: "liquidacion", tipo: "boolean", valor: false },
   ];
   
@@ -67,14 +69,14 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Vista
   showNavbar = false;
   showSidebar = false;
-
+  
   //! Variables según el dominio
   dominios: Dominio[] = [
     // {domain_id: 'MLA-T_SHIRTS', domain_name: 'Remeras', category_id: 'MLA414238', category_name: 'Remeras, Musculosas y Chombas'},
   ];
   dominioSeleccionado:Dominio = {};
-  requiredAttributes: {}[] = [];
-
+  requiredAttributes: Attribute[] = [];
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -112,144 +114,174 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
   //! Actualizar campos
   async onChange(event: {identificador: string, valor: string}) {
-    console.log('Evento:', event);
+    // console.log('Evento:', event);
+    
     if (event.identificador === 'titulo') {
-      
-      //! Buscar el dominio del producto en base al titulo
-      this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + event.valor, this.authService.getToken()).subscribe(
-      // this.apiMeli.get("/users/me", this.authService.getToken()).subscribe(
-        (res: any) => {
-          this.dominios = res;
-          console.log('Dominios:', this.dominios);
-          let dominios_nombre: string[] = this.dominios.map((dominio: any) => dominio.category_name);
-          
-          //! Verificar si existe el campo dominio
-          //TODO: Agregar mas descripcion a los dominios, todos se llaman iguales pero son distintos (hombre, mujer, niño, bebe)
-          let campoDominioIndex = this.camposGenerales.findIndex(campo => campo.identificador === 'dominio');
-          if (campoDominioIndex !== -1) {
-            //! Borrar el campo existente
-            this.camposGenerales.splice(campoDominioIndex, 1);
-          }
-          //! Crear un nuevo campo "dominio"
-          this.camposGenerales.push({ nombre: "Dominio", identificador: "dominio", tipo: "selector", opciones: dominios_nombre });
-          
-          
-        },
-        (err: any) => {
-          console.error('Error al buscar en Meli:', err);
-        }
-      );
+      this.buscar_dominio_x_titulo(event.valor);
     }
-
+    
     if (event.identificador === "dominio") {
-      //! Debería buscar:
-      //! - los atributos obligatorios
-      //! - las guías de talles (si es que es obligatoria)
-
-      //TODO: ver bien cual de todos los dominios puede ser el correcto
-      this.dominioSeleccionado = this.dominios.find((dominio: Dominio) => dominio.category_name === event.valor) || {};
-      console.log('Dominio seleccionado:', this.dominioSeleccionado);
-      
-      
-      //! Buscar los atributos obligatorios
-      this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
-        (res: any) => {
-          
-          //! Almacenar los atributos requeridos
-          const requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
-          this.requiredAttributes = requiredAttributes;
-          console.log('1 - Atributos obligatorios:', this.requiredAttributes);
-          this.agregarAtributosObligatorios();
-          
-
-          // Agregar en el backend los atributos obligatorios para guardarlos en la db
-
-        },
-        (err: any) => {
-          console.error('Error al buscar en Meli:', err);
-        }
-      );
-
-
-
-
-
-      //! Buscar las guías de talles
-      let search_charts_payload:{} = {
-          "domain_id": "T_SHIRTS",
-          "site_id": "MLA",
-          "seller_id":  "327259941",    //TODO: Cambiar por la ID de la cuenta de la sole
-          "attributes": [
-              {
-                  "id": "GENDER",
-                  "values": [
-                      {
-                          "name": "Mujer"
-                      }
-                  ]
-              },
-              {
-                  "id": "BRAND",
-                  "values": [
-                      {
-                          "name": "generico"
-                      }
-                  ]
-              }
-          ]
-      };
-      this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
-        (res: any) => {
-          console.log('2 - Guias de talles:', res);
-        },
-        (err: any) => {
-          console.error('Error al buscar en Meli:', err);
-        }
-      );
-
-
-
+      this.seleccionarDominio(event.valor);
     }
-
   }
+
+
+  //! Buscar el dominio del producto en base al titulo
+  buscar_dominio_x_titulo(titulo:string) {
+    this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + titulo, this.authService.getToken()).subscribe(
+      (res: any) => {
+        
+        
+        //! Agregar path completo
+        this.dominios = res.map((dominio: Dominio) => {
+          this.apiMeli.get("/categories/" + dominio["category_id"], this.authService.getToken()).subscribe(
+            (res: any) => {
+              
+              
+              dominio.path_completo = res.path_from_root.map((path: any) => path.name).join(' > ');
+              
+              let dominios_nombre: string[] = this.dominios.map((dominio: any) => dominio.path_completo);
+              
+              //! Verificar si existe el campo dominio
+              let campoDominioIndex = this.camposGenerales.findIndex(campo => campo.identificador === 'dominio');
+              if (campoDominioIndex !== -1) {
+                //! Borrar el campo existente
+                this.camposGenerales.splice(campoDominioIndex, 1);
+              }
+              //! Crear un nuevo campo "dominio"
+              this.camposGenerales.push({ nombre: "Dominio", identificador: "dominio", tipo: "selector", opciones: dominios_nombre });
+              this.removerAtributosObligatorios();
+            },
+            
+            (err: any) => {
+              console.error('Error al buscar en Meli:', err);
+            }
+          );
+          return dominio;
+        });
+        console.log('Dominios:', this.dominios);
+        
+      },
+      
+      (err: any) => {
+        console.error('Error al buscar en Meli:', err);
+      }
+    );
+  }
+
+
+  seleccionarDominio(path_completo: string) {
+    //! Debería buscar:
+    //! - los atributos obligatorios
+    //! - las guías de talles (si es que es obligatoria)
+    this.dominioSeleccionado = this.dominios.find((dominio: Dominio) => dominio.path_completo === path_completo) || {};
+    console.log('Dominio seleccionado:', this.dominioSeleccionado);
+    
+    this.buscar_atributos_obligatorios();
+    
+    //! Buscar las guías de talles
+    // let search_charts_payload:{} = {
+    //     "domain_id": "T_SHIRTS",
+    //     "site_id": "MLA",
+    //     "seller_id":  "327259941",    //TODO: Cambiar por la ID de la cuenta de la sole
+    //     "attributes": [
+    //         {
+    //             "id": "GENDER",
+    //             "values": [
+    //                 {
+    //                     "name": "Mujer"
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             "id": "BRAND",
+    //             "values": [
+    //                 {
+    //                     "name": "generico"
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // };
+    // this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
+    //   (res: any) => {
+    //     console.log('2 - Guias de talles:', res);
+    //   },
+    //   (err: any) => {
+    //     console.error('Error al buscar en Meli:', err);
+    //   }
+    // );
+  }
+
+
+  //! Buscar los atributos obligatorios del dominio seleccionado
+  buscar_atributos_obligatorios() {
+    this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
+      (res: any) => {
+        
+        this.removerAtributosObligatorios();
+        //! Almacenar los atributos requeridos
+        this.requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
+        console.log('1 - Atributos obligatorios:', this.requiredAttributes);
+        this.agregarAtributosObligatorios();
+        
+        //TODO Agregar en el backend los atributos obligatorios para guardarlos en la db
+        
+      },
+      (err: any) => {
+        console.error('Error al buscar en Meli:', err);
+      }
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
   agregarAtributosObligatorios() {
+
+    // Agregar los nuevos atributos obligatorios
     this.requiredAttributes.forEach((attribute: any) => {
       const campo: Campo = {
         nombre: attribute.name,
         identificador: attribute.id,
-        tipo: attribute.values && attribute.values.length > 0 ? 'selector' : 'input-text'
+        tipo: attribute.values && attribute.values.length > 0 ? 'selector' : 'input-text',
+        valor: undefined // Asegurarse de que el valor esté indefinido inicialmente
       };
       
-      //! Verificar si es un selector
       if (campo.tipo === 'selector') {
         campo.opciones = attribute.values.map((value: any) => value.name);
         
-        //! Agregar la opción "generico" si no existe en la marca
         if (campo.identificador === "BRAND" && campo.opciones && !campo.opciones.includes("generico")) {
           campo.opciones.push("generico");
         }
       }
       
-      //! Verifica si el campo ya existe
-      const campoExistente = this.camposGenerales.find(c => c.identificador === campo.identificador);
-      if (!campoExistente) {
-        this.camposGenerales.push(campo);
-      }
+      this.camposGenerales.push(campo);
     });
   }
 
 
-
-
-
-
-
-
-
+  removerAtributosObligatorios() {
+    // Crear un conjunto con los IDs de los atributos requeridos para una búsqueda más eficiente
+    const requiredIds = new Set(this.requiredAttributes.map(attr => attr.id));
+  
+    // Filtrar camposGenerales para mantener solo los campos que no están en requiredAttributes
+    this.camposGenerales = this.camposGenerales.filter(campo => !requiredIds.has(campo.identificador));
+  }
 
 
 
@@ -263,14 +295,18 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       return;
     }
     
+    // Crear un objeto para almacenar los campos generales
+    let camposGeneralesObj: {[key: string]: any} = {};
+      
+    // Iterar sobre camposGenerales y añadir cada campo al objeto
+    this.camposGenerales.forEach(campo => {
+      camposGeneralesObj[campo.identificador] = campo.valor;
+    });
+
     //! Dar formato a los datos
     let producto = {
-      id: this.camposGenerales[0].valor,
-      cod_ms: this.camposGenerales[1].valor,
-      marca: this.camposGenerales[2].valor,
-      descripcion: this.camposGenerales[3].valor,
-      talle: this.camposGenerales[4].valor,
-      liquidacion: this.camposGenerales[5].valor,
+      ...camposGeneralesObj, 
+      dominioObj: this.dominioSeleccionado,
       fisica: {
         precio: this.camposFisica[0].valor,
         cantidad: this.camposFisica[1].valor,
@@ -281,12 +317,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       },
       fotos: this.fotos.map(foto => foto.filename),
     };
-    
-    //! Verificar id
-    if (producto.id === null || producto.id === undefined || producto.id === "" || typeof producto.id !== 'string') {
-      console.error('No se ha encontrado el ID');
-      return;
-    }
     
     //! Crear el producto
     this.apiProductos.crear(producto, this.authService.getToken()).subscribe(
@@ -358,32 +388,37 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   
   //! Verificar campos vacíos
   verificarCamposVacios() {
-    if (this.camposGenerales.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
-      console.error('Faltan campos por llenar');
+    const campoVacioGenerales = this.camposGenerales.find(campo => (campo.valor === "" || campo.valor === null || campo.valor === undefined) && campo.tipo !== 'readonly');
+    if (campoVacioGenerales) {
+      console.error(`El campo ${campoVacioGenerales.nombre} está vacío`);
       this.tituloModal = "Faltan campos por llenar";
-      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.mensajeModal = `Por favor, llena el campo ${campoVacioGenerales.nombre} antes de continuar.`;
       this.openModal();
       return true;
     }
     
-    if (this.camposFisica.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
-      console.error('Faltan campos por llenar');
+    const campoVacioFisica = this.camposFisica.find(campo => (campo.valor === "" || campo.valor === null || campo.valor === undefined) && campo.tipo !== 'readonly');
+    if (campoVacioFisica) {
+      console.error(`El campo ${campoVacioFisica.nombre} está vacío`);
       this.tituloModal = "Faltan campos por llenar";
-      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.mensajeModal = `Por favor, llena el campo ${campoVacioFisica.nombre} antes de continuar.`;
       this.openModal();
       return true;
     }
     
-    if (this.camposOnline.some(campo => campo.valor === "" || campo.valor === null || campo.valor === undefined)) {
-      console.error('Faltan campos por llenar');
+    const campoVacioOnline = this.camposOnline.find(campo => (campo.valor === "" || campo.valor === null || campo.valor === undefined) && campo.tipo !== 'readonly');
+    if (campoVacioOnline) {
+      console.error(`El campo ${campoVacioOnline.nombre} está vacío`);
       this.tituloModal = "Faltan campos por llenar";
-      this.mensajeModal = "Por favor, llena todos los campos antes de continuar.";
+      this.mensajeModal = `Por favor, llena el campo ${campoVacioOnline.nombre} antes de continuar.`;
       this.openModal();
       return true;
     }
-
+  
     return false;
   }
+  
+  
   
   //! Botones de vista
   toggleNavbar() {
