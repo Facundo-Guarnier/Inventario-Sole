@@ -77,6 +77,10 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   dominioSeleccionado:Dominio = {};
   requiredAttributes: Attribute[] = [];
   
+  //! Guias de talles
+  guiasTalles: any[] = [];
+  guiaTalleSeleccionada: any = null;
+  
   //* ------------------------------------------------------------
   
   constructor(
@@ -128,6 +132,9 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
   //! Buscar el dominio del producto en base al titulo
   buscar_dominio_x_titulo(titulo:string) {
+    this.guiasTalles = [];
+    this.guiaTalleSeleccionada = null; // Reset la selección
+    
     this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + titulo, this.authService.getToken()).subscribe(
       (res: any) => {
         
@@ -159,7 +166,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
           );
           return dominio;
         });
-        console.log('Dominios:', this.dominios);
+        // console.log('Dominios:', this.dominios);
         
       },
       
@@ -175,42 +182,50 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     //! - los atributos obligatorios
     //! - las guías de talles (si es que es obligatoria)
     this.dominioSeleccionado = this.dominios.find((dominio: Dominio) => dominio.path_completo === path_completo) || {};
-    console.log('Dominio seleccionado:', this.dominioSeleccionado);
+    // console.log('Dominio seleccionado:', this.dominioSeleccionado);
     
     this.buscar_atributos_obligatorios();
     
+    if (this.dominioSeleccionado["domain_id"] === undefined) {
+      return;
+    }
+
+
     //! Buscar las guías de talles
-    // let search_charts_payload:{} = {
-    //     "domain_id": "T_SHIRTS",
-    //     "site_id": "MLA",
-    //     "seller_id":  "327259941",    //TODO: Cambiar por la ID de la cuenta de la sole
-    //     "attributes": [
-    //         {
-    //             "id": "GENDER",
-    //             "values": [
-    //                 {
-    //                     "name": "Mujer"
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             "id": "BRAND",
-    //             "values": [
-    //                 {
-    //                     "name": "generico"
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // };
-    // this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
-    //   (res: any) => {
-    //     console.log('2 - Guias de talles:', res);
-    //   },
-    //   (err: any) => {
-    //     console.error('Error al buscar en Meli:', err);
-    //   }
-    // );
+    let search_charts_payload:{} = {
+        "domain_id": this.dominioSeleccionado["domain_id"].slice(4),
+        "site_id": "MLA",
+        "seller_id":  "327259941",    //TODO: Cambiar por la ID de la cuenta de la sole
+        "attributes": [
+            {
+                "id": "GENDER",
+                "values": [
+                    {
+                        "name": "Mujer"
+                    }
+                ]
+            },
+            {
+                "id": "BRAND",
+                "values": [
+                    {
+                        "name": "generico"
+                    }
+                ]
+            }
+        ]
+    };
+    this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
+      (res: any) => {
+        console.log('1 - Guias de talles:', res);
+        this.guiasTalles = res.charts || [];
+        console.log('2 - Guias de talles:', this.guiasTalles);
+        this.guiaTalleSeleccionada = null; // Reset la selección
+      },
+      (err: any) => {
+        console.error('Error al buscar en Meli:', err);
+      }
+    );
   }
 
 
@@ -222,7 +237,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         this.removerAtributosObligatorios();
         //! Almacenar los atributos requeridos
         this.requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
-        console.log('1 - Atributos obligatorios:', this.requiredAttributes);
+        // console.log('1 - Atributos obligatorios:', this.requiredAttributes);
         this.agregarAtributosObligatorios();
         
         //TODO Agregar en el backend los atributos obligatorios para guardarlos en la db
@@ -246,7 +261,9 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
 
 
-
+  seleccionarGuiaTalle(guia: any) {
+    this.guiaTalleSeleccionada = guia;
+  }
 
 
 
@@ -316,6 +333,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         cantidad: this.camposOnline[1].valor,
       },
       fotos: this.fotos.map(foto => foto.filename),
+      guiaTalle: this.guiaTalleSeleccionada ? this.guiaTalleSeleccionada.id : null,
     };
     
     //! Crear el producto
