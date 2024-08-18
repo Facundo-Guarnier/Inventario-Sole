@@ -80,6 +80,12 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Guias de talles
   guiasTalles: any[] = [];
   guiaTalleSeleccionada: any = null;
+  mostrarModalCrearGuiaTalle = false;
+  nuevaGuiaTalle = {
+    nombre: '',
+    atributos: [{ nombre: 'Talle' }],
+    talles: [{ nombre: '', valores: [''] }]
+  };
   
   //* ------------------------------------------------------------
   
@@ -113,6 +119,114 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   }
   
   //T* Funciones
+
+  
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+  // Guia de talles:
+
+  abrirModalCrearGuiaTalle() {
+    this.mostrarModalCrearGuiaTalle = true;
+  }
+
+  cerrarModalCrearGuiaTalle() {
+    this.mostrarModalCrearGuiaTalle = false;
+    this.resetNuevaGuiaTalle();
+  }
+
+  resetNuevaGuiaTalle() {
+    this.nuevaGuiaTalle = {
+      nombre: '',
+      atributos: [{ nombre: 'Talle' }],
+      talles: [{ nombre: '', valores: [''] }]
+    };
+  }
+
+  agregarAtributo() {
+    this.nuevaGuiaTalle.atributos.push({ nombre: '' });
+    this.nuevaGuiaTalle.talles.forEach(talle => talle.valores.push(''));
+  }
+
+  eliminarAtributo(index: number) {
+    this.nuevaGuiaTalle.atributos.splice(index, 1);
+    this.nuevaGuiaTalle.talles.forEach(talle => talle.valores.splice(index, 1));
+  }
+
+  agregarTalle() {
+    this.nuevaGuiaTalle.talles.push({
+      nombre: '',
+      valores: new Array(this.nuevaGuiaTalle.atributos.length).fill('')
+    });
+  }
+
+  eliminarTalle(index: number) {
+    this.nuevaGuiaTalle.talles.splice(index, 1);
+  }
+
+  crearGuiaTalle() {
+    // Aquí debes formatear los datos para que coincidan con el formato esperado por la API de Mercado Libre
+    const guiaFormateada = {
+      names: {
+        MLA: this.nuevaGuiaTalle.nombre
+      },
+      domain_id: "T_SHIRTS", // Esto debería ser dinámico basado en el dominio seleccionado
+      site_id: "MLA",
+      type: "CUSTOM",
+      seller_id: 327259941, // Esto debería ser dinámico basado en el ID del vendedor
+      measure_type: "BODY_MEASURE",
+      main_attribute_id: "SIZE",
+      attributes: [
+        {
+          id: "GENDER",
+          name: "Género",
+          values: [
+            {
+              id: "339665",
+              name: "Mujer" // Esto debería ser dinámico basado en la selección del usuario
+            }
+          ]
+        }
+      ],
+      rows: this.nuevaGuiaTalle.talles.map(talle => ({
+        attributes: [
+          {
+            id: "SIZE",
+            name: "Talle",
+            values: [{ name: talle.nombre }]
+          },
+          ...this.nuevaGuiaTalle.atributos.map((atributo, index) => ({
+            id: atributo.nombre.toUpperCase().replace(/ /g, '_'),
+            name: atributo.nombre,
+            values: [{ name: talle.valores[index] }]
+          }))
+        ]
+      }))
+    };
+
+    // Aquí deberías hacer la llamada a la API para crear la guía de talle
+    this.apiMeli.post("/catalog/charts", guiaFormateada, this.authService.getToken()).subscribe(
+      (res: any) => {
+        console.log('Guía de talle creada:', res);
+        this.guiasTalles.push(res);
+        this.cerrarModalCrearGuiaTalle();
+      },
+      (err: any) => {
+        console.error('Error al crear la guía de talle:', err);
+        // Aquí deberías manejar el error, tal vez mostrando un mensaje al usuario
+      }
+    );
+  }
+
+
+
+  
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+
 
 
 
