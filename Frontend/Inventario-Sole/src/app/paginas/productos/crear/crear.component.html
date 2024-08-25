@@ -143,21 +143,29 @@
               <label for="nombreGuia" class="form-label">Nombre de la Guía</label>
               <input type="text" class="form-control" id="nombreGuia" [(ngModel)]="nuevaGuiaTalle.nombre" name="nombreGuia" required>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Atributos</label>
-              <div *ngFor="let atributo of nuevaGuiaTalle.atributos; let i = index" class="row mb-2">
-                <div class="col">
-                  <input type="text" class="form-control" [(ngModel)]="atributo.nombre" [name]="'atributoNombre' + i" placeholder="Nombre del atributo">
-                </div>
-                <div class="col-auto">
-                  <button type="button" class="btn btn-danger" (click)="eliminarAtributo(i)">Eliminar</button>
-                </div>
+        
+            <div class="mb-3" *ngFor="let atributo of nuevaGuiaTalle.atributos">
+              <label for="{{ atributo.id }}" class="form-label">{{ atributo.nombre }}</label>
+        
+              <div *ngIf="atributo.tipo === 'number_unit'">
+                <input type="number" class="form-control" id="{{ atributo.id }}" [(ngModel)]="atributo.valor" name="{{ atributo.id }}">
+                <select class="form-select mt-2" [(ngModel)]="atributo.unidad" name="{{ atributo.id }}_unit">
+                  <option *ngFor="let unidad of atributo.unidades" [value]="unidad.id">{{ unidad.name }}</option>
+                </select>
               </div>
-              <button type="button" class="btn btn-secondary" (click)="agregarAtributo()">Agregar Atributo</button>
+              
+              <div *ngIf="atributo.tipo !== 'number_unit'">
+                <input type="text" class="form-control" id="{{ atributo.id }}" [(ngModel)]="atributo.valor" name="{{ atributo.id }}">
+              </div>
+              
             </div>
+        
             <div class="mb-3">
-              <label class="form-label">Talles</label>
-              <div *ngFor="let talle of nuevaGuiaTalle.talles; let i = index" class="row mb-2">
+              <button type="button" class="btn btn-secondary" (click)="agregarTalle()">Agregar Talle</button>
+            </div>
+        
+            <div *ngFor="let talle of nuevaGuiaTalle.talles; let i = index">
+              <div class="row">
                 <div class="col">
                   <input type="text" class="form-control" [(ngModel)]="talle.nombre" [name]="'talleNombre' + i" placeholder="Nombre del talle">
                 </div>
@@ -168,8 +176,8 @@
                   <button type="button" class="btn btn-danger" (click)="eliminarTalle(i)">Eliminar</button>
                 </div>
               </div>
-              <button type="button" class="btn btn-secondary" (click)="agregarTalle()">Agregar Talle</button>
             </div>
+        
             <button type="submit" class="btn btn-primary">Crear Guía de Talle</button>
           </form>
         </div>

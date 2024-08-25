@@ -209,19 +209,19 @@ if __name__ == "__main__":
     #* --------------------------------- Predecir categoria
     
     # #! Posibles categorías
-    domain_discovery_response:list = ml_api.get('/sites/MLA/domain_discovery/search?q=Remera Genérica mujer adulto')
-    # print(f"\n\nDomain:\n{json.dumps(domain_discovery_response, indent=2)}")    #! Ej: {"domain_id": "MLA-T_SHIRTS","domain_name": "Remeras","category_id": "MLA4979","category_name": "Remeras, Musculosas y Chombas","attributes": []}
+    # domain_discovery_response:list = ml_api.get('/sites/MLA/domain_discovery/search?q=Remera Genérica mujer adulto')
+    # # print(f"\n\nDomain:\n{json.dumps(domain_discovery_response, indent=2)}")    #! Ej: {"domain_id": "MLA-T_SHIRTS","domain_name": "Remeras","category_id": "MLA4979","category_name": "Remeras, Musculosas y Chombas","attributes": []}
     
-    #! Atributos obligatorios por categoría
-    # domain_discovery_response=[domain_discovery_response[0]]
-    for cat in domain_discovery_response:
-        print(f'\n\n{cat["category_id"]}')
+    # #! Atributos obligatorios por categoría
+    # # domain_discovery_response=[domain_discovery_response[0]]
+    # for cat in domain_discovery_response:
+    #     print(f'\n\n{cat["category_id"]}')
         
-        atributos:list = ml_api.get(f"/categories/{cat['category_id']}/attributes")
+    #     atributos:list = ml_api.get(f"/categories/{cat['category_id']}/attributes")
         
-        for att in atributos:
-            if att["tags"].get("required", False):
-                print(f' {att["name"]}: {att["id"]}')     #! MLA4979, MLA109042, MLA6551, MLA414238, MLA417869, MLA417371
+    #     for att in atributos:
+    #         if att["tags"].get("required", False):
+    #             print(f' {att["name"]}: {att["id"]}')     #! MLA4979, MLA109042, MLA6551, MLA414238, MLA417869, MLA417371
 
     
     
@@ -254,56 +254,57 @@ if __name__ == "__main__":
     
     domain_id = "MLA-T_SHIRTS"
     # #T* Buscar una Guía de Talles:
-    search_charts_payload = {
-        "domain_id": "T_SHIRTS",
-        "site_id": "MLA",
-        "seller_id":  "327259941",
-        "attributes": [
-            {
-                "id": "GENDER",
-                "values": [
-                    {
-                        "name": "Mujer"
-                    }
-                ]
-            },
-            {
-                "id": "BRAND",
-                "values": [
-                    {
-                        "name": "generico"
-                    }
-                ]
-            }
-        ]
-    }
-    search_charts_response = ml_api.post("/catalog/charts/search", search_charts_payload)
-    print(f"\n\nSearch Chart:\n{json.dumps(search_charts_response, indent=2)}")
-    
-    #T* Crear una Nueva Guía de Talles:
-    # #! Consultar la ficha técnica del dominio
-    # technical_specs_response = ml_api.get(f"/domains/{domain_id}/technical_specs")
-    # # print(f"\n\nTechnical Specs:\n{json.dumps(technical_specs_response, indent=2)}")
-    
-    # #! Consultar la ficha técnica de la guía de talles
-    # required_attributes = []
-    # for group in technical_specs_response["input"]["groups"]:
-    #     for component in group["components"]:
-    #         if "attributes" in component:
-    #             for attribute in component["attributes"]:
-    #                 if "grid_template_required" in attribute.get("tags", []):
-    #                     required_attributes.append(attribute["id"])
-    
-    # grid_technical_specs_payload = {
+    # search_charts_payload = {
+    #     "domain_id": "T_SHIRTS",
+    #     "site_id": "MLA",
+    #     "seller_id":  "327259941",
     #     "attributes": [
-    #         {"id": attribute_id, "value_name": "Mujer"}  # Asegúrate de proporcionar los valores apropiados para cada atributo requerido
-    #         for attribute_id in required_attributes
+    #         {
+    #             "id": "GENDER",
+    #             "values": [
+    #                 {
+    #                     "name": "Mujer"
+    #                 }
+    #             ]
+    #         },
+    #         {
+    #             "id": "BRAND",
+    #             "values": [
+    #                 {
+    #                     "name": "generico"
+    #                 }
+    #             ]
+    #         }
     #     ]
     # }
-    # grid_technical_specs_response = ml_api.post(f"/domains/{domain_id}/technical_specs?section=grids", grid_technical_specs_payload)
-    # print(f"\n\nGrid Technical Specs:\n{json.dumps(grid_technical_specs_response, indent=2)}")
+    # search_charts_response = ml_api.post("/catalog/charts/search", search_charts_payload)
+    # print(f"\n\nSearch Chart:\n{json.dumps(search_charts_response, indent=2)}")
     
-    # #! Construir la guía de talles
+    #T* Crear una Nueva Guía de Talles:
+    #! Consultar la ficha técnica del dominio
+    technical_specs_response = ml_api.get(f"/domains/{domain_id}/technical_specs")
+    # print(f"\n\nTechnical Specs:\n{json.dumps(technical_specs_response, indent=2)}")
+    
+    #! Obtener los atributos requeridos
+    required_attributes = []
+    for group in technical_specs_response["input"]["groups"]:
+        for component in group["components"]:
+            if "attributes" in component:
+                for attribute in component["attributes"]:
+                    if "grid_template_required" in attribute.get("tags", []):
+                        required_attributes.append(attribute["id"])
+    
+    grid_technical_specs_payload = {
+        "attributes": [
+            {"id": attribute_id, "value_name": "Mujer"}  # Asegúrate de proporcionar los valores apropiados para cada atributo requerido
+            for attribute_id in required_attributes
+        ]
+    }
+    #! Consultar la ficha técnica de la guía de talles
+    grid_technical_specs_response = ml_api.post(f"/domains/{domain_id}/technical_specs?section=grids", grid_technical_specs_payload)
+    print(f"\n\nGrid Technical Specs:\n{json.dumps(grid_technical_specs_response, indent=2)}")
+    
+    #! Construir la guía de talles
     # create_chart_payload = {
     #     "names": {"MLA": "Guía de Talles para Remeras de Mujer"},
     #     "domain_id": domain_id,

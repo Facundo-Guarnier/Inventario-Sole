@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { OnInit, AfterViewInit, ViewChild, ElementRef, Component } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
@@ -10,11 +10,89 @@ import { ApiProductosService } from 'src/app/services/productos/api-producto.ser
 import { UltimasIDsService } from 'src/app/services/ultimaID/ultimas-ids.service';
 
 
+
+
+// Interfaz para los valores de un atributo
+interface Value {
+  id: string;
+  name: string;
+}
+
+// Interfaz para los atributos
 interface Attribute {
   id: string;
   name: string;
-  values?: { name: string }[];
+  value_type: string;
+  value_max_length?: number;
+  tags: string[];
+  values?: Value[];
+  hierarchy: string;
+  relevance: number;
+  default_unit_id?: string;
+  units?: Value[];
 }
+
+// Interfaz para la configuración de la UI
+interface UIConfig {
+  max_allowed?: number;
+  allow_custom_value?: boolean;
+  allow_filtering?: boolean;
+  connector?: string;
+  hint?: string;
+}
+
+// Interfaz para los componentes
+interface Componente {
+  component: string;
+  label: string;
+  ui_config: UIConfig;
+  attributes?: Attribute[];
+  components?: Componente[];
+  unified_units?: Value[];
+  default_unified_unit_id?: string;
+}
+
+// Interfaz para los grupos
+interface Group {
+  id: string;
+  label: string;
+  relevance: number;
+  section: string;
+  ui_config: UIConfig;
+  components: Componente[];
+}
+
+// Interfaz para la entrada principal
+interface TemplateGridTechnicalSpecs {
+  groups: Group[];
+}
+
+// interface Attribute {
+//   id: string;
+//   name: string;
+//   values?: { name: string }[];
+// }
+
+interface Unidad {
+  id: string;
+  name: string;
+}
+
+interface Atributo {
+  id: string;
+  nombre: string;
+  tipo: string;
+  valor: string;
+  unidad: string;
+  unidades: Unidad[];
+}
+
+
+
+
+
+
+
 
 @Component({
   selector: 'pag-productos-crear',
@@ -77,15 +155,26 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   dominioSeleccionado:Dominio = {};
   requiredAttributes: Attribute[] = [];
   
+  //T* ------------------------------------------------------------
   //! Guias de talles
   guiasTalles: any[] = [];
   guiaTalleSeleccionada: any = null;
   mostrarModalCrearGuiaTalle = false;
-  nuevaGuiaTalle = {
+
+  defaultNuevaGuiaTalle = {
     nombre: '',
-    atributos: [{ nombre: 'Talle' }],
-    talles: [{ nombre: '', valores: [''] }]
+    atributos: [
+      { id:"", nombre: 'Talle', tipo: 'text', unidades: [] as Unidad[] , valor: '', unidad: { id: "", name: ""} as Unidad }
+    ],
+    talles: [
+      { nombre: '', valores: [''] }
+    ]
   };
+  nuevaGuiaTalle = { ...this.defaultNuevaGuiaTalle };
+
+  guiaTallesTemplate: any = null;
+  //T* ------------------------------------------------------------
+
   
   //* ------------------------------------------------------------
   
@@ -121,148 +210,44 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //T* Funciones
 
   
-  // ------------------------------------------------------------
-  // ------------------------------------------------------------
-  // ------------------------------------------------------------
-  // ------------------------------------------------------------
-  // Guia de talles:
 
-  abrirModalCrearGuiaTalle() {
-    this.mostrarModalCrearGuiaTalle = true;
-  }
+//* > REFACTORIZAR TODO ESTO, NO SE ENTIENDE UN CHOTO
+//* > DIVIDIR BIEN TODAS LAS FUNCIONES ASÍ PUEDO VER PORQUE FALLA LA BUSQUEDA DEL TEMPLATE DE GUIA DE TALLES
+//* > VER LAS INTERFACES CREADAS SI ESTÄN BIEN O SI SON NECESARIAS
 
-  cerrarModalCrearGuiaTalle() {
-    this.mostrarModalCrearGuiaTalle = false;
-    this.resetNuevaGuiaTalle();
-  }
-
-  resetNuevaGuiaTalle() {
-    this.nuevaGuiaTalle = {
-      nombre: '',
-      atributos: [{ nombre: 'Talle' }],
-      talles: [{ nombre: '', valores: [''] }]
-    };
-  }
-
-  agregarAtributo() {
-    this.nuevaGuiaTalle.atributos.push({ nombre: '' });
-    this.nuevaGuiaTalle.talles.forEach(talle => talle.valores.push(''));
-  }
-
-  eliminarAtributo(index: number) {
-    this.nuevaGuiaTalle.atributos.splice(index, 1);
-    this.nuevaGuiaTalle.talles.forEach(talle => talle.valores.splice(index, 1));
-  }
-
-  agregarTalle() {
-    this.nuevaGuiaTalle.talles.push({
-      nombre: '',
-      valores: new Array(this.nuevaGuiaTalle.atributos.length).fill('')
-    });
-  }
-
-  eliminarTalle(index: number) {
-    this.nuevaGuiaTalle.talles.splice(index, 1);
-  }
-
-  crearGuiaTalle() {
-    // Aquí debes formatear los datos para que coincidan con el formato esperado por la API de Mercado Libre
-    const guiaFormateada = {
-      names: {
-        MLA: this.nuevaGuiaTalle.nombre
-      },
-      domain_id: "T_SHIRTS", // Esto debería ser dinámico basado en el dominio seleccionado
-      site_id: "MLA",
-      type: "CUSTOM",
-      seller_id: 327259941, // Esto debería ser dinámico basado en el ID del vendedor
-      measure_type: "BODY_MEASURE",
-      main_attribute_id: "SIZE",
-      attributes: [
-        {
-          id: "GENDER",
-          name: "Género",
-          values: [
-            {
-              id: "339665",
-              name: "Mujer" // Esto debería ser dinámico basado en la selección del usuario
-            }
-          ]
-        }
-      ],
-      rows: this.nuevaGuiaTalle.talles.map(talle => ({
-        attributes: [
-          {
-            id: "SIZE",
-            name: "Talle",
-            values: [{ name: talle.nombre }]
-          },
-          ...this.nuevaGuiaTalle.atributos.map((atributo, index) => ({
-            id: atributo.nombre.toUpperCase().replace(/ /g, '_'),
-            name: atributo.nombre,
-            values: [{ name: talle.valores[index] }]
-          }))
-        ]
-      }))
-    };
-
-    // Aquí deberías hacer la llamada a la API para crear la guía de talle
-    this.apiMeli.post("/catalog/charts", guiaFormateada, this.authService.getToken()).subscribe(
-      (res: any) => {
-        console.log('Guía de talle creada:', res);
-        this.guiasTalles.push(res);
-        this.cerrarModalCrearGuiaTalle();
-      },
-      (err: any) => {
-        console.error('Error al crear la guía de talle:', err);
-        // Aquí deberías manejar el error, tal vez mostrando un mensaje al usuario
-      }
-    );
-  }
+  //! Guia de talles
+  // Paso 1: Ingresar titulo
+  // Paso 2: Buscar posibles dominios
+  // Paso 3: Seleccionar un dominio 
+  // Paso 4: Obtener ficha técnica del dominio (/domains/{domain_id}/technical_specs)
+  // Paso 5: Obtener los atributos obligatorios (de la ficha técnica) (/categories/{category_id}/attributes)
+  // Paso 6: Consultar la ficha técnica de la guía de talles (/domains/{domain_id}/technical_specs?section=grids + campos obligatorios + genero)
+  // Paso 7: Crear la guía de talles (/catalog/charts)
 
 
-
-  
-  // ------------------------------------------------------------
-  // ------------------------------------------------------------
-  // ------------------------------------------------------------
-  // ------------------------------------------------------------
+  //T* Paso 1: Ingresar titulo
+  //! Implementada en el evento onChange
 
 
-
-
-  //! Actualizar campos
-  async onChange(event: {identificador: string, valor: string}) {
-    // console.log('Evento:', event);
-    
-    if (event.identificador === 'titulo') {
-      this.buscar_dominio_x_titulo(event.valor);
-    }
-    
-    if (event.identificador === "dominio") {
-      this.seleccionarDominio(event.valor);
-    }
-  }
-
-
-  //! Buscar el dominio del producto en base al titulo
-  buscar_dominio_x_titulo(titulo:string) {
+  //T* Paso 2: Buscar posibles dominios
+  //! Buscar el dominio del producto en base al titulo y agrega el path completo al dominio (Remera, Musculosa, Chomba > Remera > ...)
+  //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
+  buscarDominiosXTitulo(titulo:string) {
     this.guiasTalles = [];
-    this.guiaTalleSeleccionada = null; // Reset la selección
-    
+    this.guiaTalleSeleccionada = null; //! Reset la selección
+
     this.apiMeli.get("/sites/MLA/domain_discovery/search?q=" + titulo, this.authService.getToken()).subscribe(
       (res: any) => {
-        
-        
+
+        //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
         //! Agregar path completo
         this.dominios = res.map((dominio: Dominio) => {
           this.apiMeli.get("/categories/" + dominio["category_id"], this.authService.getToken()).subscribe(
             (res: any) => {
-              
-              
+
               dominio.path_completo = res.path_from_root.map((path: any) => path.name).join(' > ');
-              
               let dominios_nombre: string[] = this.dominios.map((dominio: any) => dominio.path_completo);
-              
+
               //! Verificar si existe el campo dominio
               let campoDominioIndex = this.camposGenerales.findIndex(campo => campo.identificador === 'dominio');
               if (campoDominioIndex !== -1) {
@@ -273,17 +258,16 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
               this.camposGenerales.push({ nombre: "Dominio", identificador: "dominio", tipo: "selector", opciones: dominios_nombre });
               this.removerAtributosObligatorios();
             },
-            
+            //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
             (err: any) => {
               console.error('Error al buscar en Meli:', err);
             }
           );
           return dominio;
         });
-        // console.log('Dominios:', this.dominios);
-        
+        //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
       },
-      
+
       (err: any) => {
         console.error('Error al buscar en Meli:', err);
       }
@@ -291,19 +275,192 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   }
 
 
+  //T* Paso 3: Seleccionar un dominio
+  //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
   seleccionarDominio(path_completo: string) {
-    //! Debería buscar:
-    //! - los atributos obligatorios
-    //! - las guías de talles (si es que es obligatoria)
     this.dominioSeleccionado = this.dominios.find((dominio: Dominio) => dominio.path_completo === path_completo) || {};
-    // console.log('Dominio seleccionado:', this.dominioSeleccionado);
+    this.buscarAtributosObligatorios();
+    this.buscarGuiasTallesCreadas();
+  }
+
+
+  //T* Paso 4: Obtener ficha técnica del dominio
+  //? Es necesario este paso? el paso 5 obtiene los atributos obligatorios de otra forma
+  // obtenerFichaTecnicaDominio() {
+  //   const d_id = this.dominioSeleccionado["domain_id"] || "MLA-T_SHIRTS";
+  //   const domainId = d_id.slice(4); //! Está en formato MLA-T_SHIRTS y necesita `T_SHIRTS`
+  //   this.apiMeli.get(`/domains/${domainId}/technical_specs`, this.authService.getToken())
+  //     .subscribe(
+  //       (technicalSpecsResponse: any) => {
+  //         console.log("Ficha Técnica del Dominio:", technicalSpecsResponse);
+  //         this.procesarFichaTecnica(technicalSpecsResponse);
+  //       },
+  //       (err: any) => {
+  //         console.error('Error al obtener la ficha técnica del dominio:', err);
+  //       }
+  //     );
+  // }
+
+
+  //T* Paso 5: Obtener los atributos obligatorios
+  //! Buscar los atributos obligatorios del dominio seleccionado
+  //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
+  buscarAtributosObligatorios() {
+    this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
+      (res: any) => {
+        
+        //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
+        this.removerAtributosObligatorios();
+        this.requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
+        this.agregarAtributosObligatorios();
+        //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
+        
+        //TODO Agregar en el backend los atributos obligatorios para guardarlos en la db
+        
+      },
+      (err: any) => {
+        console.error('Error al buscar en Meli:', err);
+      }
+    );
+  }
+
+  //! Agregar los nuevos atributos obligatorios
+  //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
+  agregarAtributosObligatorios() {
+    this.requiredAttributes.forEach((attribute: any) => {
+      const campo: Campo = {
+        nombre: attribute.name,
+        identificador: attribute.id,
+        tipo: attribute.values && attribute.values.length > 0 ? 'selector' : 'input-text',
+        valor: undefined
+      };
+
+      if (campo.tipo === 'selector') {
+        campo.opciones = attribute.values.map((value: any) => value.name);
+
+        if (campo.identificador === "BRAND" && campo.opciones && !campo.opciones.includes("generico")) {
+          campo.opciones.push("generico");
+        }
+      }
+
+      this.camposGenerales.push(campo);
+    });
+  }
+
+  //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
+  removerAtributosObligatorios() {
+    const requiredIds = new Set(this.requiredAttributes.map(attr => attr.id));
+    this.camposGenerales = this.camposGenerales.filter(campo => !requiredIds.has(campo.identificador));
+  }
+
+
+  //T* Paso 6: Consultar la ficha técnica de la guía de talles
+  //? HAY 2 FUNCIONES QUE QUIEREN HACER LO MISMO, VER CUAL ES LA QUE SE DEBE USAR
+  obtenerFichaTecnicaGuiaTalles(requiredAttributes: string[]) {
+    const d_id = this.dominioSeleccionado["domain_id"] || "MLA-T_SHIRTS";
+    const domainId = d_id.slice(4);
+    const gridTechnicalSpecsPayload = {
+      attributes: requiredAttributes.map(id => ({
+        id: id,
+        value_name: "Mujer" //TODO: Este valor debería ajustarse según los atributos reales requeridos
+      }))
+    };
+
+    this.apiMeli.post(`/domains/${domainId}/technical_specs?section=grids`, JSON.stringify(gridTechnicalSpecsPayload), this.authService.getToken())
+      .subscribe(
+        (gridTechnicalSpecsResponse: any) => {
+          console.log("Ficha Técnica de la Guía de Talles:", gridTechnicalSpecsResponse);
+          this.guiaTallesTemplate = gridTechnicalSpecsResponse;
+        },
+        (err: any) => {
+          console.error('Error al obtener la ficha técnica de la guía de talles:', err);
+        }
+      );
+  }
+
+  obtenerPlantillaGuiaTalles() {
+    const attributes = this.requiredAttributes.map(attribute => ({
+      id: attribute.id,
+      value_name: attribute.values && attribute.values.length > 0 ? attribute.values[0].name : ''
+    }));
+  
+    const payload = {
+      attributes
+    };
     
-    this.buscar_atributos_obligatorios();
-    
+    let d_id = this.dominioSeleccionado["domain_id"] || "MLA-T_SHIRTS";
+    console.log("Dominio seleccionado:", d_id);
+    this.apiMeli.post(`/domains/${d_id}/technical_specs?section=grids`, JSON.stringify(payload), this.authService.getToken())
+      .subscribe(
+        (res: any) => {
+          this.guiaTallesTemplate = res;
+          console.log("Plantilla de guía de talles:", this.guiaTallesTemplate);
+        },
+        (err: any) => {
+          console.error('Error al obtener la plantilla de guía de talles:', err);
+        }
+      );
+  }
+
+
+  //T* Paso 7: Crear la guía de talles
+  crearGuiaTalle() {
+    const domainId = this.dominioSeleccionado.domain_id || "MLA-T_SHIRTS";
+  
+    const createChartPayload = {
+      names: { MLA: this.nuevaGuiaTalle.nombre },
+      domain_id: domainId.slice(4),
+      site_id: "MLA",
+      main_attribute: {
+        attributes: [
+          {
+            site_id: "MLA",
+            id: "SIZE"
+          }
+        ]
+      },
+      attributes: this.nuevaGuiaTalle.atributos.map(atributo => ({
+        id: atributo.id,
+        values: [{ name: atributo.valor }]
+      })),
+      rows: this.nuevaGuiaTalle.talles.map(talle => ({
+        attributes: [
+          {
+            id: "SIZE",
+            values: [{ name: talle.nombre }]
+          },
+          ...talle.valores.map((valor, index) => ({
+            id: this.nuevaGuiaTalle.atributos[index].id,
+            values: [{ name: valor }]
+          }))
+        ]
+      }))
+    };
+  
+    this.apiMeli.post("/catalog/charts", JSON.stringify(createChartPayload), this.authService.getToken())
+      .subscribe(
+        (res: any) => {
+          console.log("Guía de Talles Creada:", res);
+          this.guiasTalles.push(res);
+          this.cerrarModalCrearGuiaTalle();
+        },
+        (err: any) => {
+          console.error('Error al crear la guía de talle:', err);
+        }
+      );
+  }
+
+
+  //T* Otros
+  //! Buscar las guías de talles creadas por el usuario
+  buscarGuiasTallesCreadas() {
     if (this.dominioSeleccionado["domain_id"] === undefined) {
       return;
     }
 
+    if (this.dominioSeleccionado["domain_id"]) {
+      this.obtenerPlantillaGuiaTalles();
+    }
 
     //! Buscar las guías de talles
     let search_charts_payload:{} = {
@@ -331,9 +488,8 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     };
     this.apiMeli.post("/catalog/charts/search", JSON.stringify(search_charts_payload), this.authService.getToken()).subscribe(
       (res: any) => {
-        console.log('1 - Guias de talles:', res);
         this.guiasTalles = res.charts || [];
-        console.log('2 - Guias de talles:', this.guiasTalles);
+        console.log('Guias de talles:', this.guiasTalles);
         this.guiaTalleSeleccionada = null; // Reset la selección
       },
       (err: any) => {
@@ -343,79 +499,84 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   }
 
 
-  //! Buscar los atributos obligatorios del dominio seleccionado
-  buscar_atributos_obligatorios() {
-    this.apiMeli.get("/categories/" + this.dominioSeleccionado["category_id"] + "/attributes", this.authService.getToken()).subscribe(
-      (res: any) => {
-        
-        this.removerAtributosObligatorios();
-        //! Almacenar los atributos requeridos
-        this.requiredAttributes = res.filter((attribute: any) => attribute.tags && attribute.tags.required === true);
-        // console.log('1 - Atributos obligatorios:', this.requiredAttributes);
-        this.agregarAtributosObligatorios();
-        
-        //TODO Agregar en el backend los atributos obligatorios para guardarlos en la db
-        
-      },
-      (err: any) => {
-        console.error('Error al buscar en Meli:', err);
-      }
-    );
+  //T* Modales
+  abrirModalCrearGuiaTalle() {
+    // Asegúrate de que tienes la plantilla antes de abrir el modal
+    if (!this.guiaTallesTemplate) {
+      console.error("No se ha cargado la plantilla de guía de talles.");
+      return;
+    }
+    this.mostrarModalCrearGuiaTalle = true;
+  }
+
+  cerrarModalCrearGuiaTalle() {
+    this.mostrarModalCrearGuiaTalle = false;
+    this.resetNuevaGuiaTalle();
   }
 
 
 
+  agregarAtributo() {
+    this.nuevaGuiaTalle.atributos.push(this.defaultNuevaGuiaTalle.atributos[0]);
+    this.nuevaGuiaTalle.talles.forEach(talle => talle.valores.push(''));
+  }
 
+  eliminarAtributo(index: number) {
+    this.nuevaGuiaTalle.atributos.splice(index, 1);
+    this.nuevaGuiaTalle.talles.forEach(talle => talle.valores.splice(index, 1));
+  }
 
+  agregarTalle() {
+    this.nuevaGuiaTalle.talles.push({
+      nombre: '',
+      valores: new Array(this.nuevaGuiaTalle.atributos.length).fill('')
+    });
+  }
 
+  eliminarTalle(index: number) {
+    this.nuevaGuiaTalle.talles.splice(index, 1);
+  }
 
+  procesarFichaTecnica(technicalSpecsResponse: any) {
+  const requiredAttributes: string[] = [];
 
+  technicalSpecsResponse.input.groups.forEach((group: any) => {
+    group.components.forEach((component: any) => {
+      if (component.attributes) {
+        component.attributes.forEach((attribute: any) => {
+          if (attribute.tags && attribute.tags.includes('grid_template_required')) {
+            requiredAttributes.push(attribute.id);
+          }
+        });
+      }
+    });
+  });
 
-
-
-
+  this.obtenerFichaTecnicaGuiaTalles(requiredAttributes);
+  }
 
   seleccionarGuiaTalle(guia: any) {
     this.guiaTalleSeleccionada = guia;
   }
 
-
-
-
-  agregarAtributosObligatorios() {
-
-    // Agregar los nuevos atributos obligatorios
-    this.requiredAttributes.forEach((attribute: any) => {
-      const campo: Campo = {
-        nombre: attribute.name,
-        identificador: attribute.id,
-        tipo: attribute.values && attribute.values.length > 0 ? 'selector' : 'input-text',
-        valor: undefined // Asegurarse de que el valor esté indefinido inicialmente
-      };
-      
-      if (campo.tipo === 'selector') {
-        campo.opciones = attribute.values.map((value: any) => value.name);
-        
-        if (campo.identificador === "BRAND" && campo.opciones && !campo.opciones.includes("generico")) {
-          campo.opciones.push("generico");
-        }
-      }
-      
-      this.camposGenerales.push(campo);
-    });
+  resetNuevaGuiaTalle() {
+    this.nuevaGuiaTalle = { ...this.defaultNuevaGuiaTalle };
   }
 
 
-  removerAtributosObligatorios() {
-    // Crear un conjunto con los IDs de los atributos requeridos para una búsqueda más eficiente
-    const requiredIds = new Set(this.requiredAttributes.map(attr => attr.id));
-  
-    // Filtrar camposGenerales para mantener solo los campos que no están en requiredAttributes
-    this.camposGenerales = this.camposGenerales.filter(campo => !requiredIds.has(campo.identificador));
+  //T* ------------------------------------------------------------
+  //! Actualizar campos/inputs
+  async onChange(event: {identificador: string, valor: string}) {
+    // console.log('Evento:', event);
+    
+    if (event.identificador === 'titulo') {
+      this.buscarDominiosXTitulo(event.valor);
+    }
+    
+    if (event.identificador === "dominio") {
+      this.seleccionarDominio(event.valor);
+    }
   }
-
-
-
 
   //! Botones flotantes
   ClickAceptar() {
@@ -550,8 +711,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     return false;
   }
   
-  
-  
   //! Botones de vista
   toggleNavbar() {
     this.showNavbar = !this.showNavbar;
@@ -559,7 +718,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       this.showSidebar = false;
     }
   }
-  
   toggleSidebar() {
     this.showSidebar = !this.showSidebar;
     if (this.showSidebar) {

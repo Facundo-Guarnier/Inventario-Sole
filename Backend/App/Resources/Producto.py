@@ -282,6 +282,15 @@ class Productos(Resource):
         """
         data = request.json
         
+        
+        print("++++DATOS DEL PRODUCTO NUEVO:", data)     
+        # {'id': '00027', 'titulo': 'pantalon ', 'liquidacion': False, 'dominio': 'Ropa y Accesorios > Pantalones', 'BRAND': 'generico', 
+        # 'MODEL': 'pantalon2000', 'GENDER': 'Mujer', 'COLOR': 'Coral', 'SIZE': '28', 'MAIN_MATERIAL': 'Lana', 
+        # 'PANT_TYPE': 'Pantalón', 'dominioObj': {'domain_id': 'MLA-PANTS', 'domain_name': 'Pantalones', 'category_id': 'MLA109282', 
+        # 'category_name': 'Pantalones', 'attributes': [], 'path_completo': 'Ropa y Accesorios > Pantalones'}, 'fisica': {'precio': 100, 'cantidad': 100}, 
+        # 'online': {'precio': 200, 'cantidad': 200}, 'fotos': ['00027/resized_pngtree-tech-color-offline-color-twitch-design-banner-background-image_520015.jpg']}
+        return ({"msg": "Producto creado con éxito"}), 201
+        
         cod_ms = data.get("cod_ms")
         marca = data.get("marca")
         descripcion = data.get("descripcion")
