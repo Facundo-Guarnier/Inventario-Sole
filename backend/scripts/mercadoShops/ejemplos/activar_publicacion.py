@@ -1,12 +1,14 @@
-import requests, os  # type: ignore
+import os  # type: ignore
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 access_token = os.getenv("TOKEN")
 
 # Define la URL de la API para actualizar el estado del ítem
-item_id = 'MLA1434402073'  # Reemplaza con el ID real del artículo
-url = f'https://api.mercadolibre.com/items/{item_id}'
+item_id = "MLA1434402073"  # Reemplaza con el ID real del artículo
+url = f"https://api.mercadolibre.com/items/{item_id}"
 
 # Define los datos para activar la publicación
 payload = {
@@ -16,8 +18,8 @@ payload = {
 
 # Define los encabezados de la solicitud
 headers = {
-    'Authorization': f'Bearer {access_token}',
-    'Content-Type': 'application/json'
+    "Authorization": f"Bearer {access_token}",
+    "Content-Type": "application/json",
 }
 
 # Realiza la solicitud PUT para actualizar el estado

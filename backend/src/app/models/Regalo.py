@@ -1,4 +1,0 @@
-
-
-class Regalo:
-    pass
