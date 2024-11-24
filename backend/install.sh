@@ -25,15 +25,15 @@ else
 fi
 
 # Crear y activar el entorno virtual
-if [ ! -d "Inventario-env" ]; then
-    python3 -m venv Inventario-env
-    echo "[OK] Entorno virtual Inventario-env creado."
+if [ ! -d "venv" ]; then
+    python3 -m venv venv
+    echo "[OK] Entorno virtual venv creado."
 else
-    echo "[OK] El entorno virtual Inventario-env ya existe."
+    echo "[OK] El entorno virtual venv ya existe."
 fi
 
 # Activar el entorno virtual
-. Inventario-env/bin/activate || {
+. venv/bin/activate || {
     echo "[ERROR] No se pudo activar el entorno virtual."
     exit 1
 }
@@ -79,7 +79,8 @@ fi
 # else
 #     echo "[OK] El archivo .env ya existe."
 # fi
+echo . venv/bin/activate
 
 echo "[OK] Entorno virtual configurado correctamente."
-echo "[OK] Para activarlo manualmente, ejecuta: . Inventario-env/bin/activate"
+echo "[OK] Para activarlo manualmente, ejecuta: . venv/bin/activate"
 echo "[OK] Para desactivarlo, ejecuta: deactivate"

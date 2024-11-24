@@ -1,1 +1,0 @@
-print("Se está ejecutando el archivo run.py")

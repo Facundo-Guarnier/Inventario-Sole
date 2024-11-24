@@ -1,28 +1,37 @@
 {
-    "cSpell.words": [
-        "Autenticacion",
-        "boton",
-        "coleccion",
-        "devolucion",
-        "Devolucion",
-        "Dificil",
-        "fisica",
-        "Fisicos",
-        "generico",
-        "guia",
-        "guias",
-        "LANCZOS",
-        "liquidacion",
-        "metodo",
-        "notificacion",
-        "Notificacion",
-        "opcion",
-        "seleccion",
-        "sqlalchemy",
-        "Tecnica",
-        "ultimaid",
-        "Vacio",
-        "Vacios",
-        "validacion"
-    ]
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
+    }
+  },
+
+  "cSpell.words": [
+    "Autenticacion",
+    "boton",
+    "coleccion",
+    "devolucion",
+    "Devolucion",
+    "Dificil",
+    "fisica",
+    "Fisicos",
+    "generico",
+    "guia",
+    "guias",
+    "LANCZOS",
+    "liquidacion",
+    "metodo",
+    "notificacion",
+    "Notificacion",
+    "opcion",
+    "seleccion",
+    "sqlalchemy",
+    "Tecnica",
+    "ultimaid",
+    "Vacio",
+    "Vacios",
+    "validacion"
+  ]
 }
