@@ -37,6 +37,7 @@
                 <input type="text" class="form-control" id="{{campo.identificador}}" 
                   [(ngModel)]="campo.valor" 
                   (ngModelChange)="OnChange(campo, $event)"
+                  [disabled]="true"
                   readonly
                 >
             </div>

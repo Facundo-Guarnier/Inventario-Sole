@@ -9,6 +9,8 @@
         "fisica",
         "Fisicos",
         "generico",
+        "guia",
+        "guias",
         "LANCZOS",
         "liquidacion",
         "metodo",
@@ -17,7 +19,9 @@
         "opcion",
         "seleccion",
         "sqlalchemy",
+        "Tecnica",
         "ultimaid",
+        "Vacio",
         "Vacios",
         "validacion"
     ]
