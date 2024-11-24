@@ -1,2 +1,2 @@
-. Inventario-env/bin/activate
+. venv/bin/activate
 python3 app.py
