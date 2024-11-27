@@ -1,19 +1,18 @@
 from datetime import datetime
 
 import pytz
-from app.controllers.Movimiento import Movimientos
-from app.controllers.UltimaID import UltimaID
 from app.models import VentaModel
 from app.models.ProductoModel import ProductoModel
-from flask import request
-from flask_jwt_extended import jwt_required
+from app.services.movimiento import MovimientoService
+from app.services.ultima_id import UltimaIdService
 
 
-class Venta(Resource):
+class VentaService:
     def __init__(self) -> None:
-        self.movimientos = Movimientos()
+        self.movimientos = MovimientoService()
+        self.ultima_id_resource = UltimaIdService()
 
-    def get(self, id: str) -> tuple:
+    def get_by_id(self, id: str) -> tuple:
         """
         Busca una venta por su id.
 
@@ -33,8 +32,7 @@ class Venta(Resource):
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
 
-    @jwt_required()
-    def put(self, id: str) -> tuple:
+    def actualizar(self, id: str, datos: dict) -> tuple:
         """
         Actualiza una venta.
 
@@ -56,18 +54,15 @@ class Venta(Resource):
         venta_actual = venta_actual["respuesta"][0]
 
         #! Obtener datos a actualizar
-        data = request.json
-        if not data:
-            return ({"msg": "Faltan datos"}), 400
 
         #! Crear diccionario con los datos a actualizar
         nueva_venta = {}
 
         try:
-            nueva_venta["cliente"] = data["cliente"]
-            nueva_venta["total"] = float(data["total"])
-            nueva_venta["tienda"] = data["tienda"]
-            nueva_venta["metodo"] = data["metodo"]
+            nueva_venta["cliente"] = datos["cliente"]
+            nueva_venta["total"] = float(datos["total"])
+            nueva_venta["tienda"] = datos["tienda"]
+            nueva_venta["metodo"] = datos["metodo"]
 
         except KeyError as e:
             return {"msg": f"Falta el campo {str(e)}"}, 400
@@ -82,13 +77,13 @@ class Venta(Resource):
         movimientos_pendientes = []
 
         #! Revisar si hay cambios en los productos
-        if data.get("productos"):
+        if datos.get("productos"):
             productos2 = []
             productos_actuales = {
                 p["idProducto"]: p["cantidad"] for p in venta_actual["productos"]
             }
 
-            for producto in data["productos"]:
+            for producto in datos["productos"]:
                 try:
                     id_producto = producto["idProducto"].upper()
                     cantidad = int(producto["cantidad"])
@@ -181,8 +176,7 @@ class Venta(Resource):
             # TODO lógica para revertir los movimientos ya realizados
             return {"msg": "Error al actualizar la venta"}, 500
 
-    @jwt_required()
-    def delete(self, id: str) -> tuple:
+    def eliminar(self, id: str) -> tuple:
         """
         Elimina una venta.
 
@@ -229,32 +223,22 @@ class Venta(Resource):
             return ({"msg": "Venta eliminada"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
 
-
-class Ventas(Resource):
-    def __init__(self):
-        self.ultima_id_resource = UltimaID()
-        self.movimientos = Movimientos()
-
-    def get(self):
+    def buscar_por_atributo(self, datos: dict, pagina: int, por_pagina: int):
         """
         Busca ventas en base a los atributos que se pasen.
         Sin atributos, devuelve todas las ventas.
         """
-        data = request.args.to_dict()
 
         #! Validar data
         try:
-            id = data.get("id")
-            cliente = data.get("cliente")
-            fecha = data.get("fecha")
-            total = data.get("total")
-            tienda = data.get("tienda")
-            metodo_pago = data.get("metodo")
-            productos = data.get("productos")
-            palabra_clave = data.get("palabra_clave")
-
-            pagina = int(request.args.get("pagina", 1))
-            por_pagina = int(request.args.get("por_pagina", 10))
+            id = datos.get("id")
+            cliente = datos.get("cliente")
+            fecha = datos.get("fecha")
+            total = datos.get("total")
+            tienda = datos.get("tienda")
+            metodo_pago = datos.get("metodo")
+            productos = datos.get("productos")
+            palabra_clave = datos.get("palabra_clave")
 
         except Exception:
             return ({"msg": "Error en los parámetros enviados"}), 400
@@ -349,26 +333,22 @@ class Ventas(Resource):
             }, 200
         return {"msg": respuesta["respuesta"]}, 404
 
-    @jwt_required()
-    def post(self) -> tuple:
+    def crear(self, datos: dict) -> tuple:
         """
         Crea una venta.
 
         Returns:
             - dict: Venta creada
         """
-        data = request.json
-        if not data:
-            return {"msg": "Faltan datos"}, 400
 
         #! Validar datos
         try:
-            cliente = data["cliente"]
-            total = float(data["total"])
-            tienda = data["tienda"]
-            metodo_pago = data["metodo"]
-            productos = data["productos"]
-            vendedor = data.get("vendedor", "-")
+            cliente = datos["cliente"]
+            total = float(datos["total"])
+            tienda = datos["tienda"]
+            metodo_pago = datos["metodo"]
+            productos = datos["productos"]
+            vendedor = datos.get("vendedor", "-")
         except KeyError as e:
             return {"msg": f"Falta el parámetro {str(e)}"}, 400
         except ValueError:

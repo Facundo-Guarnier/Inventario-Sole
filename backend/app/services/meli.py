@@ -4,11 +4,10 @@ import os
 import time
 
 import requests
-from flask import current_app, request
-from flask_jwt_extended import jwt_required
+from flask import current_app
 
 
-class Meli(Resource):
+class MeliService:
     def __init__(self) -> None:
         self.meli_api = MercadoLibreAPI(
             client_id=current_app.config["MESH_CLIENT_ID"],
@@ -17,33 +16,12 @@ class Meli(Resource):
         )
         self.meli_api.authenticate(code=current_app.config["MESH_AUTH_CODE"])
 
-    @jwt_required()
-    def get(self) -> tuple:
-
-        data = request.args.to_dict()
-        if not data:
-            return {"msg": "Faltan datos"}, 400
-
-        try:
-            url = data["url"]
-        except Exception:
-            return {"msg": "Falta la URL"}, 400
-
+    def get(self, url: str) -> tuple:
         return self.meli_api.get(url), 200
 
     # @jwt_required()
     # @admin_required
-    def post(self):
-
-        data = request.args.to_dict()
-        if not data:
-            return {"msg": "Faltan datos1"}, 400
-
-        try:
-            url = data["url"]
-            datos = json.loads(data["datos"])
-        except Exception:
-            return {"msg": "Faltan datos2"}, 400
+    def post(self, url: str, datos: dict) -> tuple:
         return self.meli_api.post(url, datos), 200
 
 

@@ -1,26 +1,11 @@
 from app.models import ValidacionStockModel
-from flask import request
-from flask_jwt_extended import jwt_required
 
 
-class RondaValidacionStock(Resource):
-    def get(self):
+class RondaValidacionStockService:
+    def productos_a_validar(self, tienda: str, pagina: int, por_pagina: int):
         """
         Obtiene los productos que deben ser validados en la ronda actual.
         """
-
-        try:
-            data = request.args.to_dict()
-            tienda = data.get("tienda")
-            pagina = int(request.args.get("pagina", 1))
-            por_pagina = int(request.args.get("por_pagina", 10))
-
-        except Exception:
-            return ({"error": "Datos inválidos"}), 400
-
-        #! Validar data
-        if not tienda or not pagina or not por_pagina:
-            return ({"error": "Datos incompletos"}), 400
 
         #! Obtener ronda actual
         fecha_ronda = ValidacionStockModel.obtener_ronda_actual(tienda)
@@ -51,34 +36,20 @@ class RondaValidacionStock(Resource):
             "total": cantidad_total,
         }, 200
 
-    @jwt_required()
-    def post(self):
+    def iniciar_ronda(self, tienda: str):
         """
         Inicia una nueva ronda de validación.
         """
-        data = request.json
-        tienda = data.get("tienda")
-
-        if not tienda:
-            return ({"error": "Datos incompletos"}), 400
 
         resultado = ValidacionStockModel.iniciar_nueva_ronda(tienda)
         return (resultado), 200
 
 
-class ValidarStock(Resource):
-    @jwt_required()
-    def post(self):
+class ValidarStockService:
+    def post(self, id_producto: str, tienda: str, deshacer: bool = False):
         """
         Valida una unidad de un producto.
         """
-        data = request.json
-        id_producto = data.get("id")
-        deshacer = data.get("deshacer", False)
-        tienda = data.get("tienda")
-
-        if not id_producto or not tienda:
-            return ({"error": "Datos incompletos"}), 400
 
         if deshacer:
             resultado = ValidacionStockModel.deshacer_validacion(id_producto, tienda)

@@ -1,5 +1,18 @@
 import os
 
+from app.auth import autenticacion
+from app.routes import (
+    devolucion,
+    foto,
+    meli,
+    movimiento,
+    producto,
+    ultima_id,
+    usuario,
+    validar_stock,
+    venta,
+)
+from app.utils.backupDataBase import backupDataBase
 from config import Config
 from flask import Flask
 from flask_cors import CORS
@@ -93,36 +106,20 @@ def create_app(config_class=Config):
 
     jwt.init_app(app)
 
-    # ACA ESTOY,
-    # ESTOY REFACTORIZANDO LOS ANTIGUOS ENDPOINTS DE FLASK RESTFUL A FLASK BLUEPRINTS
-    # ES DECIR, LOS ARCHVIOS QUE ESTAN EN SERVICES ANTES ERAN CONTROLLERS, LOS ESTOY JUNTANDO CON ROUTES (COMO EN KAMINA)
-    # EL ULTIMO QUE HICE FUE "PRODUCTO" AHORA SIGUE "FOTO"
-
-    # api.add_resource(controllers.FotoResource, "/api/foto/<id_prod>/<filename>")  #! buscar foto
-    # api.add_resource(controllers.FotosResource, "/api/fotos")  #! subir foto
-
-    # api.add_resource(controllers.VentaResource, "/api/venta/<id>")  #! buscar_x_id, actualizar, eliminar
-    # api.add_resource(controllers.VentasResource, "/api/ventas")  #! buscar_x_atributo, buscar_todos, crear
-
-    # api.add_resource(controllers.RondaValidacionStockResource, "/api/ronda-validacion")  #! iniciar, obtener_productos
-    # api.add_resource(controllers.ValidarStockResource, "/api/validar")  #! validar_unidad
-
-    # api.add_resource(controllers.DevolucionesResource, "/api/devoluciones")  #! buscar_x_atributo, crear
-
-    # api.add_resource(controllers.MeliResource, "/api/meli")
-
     api.init_app(app)
     jwt.init_app(app)
-
-    from app.auth import autenticacion
-    from app.routes import movimiento, producto, ultima_id, usuario
-    from app.utils.backupDataBase import backupDataBase
 
     app.register_blueprint(autenticacion.auth)
     app.register_blueprint(usuario.usuario)
     app.register_blueprint(ultima_id.ultima_id)
     app.register_blueprint(movimiento.movimiento)
     app.register_blueprint(producto.producto)
+    app.register_blueprint(foto.foto)
+    app.register_blueprint(venta.venta)
+    app.register_blueprint(validar_stock.ronda_validacion)
+    app.register_blueprint(validar_stock.validacion_stock)
+    app.register_blueprint(devolucion.devolucion)
+    app.register_blueprint(meli.meli)
     app.register_blueprint(backupDataBase.backup)
 
     return app

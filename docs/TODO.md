@@ -1,5 +1,8 @@
 # TO DO list
 
+- IMPORNATE: CAMBIARON LAS RUTAS DE LOS ENDPOINTS, AHORA SON TODOS EN PLURAL,
+- IMPLEMENTAR DTOs para todas las validaciones de los endpoints
+
 - Los services no deberían devolver una tupla con el dato y código de de respuesta de HTTP
 - Hacer algún test como en Kamina del backend
 

@@ -1,18 +1,17 @@
 from datetime import datetime
 
 import pytz
-from app.controllers.Movimiento import Movimientos
 from app.models import DevolucionModel
 from app.models.ProductoModel import ProductoModel
-from flask import request
-from flask_jwt_extended import jwt_required
+from app.services.movimiento import MovimientoService
 
 
-class Devoluciones(Resource):
+class DevolucionesService:
     def __init__(self):
-        self.movimientos = Movimientos()
+        self.movimientos = MovimientoService()
+        self.devoluciones_query = DevolucionModel()
 
-    def get(self) -> tuple:
+    def buscar_todas(self, pagina: int, por_pagina: int) -> tuple:
         """
         Busca todas las devoluciones en base a los atributos que se pasen.
         Sin atributos, devuelve todos las devoluciones.
@@ -23,12 +22,8 @@ class Devoluciones(Resource):
 
         filtro: dict[str, str] = {}
 
-        #! Paginación
-        pagina = int(request.args.get("pagina", 1))
-        por_pagina = int(request.args.get("por_pagina", 10))
-
         saltear = (pagina - 1) * por_pagina
-        cantidad_total = DevolucionModel.total(filtro=filtro)
+        cantidad_total = self.devoluciones_query.total(filtro=filtro)
 
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] is None:
@@ -52,8 +47,7 @@ class Devoluciones(Resource):
             }, 200
         return {"msg": respuesta["respuesta"]}, 404
 
-    @jwt_required()
-    def post(self) -> tuple:
+    def crear(self, datos: dict) -> tuple:
         """
         Crea una devolución.
 
@@ -61,16 +55,14 @@ class Devoluciones(Resource):
             - dict: Devolucion creada
         """
 
-        data = request.json
-        if not data:
-            return {"msg": "Faltan datos"}, 400
-
         #! Validar datos
         try:
-            id_producto = data["id"].upper()
-            cantidad = float(data["cantidad"])
-            tienda = data.get("tienda").lower()
-            comentario = data.get("comentario", "-")
+            id_producto = datos["id"].upper()
+            cantidad = float(datos["cantidad"])
+            tienda = datos.get("tienda")
+            if tienda:
+                tienda = tienda.lower()
+            comentario = datos.get("comentario", "-")
 
         except KeyError as e:
             return {"msg": f"Falta el parámetro {str(e)}"}, 400

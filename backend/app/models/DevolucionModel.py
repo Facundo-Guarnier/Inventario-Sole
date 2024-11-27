@@ -59,8 +59,7 @@ class DevolucionModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def total(filtro: dict) -> dict:
+    def total(self, filtro: dict) -> dict:
         """
         Devuelve el total de devoluciones.
         """
