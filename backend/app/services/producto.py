@@ -1,20 +1,17 @@
 from datetime import datetime
 
 import pytz
-from flask import request
-from flask_jwt_extended import jwt_required
-from flask_restful import Resource
-
 from app.models import ProductoModel
-from app.Resources.Foto import Foto
-from app.Resources.UltimaID import UltimaID
+from app.services.foto import FotoService
+from app.services.ultima_id import UltimaIdService
 
 
-class Producto(Resource):
+class ProductoService:
     def __init__(self) -> None:
-        self.fotoResource = Foto()
+        self.fotoResource = FotoService()
+        self.ultima_id_resource = UltimaIdService()
 
-    def get(self, id: str) -> dict:
+    def buscar_por_id(self, id: str) -> tuple:
         """
         Busca una producto por su id.
 
@@ -34,8 +31,7 @@ class Producto(Resource):
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
 
-    @jwt_required()
-    def put(self, id: str) -> dict:
+    def actualizar(self, id: str, datos: dict) -> tuple:
         """
         Actualiza una producto.
 
@@ -53,20 +49,15 @@ class Producto(Resource):
         if not viejo_producto:
             return ({"msg": "No se encontró el producto"}), 404
 
-        #! Obtener datos a actualizar
-        data = request.json
-        if not data:
-            return ({"msg": "Faltan datos"}), 400
-
-        #! Validar data
-        cod_ms = data.get("cod_ms")
-        marca = data.get("marca")
-        descripcion = data.get("descripcion")
-        talle = data.get("talle")
-        fisica = data.get("fisica")
-        online = data.get("online")
-        liquidacion = data.get("liquidacion")
-        fotos = data.get("fotos")
+        #! Validar datos
+        cod_ms = datos.get("cod_ms")
+        marca = datos.get("marca")
+        descripcion = datos.get("descripcion")
+        talle = datos.get("talle")
+        fisica = datos.get("fisica")
+        online = datos.get("online")
+        liquidacion = datos.get("liquidacion")
+        fotos = datos.get("fotos")
 
         if (
             not cod_ms
@@ -99,7 +90,7 @@ class Producto(Resource):
             return ({"msg": "Los precios y cantidades deben ser mayores a 0"}), 400
 
         #! Crear diccionario con los datos a actualizar
-        nueva_producto = {
+        nuevo_producto = {
             "id": id,
             "cod_ms": cod_ms,
             "marca": marca,
@@ -112,12 +103,12 @@ class Producto(Resource):
         }
 
         #! Actualizar producto
-        respuesta = ProductoModel.actualizar(id, data)
+        respuesta = ProductoModel.actualizar(id, nuevo_producto)
         if respuesta["estado"]:
 
             #! Borra las fotos que no se usan
             fotos_nuevas_nombre = []
-            for f in nueva_producto[
+            for f in nuevo_producto[
                 "fotos"
             ]:  #! Ej: [00026/resized_Pic_20240204_165151_4096x2160.png', ...]
                 foto = f.split("/")[-1]
@@ -128,8 +119,7 @@ class Producto(Resource):
 
         return ({"msg": respuesta["respuesta"]}), 400
 
-    @jwt_required()
-    def delete(self, id: str) -> dict:
+    def eliminar(self, id: str) -> tuple:
         """
         Elimina una producto.
 
@@ -153,37 +143,24 @@ class Producto(Resource):
             return ({"msg": "Producto eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
 
-
-def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-class Productos(Resource):
-    def __init__(self):
-        self.ultima_id_resource = UltimaID()
-
-    def get(self) -> list:
+    def buscar_por_filtro(self, filtro: dict, pagina: int, por_pagina: int) -> tuple:
         """
         Busca productos en base a los atributos que se pasen.
         Sin atributos, devuelve todas las productos.
         """
-        data = request.args.to_dict()
 
-        #! Validar data
+        #! Validar filtro
         try:
-            id = data.get("id")
-            cod_ms = data.get("cod_ms")
-            marca = data.get("marca")
-            descripcion = data.get("descripcion")
-            talle = data.get("talle")
-            fisica = data.get("fisica")
-            online = data.get("online")
-            liquidacion = data.get("liquidacion")
-            palabra_clave = data.get("palabra_clave")
-            tienda = data.get("tienda")
-            pagina = int(request.args.get("pagina", 1))
-            por_pagina = int(request.args.get("por_pagina", 10))
+            id = filtro.get("id")
+            cod_ms = filtro.get("cod_ms")
+            marca = filtro.get("marca")
+            descripcion = filtro.get("descripcion")
+            talle = filtro.get("talle")
+            fisica = filtro.get("fisica")
+            online = filtro.get("online")
+            liquidacion = filtro.get("liquidacion")
+            palabra_clave = filtro.get("palabra_clave")
+            tienda = filtro.get("tienda")
 
         except Exception:
             return ({"msg": "Error en los parámetros enviados"}), 400
@@ -277,32 +254,29 @@ class Productos(Resource):
             }, 200
         return {"msg": respuesta["respuesta"]}, 404
 
-    @jwt_required()
-    def post(self) -> dict:
+    def crear(self, datos: dict) -> tuple:
         """
         Crea una producto.
 
         Returns:
             - dict: Producto creado
         """
-        data = request.json
-
-        print("++++DATOS DEL PRODUCTO NUEVO:", data)
+        print("++++DATOS DEL PRODUCTO NUEVO:", datos)
         # {'id': '00027', 'titulo': 'pantalon ', 'liquidacion': False, 'dominio': 'Ropa y Accesorios > Pantalones', 'BRAND': 'generico',
         # 'MODEL': 'pantalon2000', 'GENDER': 'Mujer', 'COLOR': 'Coral', 'SIZE': '28', 'MAIN_MATERIAL': 'Lana',
         # 'PANT_TYPE': 'Pantalón', 'dominioObj': {'domain_id': 'MLA-PANTS', 'domain_name': 'Pantalones', 'category_id': 'MLA109282',
         # 'category_name': 'Pantalones', 'attributes': [], 'path_completo': 'Ropa y Accesorios > Pantalones'}, 'fisica': {'precio': 100, 'cantidad': 100},
         # 'online': {'precio': 200, 'cantidad': 200}, 'fotos': ['00027/resized_pngtree-tech-color-offline-color-twitch-design-banner-background-image_520015.jpg']}
-        return ({"msg": "Producto creado con éxito"}), 201
+        return ({"msg": "En construcción"}), 400
 
-        cod_ms = data.get("cod_ms")
-        marca = data.get("marca")
-        descripcion = data.get("descripcion")
-        talle = data.get("talle")
-        fisica = data.get("fisica")
-        online = data.get("online")
-        liquidacion = data.get("liquidacion")
-        fotos = data.get("fotos")
+        cod_ms = datos.get("cod_ms")
+        marca = datos.get("marca")
+        descripcion = datos.get("descripcion")
+        talle = datos.get("talle")
+        fisica = datos.get("fisica")
+        online = datos.get("online")
+        liquidacion = datos.get("liquidacion")
+        fotos = datos.get("fotos")
 
         if (
             not cod_ms
@@ -348,7 +322,7 @@ class Productos(Resource):
 
         respuesta = ProductoModel.crear(
             {
-                "id": UltimaID.calcular_proximo_id("producto"),
+                "id": self.ultima_id_resource.calcular_proximo_id("producto"),
                 "cod_ms": cod_ms,
                 "marca": marca,
                 "descripcion": descripcion,

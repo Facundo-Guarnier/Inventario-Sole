@@ -1,15 +1,9 @@
-from flask import request
-from flask_jwt_extended import jwt_required
-from flask_restful import Resource
+from app.models import UsuarioModel
 from werkzeug.security import generate_password_hash
 
-from app.Auth.Decorators import admin_required
-from app.models import UsuarioModel
 
-
-class Usuario(Resource):
-    @jwt_required()
-    def get(self, alias: str) -> dict:
+class UsuarioService:
+    def buscar_por_alias(self, alias: str):
         """
         Busca un usuario por su alias.
 
@@ -24,14 +18,13 @@ class Usuario(Resource):
         if respuesta["estado"]:
             if respuesta["respuesta"] is None:
                 return (f"Usuario con alias: {alias} no encontrado"), 404
+
             else:
                 del respuesta["respuesta"]["_id"]
                 del respuesta["respuesta"]["contraseña"]
                 return respuesta["respuesta"], 200
 
-    @jwt_required()
-    @admin_required
-    def put(self, alias: str) -> dict:
+    def actualizar(self, alias: str, datos: dict) -> tuple:
         """
         Actualiza un usuario.
 
@@ -48,12 +41,6 @@ class Usuario(Resource):
             return ({"msg": "No se encontró el usuario"}), 404
 
         #! Obtener datos a actualizar
-        datos = request.json
-        if not datos or datos is None:
-            return ({"msg": "Faltan datos"}), 400
-
-        if not datos.get("roles"):
-            return ({"msg": "Faltan datos"}), 400
 
         #! Crear diccionario con los datos a actualizar
         nuevo_usuario = {}
@@ -69,9 +56,7 @@ class Usuario(Resource):
             return {"msg": "Usuario actualizado"}, 200
         return {"msg": respuesta["respuesta"]}, 404
 
-    @jwt_required()
-    @admin_required
-    def delete(self, alias: str) -> dict:
+    def eliminar(self, alias: str) -> tuple:
         """
         Elimina un usuario.
 
@@ -92,24 +77,13 @@ class Usuario(Resource):
             return ({"msg": "Usuario eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 404
 
-
-class Usuarios(Resource):
-    @jwt_required()
-    @admin_required
-    def get(self) -> dict:
+    def buscar_todos(self, pagina: int, por_pagina: int) -> tuple:
         """
         Busca todos los usuarios.
 
         Returns:
             - dict: Lista de usuarios
         """
-        #! Validar data
-        try:
-            pagina = int(request.args.get("pagina", 1))
-            por_pagina = int(request.args.get("por_pagina", 10))
-
-        except Exception:
-            return ({"msg": "Error en los parámetros enviados"}), 400
 
         #! Paginación
         saltear = (pagina - 1) * por_pagina

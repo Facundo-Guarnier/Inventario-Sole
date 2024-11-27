@@ -1,18 +1,16 @@
 from datetime import datetime
 
 import pytz
-from flask import request
-from flask_jwt_extended import jwt_required
-from flask_restful import Resource
-
-from app.auth.Decorators import admin_required
-from app.controllers.UltimaID import UltimaID
 from app.models import MovimientoModel
 from app.models.ProductoModel import ProductoModel
+from app.services.ultima_id import UltimaIdService
 
 
-class Movimiento(Resource):
-    def get(self, id: str) -> tuple:
+class MovimientoService:
+    def __init__(self) -> None:
+        self.ultima_id_resource = UltimaIdService()
+
+    def buscar_por_id(self, id: str) -> tuple:
         """
         Busca un movimiento por su id.
 
@@ -32,9 +30,7 @@ class Movimiento(Resource):
             return ({"msg": respuesta["respuesta"]}), 200
         return ({"msg": respuesta["respuesta"]}), 404
 
-    @jwt_required()
-    @admin_required
-    def put(self, id: str) -> tuple:
+    def actualizar(self, id: str, datos: dict) -> tuple:
         """
         Actualiza un movimiento.
 
@@ -52,30 +48,25 @@ class Movimiento(Resource):
         # if not movimiento:
         #     return {"msg": "No se encontró el movimiento"}, 404
 
-        # #! Obtener data
-        # data = request.json
-        # if not data:
-        #     return {"msg": "Faltan datos"}, 400
-
-        # #! Validar data
+        # #! Validar datos
         # nuevo_movimiento = {}
         # try:
-        #     if "movimiento" in data:
-        #         nuevo_movimiento["movimiento"] = data["movimiento"]
+        #     if "movimiento" in datos:
+        #         nuevo_movimiento["movimiento"] = datos["movimiento"]
 
-        #     if "idProducto" in data:
-        #         nuevo_movimiento["idProducto"] = data["idProducto"].upper()
+        #     if "idProducto" in datos:
+        #         nuevo_movimiento["idProducto"] = datos["idProducto"].upper()
 
-        #     if "cantidad" in data:
-        #         nuevo_movimiento["cantidad"] = float(data["cantidad"])
+        #     if "cantidad" in datos:
+        #         nuevo_movimiento["cantidad"] = float(datos["cantidad"])
         #         if nuevo_movimiento["cantidad"] <= 0:
         #             return {"msg": "La cantidad no puede ser negativa o cero"}, 400
 
-        #     if "vendedor" in data:
-        #         nuevo_movimiento["vendedor"] = data["vendedor"]
+        #     if "vendedor" in datos:
+        #         nuevo_movimiento["vendedor"] = datos["vendedor"]
 
-        #     if "comentario" in data:
-        #         nuevo_movimiento["comentario"] = data["comentario"]
+        #     if "comentario" in datos:
+        #         nuevo_movimiento["comentario"] = datos["comentario"]
         # except ValueError:
         #     return {"msg": "La cantidad debe ser un número válido"}, 400
         # except Exception as e:
@@ -88,9 +79,7 @@ class Movimiento(Resource):
         # return {"msg": respuesta["respuesta"]}, 404
         return {"msg": "No se puede actualizar un movimiento"}, 400
 
-    @jwt_required
-    @admin_required
-    def delete(self, id: str) -> tuple:
+    def eliminar(self, id: str) -> tuple:
         """
         Elimina un movimiento.
 
@@ -108,12 +97,7 @@ class Movimiento(Resource):
             return ({"msg": "Movimiento eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 404
 
-
-class Movimientos(Resource):
-    def __init__(self) -> None:
-        self.ultima_id_resource = UltimaID()
-
-    def get(self) -> tuple:
+    def buscar_x_atributo(self, filtro: dict, pagina: int, por_pagina: int) -> tuple:
         """
         Busca movimientos en base a los atributos que se pasen.
         Sin atributos, devuelve todos los movimientos.
@@ -121,22 +105,18 @@ class Movimientos(Resource):
         Returns:
             - list: Movimientos encontrados
         """
-        data = request.args.to_dict()
 
-        #! Validar data
+        #! Validar filtro
         try:
-            id = data.get("id")
-            movimiento = data.get("movimiento")
-            id_producto = data.get("idProducto")
-            cantidad = data.get("cantidad")
-            vendedor = data.get("vendedor")
-            comentario = data.get("comentario")
-            fecha = data.get("fecha")
-            tienda = data.get("tienda")
-            palabra_clave = data.get("palabra_clave")
-
-            pagina = int(request.args.get("pagina", 1))
-            por_pagina = int(request.args.get("por_pagina", 10))
+            id = filtro.get("id")
+            movimiento = filtro.get("movimiento")
+            id_producto = filtro.get("idProducto")
+            cantidad = filtro.get("cantidad")
+            vendedor = filtro.get("vendedor")
+            comentario = filtro.get("comentario")
+            fecha = filtro.get("fecha")
+            tienda = filtro.get("tienda")
+            palabra_clave = filtro.get("palabra_clave")
 
         except Exception:
             return ({"msg": "Error en los parámetros enviados"}), 400
@@ -207,33 +187,33 @@ class Movimientos(Resource):
             }, 200
         return {"msg": respuesta["respuesta"]}, 404
 
-    @jwt_required()
-    def post(self, data=None) -> tuple:
+    def crear(self, datos: dict) -> tuple:
         """
         Crea un movimiento.
 
         Args:
-            data (dict, optional): Datos del movimiento. Si no se proporciona, se usa request.json.
+            datos (dict, optional): Datos del movimiento. Si no se proporciona, se usa request.json.
 
         Returns:
             - dict: Movimiento creado
         """
-        if data is None:
-            data = request.json
-        if not data:
-            return {"msg": "Faltan datos"}, 400
 
         try:
-            movimiento = data["movimiento"]
-            id_producto = data["idProducto"].upper()
-            cantidad = float(data["cantidad"])
-            vendedor = data["vendedor"]
-            comentario = data.get("comentario")
-            tienda = data.get("tienda").lower()
+            movimiento = datos["movimiento"]
+            id_producto = datos["idProducto"].upper()
+            cantidad = float(datos["cantidad"])
+            vendedor = datos["vendedor"]
+            comentario = datos.get("comentario")
+            tienda = datos.get("tienda")
+            if tienda:
+                tienda = tienda.lower()
+
         except KeyError as e:
             return {"msg": f"Falta el parámetro {str(e)}"}, 400
+
         except ValueError:
             return {"msg": "La cantidad debe ser un número válido"}, 400
+
         except Exception as e:
             return {"msg": f"Error en los parámetros enviados: {str(e)}"}, 400
 
@@ -245,9 +225,10 @@ class Movimientos(Resource):
             return {"msg": "El producto no existe"}, 404
 
         buenos_aires_tz = pytz.timezone("America/Argentina/Buenos_Aires")
+
         #! Crear nuevo movimiento
         nuevo_movimiento = {
-            "id": UltimaID.calcular_proximo_id("movimiento"),
+            "id": self.ultima_id_resource.calcular_proximo_id("movimiento"),
             "movimiento": movimiento,
             "idProducto": id_producto,
             "cantidad": cantidad,
@@ -258,7 +239,6 @@ class Movimientos(Resource):
         }
 
         if movimiento == "Entrada":
-            # print("ENTRADA:", respuesta1["respuesta"][0][tienda]["cantidad"] + cantidad)
             ProductoModel.actualizar(
                 id_producto,
                 {
@@ -272,7 +252,6 @@ class Movimientos(Resource):
 
         elif movimiento == "Salida":
             if respuesta1["respuesta"][0][tienda]["cantidad"] >= cantidad:
-                # print("SALIDA:", respuesta1["respuesta"][0][tienda]["cantidad"] - cantidad)
                 ProductoModel.actualizar(
                     id_producto,
                     {
@@ -285,6 +264,7 @@ class Movimientos(Resource):
                 )
             else:
                 return {"msg": "No hay suficientes productos en el inventario"}, 400
+
         else:
             return {"msg": "El movimiento no es válido"}, 400
 
@@ -293,7 +273,9 @@ class Movimientos(Resource):
         if respuesta2["estado"]:
             if respuesta2["respuesta"] is None:
                 return {"msg": "No se pudo crear el movimiento"}, 404
+
             else:
                 self.ultima_id_resource.put("movimiento")
                 return {"msg": "Movimiento creado"}, 201
+
         return {"msg": respuesta2["respuesta"]}, 404

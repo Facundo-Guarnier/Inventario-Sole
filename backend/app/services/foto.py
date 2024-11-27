@@ -2,12 +2,11 @@ import os
 
 from flask import current_app, request, send_from_directory
 from flask_jwt_extended import jwt_required
-from flask_restful import Resource
 from PIL import Image
 from werkzeug.utils import secure_filename
 
 
-class Foto(Resource):
+class FotoService(Resource):
     def get(self, id_prod, filename):
         try:
             upload_folder = current_app.config["UPLOAD_FOLDER"]

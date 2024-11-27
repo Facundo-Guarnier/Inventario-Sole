@@ -11,7 +11,7 @@ from flask import Blueprint, current_app, jsonify, request, send_file
 from main import mongo as db_mongo
 from werkzeug.utils import secure_filename
 
-from app.auth.Decorators import admin_required
+from backend.app.auth.decorators import admin_required
 
 backup = Blueprint("api/bdb", __name__, url_prefix="/api/bdb")
 

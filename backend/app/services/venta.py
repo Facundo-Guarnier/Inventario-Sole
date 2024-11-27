@@ -1,14 +1,12 @@
 from datetime import datetime
 
 import pytz
-from flask import request
-from flask_jwt_extended import jwt_required
-from flask_restful import Resource
-
 from app.controllers.Movimiento import Movimientos
 from app.controllers.UltimaID import UltimaID
 from app.models import VentaModel
 from app.models.ProductoModel import ProductoModel
+from flask import request
+from flask_jwt_extended import jwt_required
 
 
 class Venta(Resource):
@@ -237,7 +235,7 @@ class Ventas(Resource):
         self.ultima_id_resource = UltimaID()
         self.movimientos = Movimientos()
 
-    def get(self) -> tuple:
+    def get(self):
         """
         Busca ventas en base a los atributos que se pasen.
         Sin atributos, devuelve todas las ventas.
@@ -455,7 +453,7 @@ class Ventas(Resource):
         buenos_aires_tz = pytz.timezone("America/Argentina/Buenos_Aires")
         #! Crear venta
         nueva_venta = {
-            "id": UltimaID.calcular_proximo_id("venta"),
+            "id": self.ultima_id_resource.calcular_proximo_id("venta"),
             "cliente": cliente,
             "fecha": datetime.now(buenos_aires_tz).strftime("%Y-%m-%d %H:%M:%S"),
             "total": total,

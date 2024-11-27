@@ -73,7 +73,6 @@ def initialize_database(app):
 
 
 def create_app(config_class=Config):
-
     app = Flask(__name__)
     app.config.from_object(config_class)
 
@@ -81,6 +80,7 @@ def create_app(config_class=Config):
     if not os.path.exists(Config.UPLOAD_FOLDER):
         try:
             os.makedirs(Config.UPLOAD_FOLDER)
+
         except FileExistsError:
             #! La carpeta ya existe, lo cual está bien
             pass
@@ -93,63 +93,36 @@ def create_app(config_class=Config):
 
     jwt.init_app(app)
 
-    import app.controllers as controllers
+    # ACA ESTOY,
+    # ESTOY REFACTORIZANDO LOS ANTIGUOS ENDPOINTS DE FLASK RESTFUL A FLASK BLUEPRINTS
+    # ES DECIR, LOS ARCHVIOS QUE ESTAN EN SERVICES ANTES ERAN CONTROLLERS, LOS ESTOY JUNTANDO CON ROUTES (COMO EN KAMINA)
+    # EL ULTIMO QUE HICE FUE "PRODUCTO" AHORA SIGUE "FOTO"
 
-    api.add_resource(controllers.UsuarioResource, "/api/usuario/<alias>")
-    api.add_resource(controllers.UsuariosResource, "/api/usuarios")
+    # api.add_resource(controllers.FotoResource, "/api/foto/<id_prod>/<filename>")  #! buscar foto
+    # api.add_resource(controllers.FotosResource, "/api/fotos")  #! subir foto
 
-    api.add_resource(
-        controllers.MovimientoResource, "/api/movimiento/<id>"
-    )  #! buscar_x_id
-    api.add_resource(
-        controllers.MovimientosResource, "/api/movimientos"
-    )  #! buscar_x_atributo, buscar_todos
+    # api.add_resource(controllers.VentaResource, "/api/venta/<id>")  #! buscar_x_id, actualizar, eliminar
+    # api.add_resource(controllers.VentasResource, "/api/ventas")  #! buscar_x_atributo, buscar_todos, crear
 
-    api.add_resource(
-        controllers.ProductoResource, "/api/producto/<id>"
-    )  #! buscar_x_id, actualizar, eliminar
-    api.add_resource(
-        controllers.ProductosResource, "/api/productos"
-    )  #! buscar_x_atributo, buscar_todos, crear
+    # api.add_resource(controllers.RondaValidacionStockResource, "/api/ronda-validacion")  #! iniciar, obtener_productos
+    # api.add_resource(controllers.ValidarStockResource, "/api/validar")  #! validar_unidad
 
-    api.add_resource(
-        controllers.FotoResource, "/api/foto/<id_prod>/<filename>"
-    )  #! buscar foto
-    api.add_resource(controllers.FotosResource, "/api/fotos")  #! subir foto
+    # api.add_resource(controllers.DevolucionesResource, "/api/devoluciones")  #! buscar_x_atributo, crear
 
-    api.add_resource(
-        controllers.VentaResource, "/api/venta/<id>"
-    )  #! buscar_x_id, actualizar, eliminar
-    api.add_resource(
-        controllers.VentasResource, "/api/ventas"
-    )  #! buscar_x_atributo, buscar_todos, crear
-
-    api.add_resource(
-        controllers.UltimaIDResource, "/api/ultimaid/<coleccion>"
-    )  #! buscar_id, aumentar_id
-
-    api.add_resource(
-        controllers.RondaValidacionStockResource, "/api/ronda-validacion"
-    )  #! iniciar, obtener_productos
-    api.add_resource(
-        controllers.ValidarStockResource, "/api/validar"
-    )  #! validar_unidad
-
-    api.add_resource(
-        controllers.DevolucionesResource, "/api/devoluciones"
-    )  #! buscar_x_atributo, crear
-
-    api.add_resource(controllers.MeliResource, "/api/meli")
+    # api.add_resource(controllers.MeliResource, "/api/meli")
 
     api.init_app(app)
     jwt.init_app(app)
 
-    from app.auth import Autenticacion
+    from app.auth import autenticacion
+    from app.routes import movimiento, producto, ultima_id, usuario
+    from app.utils.backupDataBase import backupDataBase
 
-    app.register_blueprint(Autenticacion.auth)
-
-    from app.utils.backupDataBase import BackupDataBase
-
-    app.register_blueprint(BackupDataBase.backup)
+    app.register_blueprint(autenticacion.auth)
+    app.register_blueprint(usuario.usuario)
+    app.register_blueprint(ultima_id.ultima_id)
+    app.register_blueprint(movimiento.movimiento)
+    app.register_blueprint(producto.producto)
+    app.register_blueprint(backupDataBase.backup)
 
     return app
