@@ -1,96 +1,134 @@
 <!--! Formulario para editar un producto -->
 
 <div class="card text-white bg-dark">
-    <div class="card-header bg-primary">
-        Nuevo Detalle
-    </div>
-    <div class="card-body">
-      <div class="row">
-        
-        <!--! Columna 1  -->
-        <div class="col-6"> 
-          <div class="mb-3" *ngFor="let campo of detalleGeneral">
-          
-            <!--! TextArea  -->
-            <div *ngIf="campo.tipo == 'textarea-text'">
-              <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-              <textarea class="form-control" id="{{campo.identificador}}" rows="2" 
-                [(ngModel)]="campo.valor" 
+  <div class="card-header bg-primary">Nuevo Detalle</div>
+  <div class="card-body">
+    <div class="row">
+      <!--! Columna 1  -->
+      <div class="col-6">
+        <div class="mb-3" *ngFor="let campo of detalleGeneral">
+          <!--! TextArea  -->
+          <div *ngIf="campo.tipo == 'textarea-text'">
+            <label for="{{ campo.identificador }}" class="form-label">{{
+              campo.nombre
+            }}</label>
+            <textarea
+              class="form-control"
+              id="{{ campo.identificador }}"
+              rows="2"
+              [(ngModel)]="campo.valor"
+              (ngModelChange)="OnChange(campo, $event)"
+              [disabled]="!mostrarEditar"
+            ></textarea>
+          </div>
+
+          <!--! Input text -->
+          <div *ngIf="campo.tipo == 'input-text'">
+            <label for="{{ campo.identificador }}" class="form-label">{{
+              campo.nombre
+            }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="{{ campo.identificador }}"
+              [(ngModel)]="campo.valor"
+              (ngModelChange)="OnChange(campo, $event)"
+              [disabled]="!mostrarEditar"
+            />
+          </div>
+
+          <!--! ReadOnly  -->
+          <div *ngIf="campo.tipo == 'readonly'">
+            <label for="{{ campo.identificador }}" class="form-label">{{
+              campo.nombre
+            }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="{{ campo.identificador }}"
+              [(ngModel)]="campo.valor"
+              (ngModelChange)="OnChange(campo, $event)"
+              [disabled]="true"
+              readonly
+            />
+          </div>
+
+          <!--! Boolean  -->
+          <div *ngIf="campo.tipo == 'boolean'">
+            <label
+              class="form-check-label d-flex align-items-center"
+              for="{{ campo.identificador }}"
+              style="font-size: 1.2rem"
+            >
+              <span class="me-2">{{ campo.nombre }}</span>
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="{{ campo.identificador }}"
+                [(ngModel)]="campo.valor"
                 (ngModelChange)="OnChange(campo, $event)"
                 [disabled]="!mostrarEditar"
-              ></textarea>
-            </div>
-            
-            <!--! Input text -->
-            <div *ngIf="campo.tipo == 'input-text'">
-                <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                <input type="text" class="form-control" id="{{campo.identificador}}" 
-                  [(ngModel)]="campo.valor" 
-                  (ngModelChange)="OnChange(campo, $event)"
-                  [disabled]="!mostrarEditar"
-                >
-              </div>
-            
-            <!--! ReadOnly  -->
-            <div *ngIf="campo.tipo == 'readonly'">
-                <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                <input type="text" class="form-control" id="{{campo.identificador}}" 
-                  [(ngModel)]="campo.valor" 
-                  (ngModelChange)="OnChange(campo, $event)"
-                  [disabled]="true"
-                  readonly
-                >
-            </div>
-            
-            <!--! Boolean  -->
-            <div *ngIf="campo.tipo == 'boolean'">
-              <label class="form-check-label d-flex align-items-center" for="{{campo.identificador}}" style="font-size: 1.2rem;"> 
-                <span class="me-2">{{campo.nombre}}</span>
-                <input type="checkbox" 
-                  class="form-check-input" 
-                  id="{{campo.identificador}}" 
-                  [(ngModel)]="campo.valor"
-                  (ngModelChange)="OnChange(campo, $event)"
-                  [disabled]="!mostrarEditar"
-                >
-              </label>
-            </div>
+              />
+            </label>
+          </div>
 
           <!--! Selector  -->
           <div *ngIf="campo.tipo == 'selector'">
-            <label class="form-check-label d-flex align-items-center" for="{{campo.identificador}}">{{campo.nombre}}</label>
-            <select class="form-select" id="{{campo.identificador}}" [disabled]="!mostrarEditar" 
-              [(ngModel)]="campo.valor" 
-              (change)="OnChange(campo, $event)">
+            <label
+              class="form-check-label d-flex align-items-center"
+              for="{{ campo.identificador }}"
+              >{{ campo.nombre }}</label
+            >
+            <select
+              class="form-select"
+              id="{{ campo.identificador }}"
+              [disabled]="!mostrarEditar"
+              [(ngModel)]="campo.valor"
+              (change)="OnChange(campo, $event)"
+            >
               <!-- <option>Seleccionar...</option> -->
-              <option *ngFor="let opcion of campo.opciones" 
-                [value]="opcion" 
+              <option
+                *ngFor="let opcion of campo.opciones"
+                [value]="opcion"
                 [selected]="opcion === campo.valor || ''"
-              >{{opcion}}</option>
+              >
+                {{ opcion }}
+              </option>
             </select>
           </div>
-
-          
-            
-          </div>
         </div>
-        
-        <!--! Columna 2  -->
-        <div class="col-6">
-          
-          <h5>Física:</h5>
-          <div class="mb-3" *ngFor="let campo of detalleFisica">
-            <label for="precioFisico" class="form-label">{{campo.nombre}}</label>
-            <input type="number" class="form-control" id="precioFisico" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar">
-          </div>
-          
-          <h5>Online:</h5>
-          <div class="mb-3" *ngFor="let campo of detalleOnline">
-            <label for="precioFisico" class="form-label">{{campo.nombre}}</label>
-            <input type="number" class="form-control" id="precioFisico" [(ngModel)]="campo.valor" [disabled]="!mostrarEditar">
-          </div>
-          
+      </div>
+
+      <!--! Columna 2  -->
+      <div class="col-6">
+        <h5>Física:</h5>
+        <div class="mb-3" *ngFor="let campo of detalleFisica">
+          <label for="precioFisico" class="form-label">{{
+            campo.nombre
+          }}</label>
+          <input
+            type="number"
+            class="form-control"
+            id="precioFisico"
+            [(ngModel)]="campo.valor"
+            [disabled]="!mostrarEditar"
+          />
+        </div>
+
+        <h5>Online:</h5>
+        <div class="mb-3" *ngFor="let campo of detalleOnline">
+          <label for="precioFisico" class="form-label">{{
+            campo.nombre
+          }}</label>
+          <input
+            type="number"
+            class="form-control"
+            id="precioFisico"
+            [(ngModel)]="campo.valor"
+            [disabled]="!mostrarEditar"
+          />
         </div>
       </div>
     </div>
   </div>
+</div>

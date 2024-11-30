@@ -1,63 +1,67 @@
 <div class="container-fluid px-0">
-    <!--! Botones  -->
-    <div class="d-lg-none mobile-top-bar bg-primary text-white py-2 px-3 d-flex justify-content-between align-items-center">
-        <button class="btn botones-vista" (click)="toggleNavbar()">
-            <i class="fas fa-bars"></i>
-        </button>
-        
-        <span class="current-page h3 mb-0 text-center flex-grow-1 text-truncate px-2">
-            {{getPaginaActual()}}
-        </span>
-        
-        <button class="btn botones-vista" (click)="toggleSidebar()">
-            <i class="fas fa-filter"></i>
-        </button>
+  <!--! Botones  -->
+  <div
+    class="d-lg-none mobile-top-bar bg-primary text-white py-2 px-3 d-flex justify-content-between align-items-center"
+  >
+    <button class="btn botones-vista" (click)="toggleNavbar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <span
+      class="current-page h3 mb-0 text-center flex-grow-1 text-truncate px-2"
+    >
+      {{ getPaginaActual() }}
+    </span>
+
+    <button class="btn botones-vista" (click)="toggleSidebar()">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <!--! Navbar -->
+  <div class="row" [ngClass]="{ 'd-none d-lg-block': !showNavbar }">
+    <app-comp-navbar></app-comp-navbar>
+  </div>
+
+  <div class="row g-0 contenido-principal">
+    <!--! Barra lateral -->
+    <div
+      class="col-lg-3 col-md-12 sidebar barra-lateral-pag"
+      [ngClass]="{ 'd-none d-lg-block': !showSidebar }"
+    >
+      <app-comp-barra-lateral
+        [filtrosLista]="filtrosLista"
+        (clickBuscar)="clickBuscar($event)"
+        (clickFiltro)="leerFiltros($event)"
+      ></app-comp-barra-lateral>
     </div>
-    
-    <!--! Navbar -->
-    <div class="row" [ngClass]="{'d-none d-lg-block': !showNavbar}">
-        <app-comp-navbar></app-comp-navbar>
+
+    <div class="col-lg-9 content cuerpo-pag">
+      <div class="container-fluid">
+        <!--! Cuerpo -->
+        <h1 style="color: aliceblue">Histórico</h1>
+        <app-comp-tabla-datos
+          [columnas]="columnas"
+          [datos]="datos"
+          [acciones]="acciones"
+          [tipo]="'dev'"
+        ></app-comp-tabla-datos>
+
+        <!--! Paginamiento  -->
+        <app-comp-paginamiento
+          [paginaActual]="paginaActual"
+          [totalPaginas]="totalPaginas"
+          (clickPagina)="clickPagina($event)"
+        >
+        </app-comp-paginamiento>
+      </div>
     </div>
-    
-    <div class="row g-0 contenido-principal">
-        
-        <!--! Barra lateral -->
-        <div class="col-lg-3 col-md-12 sidebar barra-lateral-pag" [ngClass]="{'d-none d-lg-block': !showSidebar}">
-            <app-comp-barra-lateral
-            [filtrosLista]="filtrosLista"
-            (clickBuscar)="clickBuscar($event)"
-            (clickFiltro)="leerFiltros($event)"
-            ></app-comp-barra-lateral>
-        </div>
-        
-        <div class="col-lg-9 content cuerpo-pag" > 
-            <div class="container-fluid"> 
-                <!--! Cuerpo -->
-                <h1 style="color: aliceblue;">Histórico </h1>
-                <app-comp-tabla-datos 
-                    [columnas]="columnas"
-                    [datos]="datos"
-                    [acciones]="acciones"
-                    [tipo]="'dev'"
-                ></app-comp-tabla-datos>
-                
-                <!--! Paginamiento  -->
-                <app-comp-paginamiento 
-                [paginaActual]="paginaActual"
-                [totalPaginas]="totalPaginas"
-                (clickPagina)="clickPagina($event)"
-                >
-                </app-comp-paginamiento>
-            </div>
-        </div>
-    
-    </div>
+  </div>
 </div>
 
 <!--! Botones flotantes  -->
-<app-comp-botones-flotantes 
-    [mostrarAgregar]="true"  
-    (clickAgregar)="ClickAgregar()"
+<app-comp-botones-flotantes
+  [mostrarAgregar]="true"
+  (clickAgregar)="ClickAgregar()"
 >
 </app-comp-botones-flotantes>
-

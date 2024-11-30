@@ -6,13 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./comp-detalle-lateral.component.css']
 })
 export class CompDetalleLateralComponent implements OnInit {
+  @Input() datos: any;
 
-  @Input() datos: any; 
-  
-  constructor() { }
-  
-  ngOnInit(): void {
-    
-  }
+  constructor() {}
 
+  ngOnInit(): void {}
 }

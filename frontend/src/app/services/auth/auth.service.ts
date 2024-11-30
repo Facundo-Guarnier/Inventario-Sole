@@ -5,13 +5,11 @@ import { Observable, take, BehaviorSubject, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment.prod';
 
-
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthService {
-  url = "/api/auth";
+  url = '/api/auth';
 
   private userRoleSubject = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRoleSubject.asObservable();
@@ -20,16 +18,16 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    public jwtHelper: JwtHelperService,
-  ) { 
+    public jwtHelper: JwtHelperService
+  ) {
     this.checkToken();
   }
-  
-  login(dataLogin: any): Observable<any> {  
+
+  login(dataLogin: any): Observable<any> {
     /*
     Se realiza la petición POST al servidor con los datos de login.
     */
-    console.log("LA URL PARA EL BACKEND:", this.url + '/acceder')
+    console.log('LA URL PARA EL BACKEND:', this.url + '/acceder');
     return this.httpClient.post(this.url + '/acceder', dataLogin).pipe(
       take(1),
       tap((response: any) => {
@@ -40,27 +38,32 @@ export class AuthService {
       })
     );
   }
-  
+
   register(dataRegister: {}): Observable<any> {
-    return this.httpClient.post(this.url + '/registrar', dataRegister).pipe(take(1));
+    return this.httpClient
+      .post(this.url + '/registrar', dataRegister)
+      .pipe(take(1));
   }
-  
+
   logout() {
     /*
     Se elimina el token del localStorage y se redirige al usuario a la página de login.
     */
     localStorage.removeItem('token');
     this.userRoleSubject.next(null);
-    this.router.navigate(["login"]);
+    this.router.navigate(['login']);
   }
-  
+
   isLoggedIn(): boolean {
     /*
     Se comprueba si el token existe y si no ha expirado.
     */
-    return !!localStorage.getItem('token') && !this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
+    return (
+      !!localStorage.getItem('token') &&
+      !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))
+    );
   }
-  
+
   checkToken() {
     /*
     TODO
@@ -73,19 +76,19 @@ export class AuthService {
       this.userRoleSubject.next(null);
     }
   }
-  
+
   isAdmin(): boolean {
     /* 
     Se comprueba si el usuario tiene el rol de Admin.
     */
     try {
       const decodedToken = this.decodeToken();
-      return decodedToken.roles.includes("Admin");
+      return decodedToken.roles.includes('Admin');
     } catch (e) {
       return false;
     }
   }
-  
+
   checkTokenExpiration() {
     /*
     Se comprueba si el token ha expirado.
@@ -98,7 +101,7 @@ export class AuthService {
     //   this.logout();
     // }
   }
-  
+
   decodeToken(): any {
     /*
     Se decodifica el token y se retorna
@@ -114,7 +117,7 @@ export class AuthService {
     }
     return null;
   }
-  
+
   getToken(): string {
     /*
     Se obtiene el token del localStorage.
@@ -123,9 +126,9 @@ export class AuthService {
     if (token) {
       return token;
     }
-    return "";
+    return '';
   }
-  
+
   getRoles(): string[] {
     /*
     Se obtienen los roles del usuario.
@@ -137,7 +140,7 @@ export class AuthService {
       return [];
     }
   }
-  
+
   getAlias(): string | null {
     /* 
     Se obtiene el alias del usuario.

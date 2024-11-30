@@ -8,7 +8,6 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./comp-navbar.component.css']
 })
 export class CompNavbarComponent implements OnInit {
-
   pagActual: string = '';
 
   admin: boolean = this.authService.isAdmin();
@@ -16,10 +15,9 @@ export class CompNavbarComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.pagActual = this.router.url.split('/')[1].split('?')[0];
   }
-
 }

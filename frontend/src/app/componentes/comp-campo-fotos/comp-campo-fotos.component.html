@@ -1,20 +1,31 @@
-
 <div class="card text-white bg-dark">
   <div class="card-header bg-primary">
     Fotos
-    <button *ngIf="mostrarEditar" class="btn btn-light float-end" (click)="fileInput.click()">
+    <button
+      *ngIf="mostrarEditar"
+      class="btn btn-light float-end"
+      (click)="fileInput.click()"
+    >
       Agregar Foto
     </button>
-    <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;">
+    <input
+      #fileInput
+      type="file"
+      (change)="onFileSelected($event)"
+      style="display: none"
+    />
   </div>
-  
+
   <div class="card-body">
     <div class="row">
       <div class="col-md-4" *ngFor="let foto of listaFotos; let i = index">
         <div class="position-relative">
-          <img [src]="foto.url" class="img-fluid" alt="Foto del producto">
-          <button *ngIf="mostrarEditar" class="btn btn-danger btn-sm position-absolute top-0 end-0" 
-                  (click)="eliminarFoto(i)">
+          <img [src]="foto.url" class="img-fluid" alt="Foto del producto" />
+          <button
+            *ngIf="mostrarEditar"
+            class="btn btn-danger btn-sm position-absolute top-0 end-0"
+            (click)="eliminarFoto(i)"
+          >
             X
           </button>
         </div>
@@ -23,9 +34,8 @@
   </div>
 </div>
 
-
-  <!--* Gemini -->
-  <!-- <div class="container">
+<!--* Gemini -->
+<!-- <div class="container">
     <div class="row">
       <div *ngFor="let foto of listaFotos; let i = index" class="col-md-4 mb-3">
         <div class="card">

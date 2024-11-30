@@ -1,5 +1,5 @@
 export interface Columna {
-    nombre: string;
-    identificador: string;
-    tipo: string;
+  nombre: string;
+  identificador: string;
+  tipo: string;
 }

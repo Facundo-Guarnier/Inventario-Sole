@@ -3,15 +3,19 @@ la tabla (venta, producto, regalo, etc.). Recibirá como input los datos
 del elemento a mostrar. -->
 
 <div class="card">
-    <div class="card-header text-white bg-primary">
-        Detalle actual
-    </div>
-    <div class="card-body">
-        <p class="card-text"><strong>ID Gift Card:</strong> {{ datos.id }}</p> 
-        <p class="card-text"><strong>Cliente:</strong> {{ datos.cliente }}</p>
-        <p class="card-text"><strong>Fecha:</strong> {{ datos.fecha | date:'dd - MM - yyyy' }}</p> 
-        <p class="card-text"><strong>Monto:</strong> {{ datos.monto | currency }}</p> 
-        <p class="card-text"><strong>Método:</strong> {{ datos.metodo }}</p>
-        <p class="card-text"><strong>Canjeado:</strong> {{ datos.canjeado ? 'Sí' : 'No' }}</p> 
-    </div>
+  <div class="card-header text-white bg-primary">Detalle actual</div>
+  <div class="card-body">
+    <p class="card-text"><strong>ID Gift Card:</strong> {{ datos.id }}</p>
+    <p class="card-text"><strong>Cliente:</strong> {{ datos.cliente }}</p>
+    <p class="card-text">
+      <strong>Fecha:</strong> {{ datos.fecha | date: "dd - MM - yyyy" }}
+    </p>
+    <p class="card-text">
+      <strong>Monto:</strong> {{ datos.monto | currency }}
+    </p>
+    <p class="card-text"><strong>Método:</strong> {{ datos.metodo }}</p>
+    <p class="card-text">
+      <strong>Canjeado:</strong> {{ datos.canjeado ? "Sí" : "No" }}
+    </p>
+  </div>
 </div>

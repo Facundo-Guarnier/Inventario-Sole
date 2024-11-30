@@ -1,6 +1,6 @@
 <div class="card text-white bg-dark">
   <div class="card-header bg-primary">
-    {{titulo}}
+    {{ titulo }}
   </div>
   <div class="card-body">
     <div *ngIf="estilo == 'compacto'">
@@ -8,70 +8,119 @@
         <div class="row">
           <div class="col">
             <div class="d-flex justify-content-between align-items-center">
-              <h5>Producto {{i + 1}}</h5>
-              <button *ngIf="mostrarEditar" type="button" class="btn btn-danger" (click)="quitarProducto(i)" [disabled]="!mostrarEditar">
+              <h5>Producto {{ i + 1 }}</h5>
+              <button
+                *ngIf="mostrarEditar"
+                type="button"
+                class="btn btn-danger"
+                (click)="quitarProducto(i)"
+                [disabled]="!mostrarEditar"
+              >
                 <i class="bi bi-trash"></i>
               </button>
             </div>
           </div>
         </div>
-        
+
         <!--! Campos de datos  -->
         <div class="row g-1">
           <div class="col-12 col-sm-6 col-md-4" *ngFor="let campo of campos">
-            
-            <label [for]="campo.identificador + '_' + i" class="form-label text-truncate" title="{{campo.nombre}}">{{campo.nombre}}</label>
-            
+            <label
+              [for]="campo.identificador + '_' + i"
+              class="form-label text-truncate"
+              title="{{ campo.nombre }}"
+              >{{ campo.nombre }}</label
+            >
+
             <!-- ! Textarea -->
             <div *ngIf="campo.tipo == 'textarea-text'">
-              <textarea class="form-control" [id]="campo.identificador + '_' + i" rows="1" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar"></textarea>
+              <textarea
+                class="form-control"
+                [id]="campo.identificador + '_' + i"
+                rows="1"
+                [(ngModel)]="producto[campo.identificador]"
+                [disabled]="!mostrarEditar"
+              ></textarea>
             </div>
-            
+
             <!--! Input con actualización en vivo  -->
             <div *ngIf="campo.tipo == 'input-actualizar'">
-              <input type="text" class="form-control" 
-                [id]="campo.identificador + '_' + i" 
-                [(ngModel)]="producto[campo.identificador]" 
+              <input
+                type="text"
+                class="form-control"
+                [id]="campo.identificador + '_' + i"
+                [(ngModel)]="producto[campo.identificador]"
                 (change)="onInputChange(i, $event)"
                 [disabled]="!mostrarEditar"
-              >
+              />
             </div>
-            
+
             <!--! Input  -->
-            <div *ngIf="campo.tipo == 'input-text' && campo.identificador != 'idProducto'">
-              <input type="text" class="form-control" [id]="campo.identificador + '_' + i" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar">
+            <div
+              *ngIf="
+                campo.tipo == 'input-text' &&
+                campo.identificador != 'idProducto'
+              "
+            >
+              <input
+                type="text"
+                class="form-control"
+                [id]="campo.identificador + '_' + i"
+                [(ngModel)]="producto[campo.identificador]"
+                [disabled]="!mostrarEditar"
+              />
             </div>
-            
+
             <!--! Number -->
             <div *ngIf="campo.tipo == 'input-number'">
-              <input type="number" class="form-control" [id]="campo.identificador + '_' + i" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar">
+              <input
+                type="number"
+                class="form-control"
+                [id]="campo.identificador + '_' + i"
+                [(ngModel)]="producto[campo.identificador]"
+                [disabled]="!mostrarEditar"
+              />
             </div>
-            
+
             <!--! Selector  -->
             <div *ngIf="campo.tipo == 'selector'">
-              <select class="form-select" [id]="campo.identificador + '_' + i" [(ngModel)]="producto[campo.identificador]" [disabled]="!mostrarEditar">
+              <select
+                class="form-select"
+                [id]="campo.identificador + '_' + i"
+                [(ngModel)]="producto[campo.identificador]"
+                [disabled]="!mostrarEditar"
+              >
                 <option selected>Seleccionar...</option>
-                <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{opcion}}</option>
+                <option *ngFor="let opcion of campo.opciones" [value]="opcion">
+                  {{ opcion }}
+                </option>
               </select>
             </div>
-            
+
             <!--! ReadOnly  -->
             <div *ngIf="campo.tipo == 'readonly'">
-              <input type="text" class="form-control" 
-                [id]="campo.identificador + '_' + i" 
+              <input
+                type="text"
+                class="form-control"
+                [id]="campo.identificador + '_' + i"
                 [value]="producto[campo.identificador] || ''"
                 [disabled]="true"
                 readonly
-              >
+              />
             </div>
-            
           </div>
-          
-          <hr class="custom-hr">
+
+          <hr class="custom-hr" />
         </div>
       </div>
-      
-      <button *ngIf="mostrarEditar" type="button" class="btn btn-primary mt-3" (click)="agregarProducto()" [disabled]="!mostrarEditar">
+
+      <button
+        *ngIf="mostrarEditar"
+        type="button"
+        class="btn btn-primary mt-3"
+        (click)="agregarProducto()"
+        [disabled]="!mostrarEditar"
+      >
         Agregar otro producto
       </button>
     </div>

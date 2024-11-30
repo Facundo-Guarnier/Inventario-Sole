@@ -1,0 +1,28 @@
+[tool.black]
+line-length = 88
+target-version = ["py310"]  # Cambia según tu versión de Python
+skip-string-normalization = false  # Ajusta si prefieres no normalizar comillas
+
+[tool.isort]
+profile = "black"  # Asegura compatibilidad con Black
+line_length = 88
+multi_line_output = 3  # Ajusta la organización de los imports
+known_third_party = ["flask", "numpy", "pandas"]  # Ajusta según tus paquetes externos
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "B", "A"]  # Conjuntos de reglas PEP8, Pyflakes, etc.
+ignore = ["E501", "A001", "A002"]  # Ignorar longitud de línea (si Black ya lo maneja)
+fix = true  # Corrige automáticamente si Ruff lo permite
+exclude = ["migrations", "__pycache__"]
+
+
+[tool.mypy]
+ignore_missing_imports = true  # Ignorar errores por imports faltantes
+warn_unused_configs = false  # Evitar advertencias de configuraciones no usadas
+check_untyped_defs = true  # Revisa funciones sin anotaciones de tipo
+strict_optional = true  # Manejo estricto de None
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

@@ -8,9 +8,8 @@ describe('CompBotonFotoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CompBotonFotoComponent ]
-    })
-    .compileComponents();
+      declarations: [CompBotonFotoComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CompBotonFotoComponent);
     component = fixture.componentInstance;

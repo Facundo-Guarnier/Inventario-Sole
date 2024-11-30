@@ -8,9 +8,8 @@ describe('PagDevolucionesVistaGeneralComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PagDevolucionesVistaGeneralComponent ]
-    })
-    .compileComponents();
+      declarations: [PagDevolucionesVistaGeneralComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagDevolucionesVistaGeneralComponent);
     component = fixture.componentInstance;

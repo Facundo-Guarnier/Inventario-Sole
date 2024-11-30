@@ -1,5 +1,5 @@
 export interface Filtro {
-    nombre: string;
-    identificador: string;
-    opciones: string[];
+  nombre: string;
+  identificador: string;
+  opciones: string[];
 }

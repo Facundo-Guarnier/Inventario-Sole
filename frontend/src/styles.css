@@ -1,123 +1,124 @@
-@import '~@fortawesome/fontawesome-free/css/all.min.css';
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
 
 /*T* Estilos generales */
-.bg-primary { /* Acento primario */
-    background-color: #0d6efd !important; 
+.bg-primary {
+  /* Acento primario */
+  background-color: #0d6efd !important;
 }
 
-body {  /* Fondo */
-    background-color: #444c5f;
+body {
+  /* Fondo */
+  background-color: #444c5f;
 }
-
 
 /*T* Botones flotantes */
 .btn-danger {
-    transition: background-color 0.3s ease;
-} 
+  transition: background-color 0.3s ease;
+}
 
 .btn-danger:hover,
 .btn-danger:active {
-    color: white;
-    background-color: #91232e;
-    border-color: #dc3545;
+  color: white;
+  background-color: #91232e;
+  border-color: #dc3545;
 }
 
 .btn-warning {
-    transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .btn-warning:hover {
-    color: black;
-    background-color: #b3813b;
+  color: black;
+  background-color: #b3813b;
 }
 
 .btn-success {
-    transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .btn-success:hover,
 .btn-success:active {
-    color: white;
-    background-color: #2d6a4f;
-    border-color: #198754;
+  color: white;
+  background-color: #2d6a4f;
+  border-color: #198754;
 }
 
 .boton-celeste-agregar {
-    background-color: #1362da;
-    color: white;
-    transition: background-color 0.3s ease;
+  background-color: #1362da;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
 .boton-celeste-agregar:hover,
 .boton-celeste-agregar:active {
-    color: white !important;
-    background-color: #28579f !important;
-    border-color: #0d6efd !important;
+  color: white !important;
+  background-color: #28579f !important;
+  border-color: #0d6efd !important;
 }
 
 .boton-revisar-stock {
-    background-color: #669206;
-    color: white;
-    transition: background-color 0.3s ease;
+  background-color: #669206;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
 .boton-revisar-stock:hover,
 .boton-revisar-stock:active {
-    color: white !important;
-    background-color: #507206 !important;
-    border-color: #669206 !important;
+  color: white !important;
+  background-color: #507206 !important;
+  border-color: #669206 !important;
 }
 
 /*T* Paginas */
 .barra-lateral-pag {
-    padding: 2% !important;
-    background-color: #28579f !important;
+  padding: 2% !important;
+  background-color: #28579f !important;
 }
 
 .cuerpo-pag {
-    padding: 1% !important;
+  padding: 1% !important;
 }
 
 /*T* Barras */
 .mobile-top-bar {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #0d6efd;
-    /* position: fixed; */
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1040;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #0d6efd;
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1040;
 }
 
 .mobile-top-bar button {
-    padding: 5px 10px;
+  padding: 5px 10px;
 }
 
 @media (max-width: 991.98px) {
-    .content {
-        padding-top: 60px;
-    }
+  .content {
+    padding-top: 60px;
+  }
 
-    .barra-lateral-pag {
-        top: 56px;
-    }
+  .barra-lateral-pag {
+    top: 56px;
+  }
 }
 
 .botones-vista {
-    background-color: white
-} 
+  background-color: white;
+}
 
 .botones-vista {
-    background-color: #1362da;
-    color: white;
-    transition: background-color 0.3s ease;
+  background-color: #1362da;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
 .botones-vista:hover,
 .botones-vista:active {
-    color: white !important;
-    background-color: #28579f !important;
-    border-color: #0d6efd !important;
+  color: white !important;
+  background-color: #28579f !important;
+  border-color: #0d6efd !important;
 }

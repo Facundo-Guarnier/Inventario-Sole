@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Asegura que el script se detenga si algún comando falla
+set -e
+
+# Activar el entorno virtual
+source ./backend/venv/bin/activate 
+
+# Ejecutar Black para formatear Python
+echo "🚀🚀 Running Black for Python files..."
+black backend/
+
+# Ejecutar isort para ordenar imports en Python
+echo "🚀🚀 Running isort for Python files..."
+isort backend/  # Se detectará automáticamente el archivo pyproject.toml
+
+# Ejecutar Ruff para linting Python
+echo "🚀🚀 Running Ruff for Python files..."
+ruff check --fix backend/
+
+# Ejecutar Mypy para verificación de tipos en Python
+echo "🚀🚀 Running Mypy for type checking..."
+mypy --config-file=mypy.ini backend/
+
+# Ejecutar Prettier para formatear archivos del frontend
+echo "🚀🚀 Running Prettier for frontend files..."
+npx prettier --write frontend/
+
+# Ejecutar ESLint para verificar problemas en el frontend (opcional)
+#echo "🚀🚀 Running ESLint for frontend files..."
+#npx eslint "frontend/**/*.{ts,js,html,css}"
+
+# Verificar si algún archivo fue modificado por los comandos anteriores
+git diff --exit-code > /dev/null
+
+# Si hay cambios, los añadimos automáticamente al commit
+if [ $? -ne 0 ]; then
+  echo "⚡⚡ Some files have been modified! Adding them to the commit..."
+  git add -u
+  echo "🚀🚀 Files have been updated and staged for commit."
+  exit 1  # Abortamos el commit para que el usuario pueda realizarlo nuevamente con los cambios
+fi
+
+# Si no hubo cambios, dejamos que el commit continúe
+echo "🚀🚀 All checks passed! Ready to commit."

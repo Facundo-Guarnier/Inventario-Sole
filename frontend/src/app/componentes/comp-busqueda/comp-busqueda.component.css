@@ -1,14 +1,13 @@
 .boton-busqueda {
-    background-color: #0d6efd;
-    border-color: #ced4da;
-    color: #ffffff;
-    transition: background-color 0.3s ease;
+  background-color: #0d6efd;
+  border-color: #ced4da;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
 }
 
 .boton-busqueda:hover,
 .boton-busqueda:active {
-    background-color: #28579f; 
-    color: #ffffff;
-    border-color: #ced4da;
-
+  background-color: #28579f;
+  color: #ffffff;
+  border-color: #ced4da;
 }

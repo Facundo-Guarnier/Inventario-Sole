@@ -3,12 +3,16 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
+      // "source.organizeImports": "explicit",
       "source.fixAll": "explicit"
     }
   },
+  "isort.interpreter": ["python3", "-m", "isort"],
+  "python.sortImports.args": ["--settings-path", "./pyproject.toml"],
 
+  "isort.args": ["--profile", "black", "--settings-path", "./pyproject.toml"],
   "cSpell.words": [
+    "autenticacion",
     "Autenticacion",
     "boton",
     "coleccion",
@@ -23,6 +27,7 @@
     "LANCZOS",
     "liquidacion",
     "metodo",
+    "mshops",
     "notificacion",
     "Notificacion",
     "opcion",
