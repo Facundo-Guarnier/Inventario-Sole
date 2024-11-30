@@ -60,12 +60,12 @@ class MovimientoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    def actualizar(self, id: str, data: dict) -> dict:
+    def actualizar(self, movimiento_id: str, data: dict) -> dict:
         """
         Actualizar un movimiento.
 
         Args:
-            - id (int): ID del movimiento
+            - movimiento_id (str): ID del movimiento
             - data (dict): Datos del movimiento a actualizar
 
         Returns:
@@ -76,7 +76,9 @@ class MovimientoModel:
             return {
                 "estado": True,
                 "respuesta": str(
-                    mongo.db.movimientos.update_one({"id": id}, {"$set": data})
+                    mongo.db.movimientos.update_one(
+                        {"id": movimiento_id}, {"$set": data}
+                    )
                 ),
             }
 
@@ -86,12 +88,12 @@ class MovimientoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    def eliminar(self, id: str) -> dict:
+    def eliminar(self, movimiento_id: str) -> dict:
         """
         Elimina un movimiento.
 
         Args:
-            - id (int): ID del movimiento
+            - movimiento_id (int): ID del movimiento
 
         Returns:
             - dict: Estado de la operación
@@ -99,7 +101,9 @@ class MovimientoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": str(mongo.db.movimientos.delete_one({"id": id})),
+                "respuesta": str(
+                    mongo.db.movimientos.delete_one({"id": movimiento_id})
+                ),
             }
 
         except Exception as e:

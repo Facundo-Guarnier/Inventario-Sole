@@ -12,9 +12,10 @@ known_third_party = ["flask", "numpy", "pandas"]  # Ajusta según tus paquetes e
 [tool.ruff]
 line-length = 88
 select = ["E", "F", "B", "A"]  # Conjuntos de reglas PEP8, Pyflakes, etc.
-ignore = ["E501"]  # Ignorar longitud de línea (si Black ya lo maneja)
+ignore = ["E501", "A001", "A002"]  # Ignorar longitud de línea (si Black ya lo maneja)
 fix = true  # Corrige automáticamente si Ruff lo permite
 exclude = ["migrations", "__pycache__"]
+
 
 [tool.mypy]
 ignore_missing_imports = true  # Ignorar errores por imports faltantes

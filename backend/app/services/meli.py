@@ -56,9 +56,9 @@ class MercadoLibreAPI:
                 self.access_token = token_info["access_token"]
                 self.refresh_token = token_info["refresh_token"]
                 self.expires_at = time.time() + token_info["expires_in"]
-            except Exception:
+            except Exception as e:
                 # TODO generar log de error
-                raise Exception(f"Autenticación fallida: {response.text}")
+                raise Exception(f"Autenticación fallida: {response.text}") from e
             self.__save_tokens()
         else:
             raise Exception("No tokens found and no authorization code provided")

@@ -151,7 +151,7 @@ def apply_encrypted_database(file_path: str) -> None:
             save_images_data(data["images"], uploads_path)
 
     except Exception as e:
-        raise Exception(f"Error al aplicar la base de datos: {str(e)}")
+        raise Exception(f"Error al aplicar la base de datos: {str(e)}") from e
 
 
 def get_images_data(uploads_path: str) -> dict:
@@ -159,7 +159,7 @@ def get_images_data(uploads_path: str) -> dict:
     Obtiene los datos de las imágenes en la carpeta de uploads.
     """
     images_data = {}
-    for root, dirs, files in os.walk(uploads_path):
+    for root, _, files in os.walk(uploads_path):
         for file in files:
             if file.lower().endswith((".png", ".jpg", ".jpeg", ".gif")):
                 file_path = os.path.join(root, file)

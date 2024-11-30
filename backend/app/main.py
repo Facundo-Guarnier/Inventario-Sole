@@ -19,8 +19,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
-
-
 from werkzeug.security import generate_password_hash
 
 # Configurar logging
@@ -46,7 +44,8 @@ def initialize_database(app):
                 logger.info(f"Colección '{collection}' creada.")
 
                 if collection == "ultimasIDs":
-                    initial_data = [{"coleccion": "giftcard", "id": "00000"},
+                    initial_data = [
+                        {"coleccion": "giftcard", "id": "00000"},
                         {"coleccion": "movimiento", "id": "00000"},
                         {"coleccion": "producto", "id": "00000"},
                         {"coleccion": "regalo", "id": "00000"},
