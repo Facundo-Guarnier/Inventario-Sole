@@ -121,6 +121,7 @@ def create_app(config_class=Config):
 
     # Registro de Blueprints
     app.register_blueprint(usuario.usuario)
+    app.register_blueprint(usuario.auth)
     app.register_blueprint(ultima_id.ultima_id)
     app.register_blueprint(movimiento.movimiento)
     app.register_blueprint(producto.producto)
