@@ -13,6 +13,8 @@ from app.routes import (
     validar_stock,
     venta,
 )
+
+
 from app.utils.backupDataBase import backupDataBase
 from config import Config
 from flask import Flask
