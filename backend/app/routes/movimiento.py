@@ -44,8 +44,11 @@ def buscar_todos():
     except Exception:
         return ({"msg": "Error en los parámetros enviados"}), 400
 
-    filtro = request.json
-    if not filtro:
+    try:
+        filtro = request.json
+        if not filtro:
+            filtro = {}
+    except Exception:
         filtro = {}
 
     return movimiento_service.buscar_x_atributo(filtro, pagina, por_pagina)

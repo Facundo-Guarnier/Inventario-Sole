@@ -1,12 +1,14 @@
 import json
 
+from app.db import mongo
 from bson import json_util
-from main import mongo as db_mongo
 
 
 class DevolucionModel:
-    @staticmethod
-    def buscar_x_atributo(filtro: dict, saltear: int = 0, por_pagina: int = 10) -> dict:
+
+    def buscar_x_atributo(
+        self, filtro: dict, saltear: int = 0, por_pagina: int = 10
+    ) -> dict:
         """
         Busca devoluciones.
 
@@ -21,7 +23,7 @@ class DevolucionModel:
                 "estado": True,
                 "respuesta": json.loads(
                     json_util.dumps(
-                        db_mongo.db.devoluciones.find(  #! Colección
+                        mongo.db.devoluciones.find(  #! Colección
                             filtro
                         )  #! Busca por los datos en base a 'filtro'
                         .skip(saltear)  #! Saltea los primeros 'x' registros
@@ -39,8 +41,7 @@ class DevolucionModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def crear(data: dict) -> dict:
+    def crear(self, data: dict) -> dict:
         """
         Crea una devolucion.
 
@@ -50,7 +51,7 @@ class DevolucionModel:
         try:
             return {
                 "estado": True,
-                "respuesta": str(db_mongo.db.devoluciones.insert_one(data)),
+                "respuesta": str(mongo.db.devoluciones.insert_one(data)),
             }
 
         except Exception as e:
@@ -67,7 +68,7 @@ class DevolucionModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.devoluciones.count_documents(filtro),
+                "respuesta": mongo.db.devoluciones.count_documents(filtro),
             }
 
         except Exception as e:

@@ -1,12 +1,14 @@
 import json
 
+from app.db import mongo
 from bson import json_util
-from main import mongo as db_mongo
 
 
 class MovimientoModel:
-    @staticmethod
-    def buscar_x_atributo(filtro: dict, saltear: int = 0, por_pagina: int = 10) -> dict:
+
+    def buscar_x_atributo(
+        self, filtro: dict, saltear: int = 0, por_pagina: int = 10
+    ) -> dict:
         """
         Busca movimientos.
 
@@ -21,7 +23,7 @@ class MovimientoModel:
                 "estado": True,
                 "respuesta": json.loads(
                     json_util.dumps(
-                        db_mongo.db.movimientos.find(  #! Colección
+                        mongo.db.movimientos.find(  #! Colección
                             filtro
                         )  #! Busca por los datos en base a 'filtro'
                         .skip(saltear)  #! Saltea los primeros 'x' registros
@@ -39,8 +41,7 @@ class MovimientoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def crear(data: dict) -> dict:
+    def crear(self, data: dict) -> dict:
         """
         Crea un movimiento.
 
@@ -50,7 +51,7 @@ class MovimientoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": str(db_mongo.db.movimientos.insert_one(data)),
+                "respuesta": str(mongo.db.movimientos.insert_one(data)),
             }
 
         except Exception as e:
@@ -59,8 +60,7 @@ class MovimientoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def actualizar(id: str, data: dict) -> dict:
+    def actualizar(self, id: str, data: dict) -> dict:
         """
         Actualizar un movimiento.
 
@@ -76,7 +76,7 @@ class MovimientoModel:
             return {
                 "estado": True,
                 "respuesta": str(
-                    db_mongo.db.movimientos.update_one({"id": id}, {"$set": data})
+                    mongo.db.movimientos.update_one({"id": id}, {"$set": data})
                 ),
             }
 
@@ -86,8 +86,7 @@ class MovimientoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def eliminar(id: str) -> dict:
+    def eliminar(self, id: str) -> dict:
         """
         Elimina un movimiento.
 
@@ -100,7 +99,7 @@ class MovimientoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": str(db_mongo.db.movimientos.delete_one({"id": id})),
+                "respuesta": str(mongo.db.movimientos.delete_one({"id": id})),
             }
 
         except Exception as e:
@@ -109,8 +108,7 @@ class MovimientoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def total(filtro: dict) -> dict:
+    def total(self, filtro: dict) -> dict:
         """
         Devuelve el total de movimientos.
         """
@@ -118,7 +116,7 @@ class MovimientoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.movimientos.count_documents(filtro),
+                "respuesta": mongo.db.movimientos.count_documents(filtro),
             }
 
         except Exception as e:

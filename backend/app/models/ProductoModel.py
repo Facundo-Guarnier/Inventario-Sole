@@ -1,12 +1,13 @@
 import json
 
+from app.db import mongo
 from bson import json_util
-from main import mongo as db_mongo
 
 
 class ProductoModel:
-    @staticmethod
-    def buscar_x_atributo(filtro: dict, saltear: int = 0, por_pagina: int = 10) -> dict:
+    def buscar_x_atributo(
+        self, filtro: dict, saltear: int = 0, por_pagina: int = 10
+    ) -> dict:
         """
         Busca productos.
 
@@ -21,7 +22,7 @@ class ProductoModel:
                 "estado": True,
                 "respuesta": json.loads(
                     json_util.dumps(
-                        db_mongo.db.productos.find(  #! Colección
+                        mongo.db.productos.find(  #! Colección
                             filtro
                         )  #! Busca por los datos en base a 'filtro'
                         .skip(saltear)  #! Saltea los primeros 'x' registros
@@ -39,8 +40,7 @@ class ProductoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def crear(data: dict) -> dict:
+    def crear(self, data: dict) -> dict:
         """
         Crea una producto.
 
@@ -50,7 +50,7 @@ class ProductoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": str(db_mongo.db.productos.insert_one(data)),
+                "respuesta": str(mongo.db.productos.insert_one(data)),
             }
 
         except Exception as e:
@@ -59,8 +59,7 @@ class ProductoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def actualizar(id: str, data: dict) -> dict:
+    def actualizar(self, id: str, data: dict) -> dict:
         """
         Actualiza una producto.
 
@@ -73,9 +72,7 @@ class ProductoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.productos.update_one(
-                    {"id": id}, {"$set": data}
-                ),
+                "respuesta": mongo.db.productos.update_one({"id": id}, {"$set": data}),
             }
 
         except Exception as e:
@@ -84,8 +81,7 @@ class ProductoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def eliminar(id: str) -> dict:
+    def eliminar(self, id: str) -> dict:
         """
         Elimina una producto.
 
@@ -98,7 +94,7 @@ class ProductoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.productos.delete_one({"id": id}),
+                "respuesta": mongo.db.productos.delete_one({"id": id}),
             }
 
         except Exception as e:
@@ -107,8 +103,7 @@ class ProductoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def total(filtro: dict) -> dict:
+    def total(self, filtro: dict) -> dict:
         """
         Devuelve el total de ventas.
         """
@@ -116,7 +111,7 @@ class ProductoModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.productos.count_documents(filtro),
+                "respuesta": mongo.db.productos.count_documents(filtro),
             }
 
         except Exception as e:

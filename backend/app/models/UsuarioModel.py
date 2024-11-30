@@ -1,12 +1,12 @@
 import json
 
+from app.db import mongo
 from bson import json_util
-from main import mongo as db_mongo
 
 
 class UsuarioModel:
-    @staticmethod
-    def crear(data: dict) -> dict:
+
+    def crear(self, data: dict) -> dict:
         """
         Inserta un usuario en la base.
 
@@ -16,7 +16,7 @@ class UsuarioModel:
         try:
             return {
                 "estado": True,
-                "respuesta": str(db_mongo.db.usuarios.insert_one(data)),
+                "respuesta": str(mongo.db.usuarios.insert_one(data)),
             }
 
         except Exception as e:
@@ -25,12 +25,11 @@ class UsuarioModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def buscar_x_alias(alias: str) -> dict:
+    def buscar_x_alias(self, alias: str) -> dict:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.usuarios.find_one({"alias": alias}),
+                "respuesta": mongo.db.usuarios.find_one({"alias": alias}),
             }
         except Exception as e:
             return {
@@ -38,8 +37,9 @@ class UsuarioModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def buscar_x_atributo(filtro: dict, saltear: int = 0, por_pagina: int = 10) -> dict:
+    def buscar_x_atributo(
+        self, filtro: dict, saltear: int = 0, por_pagina: int = 10
+    ) -> dict:
         """
         Busca usuarios.
 
@@ -54,7 +54,7 @@ class UsuarioModel:
                 "estado": True,
                 "respuesta": json.loads(
                     json_util.dumps(
-                        db_mongo.db.usuarios.find(  #! Colección
+                        mongo.db.usuarios.find(  #! Colección
                             filtro
                         )  #! Busca por los datos en base a 'filtro'
                         .skip(saltear)  #! Saltea los primeros 'x' registros
@@ -72,8 +72,7 @@ class UsuarioModel:
                 "respuesta": f"Hubo un error en la DB {str(e)}",
             }
 
-    @staticmethod
-    def actualizar(alias: str, data: dict) -> dict:
+    def actualizar(self, alias: str, data: dict) -> dict:
         """
         Actualiza un usuario en la base.
 
@@ -84,7 +83,7 @@ class UsuarioModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.usuarios.update_one(
+                "respuesta": mongo.db.usuarios.update_one(
                     {"alias": alias}, {"$set": data}
                 ),
             }
@@ -95,15 +94,14 @@ class UsuarioModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def eliminar(alias: str) -> dict:
+    def eliminar(self, alias: str) -> dict:
         """
         Elimina un usuario de la base.
         """
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.usuarios.delete_one({"alias": alias}),
+                "respuesta": mongo.db.usuarios.delete_one({"alias": alias}),
             }
 
         except Exception as e:
@@ -112,8 +110,7 @@ class UsuarioModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    @staticmethod
-    def total(filtro: dict) -> dict:
+    def total(self, filtro: dict) -> dict:
         """
         Devuelve el total de ventas.
         """
@@ -121,7 +118,7 @@ class UsuarioModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.usuarios.count_documents(filtro),
+                "respuesta": mongo.db.usuarios.count_documents(filtro),
             }
 
         except Exception as e:

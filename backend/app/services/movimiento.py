@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytz
-from app.models import MovimientoModel
+from app.models.MovimientoModel import MovimientoModel
 from app.models.ProductoModel import ProductoModel
 from app.services.ultima_id import UltimaIdService
 
@@ -9,6 +9,7 @@ from app.services.ultima_id import UltimaIdService
 class MovimientoService:
     def __init__(self) -> None:
         self.ultima_id_resource = UltimaIdService()
+        self.movimiento_model = MovimientoModel()
 
     def buscar_por_id(self, id: str) -> tuple:
         """
@@ -23,7 +24,7 @@ class MovimientoService:
         if not id:
             return ({"msg": "Falta el ID"}), 400
 
-        respuesta = MovimientoModel.buscar_x_atributo({"id": id})
+        respuesta = self.movimiento_model.buscar_x_atributo({"id": id})
         if respuesta["estado"]:
             if respuesta["respuesta"] is None:
                 return ({"msg": "No se encontró el movimiento"}), 404
@@ -44,7 +45,7 @@ class MovimientoService:
         # if not id:
         #     return {"msg": "Falta el ID"}, 400
 
-        # movimiento = MovimientoModel.buscar_x_atributo({"id": id})
+        # movimiento = self.movimiento_model.buscar_x_atributo({"id": id})
         # if not movimiento:
         #     return {"msg": "No se encontró el movimiento"}, 404
 
@@ -73,7 +74,7 @@ class MovimientoService:
         #     return {"msg": f"Error en los parámetros enviados: {str(e)}"}, 400
 
         # #! Actualizar movimiento
-        # respuesta = MovimientoModel.actualizar(id, nuevo_movimiento)
+        # respuesta = self.movimiento_model.actualizar(id, nuevo_movimiento)
         # if respuesta["estado"]:
         #     return {"msg": "Movimiento actualizado"}, 200
         # return {"msg": respuesta["respuesta"]}, 404
@@ -92,7 +93,7 @@ class MovimientoService:
         if not id:
             return ({"msg": "Falta el ID"}), 400
 
-        respuesta = MovimientoModel.eliminar(id)
+        respuesta = self.movimiento_model.eliminar(id)
         if respuesta["estado"]:
             return ({"msg": "Movimiento eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 404
@@ -163,7 +164,7 @@ class MovimientoService:
 
         #! Paginación
         saltear = (pagina - 1) * por_pagina
-        cantidad_total = MovimientoModel.total(filtro=filtro)
+        cantidad_total = self.movimiento_model.total(filtro=filtro)
 
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] is None:
@@ -174,7 +175,7 @@ class MovimientoService:
             return {"msg": cantidad_total["respuesta"]}, 404
 
         #! Buscar
-        respuesta = MovimientoModel.buscar_x_atributo(
+        respuesta = self.movimiento_model.buscar_x_atributo(
             filtro=filtro,
             saltear=saltear,
             por_pagina=por_pagina,
@@ -268,7 +269,7 @@ class MovimientoService:
         else:
             return {"msg": "El movimiento no es válido"}, 400
 
-        respuesta2 = MovimientoModel.crear(nuevo_movimiento)
+        respuesta2 = self.movimiento_model.crear(nuevo_movimiento)
 
         if respuesta2["estado"]:
             if respuesta2["respuesta"] is None:

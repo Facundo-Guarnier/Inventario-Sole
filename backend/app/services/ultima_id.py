@@ -1,7 +1,10 @@
-from app.models import UltimaIDModel
+from app.models.UltimaIDModel import UltimaIDModel
 
 
 class UltimaIdService:
+    def __init__(self):
+        self.ultima_id_model = UltimaIDModel()
+
     def buscar_proximo(self, coleccion: str) -> tuple:
         """
         Busca la proxima ID de una colección.
@@ -35,14 +38,14 @@ class UltimaIdService:
         if not coleccion:
             return ({"msg": "Faltan datos"}), 400
 
-        respuesta = UltimaIDModel.buscar_id(coleccion)
+        respuesta = self.ultima_id_model.buscar_id(coleccion)
         if respuesta["estado"]:
             if respuesta["respuesta"] is None:
                 return (f"ID de '{coleccion}' no encontrada"), 404
             else:
                 nuevo_id = self.__increment_id(respuesta["respuesta"]["id"])
 
-                UltimaIDModel.actualizar(coleccion, nuevo_id)
+                self.ultima_id_model.actualizar(coleccion, nuevo_id)
                 return {
                     "msg": f"ID de la colección: {coleccion} actualizado a {nuevo_id}"
                 }, 200
@@ -59,7 +62,7 @@ class UltimaIdService:
         Returns:
             - str: Próximo ID
         """
-        respuesta = UltimaIDModel.buscar_id(coleccion)
+        respuesta = self.ultima_id_model.buscar_id(coleccion)
         if respuesta["estado"]:
             if respuesta["respuesta"] is None:
                 return ""

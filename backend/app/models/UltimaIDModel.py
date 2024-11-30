@@ -1,12 +1,12 @@
 import json
 
+from app.db import mongo
 from bson import json_util
-from main import mongo as db_mongo
 
 
 class UltimaIDModel:
-    @staticmethod
-    def buscar_id(coleccion: str) -> dict:
+
+    def buscar_id(self, coleccion: str) -> dict:
         """
         Busca el último ID de una colección.
 
@@ -21,7 +21,7 @@ class UltimaIDModel:
                 "estado": True,
                 "respuesta": json.loads(
                     json_util.dumps(
-                        db_mongo.db.ultimasIDs.find_one({"coleccion": coleccion})
+                        mongo.db.ultimasIDs.find_one({"coleccion": coleccion})
                     )
                 ),
             }
@@ -32,8 +32,7 @@ class UltimaIDModel:
                 "respuesta": f"Hubo un error en la DB {str(e)}",
             }
 
-    @staticmethod
-    def actualizar(colecion: str, id: str) -> dict:
+    def actualizar(self, colecion: str, id: str) -> dict:
         """
         Actualiza el último ID de una colección.
 
@@ -45,7 +44,7 @@ class UltimaIDModel:
             - dict: ID actualizado
         """
         try:
-            db_mongo.db.ultimasIDs.update_one(
+            mongo.db.ultimasIDs.update_one(
                 {"coleccion": colecion}, {"$set": {"id": id}}
             )
             return {"estado": True, "respuesta": "ID actualizado"}

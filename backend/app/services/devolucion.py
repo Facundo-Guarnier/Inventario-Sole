@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytz
-from app.models import DevolucionModel
+from app.models.DevolucionModel import DevolucionModel
 from app.models.ProductoModel import ProductoModel
 from app.services.movimiento import MovimientoService
 
@@ -9,7 +9,7 @@ from app.services.movimiento import MovimientoService
 class DevolucionesService:
     def __init__(self):
         self.movimientos = MovimientoService()
-        self.devoluciones_query = DevolucionModel()
+        self.devoluciones_model = DevolucionModel()
 
     def buscar_todas(self, pagina: int, por_pagina: int) -> tuple:
         """
@@ -23,7 +23,7 @@ class DevolucionesService:
         filtro: dict[str, str] = {}
 
         saltear = (pagina - 1) * por_pagina
-        cantidad_total = self.devoluciones_query.total(filtro=filtro)
+        cantidad_total = self.devoluciones_model.total(filtro=filtro)
 
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] is None:
@@ -34,7 +34,7 @@ class DevolucionesService:
             return {"msg": cantidad_total["respuesta"]}, 404
 
         #! Buscar
-        respuesta = DevolucionModel.buscar_x_atributo(
+        respuesta = self.devoluciones_model.buscar_x_atributo(
             filtro=filtro,
             saltear=saltear,
             por_pagina=por_pagina,
@@ -106,7 +106,7 @@ class DevolucionesService:
             "comentario": comentario,
         }
 
-        respuesta3 = DevolucionModel.crear(nueva_Devolucion)
+        respuesta3 = self.devoluciones_model.crear(nueva_Devolucion)
 
         if respuesta3["estado"]:
             if respuesta3["respuesta"] is None:

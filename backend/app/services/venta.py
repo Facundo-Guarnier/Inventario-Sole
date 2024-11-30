@@ -1,8 +1,8 @@
 from datetime import datetime
 
 import pytz
-from app.models import VentaModel
 from app.models.ProductoModel import ProductoModel
+from app.models.VentaModel import VentaModel
 from app.services.movimiento import MovimientoService
 from app.services.ultima_id import UltimaIdService
 
@@ -11,6 +11,7 @@ class VentaService:
     def __init__(self) -> None:
         self.movimientos = MovimientoService()
         self.ultima_id_resource = UltimaIdService()
+        self.venta_model = VentaModel()
 
     def get_by_id(self, id: str) -> tuple:
         """
@@ -25,7 +26,7 @@ class VentaService:
         if not id:
             return ({"msg": "Falta el ID"}), 400
 
-        respuesta = VentaModel.buscar_x_atributo({"id": id})
+        respuesta = self.venta_model.buscar_x_atributo({"id": id})
         if respuesta["estado"]:  #! Sin error con la DB
             if respuesta["respuesta"] is None:  #! No se encontró la venta
                 return ({"msg": "No se encontró la venta"}), 404
@@ -47,7 +48,7 @@ class VentaService:
             return ({"msg": "Falta el ID"}), 400
 
         #! Buscar si existe la venta
-        venta_actual = VentaModel.buscar_x_atributo({"id": id})
+        venta_actual = self.venta_model.buscar_x_atributo({"id": id})
         if not venta_actual["estado"] or venta_actual["respuesta"] is None:
             return ({"msg": "No se encontró la venta"}), 404
 
@@ -169,7 +170,7 @@ class VentaService:
                 }, 500
 
         #! Actualizar venta
-        respuesta = VentaModel.actualizar(id, nueva_venta)
+        respuesta = self.venta_model.actualizar(id, nueva_venta)
         if respuesta["estado"]:
             return {"msg": "Venta actualizada y stock ajustado"}, 200
         else:
@@ -191,7 +192,7 @@ class VentaService:
             return ({"msg": "Falta el ID"}), 400
 
         #! Buscar si existe la venta
-        venta_actual = VentaModel.buscar_x_atributo({"id": id})
+        venta_actual = self.venta_model.buscar_x_atributo({"id": id})
         if not venta_actual["estado"] or venta_actual["respuesta"] is None:
             return ({"msg": "No se encontró la venta"}), 404
 
@@ -218,7 +219,7 @@ class VentaService:
                 }, 500
 
         #! Eliminar venta
-        respuesta = VentaModel.eliminar(id)
+        respuesta = self.venta_model.eliminar(id)
         if respuesta["estado"]:
             return ({"msg": "Venta eliminada"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
@@ -309,7 +310,7 @@ class VentaService:
 
         #! Paginación
         saltear = (pagina - 1) * por_pagina
-        cantidad_total = VentaModel.total(filtro=filtro)
+        cantidad_total = self.venta_model.total(filtro=filtro)
 
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] is None:
@@ -320,7 +321,7 @@ class VentaService:
             return {"msg": cantidad_total["respuesta"]}, 404
 
         #! Buscar
-        respuesta = VentaModel.buscar_x_atributo(
+        respuesta = self.venta_model.buscar_x_atributo(
             filtro=filtro,
             saltear=saltear,
             por_pagina=por_pagina,
@@ -442,7 +443,7 @@ class VentaService:
             "productos": productos2,
         }
 
-        respuesta = VentaModel.crear(nueva_venta)
+        respuesta = self.venta_model.crear(nueva_venta)
         if respuesta["estado"]:
             if respuesta["respuesta"] is None:
                 return {"msg": "Error al crear la venta"}, 400

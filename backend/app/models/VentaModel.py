@@ -1,12 +1,13 @@
 import json
 
+from app.db import mongo
 from bson import json_util
-from main import mongo as db_mongo
 
 
 class VentaModel:
-    @staticmethod
-    def buscar_x_atributo(filtro: dict, saltear: int = 0, por_pagina: int = 10) -> dict:
+    def buscar_x_atributo(
+        self, filtro: dict, saltear: int = 0, por_pagina: int = 10
+    ) -> dict:
         """
         Busca ventas.
 
@@ -21,7 +22,7 @@ class VentaModel:
                 "estado": True,
                 "respuesta": json.loads(
                     json_util.dumps(
-                        db_mongo.db.ventas.find(  #! Colección
+                        mongo.db.ventas.find(  #! Colección
                             filtro
                         )  #! Busca por los datos en base a 'filtro'
                         .skip(saltear)  #! Saltea los primeros 'x' registros
@@ -39,8 +40,7 @@ class VentaModel:
                 "respuesta": f"Hubo un error en la DB {str(e)}",
             }
 
-    @staticmethod
-    def crear(data: dict) -> dict:
+    def crear(self, data: dict) -> dict:
         """
         Crea una venta.
 
@@ -50,7 +50,7 @@ class VentaModel:
         try:
             return {
                 "estado": True,
-                "respuesta": str(db_mongo.db.ventas.insert_one(data)),
+                "respuesta": str(mongo.db.ventas.insert_one(data)),
             }
 
         except Exception as e:
@@ -59,8 +59,7 @@ class VentaModel:
                 "respuesta": f"Hubo un error en la DB {str(e)}",
             }
 
-    @staticmethod
-    def actualizar(id: str, data: dict) -> dict:
+    def actualizar(self, id: str, data: dict) -> dict:
         """
         Actualiza una venta.
 
@@ -73,7 +72,7 @@ class VentaModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.ventas.update_one({"id": id}, {"$set": data}),
+                "respuesta": mongo.db.ventas.update_one({"id": id}, {"$set": data}),
             }
 
         except Exception as e:
@@ -82,8 +81,7 @@ class VentaModel:
                 "respuesta": f"Hubo un error en la DB {str(e)}",
             }
 
-    @staticmethod
-    def eliminar(id: str) -> dict:
+    def eliminar(self, id: str) -> dict:
         """
         Elimina una venta.
 
@@ -96,7 +94,7 @@ class VentaModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.ventas.delete_one({"id": id}),
+                "respuesta": mongo.db.ventas.delete_one({"id": id}),
             }
 
         except Exception as e:
@@ -105,8 +103,7 @@ class VentaModel:
                 "respuesta": f"Hubo un error en la DB {str(e)}",
             }
 
-    @staticmethod
-    def total(filtro: dict) -> dict:
+    def total(self, filtro: dict) -> dict:
         """
         Devuelve el total de ventas.
         """
@@ -114,7 +111,7 @@ class VentaModel:
         try:
             return {
                 "estado": True,
-                "respuesta": db_mongo.db.ventas.count_documents(filtro),
+                "respuesta": mongo.db.ventas.count_documents(filtro),
             }
 
         except Exception as e:

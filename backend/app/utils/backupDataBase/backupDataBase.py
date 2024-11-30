@@ -4,21 +4,20 @@ import json
 import os
 import shutil
 
+from app.auth.decorators import admin_required
+from app.db import mongo
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from flask import Blueprint, current_app, jsonify, request, send_file
-from main import mongo as db_mongo
 from werkzeug.utils import secure_filename
-
-from backend.app.auth.decorators import admin_required
 
 backup = Blueprint("api/bdb", __name__, url_prefix="/api/bdb")
 
 
 @backup.route("/download_database")
 @admin_required
-def download_database() -> dict:
+def download_database() -> tuple:
     """
     Descarga la base de datos en formato JSON y la encripta.
     """
@@ -33,8 +32,8 @@ def download_database() -> dict:
         fernet = Fernet(fernet_key)
 
         data = {}
-        for collection_name in db_mongo.db.list_collection_names():
-            collection = db_mongo.db[collection_name]
+        for collection_name in mongo.db.list_collection_names():
+            collection = mongo.db[collection_name]
             data[collection_name] = list(collection.find({}, {"_id": False}))
 
         #! Añadir datos de imágenes
@@ -67,7 +66,7 @@ def download_database() -> dict:
 
 @backup.route("/upload_database", methods=["POST"])
 @admin_required
-def upload_database() -> dict:
+def upload_database() -> tuple:
     """
     Recibe un archivo de base de datos encriptado (.bin), lo desencripta y lo aplica a la base de datos.
     """
@@ -138,7 +137,7 @@ def apply_encrypted_database(file_path: str) -> None:
         #! Aplicar datos a MongoDB
         for collection_name, documents in data.items():
             if collection_name != "images":
-                collection = db_mongo.db[collection_name]
+                collection = mongo.db[collection_name]
                 collection.delete_many({})
                 if documents:
                     collection.insert_many(documents)

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytz
-from app.models import ProductoModel
+from app.models.ProductoModel import ProductoModel
 from app.services.foto import FotoService
 from app.services.ultima_id import UltimaIdService
 
@@ -10,6 +10,7 @@ class ProductoService:
     def __init__(self) -> None:
         self.fotoResource = FotoService()
         self.ultima_id_resource = UltimaIdService()
+        self.producto_model = ProductoModel()
 
     def buscar_por_id(self, id: str) -> tuple:
         """
@@ -24,7 +25,7 @@ class ProductoService:
         if not id:
             return ({"msg": "Falta el ID"}), 400
 
-        respuesta = ProductoModel.buscar_x_atributo({"id": id})
+        respuesta = self.producto_model.buscar_x_atributo({"id": id})
         if respuesta["estado"]:  #! Sin error con la DB
             if respuesta["respuesta"] is None:  #! No se encontró el producto
                 return ({"msg": "No se encontró el producto"}), 404
@@ -45,7 +46,7 @@ class ProductoService:
             return ({"msg": "Falta el ID"}), 400
 
         #! Buscar si existe el producto
-        viejo_producto = ProductoModel.buscar_x_atributo({"id": id})
+        viejo_producto = self.producto_model.buscar_x_atributo({"id": id})
         if not viejo_producto:
             return ({"msg": "No se encontró el producto"}), 404
 
@@ -103,7 +104,7 @@ class ProductoService:
         }
 
         #! Actualizar producto
-        respuesta = ProductoModel.actualizar(id, nuevo_producto)
+        respuesta = self.producto_model.actualizar(id, nuevo_producto)
         if respuesta["estado"]:
 
             #! Borra las fotos que no se usan
@@ -133,12 +134,12 @@ class ProductoService:
             return ({"msg": "Falta el ID"}), 400
 
         #! Buscar si existe el producto
-        producto = ProductoModel.buscar_x_atributo({"id": id})
+        producto = self.producto_model.buscar_x_atributo({"id": id})
         if not producto:
             return ({"msg": "No se encontró el producto"}), 404
 
         #! Eliminar producto
-        respuesta = ProductoModel.eliminar(id)
+        respuesta = self.producto_model.eliminar(id)
         if respuesta["estado"]:
             return ({"msg": "Producto eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 400
@@ -230,7 +231,7 @@ class ProductoService:
 
         #! Paginación
         saltear = (pagina - 1) * por_pagina
-        cantidad_total = ProductoModel.total(filtro)
+        cantidad_total = self.producto_model.total(filtro)
 
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] is None:
@@ -241,7 +242,7 @@ class ProductoService:
             return {"msg": cantidad_total["respuesta"]}, 404
 
         #! Buscar productos
-        respuesta = ProductoModel.buscar_x_atributo(
+        respuesta = self.producto_model.buscar_x_atributo(
             filtro=filtro,
             saltear=saltear,
             por_pagina=por_pagina,
@@ -320,7 +321,7 @@ class ProductoService:
         fisica["validacion"] = validacion.copy()
         online["validacion"] = validacion.copy()
 
-        respuesta = ProductoModel.crear(
+        respuesta = self.producto_model.crear(
             {
                 "id": self.ultima_id_resource.calcular_proximo_id("producto"),
                 "cod_ms": cod_ms,

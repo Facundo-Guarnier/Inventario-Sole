@@ -1,8 +1,11 @@
-from app.models import UsuarioModel
+from app.models.UsuarioModel import UsuarioModel
 from werkzeug.security import generate_password_hash
 
 
 class UsuarioService:
+    def __init__(self):
+        self.usuario_model = UsuarioModel()
+
     def buscar_por_alias(self, alias: str):
         """
         Busca un usuario por su alias.
@@ -14,7 +17,7 @@ class UsuarioService:
             - dict: Usuario encontrado (alias y roles)
         """
 
-        respuesta = UsuarioModel.buscar_x_alias(alias)
+        respuesta = self.usuario_model.buscar_x_alias(alias)
         if respuesta["estado"]:
             if respuesta["respuesta"] is None:
                 return (f"Usuario con alias: {alias} no encontrado"), 404
@@ -36,7 +39,7 @@ class UsuarioService:
         """
 
         #! Buscar si existe el usuario
-        usuario_actual = UsuarioModel.buscar_x_alias(alias)
+        usuario_actual = self.usuario_model.buscar_x_alias(alias)
         if not usuario_actual["respuesta"]:
             return ({"msg": "No se encontró el usuario"}), 404
 
@@ -51,7 +54,7 @@ class UsuarioService:
 
         print("Nuevo usuario:", nuevo_usuario)
         #! Actualizar usuario
-        respuesta = UsuarioModel.actualizar(alias, nuevo_usuario)
+        respuesta = self.usuario_model.actualizar(alias, nuevo_usuario)
         if respuesta["estado"]:
             return {"msg": "Usuario actualizado"}, 200
         return {"msg": respuesta["respuesta"]}, 404
@@ -67,12 +70,12 @@ class UsuarioService:
             - dict: Usuario eliminado
         """
         #! Buscar si existe el usuario
-        usuario_actual = UsuarioModel.buscar_x_alias(alias)
+        usuario_actual = self.usuario_model.buscar_x_alias(alias)
         if not usuario_actual:
             return ({"msg": "No se encontró el usuario"}), 404
 
         #! Eliminar usuario
-        respuesta = UsuarioModel.eliminar(alias)
+        respuesta = self.usuario_model.eliminar(alias)
         if respuesta["estado"]:
             return ({"msg": "Usuario eliminado"}), 200
         return ({"msg": respuesta["respuesta"]}), 404
@@ -87,7 +90,7 @@ class UsuarioService:
 
         #! Paginación
         saltear = (pagina - 1) * por_pagina
-        cantidad_total = UsuarioModel.total({})
+        cantidad_total = self.usuario_model.total({})
 
         if cantidad_total["estado"]:
             if cantidad_total["respuesta"] is None:
@@ -97,7 +100,7 @@ class UsuarioService:
         else:
             return {"msg": cantidad_total["respuesta"]}, 404
 
-        respuesta = UsuarioModel.buscar_x_atributo(
+        respuesta = self.usuario_model.buscar_x_atributo(
             filtro={},
             saltear=saltear,
             por_pagina=por_pagina,

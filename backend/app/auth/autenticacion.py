@@ -6,6 +6,7 @@ from flask_jwt_extended import create_access_token
 from werkzeug.security import check_password_hash, generate_password_hash
 
 auth = Blueprint("api/auth", __name__, url_prefix="/api/auth")
+usuario_model = UsuarioModel()
 
 
 @auth.route("/registrar", methods=["POST"])
@@ -33,11 +34,11 @@ def registrar() -> tuple:
     }
 
     #! Validar si el usuario ya existe
-    if UsuarioModel.buscar_x_alias(usuario_nuevo["alias"])["respuesta"] is not None:
+    if usuario_model.buscar_x_alias(usuario_nuevo["alias"])["respuesta"] is not None:
         return jsonify({"mensaje": "El alias ya está en uso."}), 400
 
     #! Insertar usuario
-    respuesta = UsuarioModel.crear(data=usuario_nuevo)
+    respuesta = usuario_model.crear(data=usuario_nuevo)
     if not respuesta["estado"]:
         return jsonify({"mensaje": respuesta["repuesta"]}), 500
 
@@ -58,7 +59,7 @@ def acceder() -> tuple:
         return jsonify({"mensaje": "Campos requeridos"}), 400
 
     #! Validar usuario y contraseña
-    usuario_db = UsuarioModel.buscar_x_alias(alias)
+    usuario_db = usuario_model.buscar_x_alias(alias)
 
     if usuario_db["estado"] is False:
         return jsonify({"msg": "Usuario o contraseña incorrectos"}), 401

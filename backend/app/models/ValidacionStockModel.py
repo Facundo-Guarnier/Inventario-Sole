@@ -2,18 +2,18 @@ import json
 from datetime import datetime
 
 import pytz
+from app.db import mongo
 from bson import json_util
-from main import mongo as db_mongo
 
 
 class ValidacionStockModel:
-    @staticmethod
+
     def obtener_productos_para_validar(
-        fecha_ronda, tienda, saltear: int = 0, por_pagina: int = 10
+        self, fecha_ronda, tienda, saltear: int = 0, por_pagina: int = 10
     ):
         return json.loads(
             json_util.dumps(
-                db_mongo.db.productos.find(
+                mongo.db.productos.find(
                     {
                         "$or": [
                             {
@@ -43,9 +43,8 @@ class ValidacionStockModel:
             )
         )
 
-    @staticmethod
-    def validar_unidad(id_producto, tienda):
-        producto = db_mongo.db.productos.find_one({"id": id_producto})
+    def validar_unidad(self, id_producto, tienda):
+        producto = mongo.db.productos.find_one({"id": id_producto})
 
         if not producto:
             return {"estado": False, "mensaje": "Producto no encontrado"}
@@ -79,7 +78,7 @@ class ValidacionStockModel:
         if validacion["cantidad_validada"] == cantidad_fisica:
             validacion["estado"] = "Validado"
 
-        db_mongo.db.productos.update_one(
+        mongo.db.productos.update_one(
             {"id": id_producto}, {"$set": {f"{tienda}.validacion": validacion}}
         )
 
@@ -90,9 +89,8 @@ class ValidacionStockModel:
             "estado_validacion": validacion["estado"],
         }
 
-    @staticmethod
-    def deshacer_validacion(id_producto, tienda):
-        producto = db_mongo.db.productos.find_one({"id": id_producto})
+    def deshacer_validacion(self, id_producto, tienda):
+        producto = mongo.db.productos.find_one({"id": id_producto})
 
         if not producto:
             return {"estado": False, "mensaje": "Producto no encontrado"}
@@ -126,7 +124,7 @@ class ValidacionStockModel:
         elif validacion["cantidad_validada"] > cantidad_fisica:
             validacion["estado"] = "Discrepancia"
 
-        db_mongo.db.productos.update_one(
+        mongo.db.productos.update_one(
             {"id": id_producto}, {"$set": {f"{tienda}.validacion": validacion}}
         )
 
@@ -137,24 +135,21 @@ class ValidacionStockModel:
             "estado_validacion": validacion["estado"],
         }
 
-    @staticmethod
-    def iniciar_nueva_ronda(tienda):
+    def iniciar_nueva_ronda(self, tienda):
         buenos_aires_tz = pytz.timezone("America/Argentina/Buenos_Aires")
         fecha_actual = datetime.now(buenos_aires_tz).strftime("%Y-%m-%d %H:%M:%S")
-        db_mongo.db.ultimasIDs.update_one(
+        mongo.db.ultimasIDs.update_one(
             {"coleccion": f"validacion-{tienda}"},
             {"$set": {"fecha": fecha_actual}},
             upsert=True,
         )
         return {"estado": True, "fecha_inicio": fecha_actual}
 
-    @staticmethod
-    def obtener_ronda_actual(tienda):
-        ronda = db_mongo.db.ultimasIDs.find_one({"coleccion": f"validacion-{tienda}"})
+    def obtener_ronda_actual(self, tienda):
+        ronda = mongo.db.ultimasIDs.find_one({"coleccion": f"validacion-{tienda}"})
         return ronda["fecha"] if ronda else None
 
-    @staticmethod
-    def total(fecha_ronda, tienda) -> dict:
+    def total(self, fecha_ronda, tienda) -> dict:
         """
         Devuelve el total de ventas.
         """
@@ -164,7 +159,7 @@ class ValidacionStockModel:
                 "estado": True,
                 "respuesta": json.loads(
                     json_util.dumps(
-                        db_mongo.db.productos.count_documents(
+                        mongo.db.productos.count_documents(
                             {
                                 "$or": [
                                     {
