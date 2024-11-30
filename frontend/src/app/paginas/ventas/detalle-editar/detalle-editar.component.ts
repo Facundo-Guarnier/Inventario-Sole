@@ -10,7 +10,7 @@ import { ApiVentaService } from 'src/app/services/ventas/api-venta.service';
 @Component({
   selector: 'pag-ventas-detalle',
   templateUrl: './detalle-editar.component.html',
-  styleUrls: ['./detalle-editar.component.css'],
+  styleUrls: ['./detalle-editar.component.css']
 })
 export class PagVentasDetalleEditarComponent implements OnInit {
   //! Ver los componentes hijos
@@ -26,7 +26,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
       nombre: 'ID venta',
       identificador: 'id',
       tipo: 'readonly',
-      valor: this.router.url.split('?')[0].split('/').pop(),
+      valor: this.router.url.split('?')[0].split('/').pop()
     },
     { nombre: 'Fecha', identificador: 'fecha', tipo: 'readonly' },
     { nombre: 'Cliente', identificador: 'cliente', tipo: 'input-text' },
@@ -34,15 +34,15 @@ export class PagVentasDetalleEditarComponent implements OnInit {
       nombre: 'Tienda',
       identificador: 'tienda',
       tipo: 'selector-actualizar',
-      opciones: ['Fisica', 'Online'],
+      opciones: ['Fisica', 'Online']
     },
     { nombre: 'Monto total', identificador: 'total', tipo: 'input-number' },
     { nombre: 'Método', identificador: 'metodo', tipo: 'textarea-text' },
     {
       nombre: 'Comentario',
       identificador: 'comentario',
-      tipo: 'textarea-text',
-    },
+      tipo: 'textarea-text'
+    }
   ];
   detalleventa: any[] = [];
 
@@ -52,24 +52,24 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     {
       nombre: 'ID producto',
       identificador: 'idProducto',
-      tipo: 'input-actualizar',
+      tipo: 'input-actualizar'
     },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
     {
       nombre: 'Precio unitario de venta',
       identificador: 'precio',
-      tipo: 'input-number',
+      tipo: 'input-number'
     },
     {
       nombre: 'Precio unitario original',
       identificador: 'precio_original',
-      tipo: 'readonly',
+      tipo: 'readonly'
     },
     {
       nombre: 'Comentario',
       identificador: 'comentario',
-      tipo: 'textarea-text',
-    },
+      tipo: 'textarea-text'
+    }
   ];
   productos: any[] = [];
   datosOriginalesProductos: any[] = [];
@@ -103,7 +103,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private apiVenta: ApiVentaService,
-    private apiProductos: ApiProductoService,
+    private apiProductos: ApiProductoService
   ) {}
 
   ngOnInit(): void {
@@ -151,7 +151,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
 
         (err: any) => {
           console.error('Error al buscar la venta:', err);
-        },
+        }
       );
   }
 
@@ -166,7 +166,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     let venta_nueva = {
       total: 100, //TODO: calcular el total
       ...this.detalleventa,
-      productos: this.productos,
+      productos: this.productos
     };
 
     if (
@@ -203,7 +203,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
           this.mensajeModal =
             'No se pudo actualizar la venta. Error: ' + error['error']['msg'];
           this.openModal();
-        },
+        }
       );
   }
   clickCancelar() {
@@ -229,7 +229,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
         this.mensajeModal =
           'No se pudo eliminar la venta. Revise los campos e intenta de nuevo.';
         this.openModal();
-      },
+      }
     );
   }
 
@@ -329,7 +329,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
       if (producto.idProducto) {
         return this.buscarPrecioProducto(
           producto.idProducto,
-          productosNoDisponibles,
+          productosNoDisponibles
         );
       }
       return Promise.resolve();
@@ -345,15 +345,15 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     productosNoDisponibles.forEach((producto) => {
       this.compVentaLista.quitarProducto(
         this.compVentaLista.productos.findIndex(
-          (p) => p.idProducto === producto,
-        ),
+          (p) => p.idProducto === producto
+        )
       );
     });
   }
 
   buscarPrecioProducto(
     idProducto: string,
-    productosNoDisponibles?: string[],
+    productosNoDisponibles?: string[]
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       if (
@@ -398,14 +398,14 @@ export class PagVentasDetalleEditarComponent implements OnInit {
           }
           this.compVentaLista.actualizarPrecioProducto(
             idProducto,
-            producto[this.tiendaSeleccionada]['precio'],
+            producto[this.tiendaSeleccionada]['precio']
           );
           resolve();
         },
         (error) => {
           console.error('Error al buscar el producto:', error);
           reject(error);
-        },
+        }
       );
     });
   }

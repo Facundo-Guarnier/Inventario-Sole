@@ -8,7 +8,7 @@ describe('VistaGeneralComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VistaGeneralComponent],
+      declarations: [VistaGeneralComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(VistaGeneralComponent);

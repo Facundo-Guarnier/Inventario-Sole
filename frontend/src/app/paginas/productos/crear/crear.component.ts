@@ -3,7 +3,7 @@ import {
   AfterViewInit,
   ViewChild,
   ElementRef,
-  Component,
+  Component
 } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -93,7 +93,7 @@ interface Atributo {
 @Component({
   selector: 'pag-productos-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.css'],
+  styleUrls: ['./crear.component.css']
 })
 export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   //! Ver los componentes hijos
@@ -115,30 +115,30 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     {
       nombre: 'Código Mercado Shop',
       identificador: 'cod_ms',
-      tipo: 'readonly',
+      tipo: 'readonly'
     },
     {
       nombre: 'Titulo (sin talle, color o descuento)',
       identificador: 'titulo',
-      tipo: 'input-text',
+      tipo: 'input-text'
     },
     // { nombre: "Descripcion", identificador: "descripcion", tipo: "textarea-text"},
     {
       nombre: 'Liquidacion',
       identificador: 'liquidacion',
       tipo: 'boolean',
-      valor: false,
-    },
+      valor: false
+    }
   ];
 
   camposFisica: Campo[] = [
     { nombre: 'Precio', identificador: 'precio', tipo: 'input-number' },
-    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
+    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' }
   ];
 
   camposOnline: Campo[] = [
     { nombre: 'Precio', identificador: 'precio', tipo: 'input-number' },
-    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
+    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' }
   ];
 
   //! Fotos
@@ -177,10 +177,10 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         tipo: 'text',
         unidades: [] as Unidad[],
         valor: '',
-        unidad: { id: '', name: '' } as Unidad,
-      },
+        unidad: { id: '', name: '' } as Unidad
+      }
     ],
-    talles: [{ nombre: '', valores: [''] }],
+    talles: [{ nombre: '', valores: [''] }]
   };
   nuevaGuiaTalle = { ...this.defaultNuevaGuiaTalle };
 
@@ -194,7 +194,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private apiProductos: ApiProductoService,
     private ultimasIDs: UltimasIDsService,
-    private apiMeli: ApiMeliService,
+    private apiMeli: ApiMeliService
   ) {}
 
   ngOnInit(): void {
@@ -208,7 +208,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         },
         (err) => {
           console.error('Error al buscar la última ID:', err);
-        },
+        }
       );
 
     this.tituloGeneral = 'Crear producto';
@@ -248,7 +248,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     this.apiMeli
       .get(
         '/sites/MLA/domain_discovery/search?q=' + titulo,
-        this.authService.getToken(),
+        this.authService.getToken()
       )
       .subscribe(
         (res: any) => {
@@ -258,7 +258,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
             this.apiMeli
               .get(
                 '/categories/' + dominio['category_id'],
-                this.authService.getToken(),
+                this.authService.getToken()
               )
               .subscribe(
                 (res: any) => {
@@ -266,12 +266,12 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
                     .map((path: any) => path.name)
                     .join(' > ');
                   let dominios_nombre: string[] = this.dominios.map(
-                    (dominio: any) => dominio.path_completo,
+                    (dominio: any) => dominio.path_completo
                   );
 
                   //! Verificar si existe el campo dominio
                   let campoDominioIndex = this.camposGenerales.findIndex(
-                    (campo) => campo.identificador === 'dominio',
+                    (campo) => campo.identificador === 'dominio'
                   );
                   if (campoDominioIndex !== -1) {
                     //! Borrar el campo existente
@@ -282,14 +282,14 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
                     nombre: 'Dominio',
                     identificador: 'dominio',
                     tipo: 'selector',
-                    opciones: dominios_nombre,
+                    opciones: dominios_nombre
                   });
                   this.removerAtributosObligatorios();
                 },
                 //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
                 (err: any) => {
                   console.error('Error al buscar en Meli:', err);
-                },
+                }
               );
             return dominio;
           });
@@ -298,7 +298,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
 
         (err: any) => {
           console.error('Error al buscar en Meli:', err);
-        },
+        }
       );
   }
 
@@ -307,7 +307,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   seleccionarDominio(path_completo: string) {
     this.dominioSeleccionado =
       this.dominios.find(
-        (dominio: Dominio) => dominio.path_completo === path_completo,
+        (dominio: Dominio) => dominio.path_completo === path_completo
       ) || {};
     this.buscarAtributosObligatorios();
     this.buscarGuiasTallesCreadas();
@@ -339,7 +339,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         '/categories/' +
           this.dominioSeleccionado['category_id'] +
           '/attributes',
-        this.authService.getToken(),
+        this.authService.getToken()
       )
       .subscribe(
         (res: any) => {
@@ -347,7 +347,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
           this.removerAtributosObligatorios();
           this.requiredAttributes = res.filter(
             (attribute: any) =>
-              attribute.tags && attribute.tags.required === true,
+              attribute.tags && attribute.tags.required === true
           );
           this.agregarAtributosObligatorios();
           //? ESTA FUNCION ESTÁ BIEN, NO TOCAR
@@ -356,7 +356,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error('Error al buscar en Meli:', err);
-        },
+        }
       );
   }
 
@@ -371,7 +371,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
           attribute.values && attribute.values.length > 0
             ? 'selector'
             : 'input-text',
-        valor: undefined,
+        valor: undefined
       };
 
       if (campo.tipo === 'selector') {
@@ -394,7 +394,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   removerAtributosObligatorios() {
     const requiredIds = new Set(this.requiredAttributes.map((attr) => attr.id));
     this.camposGenerales = this.camposGenerales.filter(
-      (campo) => !requiredIds.has(campo.identificador),
+      (campo) => !requiredIds.has(campo.identificador)
     );
   }
 
@@ -406,30 +406,30 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     const gridTechnicalSpecsPayload = {
       attributes: requiredAttributes.map((id) => ({
         id: id,
-        value_name: 'Mujer', //TODO: Este valor debería ajustarse según los atributos reales requeridos
-      })),
+        value_name: 'Mujer' //TODO: Este valor debería ajustarse según los atributos reales requeridos
+      }))
     };
 
     this.apiMeli
       .post(
         `/domains/${domainId}/technical_specs?section=grids`,
         JSON.stringify(gridTechnicalSpecsPayload),
-        this.authService.getToken(),
+        this.authService.getToken()
       )
       .subscribe(
         (gridTechnicalSpecsResponse: any) => {
           console.log(
             'Ficha Técnica de la Guía de Talles:',
-            gridTechnicalSpecsResponse,
+            gridTechnicalSpecsResponse
           );
           this.guiaTallesTemplate = gridTechnicalSpecsResponse;
         },
         (err: any) => {
           console.error(
             'Error al obtener la ficha técnica de la guía de talles:',
-            err,
+            err
           );
-        },
+        }
       );
   }
 
@@ -439,11 +439,11 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       value_name:
         attribute.values && attribute.values.length > 0
           ? attribute.values[0].name
-          : '',
+          : ''
     }));
 
     const payload = {
-      attributes,
+      attributes
     };
 
     let d_id = this.dominioSeleccionado['domain_id'] || 'MLA-T_SHIRTS';
@@ -452,7 +452,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       .post(
         `/domains/${d_id}/technical_specs?section=grids`,
         JSON.stringify(payload),
-        this.authService.getToken(),
+        this.authService.getToken()
       )
       .subscribe(
         (res: any) => {
@@ -462,9 +462,9 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         (err: any) => {
           console.error(
             'Error al obtener la plantilla de guía de talles:',
-            err,
+            err
           );
-        },
+        }
       );
   }
 
@@ -480,33 +480,33 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         attributes: [
           {
             site_id: 'MLA',
-            id: 'SIZE',
-          },
-        ],
+            id: 'SIZE'
+          }
+        ]
       },
       attributes: this.nuevaGuiaTalle.atributos.map((atributo) => ({
         id: atributo.id,
-        values: [{ name: atributo.valor }],
+        values: [{ name: atributo.valor }]
       })),
       rows: this.nuevaGuiaTalle.talles.map((talle) => ({
         attributes: [
           {
             id: 'SIZE',
-            values: [{ name: talle.nombre }],
+            values: [{ name: talle.nombre }]
           },
           ...talle.valores.map((valor, index) => ({
             id: this.nuevaGuiaTalle.atributos[index].id,
-            values: [{ name: valor }],
-          })),
-        ],
-      })),
+            values: [{ name: valor }]
+          }))
+        ]
+      }))
     };
 
     this.apiMeli
       .post(
         '/catalog/charts',
         JSON.stringify(createChartPayload),
-        this.authService.getToken(),
+        this.authService.getToken()
       )
       .subscribe(
         (res: any) => {
@@ -516,7 +516,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error('Error al crear la guía de talle:', err);
-        },
+        }
       );
   }
 
@@ -541,25 +541,25 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
           id: 'GENDER',
           values: [
             {
-              name: 'Mujer',
-            },
-          ],
+              name: 'Mujer'
+            }
+          ]
         },
         {
           id: 'BRAND',
           values: [
             {
-              name: 'generico',
-            },
-          ],
-        },
-      ],
+              name: 'generico'
+            }
+          ]
+        }
+      ]
     };
     this.apiMeli
       .post(
         '/catalog/charts/search',
         JSON.stringify(search_charts_payload),
-        this.authService.getToken(),
+        this.authService.getToken()
       )
       .subscribe(
         (res: any) => {
@@ -569,7 +569,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error('Error al buscar en Meli:', err);
-        },
+        }
       );
   }
 
@@ -596,14 +596,14 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   eliminarAtributo(index: number) {
     this.nuevaGuiaTalle.atributos.splice(index, 1);
     this.nuevaGuiaTalle.talles.forEach((talle) =>
-      talle.valores.splice(index, 1),
+      talle.valores.splice(index, 1)
     );
   }
 
   agregarTalle() {
     this.nuevaGuiaTalle.talles.push({
       nombre: '',
-      valores: new Array(this.nuevaGuiaTalle.atributos.length).fill(''),
+      valores: new Array(this.nuevaGuiaTalle.atributos.length).fill('')
     });
   }
 
@@ -677,16 +677,16 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       dominioObj: this.dominioSeleccionado,
       fisica: {
         precio: this.camposFisica[0].valor,
-        cantidad: this.camposFisica[1].valor,
+        cantidad: this.camposFisica[1].valor
       },
       online: {
         precio: this.camposOnline[0].valor,
-        cantidad: this.camposOnline[1].valor,
+        cantidad: this.camposOnline[1].valor
       },
       fotos: this.fotos.map((foto) => foto.filename),
       guiaTalle: this.guiaTalleSeleccionada
         ? this.guiaTalleSeleccionada.id
-        : null,
+        : null
     };
 
     //! Crear el producto
@@ -705,7 +705,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
           'Ha ocurrido un error al crear el producto. Error: ' +
           err['error']['msg'];
         this.openModal();
-      },
+      }
     );
   }
   ClickCancelar() {
@@ -725,7 +725,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
   }
   private isMobile(): boolean {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
+      navigator.userAgent
     );
   }
   onFotosActualizadas(fotos: { filename: string; url: SafeUrl }[]) {
@@ -768,7 +768,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         (campo.valor === '' ||
           campo.valor === null ||
           campo.valor === undefined) &&
-        campo.tipo !== 'readonly',
+        campo.tipo !== 'readonly'
     );
     if (campoVacioGenerales) {
       console.error(`El campo ${campoVacioGenerales.nombre} está vacío`);
@@ -783,7 +783,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         (campo.valor === '' ||
           campo.valor === null ||
           campo.valor === undefined) &&
-        campo.tipo !== 'readonly',
+        campo.tipo !== 'readonly'
     );
     if (campoVacioFisica) {
       console.error(`El campo ${campoVacioFisica.nombre} está vacío`);
@@ -798,7 +798,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         (campo.valor === '' ||
           campo.valor === null ||
           campo.valor === undefined) &&
-        campo.tipo !== 'readonly',
+        campo.tipo !== 'readonly'
     );
     if (campoVacioOnline) {
       console.error(`El campo ${campoVacioOnline.nombre} está vacío`);

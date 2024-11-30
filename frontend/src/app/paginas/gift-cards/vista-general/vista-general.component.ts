@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'pag-gift-cards-vista-general',
   templateUrl: './vista-general.component.html',
-  styleUrls: ['./vista-general.component.css'],
+  styleUrls: ['./vista-general.component.css']
 })
 export class PagGiftCardsVistaGeneralComponent implements OnInit {
   //! NavBar
@@ -14,7 +14,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
   acciones = {
     editar: true,
     eliminar: true,
-    detalle: true,
+    detalle: true
   };
 
   columnas = [
@@ -23,7 +23,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
     { nombre: 'Fecha', identificador: '', tipo: 'date' },
     { nombre: 'Monto', identificador: '', tipo: 'number' },
     { nombre: 'Metodo', identificador: '', tipo: 'number' },
-    { nombre: 'Canjeado', identificador: '', tipo: 'boolean' },
+    { nombre: 'Canjeado', identificador: '', tipo: 'boolean' }
   ];
 
   datos: any[] = [
@@ -33,7 +33,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
       Fecha: '2021-10-21',
       Monto: '10000',
       Metodo: 'Mercado Pago',
-      Canjeado: false,
+      Canjeado: false
     },
     {
       'ID gif card': 'AB12D',
@@ -41,7 +41,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
       Fecha: '2021-10-02',
       Monto: '20000',
       Metodo: 'Tarjeta y efectivo',
-      Canjeado: true,
+      Canjeado: true
     },
     {
       'ID gif card': 'AB12E',
@@ -49,7 +49,7 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
       Fecha: '2021-10-03',
       Monto: '30000',
       Metodo: 'Efectivo',
-      Canjeado: false,
+      Canjeado: false
     },
     {
       'ID gif card': 'AB12F',
@@ -57,8 +57,8 @@ export class PagGiftCardsVistaGeneralComponent implements OnInit {
       Fecha: '2021-10-04',
       Monto: '40000',
       Metodo: 'Tarjeta',
-      Canjeado: true,
-    },
+      Canjeado: true
+    }
   ];
 
   ClickAgregar() {

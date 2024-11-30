@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiBackupService {
   url = 'api/bdb';
@@ -12,7 +12,7 @@ export class ApiBackupService {
 
   downloadDB(): Observable<Blob> {
     return this.httpClient.get(`${this.url}/download_database`, {
-      responseType: 'blob',
+      responseType: 'blob'
     });
   }
 

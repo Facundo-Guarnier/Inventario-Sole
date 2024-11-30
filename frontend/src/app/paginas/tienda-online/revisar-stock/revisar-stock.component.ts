@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import {
   ApiValidarStock,
-  ApiRondaValidacionStock,
+  ApiRondaValidacionStock
 } from 'src/app/services/validacion-stock/api-validacion-stock.service';
 import { Notificacion } from 'src/app/interfaces/notificacion.interface';
 
 @Component({
   selector: 'pag-tienda-online-revisar-stock',
   templateUrl: './revisar-stock.component.html',
-  styleUrls: ['./revisar-stock.component.css'],
+  styleUrls: ['./revisar-stock.component.css']
 })
 export class PagTiendaOnlineRevisarStockComponent implements OnInit {
   notificaciones: Notificacion[] = [];
@@ -21,23 +21,23 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
     {
       nombre: 'Cantidad fisica',
       identificador: 'cantidad_fisica',
-      tipo: 'number',
+      tipo: 'number'
     },
     {
       nombre: 'Cantidad validada',
       identificador: 'cantidad_validada',
-      tipo: 'number',
+      tipo: 'number'
     },
     { nombre: 'Estado', identificador: 'estado', tipo: 'text' },
     { nombre: 'Marca', identificador: 'marca', tipo: 'text' },
     { nombre: 'Descripción', identificador: 'descripcion', tipo: 'text' },
-    { nombre: 'Talle', identificador: 'talle', tipo: 'text' },
+    { nombre: 'Talle', identificador: 'talle', tipo: 'text' }
   ];
 
   acciones = {
     editar: false,
     eliminar: false,
-    detalle: false,
+    detalle: false
   };
 
   datos: any[] = [];
@@ -57,7 +57,7 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
   constructor(
     private ApiRondaValidacionStock: ApiRondaValidacionStock,
     private ApiValidarStock: ApiValidarStock,
-    private AuthService: AuthService,
+    private AuthService: AuthService
   ) {}
 
   ngOnInit() {
@@ -68,14 +68,14 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
   iniciarNuevaRonda() {
     this.ApiRondaValidacionStock.iniciarRondaValidacion(
       this.AuthService.getToken(),
-      'online',
+      'online'
     ).subscribe(
       (respuesta) => {
         console.log('Nueva ronda iniciada:', respuesta);
         this.recargarLista();
         this.notificaciones = [];
       },
-      (error) => console.error('Error al iniciar nueva ronda:', error),
+      (error) => console.error('Error al iniciar nueva ronda:', error)
     );
   }
 
@@ -83,7 +83,7 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
     this.ApiRondaValidacionStock.obtenerProductosParaValidar(
       'online',
       this.paginaActual,
-      this.porPagina,
+      this.porPagina
     ).subscribe({
       next: (data) => {
         this.fecha_ronda = data['fecha_ronda'];
@@ -124,13 +124,13 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
         this.totalDatos = Math.max(1, data['total']);
         this.totalPaginas = Math.max(
           1,
-          Math.ceil(this.totalDatos / this.porPagina),
+          Math.ceil(this.totalDatos / this.porPagina)
         );
       },
 
       error: (error) => {
         console.error('Error al cargar productos:', error);
-      },
+      }
     });
   }
 
@@ -145,14 +145,14 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
     this.ApiValidarStock.validarUnidad(
       this.id_a_validar,
       'online',
-      this.AuthService.getToken(),
+      this.AuthService.getToken()
     ).subscribe(
       (respuesta) => {
         console.log('Unidad validada:', respuesta);
         this.agregarNotificacion({
           mensaje: `Producto '${this.id_a_validar}' validado. Unidades restantes: ${respuesta.unidades_restantes}`,
           puedeDeshacer: true,
-          idProducto: this.id_a_validar,
+          idProducto: this.id_a_validar
         });
         this.recargarLista();
         this.id_a_validar = '';
@@ -160,11 +160,11 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
       (error) => {
         this.agregarNotificacion({
           mensaje: `Error en '${this.id_a_validar}': ${error.error.mensaje}`,
-          puedeDeshacer: false,
+          puedeDeshacer: false
         });
         console.error('Error al validar unidad:', this.id_a_validar);
         this.id_a_validar = '';
-      },
+      }
     );
   }
 
@@ -182,13 +182,13 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
       this.ApiValidarStock.deshacerValidacion(
         notificacion.idProducto,
         'online',
-        this.AuthService.getToken(),
+        this.AuthService.getToken()
       ).subscribe(
         (respuesta) => {
           console.log('Validación deshecha:', respuesta);
           this.notificaciones[index] = {
             mensaje: `Deshecho: ${notificacion.mensaje}`,
-            puedeDeshacer: false,
+            puedeDeshacer: false
           };
           this.recargarLista();
         },
@@ -196,9 +196,9 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
           console.error('Error al deshacer validación:', error);
           this.notificaciones[index] = {
             mensaje: `Error al deshacer validación: ${error.error.mensaje}`,
-            puedeDeshacer: false,
+            puedeDeshacer: false
           };
-        },
+        }
       );
     }
   }

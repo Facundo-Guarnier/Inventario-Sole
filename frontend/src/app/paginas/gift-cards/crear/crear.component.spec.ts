@@ -8,7 +8,7 @@ describe('PagGiftCardsCrearComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PagGiftCardsCrearComponent],
+      declarations: [PagGiftCardsCrearComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PagGiftCardsCrearComponent);

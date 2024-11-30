@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'pag-regalos-vista-general',
   templateUrl: './vista-general.component.html',
-  styleUrls: ['./vista-general.component.css'],
+  styleUrls: ['./vista-general.component.css']
 })
 export class PagRegalosVistaGeneralComponent implements OnInit {
   pagActual = 'reg';
@@ -12,7 +12,7 @@ export class PagRegalosVistaGeneralComponent implements OnInit {
   acciones = {
     editar: true,
     eliminar: true,
-    detalle: true,
+    detalle: true
   };
 
   columnas = [
@@ -20,7 +20,7 @@ export class PagRegalosVistaGeneralComponent implements OnInit {
     { nombre: 'Cliente', identificador: '', tipo: 'text' },
     { nombre: 'Fecha', identificador: '', tipo: 'date' },
     { nombre: 'Total', identificador: '', tipo: 'currency' },
-    { nombre: 'Metodo', identificador: '', tipo: 'text' },
+    { nombre: 'Metodo', identificador: '', tipo: 'text' }
   ];
 
   datos = [
@@ -29,29 +29,29 @@ export class PagRegalosVistaGeneralComponent implements OnInit {
       Cliente: 'Juan Perez',
       Fecha: '2021-10-20',
       Total: 89000,
-      Metodo: 'Efectivo',
+      Metodo: 'Efectivo'
     },
     {
       'ID regalo': 'AB121',
       Cliente: 'Maria Rodriguez',
       Fecha: '2021-10-21',
       Total: 45000,
-      Metodo: 'Tarjeta',
+      Metodo: 'Tarjeta'
     },
     {
       'ID regalo': 'AB122',
       Cliente: 'Jose Gomez',
       Fecha: '2021-10-22',
       Total: 900000,
-      Metodo: 'Efectivo',
+      Metodo: 'Efectivo'
     },
     {
       'ID regalo': 'AB123',
       Cliente: 'Ana Martinez',
       Fecha: '2021-10-23',
       Total: 50000,
-      Metodo: 'Tarjeta',
-    },
+      Metodo: 'Tarjeta'
+    }
   ];
 
   ClickAgregar() {

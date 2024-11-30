@@ -4,7 +4,7 @@ import { Filtro } from '../../interfaces/filtro.interface';
 @Component({
   selector: 'app-comp-filtro-lista-seleccion',
   templateUrl: './comp-filtro-lista-seleccion.component.html',
-  styleUrls: ['./comp-filtro-lista-seleccion.component.css'],
+  styleUrls: ['./comp-filtro-lista-seleccion.component.css']
 })
 export class CompFiltroListaSeleccionComponent implements OnInit {
   @Input() filtro: Filtro = { nombre: '', identificador: '', opciones: [] };
@@ -22,7 +22,7 @@ export class CompFiltroListaSeleccionComponent implements OnInit {
     const selectedValue = selectElement.value;
     this.clickFiltro.emit({
       nombre: this.filtro.identificador,
-      valor: selectedValue,
+      valor: selectedValue
     });
   }
 }

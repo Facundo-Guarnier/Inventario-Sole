@@ -3,7 +3,7 @@ import { CompDetalleNuevoGenericoComponent } from 'src/app/componentes/comp-deta
 import { Campo } from 'src/app/interfaces/campo.interface';
 import {
   ApiUsuarioService,
-  ApiUsuariosService,
+  ApiUsuariosService
 } from '../../../services/usuarios/api-usuario.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'pag-usuario-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.css'],
+  styleUrls: ['./crear.component.css']
 })
 export class PagUsuarioCrearComponent implements OnInit {
   //! Ver los componentes hijos
@@ -26,9 +26,9 @@ export class PagUsuarioCrearComponent implements OnInit {
       nombre: 'Roles',
       identificador: 'roles',
       tipo: 'selector-multiple',
-      opciones: ['Admin', 'User'],
+      opciones: ['Admin', 'User']
     },
-    { nombre: 'Contraseña', identificador: 'contraseña', tipo: 'input-text' },
+    { nombre: 'Contraseña', identificador: 'contraseña', tipo: 'input-text' }
   ];
   detalleUsuario: any[] = [];
 
@@ -48,7 +48,7 @@ export class PagUsuarioCrearComponent implements OnInit {
     private apiUsuario: ApiUsuarioService,
     private apiUsuarios: ApiUsuariosService,
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -72,7 +72,7 @@ export class PagUsuarioCrearComponent implements OnInit {
         this.mensajeModal =
           'No se pudo crear el usuario. Error: ' + error['error']['msg'];
         this.openModal();
-      },
+      }
     );
   }
   clickCancelar() {

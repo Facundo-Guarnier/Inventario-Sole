@@ -8,7 +8,7 @@ describe('PagTiendaFisicaVistaGeneralComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PagTiendaFisicaVistaGeneralComponent],
+      declarations: [PagTiendaFisicaVistaGeneralComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PagTiendaFisicaVistaGeneralComponent);

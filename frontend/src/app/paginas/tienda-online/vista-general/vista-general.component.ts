@@ -7,7 +7,7 @@ import { ApiProductoService } from 'src/app/services/productos/api-producto.serv
 @Component({
   selector: 'pag-tienda-online-vista-general',
   templateUrl: './vista-general.component.html',
-  styleUrls: ['./vista-general.component.css'],
+  styleUrls: ['./vista-general.component.css']
 })
 export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   //! Tabla de datos
@@ -17,12 +17,12 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
     { nombre: 'Marca', identificador: 'marca', tipo: 'text' },
     { nombre: 'Talle', identificador: 'talle', tipo: 'text' },
     { nombre: 'Precio', identificador: 'precio', tipo: 'currency' },
-    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'number' },
+    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'number' }
   ];
   acciones = {
     editar: true,
     eliminar: false,
-    detalle: true,
+    detalle: true
   };
   datos: any[] = [];
 
@@ -40,8 +40,8 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
     {
       nombre: 'Todos (con/sin stock)',
       identificador: 'stock',
-      seleccionado: false,
-    },
+      seleccionado: false
+    }
   ];
 
   //! Botones flotantes
@@ -66,7 +66,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   constructor(
     private router: Router,
     private apiProductos: ApiProductoService,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -91,7 +91,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
   clickBuscar(datos: string) {
     if (datos === '') {
       this.filtrosBusqueda = this.filtrosBusqueda.filter(
-        (filtro) => Object.keys(filtro)[0] !== 'palabra_clave',
+        (filtro) => Object.keys(filtro)[0] !== 'palabra_clave'
       );
     } else {
       this.filtrosBusqueda.push({ palabra_clave: datos });
@@ -106,7 +106,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
 
       // Buscar si ya existe un filtro con el mismo nombre
       const indiceExistente = this.filtrosBusqueda.findIndex(
-        (filtro) => Object.keys(filtro)[0] === datos.nombre,
+        (filtro) => Object.keys(filtro)[0] === datos.nombre
       );
 
       if (indiceExistente !== -1) {
@@ -119,7 +119,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
     } else {
       // Eliminar el filtro si existe
       this.filtrosBusqueda = this.filtrosBusqueda.filter(
-        (filtro) => Object.keys(filtro)[0] !== datos.nombre,
+        (filtro) => Object.keys(filtro)[0] !== datos.nombre
       );
     }
 
@@ -165,7 +165,7 @@ export class PagTiendaOnlineVistaGeneralComponent implements OnInit {
         },
         error: (error) => {
           console.error('ERROR al cargar ventas:', error);
-        },
+        }
       });
   }
 

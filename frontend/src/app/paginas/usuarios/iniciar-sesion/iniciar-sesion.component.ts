@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 @Component({
   selector: 'pag-usuario-iniciar-sesion',
   templateUrl: './iniciar-sesion.component.html',
-  styleUrls: ['./iniciar-sesion.component.css'],
+  styleUrls: ['./iniciar-sesion.component.css']
 })
 export class PagUsuarioIniciarSesionComponent implements OnInit {
   //! Datos
@@ -18,7 +18,7 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -41,7 +41,7 @@ export class PagUsuarioIniciarSesionComponent implements OnInit {
         (error) => {
           console.error('Login failed', error);
           this.errorMessage = 'Usuario o contraseña incorrectos';
-        },
+        }
       );
   }
 

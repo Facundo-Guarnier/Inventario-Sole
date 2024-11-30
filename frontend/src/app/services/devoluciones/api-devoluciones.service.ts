@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiDevolucionesService {
   url = '/api/devoluciones';
@@ -13,10 +13,10 @@ export class ApiDevolucionesService {
   buscar_x_atributo(
     filtro: {},
     pagina: number,
-    por_pagina: number,
+    por_pagina: number
   ): Observable<any> {
     return this.httpClient.get(`${this.url}`, {
-      params: { ...filtro, pagina: pagina, por_pagina: por_pagina },
+      params: { ...filtro, pagina: pagina, por_pagina: por_pagina }
     });
   }
 

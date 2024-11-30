@@ -12,7 +12,7 @@ import { ApiProductoService } from 'src/app/services/productos/api-producto.serv
 @Component({
   selector: 'pag-productos-editar',
   templateUrl: './detalle-editar.component.html',
-  styleUrls: ['./detalle-editar.component.css'],
+  styleUrls: ['./detalle-editar.component.css']
 })
 export class PagProductosDetalleEditarComponent implements OnInit {
   //! Ver los componentes hijos
@@ -34,26 +34,26 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     {
       nombre: 'Código Mercado Shop',
       identificador: 'cod_ms',
-      tipo: 'input-text',
+      tipo: 'input-text'
     },
     { nombre: 'Marca', identificador: 'marca', tipo: 'input-text' },
     {
       nombre: 'Descripcion',
       identificador: 'descripcion',
-      tipo: 'textarea-text',
+      tipo: 'textarea-text'
     },
     { nombre: 'Talle', identificador: 'talle', tipo: 'input-text' },
-    { nombre: 'Liquidacion', identificador: 'liquidacion', tipo: 'boolean' },
+    { nombre: 'Liquidacion', identificador: 'liquidacion', tipo: 'boolean' }
   ];
 
   camposFisica: Campo[] = [
     { nombre: 'Precio', identificador: 'precio', tipo: 'input-number' },
-    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
+    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' }
   ];
 
   camposOnline: Campo[] = [
     { nombre: 'Precio', identificador: 'precio', tipo: 'input-number' },
-    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
+    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' }
   ];
 
   //! Fotos
@@ -78,7 +78,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     private authService: AuthService,
     private apiProducto: ApiProductoService,
     private apiFoto: ApiFotoService,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -135,14 +135,14 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         this.fotos = datos['fotos'].map((foto: string) => ({
           filename: foto,
           url: this.sanitizer.bypassSecurityTrustUrl(
-            this.apiFoto.obtenerUrlFoto(foto),
-          ),
+            this.apiFoto.obtenerUrlFoto(foto)
+          )
         }));
       },
 
       (err: any) => {
         console.error('Error al buscar la venta:', err);
-      },
+      }
     );
   }
 
@@ -174,13 +174,13 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       liquidacion: this.camposGenerales[5].valor,
       fisica: {
         precio: this.camposFisica[0].valor,
-        cantidad: this.camposFisica[1].valor,
+        cantidad: this.camposFisica[1].valor
       },
       online: {
         precio: this.camposOnline[0].valor,
-        cantidad: this.camposOnline[1].valor,
+        cantidad: this.camposOnline[1].valor
       },
-      fotos: this.fotos.map((foto) => foto.filename),
+      fotos: this.fotos.map((foto) => foto.filename)
     };
 
     //! Verificar id
@@ -212,7 +212,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
             'Ha ocurrido un error al actualizar el producto. Error: ' +
             err['error']['msg'];
           this.openModal();
-        },
+        }
       );
   }
   ClickCancelar() {
@@ -232,7 +232,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   }
   private isMobile(): boolean {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
+      navigator.userAgent
     );
   }
   onFotosActualizadas(fotos: { filename: string; url: SafeUrl }[]) {
@@ -275,7 +275,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         (campo) =>
           campo.valor === '' ||
           campo.valor === null ||
-          campo.valor === undefined,
+          campo.valor === undefined
       )
     ) {
       console.error('Faltan campos por llenar');
@@ -291,7 +291,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         (campo) =>
           campo.valor === '' ||
           campo.valor === null ||
-          campo.valor === undefined,
+          campo.valor === undefined
       )
     ) {
       console.error('Faltan campos por llenar');
@@ -307,7 +307,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         (campo) =>
           campo.valor === '' ||
           campo.valor === null ||
-          campo.valor === undefined,
+          campo.valor === undefined
       )
     ) {
       console.error('Faltan campos por llenar');

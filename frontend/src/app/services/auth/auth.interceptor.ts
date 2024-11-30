@@ -4,7 +4,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpErrorResponse,
+  HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -19,12 +19,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   intercept(
     request: HttpRequest<any>,
-    next: HttpHandler,
+    next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -34,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
           this.router.navigate(['login']);
         }
         return throwError(error);
-      }),
+      })
     );
   }
 }

@@ -8,7 +8,7 @@ describe('PagUsuarioIniciarSesionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PagUsuarioIniciarSesionComponent],
+      declarations: [PagUsuarioIniciarSesionComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PagUsuarioIniciarSesionComponent);

@@ -5,7 +5,7 @@ import { Campo } from 'src/app/interfaces/campo.interface';
 @Component({
   selector: 'app-comp-detalle-nuevo-prod',
   templateUrl: './comp-detalle-nuevo-prod.component.html',
-  styleUrls: ['./comp-detalle-nuevo-prod.component.css'],
+  styleUrls: ['./comp-detalle-nuevo-prod.component.css']
 })
 export class CompDetalleNuevoComponent implements OnInit {
   //! Para mostrar la opción de editar o no
@@ -34,8 +34,8 @@ export class CompDetalleNuevoComponent implements OnInit {
         distinctUntilChanged(
           (prev, curr) =>
             prev.identificador === curr.identificador &&
-            prev.valor === curr.valor,
-        ),
+            prev.valor === curr.valor
+        )
       )
       .subscribe((change) => {
         this.onChange.emit(change);
@@ -56,7 +56,7 @@ export class CompDetalleNuevoComponent implements OnInit {
     }
     this.changeSubject.next({
       identificador: campo.identificador,
-      valor: valor,
+      valor: valor
     });
   }
 
@@ -64,7 +64,7 @@ export class CompDetalleNuevoComponent implements OnInit {
     let datosRecolectados = [
       this.detalleGeneral,
       this.detalleFisica,
-      this.detalleOnline,
+      this.detalleOnline
     ];
 
     this.datosRecolectados.emit(datosRecolectados);

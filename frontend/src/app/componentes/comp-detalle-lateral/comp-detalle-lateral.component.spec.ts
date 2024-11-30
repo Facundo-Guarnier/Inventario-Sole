@@ -8,7 +8,7 @@ describe('CompDetalleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompDetalleLateralComponent],
+      declarations: [CompDetalleLateralComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompDetalleLateralComponent);

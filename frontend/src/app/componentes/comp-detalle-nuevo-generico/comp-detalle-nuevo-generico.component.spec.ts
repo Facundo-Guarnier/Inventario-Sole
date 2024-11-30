@@ -8,7 +8,7 @@ describe('CompDetalleNuevoGenericoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompDetalleNuevoGenericoComponent],
+      declarations: [CompDetalleNuevoGenericoComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompDetalleNuevoGenericoComponent);

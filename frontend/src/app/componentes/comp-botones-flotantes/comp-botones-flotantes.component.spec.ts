@@ -8,7 +8,7 @@ describe('CompBotonesFlotantesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompBotonesFlotantesComponent],
+      declarations: [CompBotonesFlotantesComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompBotonesFlotantesComponent);

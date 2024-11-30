@@ -8,7 +8,7 @@ describe('CompVentaListaProdComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompVentaListaProdComponent],
+      declarations: [CompVentaListaProdComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompVentaListaProdComponent);

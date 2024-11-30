@@ -7,7 +7,7 @@ import { interval, Subscription } from 'rxjs';
 @Component({
   selector: 'app-comp-barra-lateral',
   templateUrl: './comp-barra-lateral.component.html',
-  styleUrls: ['./comp-barra-lateral.component.css'],
+  styleUrls: ['./comp-barra-lateral.component.css']
 })
 export class CompBarraLateralComponent implements OnInit {
   //! Valores del componente padre
@@ -39,7 +39,7 @@ export class CompBarraLateralComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public authService: AuthService,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {

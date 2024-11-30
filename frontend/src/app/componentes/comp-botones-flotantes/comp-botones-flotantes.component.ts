@@ -7,13 +7,13 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 
 @Component({
   selector: 'app-comp-botones-flotantes',
   templateUrl: './comp-botones-flotantes.component.html',
-  styleUrls: ['./comp-botones-flotantes.component.css'],
+  styleUrls: ['./comp-botones-flotantes.component.css']
 })
 export class CompBotonesFlotantesComponent implements OnInit {
   //! Controlan la visibilidad de los botones

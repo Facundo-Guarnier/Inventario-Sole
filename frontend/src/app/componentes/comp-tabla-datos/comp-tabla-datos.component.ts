@@ -6,7 +6,7 @@ import { Accion } from '../../interfaces/accion.interface';
 @Component({
   selector: 'app-comp-tabla-datos',
   templateUrl: './comp-tabla-datos.component.html',
-  styleUrls: ['./comp-tabla-datos.component.css'],
+  styleUrls: ['./comp-tabla-datos.component.css']
 })
 export class CompTablaDatosComponent implements OnInit {
   @Input() tipo: string = ''; //! Para saber a que ruta redirigir
@@ -31,11 +31,11 @@ export class CompTablaDatosComponent implements OnInit {
       this.router.navigate([this.tipo + '/detalle']);
     } else if (this.tipo == 'usu') {
       this.router.navigate([this.tipo + '/detalle-editar/' + item.alias], {
-        queryParams: { editar: true },
+        queryParams: { editar: true }
       });
     } else {
       this.router.navigate([this.tipo + '/detalle-editar/' + item.id], {
-        queryParams: { editar: true },
+        queryParams: { editar: true }
       });
     }
   }
@@ -50,11 +50,11 @@ export class CompTablaDatosComponent implements OnInit {
       this.router.navigate([this.tipo + '/detalle']);
     } else if (this.tipo == 'usu') {
       this.router.navigate([this.tipo + '/detalle-editar/' + item.alias], {
-        queryParams: { editar: false },
+        queryParams: { editar: false }
       });
     } else {
       this.router.navigate([this.tipo + '/detalle-editar/' + item.id], {
-        queryParams: { editar: false },
+        queryParams: { editar: false }
       });
     }
   }

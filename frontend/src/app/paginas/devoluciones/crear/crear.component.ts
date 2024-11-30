@@ -8,7 +8,7 @@ import { ApiDevolucionesService } from 'src/app/services/devoluciones/api-devolu
 @Component({
   selector: 'pag-devoluciones-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.css'],
+  styleUrls: ['./crear.component.css']
 })
 export class PagDevolucionesCrearComponent implements OnInit {
   //! Ver los componentes hijos
@@ -22,14 +22,14 @@ export class PagDevolucionesCrearComponent implements OnInit {
       nombre: 'Tienda',
       identificador: 'tienda',
       tipo: 'selector',
-      opciones: ['Fisica', 'Online'],
+      opciones: ['Fisica', 'Online']
     },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
     {
       nombre: 'Comentario',
       identificador: 'comentario',
-      tipo: 'textarea-text',
-    },
+      tipo: 'textarea-text'
+    }
   ];
   detalleDevolucion = {};
 
@@ -48,7 +48,7 @@ export class PagDevolucionesCrearComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private apiDevoluciones: ApiDevolucionesService,
+    private apiDevoluciones: ApiDevolucionesService
   ) {}
 
   ngOnInit(): void {}
@@ -87,7 +87,7 @@ export class PagDevolucionesCrearComponent implements OnInit {
           this.mensajeModal =
             'No se pudo crear la devolucion. Error: ' + err['error']['msg'];
           this.openModal();
-        },
+        }
       );
   }
   clickCancelar() {

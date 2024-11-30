@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiProductoService {
   url = '/api/productos';
@@ -20,7 +20,7 @@ export class ApiProductoService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.put(`${this.url}/${id}`, producto, {
-      headers: heads,
+      headers: heads
     });
   }
 
@@ -35,10 +35,10 @@ export class ApiProductoService {
   buscar_x_atributo(
     filtro: {},
     pagina: number,
-    por_pagina: number,
+    por_pagina: number
   ): Observable<any> {
     return this.httpClient.get(`${this.url}`, {
-      params: { ...filtro, pagina: pagina, por_pagina: por_pagina },
+      params: { ...filtro, pagina: pagina, por_pagina: por_pagina }
     });
   }
 
@@ -54,7 +54,7 @@ export class ApiProductoService {
 //* ------------------------------------------------------------
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiRevisarStockService {
   url = 'http://localhost:5000/api/revisar-stock';

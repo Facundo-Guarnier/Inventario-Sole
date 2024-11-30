@@ -11,7 +11,7 @@ import { ApiProductoService } from 'src/app/services/productos/api-producto.serv
 @Component({
   selector: 'pag-ventas-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.css'],
+  styleUrls: ['./crear.component.css']
 })
 export class PagVentasCrearComponent implements OnInit {
   //! Ver los componentes hijos
@@ -30,15 +30,15 @@ export class PagVentasCrearComponent implements OnInit {
       nombre: 'Tienda',
       identificador: 'tienda',
       tipo: 'selector-actualizar',
-      opciones: ['Fisica', 'Online'],
+      opciones: ['Fisica', 'Online']
     },
     { nombre: 'Monto total', identificador: 'total', tipo: 'input-number' },
     { nombre: 'Método', identificador: 'metodo', tipo: 'textarea-text' },
     {
       nombre: 'Comentario',
       identificador: 'comentario',
-      tipo: 'textarea-text',
-    },
+      tipo: 'textarea-text'
+    }
   ];
   detalleventa = {};
 
@@ -48,24 +48,24 @@ export class PagVentasCrearComponent implements OnInit {
     {
       nombre: 'ID producto',
       identificador: 'idProducto',
-      tipo: 'input-actualizar',
+      tipo: 'input-actualizar'
     },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
     {
       nombre: 'Precio unitario de venta',
       identificador: 'precio',
-      tipo: 'input-number',
+      tipo: 'input-number'
     },
     {
       nombre: 'Precio unitario original',
       identificador: 'precio_original',
-      tipo: 'readonly',
+      tipo: 'readonly'
     },
     {
       nombre: 'Comentario',
       identificador: 'comentario',
-      tipo: 'textarea-text',
-    },
+      tipo: 'textarea-text'
+    }
   ];
   productos: any[] = [];
 
@@ -89,7 +89,7 @@ export class PagVentasCrearComponent implements OnInit {
     private authService: AuthService,
     private ultimasIDs: UltimasIDsService,
     private router: Router,
-    private apiProductos: ApiProductoService,
+    private apiProductos: ApiProductoService
   ) {}
 
   ngOnInit(): void {
@@ -103,7 +103,7 @@ export class PagVentasCrearComponent implements OnInit {
         },
         (err) => {
           console.error('Error al buscar la última ID:', err);
-        },
+        }
       );
   }
 
@@ -119,7 +119,7 @@ export class PagVentasCrearComponent implements OnInit {
     let venta_nueva = {
       total: 100, //TODO: calcular el total
       ...this.detalleventa,
-      productos: this.productos,
+      productos: this.productos
     };
 
     if (
@@ -149,7 +149,7 @@ export class PagVentasCrearComponent implements OnInit {
         this.mensajeModal =
           'No se pudo crear la venta. Error: ' + err['error']['msg'];
         this.openModal();
-      },
+      }
     );
   }
   clickCancelar() {
@@ -252,7 +252,7 @@ export class PagVentasCrearComponent implements OnInit {
       if (producto.idProducto) {
         return this.buscarPrecioProducto(
           producto.idProducto,
-          productosNoDisponibles,
+          productosNoDisponibles
         );
       }
       return Promise.resolve();
@@ -268,15 +268,15 @@ export class PagVentasCrearComponent implements OnInit {
     productosNoDisponibles.forEach((producto) => {
       this.compVentaLista.quitarProducto(
         this.compVentaLista.productos.findIndex(
-          (p) => p.idProducto === producto,
-        ),
+          (p) => p.idProducto === producto
+        )
       );
     });
   }
 
   buscarPrecioProducto(
     idProducto: string,
-    productosNoDisponibles?: string[],
+    productosNoDisponibles?: string[]
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       if (
@@ -321,14 +321,14 @@ export class PagVentasCrearComponent implements OnInit {
           }
           this.compVentaLista.actualizarPrecioProducto(
             idProducto,
-            producto[this.tiendaSeleccionada]['precio'],
+            producto[this.tiendaSeleccionada]['precio']
           );
           resolve();
         },
         (error) => {
           console.error('Error al buscar el producto:', error);
           reject(error);
-        },
+        }
       );
     });
   }

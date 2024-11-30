@@ -8,7 +8,7 @@ describe('CompCampoFotosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompCampoFotosComponent],
+      declarations: [CompCampoFotosComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompCampoFotosComponent);

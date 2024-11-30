@@ -8,7 +8,7 @@ describe('CompNotificacionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompNotificacionComponent],
+      declarations: [CompNotificacionComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompNotificacionComponent);

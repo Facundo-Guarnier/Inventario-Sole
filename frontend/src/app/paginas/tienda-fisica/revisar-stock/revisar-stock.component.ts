@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import {
   ApiValidarStock,
-  ApiRondaValidacionStock,
+  ApiRondaValidacionStock
 } from 'src/app/services/validacion-stock/api-validacion-stock.service';
 import { Notificacion } from 'src/app/interfaces/notificacion.interface';
 
 @Component({
   selector: 'pag-tienda-fisica-revisar-stock',
   templateUrl: './revisar-stock.component.html',
-  styleUrls: ['./revisar-stock.component.css'],
+  styleUrls: ['./revisar-stock.component.css']
 })
 export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   notificaciones: Notificacion[] = [];
@@ -21,23 +21,23 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     {
       nombre: 'Cantidad fisica',
       identificador: 'cantidad_fisica',
-      tipo: 'number',
+      tipo: 'number'
     },
     {
       nombre: 'Cantidad validada',
       identificador: 'cantidad_validada',
-      tipo: 'number',
+      tipo: 'number'
     },
     { nombre: 'Estado', identificador: 'estado', tipo: 'text' },
     { nombre: 'Marca', identificador: 'marca', tipo: 'text' },
     { nombre: 'Descripción', identificador: 'descripcion', tipo: 'text' },
-    { nombre: 'Talle', identificador: 'talle', tipo: 'text' },
+    { nombre: 'Talle', identificador: 'talle', tipo: 'text' }
   ];
 
   acciones = {
     editar: false,
     eliminar: false,
-    detalle: false,
+    detalle: false
   };
 
   datos: any[] = [];
@@ -57,7 +57,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   constructor(
     private ApiRondaValidacionStock: ApiRondaValidacionStock,
     private ApiValidarStock: ApiValidarStock,
-    private AuthService: AuthService,
+    private AuthService: AuthService
   ) {}
 
   ngOnInit() {
@@ -68,13 +68,13 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   iniciarNuevaRonda() {
     this.ApiRondaValidacionStock.iniciarRondaValidacion(
       this.AuthService.getToken(),
-      'fisica',
+      'fisica'
     ).subscribe(
       (respuesta) => {
         this.recargarLista();
         this.notificaciones = [];
       },
-      (error) => console.error('Error al iniciar nueva ronda:', error),
+      (error) => console.error('Error al iniciar nueva ronda:', error)
     );
   }
 
@@ -82,7 +82,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     this.ApiRondaValidacionStock.obtenerProductosParaValidar(
       'fisica',
       this.paginaActual,
-      this.porPagina,
+      this.porPagina
     ).subscribe({
       next: (data) => {
         this.fecha_ronda = data['fecha_ronda'];
@@ -125,7 +125,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
 
       error: (error) => {
         console.error('Error al cargar productos:', error);
-      },
+      }
     });
   }
 
@@ -140,13 +140,13 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
     this.ApiValidarStock.validarUnidad(
       this.id_a_validar,
       'fisica',
-      this.AuthService.getToken(),
+      this.AuthService.getToken()
     ).subscribe(
       (respuesta) => {
         this.agregarNotificacion({
           mensaje: `Producto '${this.id_a_validar}' validado. Unidades restantes: ${respuesta.unidades_restantes}`,
           puedeDeshacer: true,
-          idProducto: this.id_a_validar,
+          idProducto: this.id_a_validar
         });
         this.recargarLista();
         this.id_a_validar = '';
@@ -154,11 +154,11 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
       (error) => {
         this.agregarNotificacion({
           mensaje: `Error en '${this.id_a_validar}': ${error.error.mensaje}`,
-          puedeDeshacer: false,
+          puedeDeshacer: false
         });
         console.error('Error al validar unidad:', this.id_a_validar);
         this.id_a_validar = '';
-      },
+      }
     );
   }
 
@@ -175,12 +175,12 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
       this.ApiValidarStock.deshacerValidacion(
         notificacion.idProducto,
         'fisica',
-        this.AuthService.getToken(),
+        this.AuthService.getToken()
       ).subscribe(
         (respuesta) => {
           this.notificaciones[index] = {
             mensaje: `Deshecho validación de producto '${notificacion.idProducto}'.`,
-            puedeDeshacer: false,
+            puedeDeshacer: false
           };
           this.recargarLista();
         },
@@ -188,9 +188,9 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
           console.error('Error al deshacer validación:', error);
           this.notificaciones[index] = {
             mensaje: `Error al deshacer validación: ${error.error.mensaje}`,
-            puedeDeshacer: false,
+            puedeDeshacer: false
           };
-        },
+        }
       );
     }
   }

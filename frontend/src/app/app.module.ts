@@ -119,7 +119,7 @@ export function tokenGetter() {
     CompPaginamientoComponent,
     FilterPipe,
     PagDevolucionesVistaGeneralComponent,
-    PagDevolucionesCrearComponent,
+    PagDevolucionesCrearComponent
   ],
 
   imports: [
@@ -132,14 +132,14 @@ export function tokenGetter() {
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: ['localhost:5000'], // Ajusta esto a tu dominio de backend
-        disallowedRoutes: ['http://localhost:5000/api/auth'], // Rutas que no necesitan token
-      },
-    }),
+        disallowedRoutes: ['http://localhost:5000/api/auth'] // Rutas que no necesitan token
+      }
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    AuthService,
+    AuthService
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

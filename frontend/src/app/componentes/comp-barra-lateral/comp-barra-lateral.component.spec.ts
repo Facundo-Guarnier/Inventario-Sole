@@ -8,7 +8,7 @@ describe('CompBarraLateralComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompBarraLateralComponent],
+      declarations: [CompBarraLateralComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompBarraLateralComponent);

@@ -8,7 +8,7 @@ describe('CompFiltroListaSeleccionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompFiltroListaSeleccionComponent],
+      declarations: [CompFiltroListaSeleccionComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompFiltroListaSeleccionComponent);

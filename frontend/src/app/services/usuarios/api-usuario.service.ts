@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiUsuarioService {
   url = '/api/usuario';
@@ -25,7 +25,7 @@ export class ApiUsuarioService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.put(`${this.url}/${id}`, usuario, {
-      headers: heads,
+      headers: heads
     });
   }
 
@@ -41,7 +41,7 @@ export class ApiUsuarioService {
 //* ------------------------------------------------------------
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiUsuariosService {
   url = '/api/usuarios';
@@ -51,7 +51,7 @@ export class ApiUsuariosService {
   buscar_todos(
     token: any,
     pagina: number,
-    por_pagina: number,
+    por_pagina: number
   ): Observable<any> {
     let heads = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -59,7 +59,7 @@ export class ApiUsuariosService {
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.get(`${this.url}`, {
       headers: heads,
-      params: { pagina: pagina, por_pagina: por_pagina },
+      params: { pagina: pagina, por_pagina: por_pagina }
     });
   }
 }

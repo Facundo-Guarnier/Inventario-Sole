@@ -3,14 +3,14 @@ import { ApiProductoService } from 'src/app/services/productos/api-producto.serv
 import { AuthService } from 'src/app/services/auth/auth.service';
 import {
   ApiFotoService,
-  ApiFotosService,
+  ApiFotosService
 } from 'src/app/services/fotos/api-foto.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-comp-campo-fotos',
   templateUrl: './comp-campo-fotos.component.html',
-  styleUrls: ['./comp-campo-fotos.component.css'],
+  styleUrls: ['./comp-campo-fotos.component.css']
 })
 export class CompCampoFotosComponent {
   @Input() mostrarEditar: boolean = false;
@@ -24,7 +24,7 @@ export class CompCampoFotosComponent {
     private authService: AuthService,
     private apiFoto: ApiFotoService,
     private apiFotos: ApiFotosService,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {}
 
   onFileSelected(event: any): void {
@@ -38,13 +38,13 @@ export class CompCampoFotosComponent {
               this.obtenerYMostrarFoto(response.filename);
             } else {
               console.error(
-                'La respuesta del servidor no contiene un nombre de archivo válido',
+                'La respuesta del servidor no contiene un nombre de archivo válido'
               );
             }
           },
           (error) => {
             console.error('Error al subir la foto:', error);
-          },
+          }
         );
     }
   }
@@ -59,7 +59,7 @@ export class CompCampoFotosComponent {
       },
       (error) => {
         console.error('Error al obtener la foto:', error);
-      },
+      }
     );
   }
 

@@ -8,7 +8,7 @@ describe('PagUsuarioCrearComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PagUsuarioCrearComponent],
+      declarations: [PagUsuarioCrearComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PagUsuarioCrearComponent);

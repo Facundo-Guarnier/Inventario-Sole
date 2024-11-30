@@ -6,13 +6,13 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 
 @Component({
   selector: 'app-comp-boton-foto',
   templateUrl: './comp-boton-foto.component.html',
-  styleUrls: ['./comp-boton-foto.component.css'],
+  styleUrls: ['./comp-boton-foto.component.css']
 })
 export class CompBotonFotoComponent implements OnInit {
   @Input() mostrarEditar: boolean = false;

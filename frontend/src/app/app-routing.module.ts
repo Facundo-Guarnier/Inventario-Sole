@@ -46,128 +46,128 @@ const routes: Routes = [
   {
     path: 'ven',
     component: PagVentasVistaGeneralComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'ven/crear',
     component: PagVentasCrearComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'ven/detalle-editar/:id',
     component: PagVentasDetalleEditarComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'tf',
     component: PagTiendaFisicaVistaGeneralComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'tf/revisar-stock',
     component: PagTiendaFisicaRevisarStockComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard, AdminGuard]
   },
 
   {
     path: 'to',
     component: PagTiendaOnlineVistaGeneralComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'to/revisar-stock',
     component: PagTiendaOnlineRevisarStockComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'prod/crear',
     component: PagProductosCrearComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard, AdminGuard]
   },
   {
     path: 'prod/detalle-editar/:id',
     component: PagProductosDetalleEditarComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'mov',
     component: PagMovimientosVistaGeneralComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'mov/crear',
     component: PagMovimientosCrearComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard, AdminGuard]
   },
   // { path: "mov/detalle", component: PagMovimientosDetalleComponent}, //* No se necesita crear un componente para el detalle de movimientos, creo que es redundante
 
   {
     path: 'reg',
     component: PagRegalosVistaGeneralComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'reg/crear',
     component: PagRegalosCrearComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'reg/detalle-editar/:id',
     component: PagRegalosDetalleEditarComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'gc',
     component: PagGiftCardsVistaGeneralComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'gc/crear',
     component: PagGiftCardsCrearComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'gc/detalle-editar/:id',
     component: PagGiftCardsDetalleEditarComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'usu',
     component: PagUsuarioVistaGeneralComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard, AdminGuard]
   },
   {
     path: 'usu/crear',
     component: PagUsuarioCrearComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard, AdminGuard]
   },
   {
     path: 'usu/detalle-editar/:alias',
     component: PagUsuarioDetalleEditarComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard, AdminGuard]
   },
 
   {
     path: 'dev',
     component: PagDevolucionesVistaGeneralComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'dev/crear',
     component: PagDevolucionesCrearComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
 
-  { path: '**', redirectTo: '/mov' },
+  { path: '**', redirectTo: '/mov' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

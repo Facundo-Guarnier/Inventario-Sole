@@ -6,14 +6,14 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { Campo } from 'src/app/interfaces/campo.interface';
 
 @Component({
   selector: 'app-comp-venta-lista-prod',
   templateUrl: './comp-venta-lista-prod.component.html',
-  styleUrls: ['./comp-venta-lista-prod.component.css'],
+  styleUrls: ['./comp-venta-lista-prod.component.css']
 })
 export class CompVentaListaProdComponent implements OnInit, OnChanges {
   //! Para mostrar la opción de editar o no
@@ -70,13 +70,13 @@ export class CompVentaListaProdComponent implements OnInit, OnChanges {
       const datosProducto: any = { ...producto }; // Comenzar con los datos existentes
       this.campos.forEach((campo) => {
         const elemento = document.getElementById(
-          `${campo.identificador}_${index}`,
+          `${campo.identificador}_${index}`
         ) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
         if (elemento) {
           datosProducto[campo.identificador] = elemento.value;
         } else {
           console.error(
-            `Elemento con id ${campo.identificador}_${index} no encontrado.`,
+            `Elemento con id ${campo.identificador}_${index} no encontrado.`
           );
         }
       });
@@ -93,7 +93,7 @@ export class CompVentaListaProdComponent implements OnInit, OnChanges {
     if (index !== -1) {
       this.productos[index] = {
         ...this.productos[index],
-        precio_original: precio,
+        precio_original: precio
       };
       this.cdr.detectChanges();
     }

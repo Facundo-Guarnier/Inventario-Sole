@@ -10,14 +10,14 @@ import { ApiProductoService } from 'src/app/services/productos/api-producto.serv
 @Component({
   selector: 'pag-ventas-vista-general',
   templateUrl: './vista-general.component.html',
-  styleUrls: ['./vista-general.component.css'],
+  styleUrls: ['./vista-general.component.css']
 })
 export class PagVentasVistaGeneralComponent implements OnInit {
   //! Tabla de datos
   acciones = {
     editar: true,
     eliminar: false,
-    detalle: true,
+    detalle: true
   };
 
   columnas = [
@@ -28,10 +28,10 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     {
       nombre: 'Monto t. productos',
       identificador: 'total_productos',
-      tipo: 'currency',
+      tipo: 'currency'
     },
     { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
-    { nombre: 'Metodo', identificador: 'metodo', tipo: 'text' },
+    { nombre: 'Metodo', identificador: 'metodo', tipo: 'text' }
   ];
 
   datos: any[] = [];
@@ -43,13 +43,13 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     {
       nombre: 'Total p. venta',
       identificador: 'total_precio_venta',
-      tipo: 'currency',
+      tipo: 'currency'
     },
     {
       nombre: 'Total p. original',
       identificador: 'total_precio_original',
-      tipo: 'currency',
-    },
+      tipo: 'currency'
+    }
   ];
 
   datosSecundarios: any[] = [];
@@ -60,7 +60,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     {
       nombre: 'Tienda',
       identificador: 'tienda',
-      opciones: ['Fisica', 'Online'],
+      opciones: ['Fisica', 'Online']
     },
     {
       nombre: 'Rango de fecha',
@@ -71,9 +71,9 @@ export class PagVentasVistaGeneralComponent implements OnInit {
         'Esta semana',
         'Semana pasada',
         'Este mes',
-        'Mes pasado',
-      ],
-    },
+        'Mes pasado'
+      ]
+    }
   ];
   filtrosCheckbox: string[] = [];
 
@@ -102,7 +102,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     private router: Router,
     private apiVentas: ApiVentasService,
     private authService: AuthService,
-    private apiProducto: ApiProductoService,
+    private apiProducto: ApiProductoService
   ) {}
 
   ngOnInit(): void {
@@ -119,7 +119,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       .buscar_x_atributo(
         { fecha: fecha, pagina: 1, por_pagina: 999 },
         this.paginaActual,
-        this.porPagina,
+        this.porPagina
       )
       .subscribe({
         next: (data) => {
@@ -127,14 +127,14 @@ export class PagVentasVistaGeneralComponent implements OnInit {
           ventas.forEach((venta: any) => {
             this.totalProductosVendidos += venta.productos.reduce(
               (acc: any, producto: any) => acc + producto.cantidad,
-              0,
+              0
             );
             this.montoTotal += venta.total;
           });
         },
         error: (error) => {
           console.error('ERROR al cargar ventas:', error);
-        },
+        }
       });
   }
 
@@ -147,7 +147,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   clickBuscar(datos: string) {
     if (datos === '') {
       this.filtrosBusqueda = this.filtrosBusqueda.filter(
-        (filtro) => Object.keys(filtro)[0] !== 'palabra_clave',
+        (filtro) => Object.keys(filtro)[0] !== 'palabra_clave'
       );
     } else {
       this.filtrosBusqueda.push({ palabra_clave: datos });
@@ -166,7 +166,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
 
       //! Buscar si ya existe un filtro con el mismo nombre
       const indiceExistente = this.filtrosBusqueda.findIndex(
-        (filtro) => Object.keys(filtro)[0] === datos.nombre,
+        (filtro) => Object.keys(filtro)[0] === datos.nombre
       );
 
       if (indiceExistente !== -1) {
@@ -179,7 +179,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     } else {
       //! Eliminar el filtro si existe
       this.filtrosBusqueda = this.filtrosBusqueda.filter(
-        (filtro) => Object.keys(filtro)[0] !== datos.nombre,
+        (filtro) => Object.keys(filtro)[0] !== datos.nombre
       );
     }
 
@@ -220,7 +220,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       const inicioMesPasado = new Date(
         hoy.getFullYear(),
         hoy.getMonth() - 1,
-        1,
+        1
       );
       const finMesPasado = new Date(hoy.getFullYear(), hoy.getMonth(), 0);
       fecha = `${this.formatearFecha(inicioMesPasado)} al ${this.formatearFecha(finMesPasado)}`;
@@ -275,7 +275,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
                 total_precio_original:
                   producto.precio_original * producto.cantidad,
                 total_precio_venta: producto.precio * producto.cantidad,
-                cantidad: producto.cantidad,
+                cantidad: producto.cantidad
               };
               this.datosSecundarios.push(datoSecundario);
               total_productos += datoSecundario.total_precio_original;

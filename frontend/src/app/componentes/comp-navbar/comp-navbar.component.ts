@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth/auth.service';
 @Component({
   selector: 'app-comp-navbar',
   templateUrl: './comp-navbar.component.html',
-  styleUrls: ['./comp-navbar.component.css'],
+  styleUrls: ['./comp-navbar.component.css']
 })
 export class CompNavbarComponent implements OnInit {
   pagActual: string = '';
@@ -14,7 +14,7 @@ export class CompNavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {

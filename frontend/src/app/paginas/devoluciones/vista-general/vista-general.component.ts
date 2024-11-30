@@ -9,14 +9,14 @@ import { ApiProductoService } from 'src/app/services/productos/api-producto.serv
 @Component({
   selector: 'ág-devoluciones-vista-general',
   templateUrl: './vista-general.component.html',
-  styleUrls: ['./vista-general.component.css'],
+  styleUrls: ['./vista-general.component.css']
 })
 export class PagDevolucionesVistaGeneralComponent implements OnInit {
   //! Tabla de datos
   acciones = {
     editar: false,
     eliminar: false,
-    detalle: false,
+    detalle: false
   };
 
   columnas = [
@@ -24,12 +24,12 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     {
       nombre: 'Descripcion prod.',
       identificador: 'descripcion_producto',
-      tipo: 'text',
+      tipo: 'text'
     },
     { nombre: 'Fecha', identificador: 'fecha_devolucion', tipo: 'date' },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'number' },
     { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
-    { nombre: 'Comentario dev.', identificador: 'comentario', tipo: 'text' },
+    { nombre: 'Comentario dev.', identificador: 'comentario', tipo: 'text' }
   ];
 
   datos: any[] = [
@@ -42,13 +42,13 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     {
       nombre: 'Tienda',
       identificador: 'tienda',
-      opciones: ['Fisica', 'Online'],
+      opciones: ['Fisica', 'Online']
     },
     {
       nombre: 'Rango de fecha',
       identificador: 'fecha',
-      opciones: this.generarOpcionesFecha(),
-    },
+      opciones: this.generarOpcionesFecha()
+    }
   ];
   filtrosCheckbox: string[] = [];
 
@@ -71,7 +71,7 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     // private apiProductoService: ApiProductoService,
-    private apiDevolucionesService: ApiDevolucionesService,
+    private apiDevolucionesService: ApiDevolucionesService
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +89,7 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
   clickBuscar(datos: string) {
     if (datos === '') {
       this.filtrosBusqueda = this.filtrosBusqueda.filter(
-        (filtro) => Object.keys(filtro)[0] !== 'palabra_clave',
+        (filtro) => Object.keys(filtro)[0] !== 'palabra_clave'
       );
     } else {
       this.filtrosBusqueda.push({ palabra_clave: datos });
@@ -104,7 +104,7 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
 
       //! Buscar si ya existe un filtro con el mismo nombre
       const indiceExistente = this.filtrosBusqueda.findIndex(
-        (filtro) => Object.keys(filtro)[0] === datos.nombre,
+        (filtro) => Object.keys(filtro)[0] === datos.nombre
       );
 
       if (indiceExistente !== -1) {
@@ -117,7 +117,7 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     } else {
       //! Eliminar el filtro si existe
       this.filtrosBusqueda = this.filtrosBusqueda.filter(
-        (filtro) => Object.keys(filtro)[0] !== datos.nombre,
+        (filtro) => Object.keys(filtro)[0] !== datos.nombre
       );
     }
 
@@ -137,26 +137,26 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     const ayer = new Date(hoy);
     ayer.setDate(hoy.getDate() - 1);
     opciones.push(
-      `${this.formatearFecha(ayer)} al ${this.formatearFecha(ayer)}`,
+      `${this.formatearFecha(ayer)} al ${this.formatearFecha(ayer)}`
     );
 
     //! Esta semana (domingo a hoy)
     const inicioSemana = new Date(hoy);
     inicioSemana.setDate(hoy.getDate() - hoy.getDay());
     opciones.push(
-      `${this.formatearFecha(inicioSemana)} al ${this.formatearFecha(hoy)}`,
+      `${this.formatearFecha(inicioSemana)} al ${this.formatearFecha(hoy)}`
     );
 
     //! Este mes
     const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
     opciones.push(
-      `${this.formatearFecha(inicioMes)} al ${this.formatearFecha(hoy)}`,
+      `${this.formatearFecha(inicioMes)} al ${this.formatearFecha(hoy)}`
     );
 
     //! Este año
     const inicioAno = new Date(hoy.getFullYear(), 0, 1);
     opciones.push(
-      `${this.formatearFecha(inicioAno)} al ${this.formatearFecha(hoy)}`,
+      `${this.formatearFecha(inicioAno)} al ${this.formatearFecha(hoy)}`
     );
 
     return opciones;
@@ -185,7 +185,7 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
         },
         (error) => {
           console.error(error);
-        },
+        }
       );
   }
 

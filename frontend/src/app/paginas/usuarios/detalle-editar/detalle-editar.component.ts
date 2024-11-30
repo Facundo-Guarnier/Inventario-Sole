@@ -5,13 +5,13 @@ import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import {
   ApiUsuarioService,
-  ApiUsuariosService,
+  ApiUsuariosService
 } from 'src/app/services/usuarios/api-usuario.service';
 
 @Component({
   selector: 'pag-usuario-detalle-editar',
   templateUrl: './detalle-editar.component.html',
-  styleUrls: ['./detalle-editar.component.css'],
+  styleUrls: ['./detalle-editar.component.css']
 })
 export class PagUsuarioDetalleEditarComponent implements OnInit {
   //! Ver los componentes hijos
@@ -26,13 +26,13 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
       nombre: 'Roles (obligatorio)',
       identificador: 'roles',
       tipo: 'selector-multiple',
-      opciones: ['Admin', 'User', 'Ver y nada mas'],
+      opciones: ['Admin', 'User', 'Ver y nada mas']
     },
     {
       nombre: 'Nueva contraseña (si no desea cambiarla deje el campo vacío)',
       identificador: 'contraseña',
-      tipo: 'input-text',
-    },
+      tipo: 'input-text'
+    }
   ];
   nuevoDetalleUsuario: any[] = [];
   usuarioActual: any = {};
@@ -58,7 +58,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
     private apiUsuario: ApiUsuarioService,
     private apiUsuarios: ApiUsuariosService,
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -73,7 +73,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
         this.usuarioActual = data;
         this.nuevoDetalleUsuario = [
           { nombre: 'alias', valor: data.alias },
-          { nombre: 'roles', valor: data.roles },
+          { nombre: 'roles', valor: data.roles }
         ];
         this.campos1[0].valor = this.usuarioActual.alias;
         this.campos1[1].seleccionados = this.usuarioActual.roles;
@@ -84,7 +84,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
         this.mensajeModal = 'No se pudo cargar el usuario.';
         this.redireccionar = true;
         this.openModal();
-      },
+      }
     );
   }
 
@@ -110,7 +110,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
       .editar(
         this.usuarioActual.alias,
         this.nuevoDetalleUsuario,
-        localStorage.getItem('token'),
+        localStorage.getItem('token')
       )
       .subscribe(
         (data: any) => {
@@ -125,7 +125,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
           this.mensajeModal =
             'No se pudo editar el usuario. Error: ' + error['error']['msg'];
           this.openModal();
-        },
+        }
       );
   }
   clickCancelar() {
@@ -146,7 +146,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
           this.tituloModal = 'Error al borrar';
           this.mensajeModal = 'No se pudo borrar el usuario.';
           this.openModal();
-        },
+        }
       );
   }
 

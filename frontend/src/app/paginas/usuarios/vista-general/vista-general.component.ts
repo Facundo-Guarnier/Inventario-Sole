@@ -8,18 +8,18 @@ import { ApiBackupService } from 'src/app/services/backup/api-backup.service';
 @Component({
   selector: 'pag-usuario-vista-general',
   templateUrl: './vista-general.component.html',
-  styleUrls: ['./vista-general.component.css'],
+  styleUrls: ['./vista-general.component.css']
 })
 export class PagUsuarioVistaGeneralComponent implements OnInit {
   //! Tabla de datos
   acciones = {
     editar: true,
     eliminar: false,
-    detalle: false,
+    detalle: false
   };
   columnas = [
     { nombre: 'Alias', identificador: 'alias', tipo: 'text' },
-    { nombre: 'Roles', identificador: 'roles', tipo: 'text' },
+    { nombre: 'Roles', identificador: 'roles', tipo: 'text' }
   ];
   datos: any[] = [];
 
@@ -51,7 +51,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
     private router: Router,
     private apiUsuarios: ApiUsuariosService,
     private authService: AuthService,
-    private apiBackup: ApiBackupService,
+    private apiBackup: ApiBackupService
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
       .buscar_todos(
         this.authService.getToken(),
         this.paginaActual,
-        this.porPagina,
+        this.porPagina
       )
       .subscribe({
         next: (data) => {
@@ -75,7 +75,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
         },
         error: (error) => {
           console.error('ERROR al cargar usuarios:', error);
-        },
+        }
       });
   }
 
@@ -139,7 +139,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
           'No se pudo descargar la base de datos. Error: ' + error['message'];
         this.redireccionar = false;
         this.openModal();
-      },
+      }
     );
   }
 
@@ -164,7 +164,7 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
             'No se pudo subir la base de datos. Error: ' + error['message'];
           this.redireccionar = false;
           this.openModal();
-        },
+        }
       );
     }
   }

@@ -6,7 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   url = '/api/auth';
@@ -18,7 +18,7 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    public jwtHelper: JwtHelperService,
+    public jwtHelper: JwtHelperService
   ) {
     this.checkToken();
   }
@@ -35,7 +35,7 @@ export class AuthService {
           localStorage.setItem('token', response.token);
           this.checkToken();
         }
-      }),
+      })
     );
   }
 

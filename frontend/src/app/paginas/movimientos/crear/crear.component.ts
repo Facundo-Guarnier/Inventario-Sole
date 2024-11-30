@@ -8,7 +8,7 @@ import { ApiMovimientosService } from 'src/app/services/movimientos/api-movimien
 @Component({
   selector: 'pag-movimientos-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.css'],
+  styleUrls: ['./crear.component.css']
 })
 export class PagMovimientosCrearComponent implements OnInit {
   //! Ver los componentes hijos
@@ -22,21 +22,21 @@ export class PagMovimientosCrearComponent implements OnInit {
       nombre: 'Movimiento',
       identificador: 'movimiento',
       tipo: 'selector',
-      opciones: ['Entrada', 'Salida'],
+      opciones: ['Entrada', 'Salida']
     },
     {
       nombre: 'Tienda',
       identificador: 'tienda',
       tipo: 'selector',
-      opciones: ['Fisica', 'Online'],
+      opciones: ['Fisica', 'Online']
     },
     { nombre: 'ID producto', identificador: 'idProducto', tipo: 'input-text' },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
     {
       nombre: 'Comentario',
       identificador: 'comentario',
-      tipo: 'textarea-text',
-    },
+      tipo: 'textarea-text'
+    }
   ];
   detalleMovimiento = {};
 
@@ -55,7 +55,7 @@ export class PagMovimientosCrearComponent implements OnInit {
   constructor(
     private apiMovimiento: ApiMovimientosService,
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -96,7 +96,7 @@ export class PagMovimientosCrearComponent implements OnInit {
           this.mensajeModal =
             'No se pudo crear el movimiento. Error: ' + err['error']['msg'];
           this.openModal();
-        },
+        }
       );
   }
   clickCancelar() {

@@ -8,7 +8,7 @@ describe('CompBusquedaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompBusquedaComponent],
+      declarations: [CompBusquedaComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompBusquedaComponent);

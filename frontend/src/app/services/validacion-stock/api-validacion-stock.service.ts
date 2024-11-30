@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiRondaValidacionStock {
   url = '/api/ronda-validacion';
@@ -18,17 +18,17 @@ export class ApiRondaValidacionStock {
     return this.httpClient.post(
       `${this.url}`,
       { tienda: tienda },
-      { headers: heads },
+      { headers: heads }
     );
   }
 
   obtenerProductosParaValidar(
     tienda: string,
     pagina: number,
-    por_pagina: number,
+    por_pagina: number
   ): Observable<any> {
     return this.httpClient.get(`${this.url}`, {
-      params: { tienda: tienda, pagina: pagina, por_pagina: por_pagina },
+      params: { tienda: tienda, pagina: pagina, por_pagina: por_pagina }
     });
   }
 }
@@ -36,7 +36,7 @@ export class ApiRondaValidacionStock {
 //* ------------------------------------------------------------
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiValidarStock {
   url = '/api/validar';
@@ -46,7 +46,7 @@ export class ApiValidarStock {
   validarUnidad(
     idProducto: string,
     tienda: string,
-    token: string,
+    token: string
   ): Observable<any> {
     let heads = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -55,14 +55,14 @@ export class ApiValidarStock {
     return this.httpClient.post(
       `${this.url}`,
       { id: idProducto, tienda: tienda },
-      { headers: heads },
+      { headers: heads }
     );
   }
 
   deshacerValidacion(
     idProducto: string,
     tienda: string,
-    token: string,
+    token: string
   ): Observable<any> {
     let heads = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -71,7 +71,7 @@ export class ApiValidarStock {
     return this.httpClient.post(
       `${this.url}`,
       { deshacer: true, id: idProducto, tienda: tienda },
-      { headers: heads },
+      { headers: heads }
     );
   }
 }

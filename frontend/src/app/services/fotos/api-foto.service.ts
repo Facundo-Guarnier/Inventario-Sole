@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiFotoService {
   url = '/api/foto';
@@ -18,7 +18,7 @@ export class ApiFotoService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get(`${this.url}/${filename}`, {
       responseType: 'blob',
-      headers: headers,
+      headers: headers
     });
   }
 }
@@ -26,7 +26,7 @@ export class ApiFotoService {
 //* ------------------------------------------------------------
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiFotosService {
   url = '/api/fotos';

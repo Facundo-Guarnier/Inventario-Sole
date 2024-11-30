@@ -8,7 +8,7 @@ describe('CompNavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CompNavbarComponent],
+      declarations: [CompNavbarComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompNavbarComponent);

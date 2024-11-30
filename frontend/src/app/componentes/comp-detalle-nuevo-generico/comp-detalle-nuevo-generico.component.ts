@@ -4,7 +4,7 @@ import { Campo } from '../../interfaces/campo.interface';
 @Component({
   selector: 'app-comp-detalle-nuevo-generico',
   templateUrl: './comp-detalle-nuevo-generico.component.html',
-  styleUrls: ['./comp-detalle-nuevo-generico.component.css'],
+  styleUrls: ['./comp-detalle-nuevo-generico.component.css']
 })
 export class CompDetalleNuevoGenericoComponent implements OnInit {
   //! Para mostrar la opción de editar o no
@@ -87,7 +87,7 @@ export class CompDetalleNuevoGenericoComponent implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     this.selectorChange.emit({
       identificador: campo.identificador,
-      valor: selectElement.value,
+      valor: selectElement.value
     });
   }
 }
