@@ -2,53 +2,53 @@
 
 # Verificar si python3 está instalado y su versión
 if ! command -v python3 >/dev/null 2>&1; then
-    echo "[ERROR] python3 no está instalado. Finalizando..."
+    echo "🚀🚀 python3 no está instalado. Finalizando..."
     exit 1
 else
     python_version=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-    echo "[OK] python3 versión $python_version está instalado."
+    echo "🚀🚀 python3 versión $python_version está instalado."
     if [[ "$python_version" < "3.6" ]]; then
-        echo "[WARNING] Se recomienda Python 3.6 o superior."
+        echo "🚀🚀 Se recomienda Python 3.6 o superior."
     fi
 fi
 
 # Verificar si python3-venv está instalado
 if ! dpkg -l | grep -q python3-venv; then
-    echo "[WARNING] python3-venv no está instalado. Instalando python3-venv..."
+    echo "🚀🚀 python3-venv no está instalado. Instalando python3-venv..."
     sudo apt-get install python3-venv -y
     if [[ $? -ne 0 ]]; then
-        echo "[ERROR] Fallo al instalar python3-venv. Finalizando..."
+        echo "🚀🚀 Fallo al instalar python3-venv. Finalizando..."
         exit 1
     fi
 else
-    echo "[OK] python3-venv ya está instalado."
+    echo "🚀🚀 python3-venv ya está instalado."
 fi
 
 # Crear y activar el entorno virtual
 if [ ! -d "venv" ]; then
     python3 -m venv venv
-    echo "[OK] Entorno virtual venv creado."
+    echo "🚀🚀 Entorno virtual venv creado."
 else
-    echo "[OK] El entorno virtual venv ya existe."
+    echo "🚀🚀 El entorno virtual venv ya existe."
 fi
 
 # Activar el entorno virtual
 . venv/bin/activate || {
-    echo "[ERROR] No se pudo activar el entorno virtual."
+    echo "🚀🚀 No se pudo activar el entorno virtual."
     exit 1
 }
-echo "[OK] Entorno virtual activado: $VIRTUAL_ENV"
+echo "🚀🚀 Entorno virtual activado: $VIRTUAL_ENV"
 
 # Verificar si pip está instalado
 if ! command -v pip >/dev/null 2>&1; then
-    echo "[WARNING] pip no está instalado. Instalando pip..."
+    echo "🚀🚀 pip no está instalado. Instalando pip..."
     sudo apt-get install python3-pip -y
     if [[ $? -ne 0 ]]; then
-        echo "[ERROR] Fallo al instalar python3-pip. Finalizando..."
+        echo "🚀🚀 Fallo al instalar python3-pip. Finalizando..."
         exit 1
     fi
 else
-    echo "[OK] pip ya está instalado."
+    echo "🚀🚀 pip ya está instalado."
 fi
 
 # Actualizar pip
@@ -58,15 +58,15 @@ python3 -m pip install --upgrade pip
 if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 else
-    echo "[ERROR] El archivo requirements.txt no se encontró."
+    echo "🚀🚀 El archivo requirements.txt no se encontró."
     exit 1
 fi
 
 # # Verificar si MongoDB está instalado
 # if ! command -v mongod >/dev/null 2>&1; then
-#     echo "[WARNING] MongoDB no está instalado. Por favor, instálalo manualmente."
+#     echo "🚀🚀 MongoDB no está instalado. Por favor, instálalo manualmente."
 # else
-#     echo "[OK] MongoDB está instalado."
+#     echo "🚀🚀 MongoDB está instalado."
 # fi
 
 # # Crear archivo .env si no existe
@@ -75,12 +75,12 @@ fi
 #     echo "MONGO_URI=mongodb://localhost:27017/yourdatabase" >> .env
 #     echo "MONGO_DBNAME=yourdatabase" >> .env
 #     echo "JWT_SECRET_KEY=your-jwt-secret-key" >> .env
-#     echo "[OK] Archivo .env creado con valores predeterminados."
+#     echo "🚀🚀 Archivo .env creado con valores predeterminados."
 # else
-#     echo "[OK] El archivo .env ya existe."
+#     echo "🚀🚀 El archivo .env ya existe."
 # fi
 echo . venv/bin/activate
 
-echo "[OK] Entorno virtual configurado correctamente."
-echo "[OK] Para activarlo manualmente, ejecuta: . venv/bin/activate"
-echo "[OK] Para desactivarlo, ejecuta: deactivate"
+echo "🚀🚀 Entorno virtual configurado correctamente."
+echo "🚀🚀 Para activarlo manualmente, ejecuta: . venv/bin/activate"
+echo "🚀🚀 Para desactivarlo, ejecuta: deactivate"

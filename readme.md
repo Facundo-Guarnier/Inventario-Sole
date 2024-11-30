@@ -3,6 +3,14 @@
 Sistema para llevar registro de entrada y salida de productos (ropa), regalos y gift cards.
 Consta de 2 inventarios por separado: Tienda física y tienda online.
 
+## Setup del proyecto
+
+Después de clonar el repositorio, ejecuta el siguiente comando para configurar los hooks de Git e instalar todas las dependencias:
+
+```bash
+./setup.sh
+```
+
 ## Iniciar Backend
 
 ```bash
