@@ -1,92 +1,88 @@
 .badge {
-    font-size: 0.8rem;
-    padding: 0.7em 1em;
-    width: 50px;
+  font-size: 0.8rem;
+  padding: 0.7em 1em;
+  width: 50px;
 }
-
 
 .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-
 .boton-info {
-    background-color: #8d49ff;
-    border-color: #8d49ff;
-    color: white;
-    transition: background-color 0.3s ease;
+  background-color: #8d49ff;
+  border-color: #8d49ff;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
 .boton-info:hover,
 .boton-info:active {
-    color: white;
-    background-color: #6f42c1;
-    border-color: #8d49ff;
+  color: white;
+  background-color: #6f42c1;
+  border-color: #8d49ff;
 }
 
 .boton-editar {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    color: white;
-    transition: background-color 0.3s ease;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
 .boton-editar:hover,
 .boton-editar:active {
-    color: white;
-    background-color: #28579f;
-    border-color: #0d6efd;
+  color: white;
+  background-color: #28579f;
+  border-color: #0d6efd;
 }
 
 .boton-borrar {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
-    transition: background-color 0.3s ease;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
-.boton-borrar:hover, 
+.boton-borrar:hover,
 .boton-borrar:active {
-    color: white;
-    background-color: #91232e;
-    border-color: #dc3545;
+  color: white;
+  background-color: #91232e;
+  border-color: #dc3545;
 }
-
-
 
 .truncate-multiline {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 8.5em; /* Ajusta la altura según el tamaño de la fuente y el espaciado entre líneas */
-    line-height: 1.5em; /* Asegúrate de que este valor coincida con el tamaño de la fuente */
-    height: auto;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 8.5em; /* Ajusta la altura según el tamaño de la fuente y el espaciado entre líneas */
+  line-height: 1.5em; /* Asegúrate de que este valor coincida con el tamaño de la fuente */
+  height: auto;
 
-    /* Propiedad estándar */
-    /* display: box; */
-    box-orient: vertical;
-    line-clamp: 4;
+  /* Propiedad estándar */
+  /* display: box; */
+  box-orient: vertical;
+  line-clamp: 4;
 }
 
 .col-expand {
-    width: 50px; /* Ajusta según sea necesario */
-    max-width: 50px;
+  width: 50px; /* Ajusta según sea necesario */
+  max-width: 50px;
 }
 
 .col-actions {
-    width: 120px; /* Ajusta según sea necesario */
-    max-width: 120px;
+  width: 120px; /* Ajusta según sea necesario */
+  max-width: 120px;
 }
 
 .my-dark-table {
-    background-color: #212529; 
-    color: #fff;
-  }
-  
-  .my-dark-table th,
-  .my-dark-table td {
-    border-color: #373a3c;
-  }
+  background-color: #212529;
+  color: #fff;
+}
+
+.my-dark-table th,
+.my-dark-table td {
+  border-color: #373a3c;
+}

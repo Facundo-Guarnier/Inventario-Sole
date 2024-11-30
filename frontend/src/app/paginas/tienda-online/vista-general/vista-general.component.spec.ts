@@ -8,9 +8,8 @@ describe('PagTiendaOnlineVistaGeneralComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PagTiendaOnlineVistaGeneralComponent ]
-    })
-    .compileComponents();
+      declarations: [PagTiendaOnlineVistaGeneralComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagTiendaOnlineVistaGeneralComponent);
     component = fixture.componentInstance;

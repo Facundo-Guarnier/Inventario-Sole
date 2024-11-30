@@ -1,88 +1,104 @@
 <div class="container-fluid px-0">
-    <!--! Botones  -->
-    <div class="d-lg-none mobile-top-bar bg-primary text-white py-2 px-3 d-flex justify-content-between align-items-center">
-        <button class="btn botones-vista" (click)="toggleNavbar()">
-            <i class="fas fa-bars"></i>
+  <!--! Botones  -->
+  <div
+    class="d-lg-none mobile-top-bar bg-primary text-white py-2 px-3 d-flex justify-content-between align-items-center"
+  >
+    <button class="btn botones-vista" (click)="toggleNavbar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <span
+      class="current-page h3 mb-0 text-center flex-grow-1 text-truncate px-2"
+    >
+      {{ getPaginaActual() }}
+    </span>
+
+    <button class="btn botones-vista" (click)="toggleSidebar()">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <!--! Navbar -->
+  <div class="row" [ngClass]="{ 'd-none d-lg-block': !showNavbar }">
+    <app-comp-navbar></app-comp-navbar>
+  </div>
+
+  <div class="row g-0 contenido-principal">
+    <div
+      class="col-lg-3 col-md-12 sidebar barra-lateral-pag"
+      [ngClass]="{ 'd-none d-lg-block': !showSidebar }"
+    >
+      <app-comp-barra-lateral
+        [mostrarBusqueda]="false"
+      ></app-comp-barra-lateral>
+
+      <div class="d-grid gap-2 mt-3">
+        <button class="btn btn-warning btn-lg" (click)="downloadDatabase()">
+          <i class="bi bi-download"></i> Descargar Base de Datos
         </button>
-        
-        <span class="current-page h3 mb-0 text-center flex-grow-1 text-truncate px-2">
-            {{getPaginaActual()}}
-        </span>
-        
-        <button class="btn botones-vista" (click)="toggleSidebar()">
-            <i class="fas fa-filter"></i>
+
+        <div class="mt-2">
+          <label for="fileInput" class="btn btn-secondary btn-lg btn-block">
+            Seleccionar archivo
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            class="d-none"
+            (change)="onFileSelected($event)"
+            accept=".bin"
+          />
+          <div *ngIf="selectedFile" class="mt-2">
+            <small class="text-muted">{{ selectedFile.name }}</small>
+          </div>
+        </div>
+
+        <button
+          class="btn btn-danger btn-lg mt-2"
+          (click)="uploadDatabase()"
+          [disabled]="!selectedFile"
+        >
+          <i class="bi bi-upload"></i> Subir Base de Datos
         </button>
+      </div>
     </div>
-    
-    <!--! Navbar -->
-    <div class="row" [ngClass]="{'d-none d-lg-block': !showNavbar}">
-        <app-comp-navbar></app-comp-navbar>
+
+    <div class="col-lg-9 content cuerpo-pag">
+      <!--! Cuerpo -->
+      <div class="container-fluid">
+        <h1 style="color: aliceblue">Usuarios</h1>
+        <app-comp-tabla-datos
+          [columnas]="columnas"
+          [datos]="datos"
+          [acciones]="acciones"
+          [tipo]="'usu'"
+        ></app-comp-tabla-datos>
+
+        <!--! Paginamiento  -->
+        <app-comp-paginamiento
+          [paginaActual]="paginaActual"
+          [totalPaginas]="totalPaginas"
+          (clickPagina)="clickPagina($event)"
+        >
+        </app-comp-paginamiento>
+      </div>
     </div>
-    
-    <div class="row g-0 contenido-principal">
-        
-        <div class="col-lg-3 col-md-12 sidebar barra-lateral-pag" [ngClass]="{'d-none d-lg-block': !showSidebar}">
-            <app-comp-barra-lateral [mostrarBusqueda]="false"></app-comp-barra-lateral>
-            
-            <div class="d-grid gap-2 mt-3">
-                <button class="btn btn-warning btn-lg" (click)="downloadDatabase()">
-                    <i class="bi bi-download"></i> Descargar Base de Datos
-                </button>
-                
-                <div class="mt-2">
-                    <label for="fileInput" class="btn btn-secondary btn-lg btn-block">
-                        Seleccionar archivo
-                    </label>
-                    <input id="fileInput" type="file" class="d-none" (change)="onFileSelected($event)" accept=".bin">
-                    <div *ngIf="selectedFile" class="mt-2">
-                        <small class="text-muted">{{ selectedFile.name }}</small>
-                    </div>
-                </div>
-                
-                <button class="btn btn-danger btn-lg mt-2" (click)="uploadDatabase()" [disabled]="!selectedFile">
-                    <i class="bi bi-upload"></i> Subir Base de Datos
-                </button>
-            </div>
-        </div>
-        
-        <div class="col-lg-9 content cuerpo-pag" > 
-            
-            <!--! Cuerpo -->
-            <div class="container-fluid"> 
-                <h1 style="color: aliceblue;">Usuarios </h1>
-                <app-comp-tabla-datos 
-                    [columnas]="columnas"
-                    [datos]="datos"
-                    [acciones]="acciones"
-                    [tipo]="'usu'"
-                ></app-comp-tabla-datos>
-                
-                <!--! Paginamiento  -->
-                <app-comp-paginamiento 
-                [paginaActual]="paginaActual"
-                [totalPaginas]="totalPaginas"
-                (clickPagina)="clickPagina($event)"
-                >
-                </app-comp-paginamiento>
-            </div>
-            
-        </div>
-    
-    </div>
+  </div>
 </div>
 
 <!--! Botones flotantes  -->
-<app-comp-botones-flotantes 
-    [mostrarAgregar]="true"  
-    (clickAgregar)="ClickAgregar()"
+<app-comp-botones-flotantes
+  [mostrarAgregar]="true"
+  (clickAgregar)="ClickAgregar()"
 >
 </app-comp-botones-flotantes>
 
 <!--! Modal  -->
-<app-comp-notificacion 
-    [estaAbierto]="estaAbierto" 
-    [titulo]="tituloModal" 
-    [mensaje]="mensajeModal"
-    (cerrarModal)="cerrarModal()">
-    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+<app-comp-notificacion
+  [estaAbierto]="estaAbierto"
+  [titulo]="tituloModal"
+  [mensaje]="mensajeModal"
+  (cerrarModal)="cerrarModal()"
+>
+  <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
 </app-comp-notificacion>

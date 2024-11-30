@@ -4,8 +4,8 @@ import json
 import os
 import shutil
 
-from app.auth.decorators import admin_required
 from app.db import mongo
+from app.utils.decorators import admin_required
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -38,7 +38,7 @@ def download_database() -> tuple:
 
         #! Añadir datos de imágenes
         uploads_path = str(current_app.config.get("UPLOAD_FOLDER"))
-        data["images"] = get_images_data(uploads_path)
+        data["images"] = list(get_images_data(uploads_path).values())
 
         json_data = json.dumps(data, default=str)
 
@@ -78,8 +78,8 @@ def upload_database() -> tuple:
         if file.filename == "":
             return jsonify({"msg": "No se seleccionó ningún archivo"}), 400
 
-        if file and file.filename.endswith(".bin"):
-            filename = secure_filename(file.filename)
+        if file and file.filename and file.filename.endswith(".bin"):
+            filename = secure_filename(file.filename or "")
             file_path = os.path.join("/tmp", filename)
             file.save(file_path)
 
@@ -101,7 +101,7 @@ def get_fernet_key(password: str) -> bytes:
     """
     Genera una clave Fernet a partir de una contraseña.
     """
-    password = password.encode()
+    password_bytes = password.encode()
     salt = b"salt_"
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -109,7 +109,7 @@ def get_fernet_key(password: str) -> bytes:
         salt=salt,
         iterations=100000,
     )
-    return base64.urlsafe_b64encode(kdf.derive(password))
+    return base64.urlsafe_b64encode(kdf.derive(password_bytes))
 
 
 def apply_encrypted_database(file_path: str) -> None:
@@ -144,7 +144,7 @@ def apply_encrypted_database(file_path: str) -> None:
 
         #! Restaurar imágenes
         if "images" in data:
-            uploads_path = current_app.config.get("UPLOAD_FOLDER")
+            uploads_path = str(current_app.config.get("UPLOAD_FOLDER"))
             # Limpiar la carpeta de uploads
             shutil.rmtree(uploads_path)
             os.makedirs(uploads_path)

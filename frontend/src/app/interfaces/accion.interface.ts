@@ -1,5 +1,5 @@
 export interface Accion {
-    editar?: boolean;
-    eliminar?: boolean;
-    detalle?: boolean;
+  editar?: boolean;
+  eliminar?: boolean;
+  detalle?: boolean;
 }

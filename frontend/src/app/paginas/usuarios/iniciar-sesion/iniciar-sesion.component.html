@@ -9,36 +9,45 @@
           <form (ngSubmit)="ingresar()">
             <div class="mb-3">
               <label for="username" class="form-label">Usuario</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="username" 
-                [(ngModel)]="alias" 
-                name="username" 
-                required 
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                [(ngModel)]="alias"
+                name="username"
+                required
                 autocomplete="username"
                 autocapitalize="none"
-              >
+              />
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Contraseña</label>
               <div class="input-group">
-                <input 
-                  [type]="showPassword ? 'text' : 'password'" 
-                  class="form-control" 
-                  id="password" 
-                  [(ngModel)]="contra" 
-                  name="password" 
-                  required 
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control"
+                  id="password"
+                  [(ngModel)]="contra"
+                  name="password"
+                  required
                   autocomplete="current-password"
                   autocapitalize="none"
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="togglePasswordVisibility()"
                 >
-                <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
-                  <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                  <i
+                    class="fas"
+                    [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                  ></i>
                 </button>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-primary">
+              Iniciar Sesión
+            </button>
           </form>
         </div>
       </div>

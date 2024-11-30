@@ -12,6 +12,7 @@ class VentaService:
         self.movimientos = MovimientoService()
         self.ultima_id_resource = UltimaIdService()
         self.venta_model = VentaModel()
+        self.producto_model = ProductoModel()
 
     def get_by_id(self, id: str) -> tuple:
         """
@@ -92,7 +93,9 @@ class VentaService:
                     precio_original = float(producto["precio_original"])
 
                     #! Revisar si el producto existe
-                    respuesta1 = ProductoModel.buscar_x_atributo({"id": id_producto})
+                    respuesta1 = self.producto_model.buscar_x_atributo(
+                        {"id": id_producto}
+                    )
                     if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
                         return {"msg": f"El producto {id_producto} no existe"}, 404
 
@@ -162,7 +165,7 @@ class VentaService:
 
         #! Realizar los movimientos
         for mov in movimientos_pendientes:
-            respuesta_movimiento = self.movimientos.post(data=mov)
+            respuesta_movimiento = self.movimientos.crear(mov)
             if respuesta_movimiento[1] != 201:
                 # TODO lógica para revertir los movimientos ya realizados
                 return {
@@ -201,7 +204,7 @@ class VentaService:
 
         #! Crear movimientos para la entrada de productos
         for p in productos_venta:
-            respuesta = self.movimientos.post(
+            respuesta = self.movimientos.crear(
                 {
                     "movimiento": "Entrada",
                     "idProducto": p["idProducto"],
@@ -219,10 +222,10 @@ class VentaService:
                 }, 500
 
         #! Eliminar venta
-        respuesta = self.venta_model.eliminar(id)
-        if respuesta["estado"]:
+        respuesta, status_code = self.venta_model.eliminar(id)
+        if status_code == 200:
             return ({"msg": "Venta eliminada"}), 200
-        return ({"msg": respuesta["respuesta"]}), 400
+        return ({"msg": respuesta}), 400
 
     def buscar_por_atributo(self, datos: dict, pagina: int, por_pagina: int):
         """
@@ -373,7 +376,7 @@ class VentaService:
                 precio_original = float(producto["precio_original"])
 
                 #! Revisar si el producto existe
-                respuesta1 = ProductoModel.buscar_x_atributo({"id": id_producto})
+                respuesta1 = self.producto_model.buscar_x_atributo({"id": id_producto})
                 if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
                     return {"msg": f"El producto {id_producto} no existe"}, 404
 
@@ -423,7 +426,7 @@ class VentaService:
 
         #! Hacer los movimientos
         for mov in movimientos_pendientes:
-            respuesta_movimiento = self.movimientos.post(data=mov)
+            respuesta_movimiento = self.movimientos.crear(mov)
 
             if respuesta_movimiento[1] != 201:
                 # TODO lógica para revertir los movimientos ya realizados
@@ -448,7 +451,7 @@ class VentaService:
             if respuesta["respuesta"] is None:
                 return {"msg": "Error al crear la venta"}, 400
             else:
-                self.ultima_id_resource.put("venta")
+                self.ultima_id_resource.aumentar_id("venta")
                 return {"msg": "Venta creada con éxito y stock actualizado"}, 201
         # TODO lógica para revertir los movimientos ya realizados
         return {"msg": respuesta["respuesta"]}, 400

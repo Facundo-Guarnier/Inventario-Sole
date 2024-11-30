@@ -1,64 +1,64 @@
 <div class="container-fluid px-0">
-    <!--! Botones  -->
-    <div class="d-lg-none mobile-top-bar">
-        <button class="btn botones-vista" (click)="toggleNavbar()">
-            <i class="fas fa-bars"></i>
-        </button>
-        <button class="btn botones-vista" (click)="toggleSidebar()">
-            <i class="fas fa-filter"></i>
-        </button>
+  <!--! Botones  -->
+  <div class="d-lg-none mobile-top-bar">
+    <button class="btn botones-vista" (click)="toggleNavbar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <button class="btn botones-vista" (click)="toggleSidebar()">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <!--! Navbar -->
+  <div class="row" [ngClass]="{ 'd-none d-lg-block': !showNavbar }">
+    <app-comp-navbar></app-comp-navbar>
+  </div>
+
+  <div class="row g-0 contenido-principal">
+    <!--! Barra lateral -->
+    <div
+      class="col-lg-3 col-md-12 sidebar barra-lateral-pag"
+      [ngClass]="{ 'd-none d-lg-block': !showSidebar }"
+    >
+      <app-comp-barra-lateral
+        [mostrarBusqueda]="false"
+      ></app-comp-barra-lateral>
     </div>
-    
-    <!--! Navbar -->
-    <div class="row" [ngClass]="{'d-none d-lg-block': !showNavbar}">
-        <app-comp-navbar></app-comp-navbar>
-    </div>
-    
-    <div class="row g-0 contenido-principal">
-        
-        <!--! Barra lateral -->
-        <div class="col-lg-3 col-md-12 sidebar barra-lateral-pag" [ngClass]="{'d-none d-lg-block': !showSidebar}">
-            <app-comp-barra-lateral
-            [mostrarBusqueda]="false"
-            ></app-comp-barra-lateral>
+
+    <!--! Cuerpo -->
+    <div class="col-lg-9 content cuerpo-pag">
+      <!--! Detalle venta -->
+      <div class="mb-9">
+        <div class="container-fluid">
+          <h1 style="color: aliceblue">Editar usuario</h1>
+          <app-comp-detalle-nuevo-generico
+            [mostrarEditar]="true"
+            [titulo]="titulo1"
+            [campos]="campos1"
+            (datosRecolectados)="onDatosRecolectadosUsuario($event)"
+          ></app-comp-detalle-nuevo-generico>
         </div>
-        
-        <!--! Cuerpo -->
-        <div class="col-lg-9 content cuerpo-pag" > 
-            
-            <!--! Detalle venta -->
-            <div class="mb-9">
-                <div class="container-fluid"> 
-                    <h1 style="color: aliceblue;">Editar usuario</h1>
-                    <app-comp-detalle-nuevo-generico
-                        [mostrarEditar]="true"
-                        [titulo]="titulo1"
-                        [campos]="campos1"
-                        (datosRecolectados)="onDatosRecolectadosUsuario($event)"
-                    ></app-comp-detalle-nuevo-generico>
-                </div>
-            </div>
-            
-        </div>
-    
+      </div>
     </div>
+  </div>
 </div>
 
-<app-comp-botones-flotantes 
-    [mostrarAceptar]="mostrarAceptar"
-    [mostrarCancelar]="mostrarCancelar"
-    [mostrarBorrar]="mostrarBorrar"
-    (clickAceptar)="clickAceptar()"
-    (clickCancelar)="clickCancelar()"
-    (clickBorrar)="clickBorrar()"
+<app-comp-botones-flotantes
+  [mostrarAceptar]="mostrarAceptar"
+  [mostrarCancelar]="mostrarCancelar"
+  [mostrarBorrar]="mostrarBorrar"
+  (clickAceptar)="clickAceptar()"
+  (clickCancelar)="clickCancelar()"
+  (clickBorrar)="clickBorrar()"
 >
 </app-comp-botones-flotantes>
 
 <!--! Modal  -->
-<app-comp-notificacion 
-    [estaAbierto]="estaAbierto" 
-    [titulo]="tituloModal" 
-    [mensaje]="mensajeModal"
-    (cerrarModal)="cerrarModal()">
-    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+<app-comp-notificacion
+  [estaAbierto]="estaAbierto"
+  [titulo]="tituloModal"
+  [mensaje]="mensajeModal"
+  (cerrarModal)="cerrarModal()"
+>
+  <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
 </app-comp-notificacion>

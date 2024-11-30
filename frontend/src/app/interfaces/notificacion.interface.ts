@@ -1,5 +1,5 @@
 export interface Notificacion {
-    mensaje: string;
-    puedeDeshacer: boolean;
-    idProducto?: string;
-  }
+  mensaje: string;
+  puedeDeshacer: boolean;
+  idProducto?: string;
+}

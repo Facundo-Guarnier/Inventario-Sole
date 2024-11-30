@@ -1,5 +1,5 @@
-from app.auth.decorators import admin_required
 from app.services.movimiento import MovimientoService
+from app.utils.decorators import admin_required
 from flask import Blueprint, request
 from flask_jwt_extended import jwt_required
 
@@ -18,10 +18,10 @@ def buscar_por_id(id: str):
 @movimiento.route("/<id>", methods=["PUT"])
 def actualizar(id: str):
     datos = request.json
-    # if not datos or datos is None:
-    #     return ({"msg": "Faltan datos"}), 400
-    # if not datos.get("roles"):
-    #     return ({"msg": "Faltan los roles"}), 400
+    if not datos or datos is None:
+        return ({"msg": "Faltan datos"}), 400
+    if not datos.get("roles"):
+        return ({"msg": "Faltan los roles"}), 400
 
     return movimiento_service.actualizar(id, datos)
 

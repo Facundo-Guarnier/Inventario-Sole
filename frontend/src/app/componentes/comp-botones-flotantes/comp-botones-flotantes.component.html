@@ -1,26 +1,49 @@
 <!-- Botones flotantes que aparecen en la esquina inferior derecha. Se puede elegir que 
 botón se muestra y cual no -->
 
-<div class="botones-flotantes"> 
-    
-    <button *ngIf="mostrarAceptar" type="button" class="btn btn-lg rounded-circle btn-success" (click)="ClickAceptar()"> 
-        <i class="bi bi-check-lg"></i> 
-    </button>
-    
-    <button *ngIf="mostrarCancelar" type="button" class="btn btn-lg rounded-circle btn-warning" (click)="ClickCancelar()">
-        <i class="bi bi-x-lg"></i> 
-    </button>
-    
-    <button *ngIf="mostrarBorrar" type="button" class="btn btn-lg rounded-circle btn-danger" (click)="ClickBorrar()">
-        <i class="bi bi-trash"></i> 
-    </button>
-    
-    <button *ngIf="mostrarRevisarStock" type="button" class="btn btn-lg rounded-circle boton-revisar-stock" (click)="ClickRevisarStock()">
-        <i class="bi bi-clipboard-check"></i> 
-    </button>
-    
-    <button *ngIf="mostrarAgregar" type="button" class="btn btn-lg rounded-circle boton-celeste-agregar" (click)="ClickAgregar()">
-        <i class="bi bi-plus-lg"></i> 
-    </button>
+<div class="botones-flotantes">
+  <button
+    *ngIf="mostrarAceptar"
+    type="button"
+    class="btn btn-lg rounded-circle btn-success"
+    (click)="ClickAceptar()"
+  >
+    <i class="bi bi-check-lg"></i>
+  </button>
 
+  <button
+    *ngIf="mostrarCancelar"
+    type="button"
+    class="btn btn-lg rounded-circle btn-warning"
+    (click)="ClickCancelar()"
+  >
+    <i class="bi bi-x-lg"></i>
+  </button>
+
+  <button
+    *ngIf="mostrarBorrar"
+    type="button"
+    class="btn btn-lg rounded-circle btn-danger"
+    (click)="ClickBorrar()"
+  >
+    <i class="bi bi-trash"></i>
+  </button>
+
+  <button
+    *ngIf="mostrarRevisarStock"
+    type="button"
+    class="btn btn-lg rounded-circle boton-revisar-stock"
+    (click)="ClickRevisarStock()"
+  >
+    <i class="bi bi-clipboard-check"></i>
+  </button>
+
+  <button
+    *ngIf="mostrarAgregar"
+    type="button"
+    class="btn btn-lg rounded-circle boton-celeste-agregar"
+    (click)="ClickAgregar()"
+  >
+    <i class="bi bi-plus-lg"></i>
+  </button>
 </div>

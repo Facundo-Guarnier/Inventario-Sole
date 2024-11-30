@@ -1,7 +1,6 @@
 import logging
 import os
 
-from app.auth import autenticacion
 from app.db import mongo
 from app.routes import (
     devolucion,
@@ -121,7 +120,6 @@ def create_app(config_class=Config):
     api.init_app(app)
 
     # Registro de Blueprints
-    app.register_blueprint(autenticacion.auth)
     app.register_blueprint(usuario.usuario)
     app.register_blueprint(ultima_id.ultima_id)
     app.register_blueprint(movimiento.movimiento)

@@ -1,186 +1,254 @@
 <div class="container-fluid px-0">
-    <!--! Botones  -->
-    <div class="d-lg-none mobile-top-bar">
-        <button class="btn botones-vista" (click)="toggleNavbar()">
-            <i class="fas fa-bars"></i>
-        </button>
-        <button class="btn botones-vista" (click)="toggleSidebar()">
-            <i class="fas fa-filter"></i>
-        </button>
+  <!--! Botones  -->
+  <div class="d-lg-none mobile-top-bar">
+    <button class="btn botones-vista" (click)="toggleNavbar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <button class="btn botones-vista" (click)="toggleSidebar()">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+
+  <!--! Navbar -->
+  <div class="row" [ngClass]="{ 'd-none d-lg-block': !showNavbar }">
+    <app-comp-navbar></app-comp-navbar>
+  </div>
+
+  <div class="row g-0 contenido-principal">
+    <!--! Barra lateral -->
+    <div
+      class="col-lg-3 col-md-12 sidebar barra-lateral-pag"
+      [ngClass]="{ 'd-none d-lg-block': !showSidebar }"
+    >
+      <app-comp-barra-lateral
+        [mostrarBusqueda]="false"
+      ></app-comp-barra-lateral>
     </div>
-    
-    <!--! Navbar -->
-    <div class="row" [ngClass]="{'d-none d-lg-block': !showNavbar}">
-        <app-comp-navbar></app-comp-navbar>
-    </div>
-    
-    <div class="row g-0 contenido-principal">
-        
-        <!--! Barra lateral -->
-        <div class="col-lg-3 col-md-12 sidebar barra-lateral-pag" [ngClass]="{'d-none d-lg-block': !showSidebar}">
-            <app-comp-barra-lateral
-            [mostrarBusqueda]="false"
-            ></app-comp-barra-lateral>
+
+    <div class="col-lg-9 content cuerpo-pag">
+      <!--! Cuerpo -->
+      <div class="mb-3">
+        <div class="container-fluid">
+          <h1 style="color: aliceblue">{{ tituloGeneral }}</h1>
+          <app-comp-detalle-nuevo-prod
+            [mostrarEditar]="mostrarEditar"
+            [detalleGeneral]="camposGenerales"
+            [detalleFisica]="camposFisica"
+            [detalleOnline]="camposOnline"
+            (datosRecolectados)="onDatosRecolectados($event)"
+            (onChange)="onChange($event)"
+          ></app-comp-detalle-nuevo-prod>
         </div>
-        
-        <div class="col-lg-9 content cuerpo-pag" > 
-            <!--! Cuerpo -->
-            <div class="mb-3">
-                
-                <div class="container-fluid"> 
-                    <h1 style="color: aliceblue;">{{tituloGeneral}}</h1>
-                    <app-comp-detalle-nuevo-prod
-                        [mostrarEditar]="mostrarEditar"
-                        [detalleGeneral]="camposGenerales"
-                        [detalleFisica]="camposFisica"
-                        [detalleOnline]="camposOnline"
-                        (datosRecolectados)="onDatosRecolectados($event)"
-                        (onChange)="onChange($event)"
-                    ></app-comp-detalle-nuevo-prod>
-                </div>
-            </div>
+      </div>
 
-
-            <div class="mb-3" *ngIf="guiasTalles.length > 0">
-                <div class="container-fluid">
-                    <h2 style="color: aliceblue;">Guías de Talles</h2>
-                    <button class="btn btn-success mb-3" (click)="abrirModalCrearGuiaTalle()">Crear Nueva Guía de Talle</button>
-                    <div class="row">
-                        <div class="col-md-4" *ngFor="let guia of guiasTalles">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ guia.names.MLA }}</h5>
-                                    <p class="card-text">ID: {{ guia.id }}</p>
-                                    <button class="btn btn-primary" (click)="seleccionarGuiaTalle(guia)" [class.active]="guiaTalleSeleccionada === guia">
-                                        Seleccionar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Si una guía está seleccionada, muestra sus detalles -->
-            <div class="mb-3" *ngIf="guiaTalleSeleccionada">
-                <div class="container-fluid">
-                    <h3 style="color: aliceblue;">Guía de Talle Seleccionada</h3>
-                    
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <!-- <th>Talle</th> -->
-                                <th *ngFor="let attr of guiaTalleSeleccionada.rows[0].attributes">{{ attr.name }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of guiaTalleSeleccionada.rows">
-                                <td>{{ row.attributes[0].values[0].name }}</td>
-                                <td *ngFor="let attr of row.attributes.slice(1)">
-                                    {{ attr.values[0].name }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="container-fluid"> 
-                    <app-comp-campo-fotos
-                        [mostrarEditar]="mostrarEditar"
-                        [productoId]="id"
-                        [listaFotos]="fotos"
-                        (fotosActualizadas)="onFotosActualizadas($event)"
-                    >
-                    </app-comp-campo-fotos>
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-        </div>
-    
-    </div>
-</div>
-
-<!--! Botones flotantes  -->
-<app-comp-botones-flotantes 
-    [mostrarAceptar]="mostrarAceptar"  
-    [mostrarCancelar]="mostrarCancelar" 
-    (clickAceptar)="ClickAceptar()" 
-    (clickCancelar)="ClickCancelar()"
->
-</app-comp-botones-flotantes>
-
-<!--! Modal  -->
-<app-comp-notificacion 
-    [estaAbierto]="estaAbierto" 
-    [titulo]="tituloModal" 
-    [mensaje]="mensajeModal"
-    (cerrarModal)="cerrarModal()">
-    <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
-</app-comp-notificacion>
-
-<!--! Modal de guia de talles  -->
-<div class="modal" tabindex="-1" [ngClass]="{'show d-block': mostrarModalCrearGuiaTalle}">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Crear Nueva Guía de Talle</h5>
-          <button type="button" class="btn-close" (click)="cerrarModalCrearGuiaTalle()"></button>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="crearGuiaTalle()">
-            <div class="mb-3">
-              <label for="nombreGuia" class="form-label">Nombre de la Guía</label>
-              <input type="text" class="form-control" id="nombreGuia" [(ngModel)]="nuevaGuiaTalle.nombre" name="nombreGuia" required>
-            </div>
-        
-            <div class="mb-3" *ngFor="let atributo of nuevaGuiaTalle.atributos">
-              <label for="{{ atributo.id }}" class="form-label">{{ atributo.nombre }}</label>
-        
-              <div *ngIf="atributo.tipo === 'number_unit'">
-                <input type="number" class="form-control" id="{{ atributo.id }}" [(ngModel)]="atributo.valor" name="{{ atributo.id }}">
-                <select class="form-select mt-2" [(ngModel)]="atributo.unidad" name="{{ atributo.id }}_unit">
-                  <option *ngFor="let unidad of atributo.unidades" [value]="unidad.id">{{ unidad.name }}</option>
-                </select>
-              </div>
-              
-              <div *ngIf="atributo.tipo !== 'number_unit'">
-                <input type="text" class="form-control" id="{{ atributo.id }}" [(ngModel)]="atributo.valor" name="{{ atributo.id }}">
-              </div>
-              
-            </div>
-        
-            <div class="mb-3">
-              <button type="button" class="btn btn-secondary" (click)="agregarTalle()">Agregar Talle</button>
-            </div>
-        
-            <div *ngFor="let talle of nuevaGuiaTalle.talles; let i = index">
-              <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" [(ngModel)]="talle.nombre" [name]="'talleNombre' + i" placeholder="Nombre del talle">
-                </div>
-                <div class="col" *ngFor="let atributo of nuevaGuiaTalle.atributos; let j = index">
-                  <input type="text" class="form-control" [(ngModel)]="talle.valores[j]" [name]="'talleValor' + i + '_' + j" [placeholder]="atributo.nombre">
-                </div>
-                <div class="col-auto">
-                  <button type="button" class="btn btn-danger" (click)="eliminarTalle(i)">Eliminar</button>
+      <div class="mb-3" *ngIf="guiasTalles.length > 0">
+        <div class="container-fluid">
+          <h2 style="color: aliceblue">Guías de Talles</h2>
+          <button
+            class="btn btn-success mb-3"
+            (click)="abrirModalCrearGuiaTalle()"
+          >
+            Crear Nueva Guía de Talle
+          </button>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let guia of guiasTalles">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">{{ guia.names.MLA }}</h5>
+                  <p class="card-text">ID: {{ guia.id }}</p>
+                  <button
+                    class="btn btn-primary"
+                    (click)="seleccionarGuiaTalle(guia)"
+                    [class.active]="guiaTalleSeleccionada === guia"
+                  >
+                    Seleccionar
+                  </button>
                 </div>
               </div>
             </div>
-        
-            <button type="submit" class="btn btn-primary">Crear Guía de Talle</button>
-          </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Si una guía está seleccionada, muestra sus detalles -->
+      <div class="mb-3" *ngIf="guiaTalleSeleccionada">
+        <div class="container-fluid">
+          <h3 style="color: aliceblue">Guía de Talle Seleccionada</h3>
+
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <!-- <th>Talle</th> -->
+                <th
+                  *ngFor="let attr of guiaTalleSeleccionada.rows[0].attributes"
+                >
+                  {{ attr.name }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of guiaTalleSeleccionada.rows">
+                <td>{{ row.attributes[0].values[0].name }}</td>
+                <td *ngFor="let attr of row.attributes.slice(1)">
+                  {{ attr.values[0].name }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="container-fluid">
+          <app-comp-campo-fotos
+            [mostrarEditar]="mostrarEditar"
+            [productoId]="id"
+            [listaFotos]="fotos"
+            (fotosActualizadas)="onFotosActualizadas($event)"
+          >
+          </app-comp-campo-fotos>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!--! Botones flotantes  -->
+<app-comp-botones-flotantes
+  [mostrarAceptar]="mostrarAceptar"
+  [mostrarCancelar]="mostrarCancelar"
+  (clickAceptar)="ClickAceptar()"
+  (clickCancelar)="ClickCancelar()"
+>
+</app-comp-botones-flotantes>
+
+<!--! Modal  -->
+<app-comp-notificacion
+  [estaAbierto]="estaAbierto"
+  [titulo]="tituloModal"
+  [mensaje]="mensajeModal"
+  (cerrarModal)="cerrarModal()"
+>
+  <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+</app-comp-notificacion>
+
+<!--! Modal de guia de talles  -->
+<div
+  class="modal"
+  tabindex="-1"
+  [ngClass]="{ 'show d-block': mostrarModalCrearGuiaTalle }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Crear Nueva Guía de Talle</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="cerrarModalCrearGuiaTalle()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="crearGuiaTalle()">
+          <div class="mb-3">
+            <label for="nombreGuia" class="form-label">Nombre de la Guía</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombreGuia"
+              [(ngModel)]="nuevaGuiaTalle.nombre"
+              name="nombreGuia"
+              required
+            />
+          </div>
+
+          <div class="mb-3" *ngFor="let atributo of nuevaGuiaTalle.atributos">
+            <label for="{{ atributo.id }}" class="form-label">{{
+              atributo.nombre
+            }}</label>
+
+            <div *ngIf="atributo.tipo === 'number_unit'">
+              <input
+                type="number"
+                class="form-control"
+                id="{{ atributo.id }}"
+                [(ngModel)]="atributo.valor"
+                name="{{ atributo.id }}"
+              />
+              <select
+                class="form-select mt-2"
+                [(ngModel)]="atributo.unidad"
+                name="{{ atributo.id }}_unit"
+              >
+                <option
+                  *ngFor="let unidad of atributo.unidades"
+                  [value]="unidad.id"
+                >
+                  {{ unidad.name }}
+                </option>
+              </select>
+            </div>
+
+            <div *ngIf="atributo.tipo !== 'number_unit'">
+              <input
+                type="text"
+                class="form-control"
+                id="{{ atributo.id }}"
+                [(ngModel)]="atributo.valor"
+                name="{{ atributo.id }}"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="agregarTalle()"
+            >
+              Agregar Talle
+            </button>
+          </div>
+
+          <div *ngFor="let talle of nuevaGuiaTalle.talles; let i = index">
+            <div class="row">
+              <div class="col">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="talle.nombre"
+                  [name]="'talleNombre' + i"
+                  placeholder="Nombre del talle"
+                />
+              </div>
+              <div
+                class="col"
+                *ngFor="let atributo of nuevaGuiaTalle.atributos; let j = index"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="talle.valores[j]"
+                  [name]="'talleValor' + i + '_' + j"
+                  [placeholder]="atributo.nombre"
+                />
+              </div>
+              <div class="col-auto">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="eliminarTalle(i)"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Crear Guía de Talle
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

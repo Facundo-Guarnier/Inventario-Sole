@@ -1,11 +1,24 @@
 <!-- Este componente sirve para realizar una busqueda en base a la palabra ingresada en el campo -->
 
 <!-- <div class="input-group mb-3"> -->
-    <h5 style="color: white;">Busqueda:</h5>
+<h5 style="color: white">Busqueda:</h5>
 <!-- </div> -->
 <div class="input-group mb-3">
-    <input #palabraClave type="text" class="form-control" placeholder="Palabra clave" aria-label="Palabra clave" aria-describedby="button-addon2" (keyup.enter)="ClickBuscar(palabraClave.value)">
-    <button class="btn btn-outline-secondary boton-busqueda" type="button" id="button-addon2" (click)="ClickBuscar(palabraClave.value)">
-        <i class="bi bi-search"></i>
-    </button>
+  <input
+    #palabraClave
+    type="text"
+    class="form-control"
+    placeholder="Palabra clave"
+    aria-label="Palabra clave"
+    aria-describedby="button-addon2"
+    (keyup.enter)="ClickBuscar(palabraClave.value)"
+  />
+  <button
+    class="btn btn-outline-secondary boton-busqueda"
+    type="button"
+    id="button-addon2"
+    (click)="ClickBuscar(palabraClave.value)"
+  >
+    <i class="bi bi-search"></i>
+  </button>
 </div>

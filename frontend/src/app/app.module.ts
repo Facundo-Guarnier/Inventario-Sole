@@ -84,7 +84,7 @@ export function tokenGetter() {
     CompCampoFotosComponent,
     CompDetalleNuevoGenericoComponent,
     CompVentaListaProdComponent,
-    
+
     //! Declarar las paginas
     PagProductosCrearComponent,
     PagProductosDetalleEditarComponent,
@@ -103,14 +103,14 @@ export function tokenGetter() {
     PagGiftCardsDetalleEditarComponent,
     PagGiftCardsCrearComponent,
 
-    PagRegalosVistaGeneralComponent, 
+    PagRegalosVistaGeneralComponent,
     PagRegalosCrearComponent,
     PagRegalosDetalleEditarComponent,
 
     PagMovimientosDetalleComponent,
     PagMovimientosCrearComponent,
     PagMovimientosVistaGeneralComponent,
-    
+
     PagUsuarioVistaGeneralComponent,
     PagUsuarioDetalleEditarComponent,
     PagUsuarioCrearComponent,
@@ -120,7 +120,6 @@ export function tokenGetter() {
     FilterPipe,
     PagDevolucionesVistaGeneralComponent,
     PagDevolucionesCrearComponent,
-
   ],
 
   imports: [
@@ -132,15 +131,15 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:5000"], // Ajusta esto a tu dominio de backend
-        disallowedRoutes: ["http://localhost:5000/api/auth"] // Rutas que no necesitan token
-      }
+        allowedDomains: ['localhost:5000'], // Ajusta esto a tu dominio de backend
+        disallowedRoutes: ['http://localhost:5000/api/auth'], // Rutas que no necesitan token
+      },
     }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

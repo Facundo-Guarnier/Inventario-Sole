@@ -6,10 +6,11 @@ from app.models.ProductoModel import ProductoModel
 from app.services.movimiento import MovimientoService
 
 
-class DevolucionesService:
-    def __init__(self):
+class DevolucionService:
+    def __init__(self) -> None:
         self.movimientos = MovimientoService()
         self.devoluciones_model = DevolucionModel()
+        self.productos_model = ProductoModel()
 
     def buscar_todas(self, pagina: int, por_pagina: int) -> tuple:
         """
@@ -74,7 +75,7 @@ class DevolucionesService:
         if cantidad <= 0:
             return {"msg": "La cantidad debe ser mayor a 0."}, 400
 
-        respuesta1 = ProductoModel.buscar_x_atributo({"id": id_producto})
+        respuesta1 = self.productos_model.buscar_x_atributo({"id": id_producto})
         if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
             return {"msg": "El producto no existe"}, 404
 
@@ -88,7 +89,7 @@ class DevolucionesService:
             "tienda": tienda,
         }
 
-        respuesta_movimiento = self.movimientos.post(movimiento_data)
+        respuesta_movimiento = self.movimientos.crear(movimiento_data)
 
         if respuesta_movimiento[1] != 201:
             return {"msg": "Error al actualizar el stock"}, 500

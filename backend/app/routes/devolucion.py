@@ -1,9 +1,9 @@
-from app.services.devolucion import DevolucionesService
+from app.services.devolucion import DevolucionService
 from flask import Blueprint, request
 from flask_jwt_extended import jwt_required
 
 devolucion = Blueprint("/api/devoluciones", __name__, url_prefix="/api/devoluciones")
-devolucion_service = DevolucionesService()
+devolucion_service = DevolucionService()
 
 
 # @jwt_required()

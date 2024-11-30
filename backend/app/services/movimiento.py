@@ -10,6 +10,7 @@ class MovimientoService:
     def __init__(self) -> None:
         self.ultima_id_resource = UltimaIdService()
         self.movimiento_model = MovimientoModel()
+        self.producto_model = ProductoModel()
 
     def buscar_por_id(self, id: str) -> tuple:
         """
@@ -221,7 +222,7 @@ class MovimientoService:
         if cantidad <= 0:
             return ({"msg": "La cantidad no puede ser negativa o cero"}), 400
 
-        respuesta1 = ProductoModel.buscar_x_atributo({"id": id_producto})
+        respuesta1 = self.producto_model.buscar_x_atributo({"id": id_producto})
         if respuesta1["estado"] and len(respuesta1["respuesta"]) == 0:
             return {"msg": "El producto no existe"}, 404
 
@@ -240,7 +241,7 @@ class MovimientoService:
         }
 
         if movimiento == "Entrada":
-            ProductoModel.actualizar(
+            self.producto_model.actualizar(
                 id_producto,
                 {
                     tienda: {
@@ -253,7 +254,7 @@ class MovimientoService:
 
         elif movimiento == "Salida":
             if respuesta1["respuesta"][0][tienda]["cantidad"] >= cantidad:
-                ProductoModel.actualizar(
+                self.producto_model.actualizar(
                     id_producto,
                     {
                         tienda: {
@@ -276,7 +277,7 @@ class MovimientoService:
                 return {"msg": "No se pudo crear el movimiento"}, 404
 
             else:
-                self.ultima_id_resource.put("movimiento")
+                self.ultima_id_resource.aumentar_id("movimiento")
                 return {"msg": "Movimiento creado"}, 201
 
         return {"msg": respuesta2["respuesta"]}, 404

@@ -1,88 +1,141 @@
 <div class="card text-white bg-dark">
-    <div class="card-header bg-primary">
-        {{titulo}}
-    </div>
-    <div class="card-body">
-        
-        <!--! Estilo normal -->
-        <div *ngIf="estilo == 'normal'">
-            <div class="row">
-                <div class="col"> 
-                    
-                    <!--! Campos -->
-                    <div class="mb-3" *ngFor="let campo of campos; let i = index">
-                        
-                        <!--! TextArea  -->
-                        <div *ngIf="campo.tipo == 'textarea-text'">
-                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <textarea class="form-control" id="{{campo.identificador}}" rows="2" [value]="campo.valor || ''" [disabled]="!mostrarEditar"></textarea>
-                        </div>
-                        
-                        <!--! Input  -->
-                        <div *ngIf="campo.tipo == 'input-text'">
-                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="text" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
-                        </div>
-                        
-                        <!--! Number  -->
-                        <div *ngIf="campo.tipo == 'input-number'">
-                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="number" class="form-control" id="{{campo.identificador}}" [value]="campo.valor || ''" [disabled]="!mostrarEditar">
-                        </div>
-                        
-                        <!--! Selector  -->
-                        <div *ngIf="campo.tipo == 'selector'">
-                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <select class="form-select" id="{{campo.identificador}}" [disabled]="!mostrarEditar">
-                                <option>Seleccionar...</option>
-                                <option *ngFor="let opcion of campo.opciones" [value]="opcion" [selected]="opcion === campo.valor || ''">{{opcion}}</option>
-                            </select>
-                        </div>
-                        
-                        <!--! Selector con actualización -->
-                        <div *ngIf="campo.tipo == 'selector-actualizar'">
-                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <select class="form-select" id="{{campo.identificador}}" 
-                                    [disabled]="!mostrarEditar"
-                                    (change)="onSelectorChange(campo, $event)">
-                                <option>Seleccionar...</option>
-                                <option *ngFor="let opcion of campo.opciones" 
-                                        [value]="opcion" 
-                                        [selected]="opcion === campo.valor">{{opcion}}</option>
-                            </select>
-                        </div>
-                        
-                        <!--! Selector multiple  -->
-                        <div *ngIf="campo.tipo == 'selector-multiple'">
-                            <label class="form-label">{{campo.nombre}}</label>
-                            <div *ngFor="let opcion of campo.opciones; let i = index" class="form-check">
-                                <input class="form-check-input" type="checkbox" 
-                                    [id]="campo.identificador + '_' + i"
-                                    [value]="opcion"
-                                    [checked]="campo.seleccionados?.includes(opcion)"
-                                    [disabled]="!mostrarEditar"
-                                    (change)="onCheckboxChange(campo, opcion, $event)">
-                                <label class="form-check-label" [for]="campo.identificador + '_' + i">
-                                    {{opcion}}
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <!--! ReadOnly  -->
-                        <div *ngIf="campo.tipo == 'readonly'">
-                            <label for="{{campo.identificador}}" class="form-label">{{campo.nombre}}</label>
-                            <input type="text" class="form-control" 
-                                id="{{campo.identificador}}" 
-                                [value]="campo.valor || ''" 
-                                [disabled]="true"
-                                readonly
-                            >
-                        </div>
-                    
-                    </div>
-                
-                </div>
+  <div class="card-header bg-primary">
+    {{ titulo }}
+  </div>
+  <div class="card-body">
+    <!--! Estilo normal -->
+    <div *ngIf="estilo == 'normal'">
+      <div class="row">
+        <div class="col">
+          <!--! Campos -->
+          <div class="mb-3" *ngFor="let campo of campos; let i = index">
+            <!--! TextArea  -->
+            <div *ngIf="campo.tipo == 'textarea-text'">
+              <label for="{{ campo.identificador }}" class="form-label">{{
+                campo.nombre
+              }}</label>
+              <textarea
+                class="form-control"
+                id="{{ campo.identificador }}"
+                rows="2"
+                [value]="campo.valor || ''"
+                [disabled]="!mostrarEditar"
+              ></textarea>
             </div>
+
+            <!--! Input  -->
+            <div *ngIf="campo.tipo == 'input-text'">
+              <label for="{{ campo.identificador }}" class="form-label">{{
+                campo.nombre
+              }}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="{{ campo.identificador }}"
+                [value]="campo.valor || ''"
+                [disabled]="!mostrarEditar"
+              />
+            </div>
+
+            <!--! Number  -->
+            <div *ngIf="campo.tipo == 'input-number'">
+              <label for="{{ campo.identificador }}" class="form-label">{{
+                campo.nombre
+              }}</label>
+              <input
+                type="number"
+                class="form-control"
+                id="{{ campo.identificador }}"
+                [value]="campo.valor || ''"
+                [disabled]="!mostrarEditar"
+              />
+            </div>
+
+            <!--! Selector  -->
+            <div *ngIf="campo.tipo == 'selector'">
+              <label for="{{ campo.identificador }}" class="form-label">{{
+                campo.nombre
+              }}</label>
+              <select
+                class="form-select"
+                id="{{ campo.identificador }}"
+                [disabled]="!mostrarEditar"
+              >
+                <option>Seleccionar...</option>
+                <option
+                  *ngFor="let opcion of campo.opciones"
+                  [value]="opcion"
+                  [selected]="opcion === campo.valor || ''"
+                >
+                  {{ opcion }}
+                </option>
+              </select>
+            </div>
+
+            <!--! Selector con actualización -->
+            <div *ngIf="campo.tipo == 'selector-actualizar'">
+              <label for="{{ campo.identificador }}" class="form-label">{{
+                campo.nombre
+              }}</label>
+              <select
+                class="form-select"
+                id="{{ campo.identificador }}"
+                [disabled]="!mostrarEditar"
+                (change)="onSelectorChange(campo, $event)"
+              >
+                <option>Seleccionar...</option>
+                <option
+                  *ngFor="let opcion of campo.opciones"
+                  [value]="opcion"
+                  [selected]="opcion === campo.valor"
+                >
+                  {{ opcion }}
+                </option>
+              </select>
+            </div>
+
+            <!--! Selector multiple  -->
+            <div *ngIf="campo.tipo == 'selector-multiple'">
+              <label class="form-label">{{ campo.nombre }}</label>
+              <div
+                *ngFor="let opcion of campo.opciones; let i = index"
+                class="form-check"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="campo.identificador + '_' + i"
+                  [value]="opcion"
+                  [checked]="campo.seleccionados?.includes(opcion)"
+                  [disabled]="!mostrarEditar"
+                  (change)="onCheckboxChange(campo, opcion, $event)"
+                />
+                <label
+                  class="form-check-label"
+                  [for]="campo.identificador + '_' + i"
+                >
+                  {{ opcion }}
+                </label>
+              </div>
+            </div>
+
+            <!--! ReadOnly  -->
+            <div *ngIf="campo.tipo == 'readonly'">
+              <label for="{{ campo.identificador }}" class="form-label">{{
+                campo.nombre
+              }}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="{{ campo.identificador }}"
+                [value]="campo.valor || ''"
+                [disabled]="true"
+                readonly
+              />
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>

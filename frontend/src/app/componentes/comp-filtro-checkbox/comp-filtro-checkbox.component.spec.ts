@@ -8,9 +8,8 @@ describe('CompFiltroCheckboxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CompFiltroCheckboxComponent ]
-    })
-    .compileComponents();
+      declarations: [CompFiltroCheckboxComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CompFiltroCheckboxComponent);
     component = fixture.componentInstance;
