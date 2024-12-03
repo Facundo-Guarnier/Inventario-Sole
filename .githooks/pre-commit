@@ -27,7 +27,7 @@ mypy --config-file=mypy.ini backend/
 
 # Ejecutar Prettier para formatear archivos del frontend
 echo "🚀🚀 Running Prettier for frontend files..."
-npx prettier --write frontend/ --loglevel silent
+npx prettier --write frontend/ --log-level silent
 
 # Ejecutar ESLint para verificar problemas en el frontend (opcional)
 #echo "🚀🚀 Running ESLint for frontend files..."
