@@ -9,11 +9,19 @@ devolucion_service = DevolucionService()
 # @jwt_required()
 @devolucion.route("", methods=["GET"])
 def buscar():
-    #! Paginación
+    palabra_clave = request.args.get("palabra_clave", None)
+    tienda = request.args.get("tienda", None)
+    fecha = request.args.get("fecha", None)
     pagina = int(request.args.get("pagina", 1))
     por_pagina = int(request.args.get("por_pagina", 10))
 
-    return devolucion_service.buscar_todas(pagina, por_pagina)
+    return devolucion_service.buscar_por_filtros(
+        tienda=tienda,
+        fecha=fecha,
+        pagina=pagina,
+        por_pagina=por_pagina,
+        palabra_clave=palabra_clave,
+    )
 
 
 @jwt_required()

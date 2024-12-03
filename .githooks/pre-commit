@@ -1,4 +1,7 @@
 #!/bin/bash
+# Establecer variables de localización a valores predeterminados
+export LC_ALL=C
+export LANG=C
 
 # Asegura que el script se detenga si algún comando falla
 set -e
@@ -24,7 +27,7 @@ mypy --config-file=mypy.ini backend/
 
 # Ejecutar Prettier para formatear archivos del frontend
 echo "🚀🚀 Running Prettier for frontend files..."
-npx prettier --write frontend/
+npx prettier --write frontend/ --loglevel silent
 
 # Ejecutar ESLint para verificar problemas en el frontend (opcional)
 #echo "🚀🚀 Running ESLint for frontend files..."

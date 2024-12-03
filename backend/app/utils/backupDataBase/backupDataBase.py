@@ -175,7 +175,6 @@ def save_images_data(images_data: dict, uploads_path: str) -> None:
     """
     Guarda las imágenes en la carpeta de uploads.
     """
-    print("🌊🌊🌊", images_data)
     if images_data:
         for relative_path, img_data in images_data.items():
             file_path = os.path.join(uploads_path, relative_path)

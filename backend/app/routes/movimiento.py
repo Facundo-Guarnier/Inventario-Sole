@@ -36,20 +36,26 @@ def eliminar(id: str):
 @jwt_required()
 @movimiento.route("", methods=["GET"])
 def buscar_todos():
-    #! Validar data
     try:
         pagina = int(request.args.get("pagina", 1))
         por_pagina = int(request.args.get("por_pagina", 10))
-
     except Exception:
         return ({"msg": "Error en los parámetros enviados"}), 400
 
-    try:
-        filtro = request.json
-        if not filtro:
-            filtro = {}
-    except Exception:
-        filtro = {}
+    filtro = {}
+    palabra_clave = request.args.get("palabra_clave")
+    movimiento = request.args.get("movimiento")
+    tienda = request.args.get("tienda")
+    fecha = request.args.get("fecha")
+
+    if palabra_clave:
+        filtro["palabra_clave"] = palabra_clave
+    if movimiento:
+        filtro["movimiento"] = movimiento
+    if tienda:
+        filtro["tienda"] = tienda
+    if fecha:
+        filtro["fecha"] = fecha
 
     return movimiento_service.buscar_x_atributo(filtro, pagina, por_pagina)
 

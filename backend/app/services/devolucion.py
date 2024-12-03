@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any, Dict, Optional
 
 import pytz
 from app.models.DevolucionModel import DevolucionModel
@@ -12,7 +13,14 @@ class DevolucionService:
         self.devoluciones_model = DevolucionModel()
         self.productos_model = ProductoModel()
 
-    def buscar_todas(self, pagina: int, por_pagina: int) -> tuple:
+    def buscar_por_filtros(
+        self,
+        pagina: int,
+        por_pagina: int,
+        tienda: Optional[str] = None,
+        fecha: Optional[str] = None,
+        palabra_clave: Optional[str] = None,
+    ) -> tuple:
         """
         Busca todas las devoluciones en base a los atributos que se pasen.
         Sin atributos, devuelve todos las devoluciones.
@@ -21,7 +29,14 @@ class DevolucionService:
             list: Lista de devoluciones.
         """
 
-        filtro: dict[str, str] = {}
+        filtro: Dict[str, Any] = {}
+
+        if tienda:
+            filtro["tienda"] = tienda.lower()
+        if fecha:
+            filtro["fecha_devolucion"] = fecha
+        if palabra_clave:
+            filtro["descripcion_producto"] = {"$regex": palabra_clave, "$options": "i"}
 
         saltear = (pagina - 1) * por_pagina
         cantidad_total = self.devoluciones_model.total(filtro=filtro)
