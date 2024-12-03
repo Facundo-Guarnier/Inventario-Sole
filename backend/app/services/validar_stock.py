@@ -52,7 +52,7 @@ class ValidarStockService:
     def __init__(self):
         self.validacion_stock_model = ValidacionStockModel()
 
-    def post(self, id_producto: str, tienda: str, deshacer: bool = False):
+    def validar_unidad(self, id_producto: str, tienda: str, deshacer: bool = False):
         """
         Valida una unidad de un producto.
         """

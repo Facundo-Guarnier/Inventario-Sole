@@ -3,10 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filtro } from 'src/app/interfaces/filtro.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import {
-  ApiMovimientoService,
-  ApiMovimientosService
-} from 'src/app/services/movimientos/api-movimiento.service';
+import { ApiMovimientosService } from 'src/app/services/movimientos/api-movimiento.service';
 
 @Component({
   selector: 'pag-movimientos-vista-general',
@@ -73,7 +70,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
   constructor(
     private router: Router,
     private apiMovimientos: ApiMovimientosService,
-    private apiMovimiento: ApiMovimientoService,
+    private apiMovimiento: ApiMovimientosService,
     private authService: AuthService
   ) {}
 

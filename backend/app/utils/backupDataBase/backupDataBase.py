@@ -70,31 +70,31 @@ def upload_database() -> tuple:
     """
     Recibe un archivo de base de datos encriptado (.bin), lo desencripta y lo aplica a la base de datos.
     """
-    try:
-        if "file" not in request.files:
-            return jsonify({"msg": "No se encontró archivo en la solicitud"}), 400
+    # try:
+    if "file" not in request.files:
+        return jsonify({"msg": "No se encontró archivo en la solicitud"}), 400
 
-        file = request.files["file"]
-        if file.filename == "":
-            return jsonify({"msg": "No se seleccionó ningún archivo"}), 400
+    file = request.files["file"]
+    if file.filename == "":
+        return jsonify({"msg": "No se seleccionó ningún archivo"}), 400
 
-        if file and file.filename and file.filename.endswith(".bin"):
-            filename = secure_filename(file.filename or "")
-            file_path = os.path.join("/tmp", filename)
-            file.save(file_path)
+    if file and file.filename and file.filename.endswith(".bin"):
+        filename = secure_filename(file.filename or "")
+        file_path = os.path.join("/tmp", filename)
+        file.save(file_path)
 
-            #! Desencriptar y aplicar el archivo
-            apply_encrypted_database(file_path)
+        #! Desencriptar y aplicar el archivo
+        apply_encrypted_database(file_path)
 
-            #! Eliminar el archivo temporal
-            os.remove(file_path)
+        #! Eliminar el archivo temporal
+        os.remove(file_path)
 
-            return jsonify({"msg": "Base de datos cargada y aplicada con éxito"}), 200
-        else:
-            return jsonify({"msg": "El archivo debe tener extensión .bin"}), 400
+        return jsonify({"msg": "Base de datos cargada y aplicada con éxito"}), 200
+    else:
+        return jsonify({"msg": "El archivo debe tener extensión .bin"}), 400
 
-    except Exception as e:
-        return jsonify({"msg": str(e)}), 500
+    # except Exception as e:
+    #     return jsonify({"msg": str(e)}), 500
 
 
 def get_fernet_key(password: str) -> bytes:
@@ -116,42 +116,42 @@ def apply_encrypted_database(file_path: str) -> None:
     """
     Desencripta el archivo de la base de datos y aplica los cambios a MongoDB.
     """
-    try:
-        #! Obtener la contraseña de app.config
-        backup_password = current_app.config.get("CONTRA_BACKUP")
-        if not backup_password:
-            raise ValueError("Contraseña de backup no configurada")
+    # try:
+    #! Obtener la contraseña de app.config
+    backup_password = current_app.config.get("CONTRA_BACKUP")
+    if not backup_password:
+        raise ValueError("Contraseña de backup no configurada")
 
-        #! Generar la clave Fernet a partir de la contraseña
-        fernet_key = get_fernet_key(backup_password)
-        fernet = Fernet(fernet_key)
+    #! Generar la clave Fernet a partir de la contraseña
+    fernet_key = get_fernet_key(backup_password)
+    fernet = Fernet(fernet_key)
 
-        #! Leer y desencriptar el archivo
-        with open(file_path, "rb") as file:
-            encrypted_data = file.read()
-            decrypted_data = fernet.decrypt(encrypted_data)
+    #! Leer y desencriptar el archivo
+    with open(file_path, "rb") as file:
+        encrypted_data = file.read()
+        decrypted_data = fernet.decrypt(encrypted_data)
 
-        #! Cargar los datos JSON
-        data = json.loads(decrypted_data.decode())
+    #! Cargar los datos JSON
+    data = json.loads(decrypted_data.decode())
 
-        #! Aplicar datos a MongoDB
-        for collection_name, documents in data.items():
-            if collection_name != "images":
-                collection = mongo.db[collection_name]
-                collection.delete_many({})
-                if documents:
-                    collection.insert_many(documents)
+    #! Aplicar datos a MongoDB
+    for collection_name, documents in data.items():
+        if collection_name != "images":
+            collection = mongo.db[collection_name]
+            collection.delete_many({})
+            if documents:
+                collection.insert_many(documents)
 
-        #! Restaurar imágenes
-        if "images" in data:
-            uploads_path = str(current_app.config.get("UPLOAD_FOLDER"))
-            # Limpiar la carpeta de uploads
-            shutil.rmtree(uploads_path)
-            os.makedirs(uploads_path)
-            save_images_data(data["images"], uploads_path)
+    #! Restaurar imágenes
+    if "images" in data:
+        uploads_path = str(current_app.config.get("UPLOAD_FOLDER"))
+        # Limpiar la carpeta de uploads
+        shutil.rmtree(uploads_path)
+        os.makedirs(uploads_path)
+        save_images_data(data["images"], uploads_path)
 
-    except Exception as e:
-        raise Exception(f"Error al aplicar la base de datos: {str(e)}") from e
+    # except Exception as e:
+    #     raise Exception(f"Error al aplicar la base de datos: {str(e)}") from e
 
 
 def get_images_data(uploads_path: str) -> dict:
@@ -175,8 +175,10 @@ def save_images_data(images_data: dict, uploads_path: str) -> None:
     """
     Guarda las imágenes en la carpeta de uploads.
     """
-    for relative_path, img_data in images_data.items():
-        file_path = os.path.join(uploads_path, relative_path)
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path, "wb") as img_file:
-            img_file.write(base64.b64decode(img_data))
+    print("🌊🌊🌊", images_data)
+    if images_data:
+        for relative_path, img_data in images_data.items():
+            file_path = os.path.join(uploads_path, relative_path)
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            with open(file_path, "wb") as img_file:
+                img_file.write(base64.b64decode(img_data))

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApiMovimientoService } from './api-movimiento.service';
+import { ApiMovimientosService } from './api-movimiento.service';
 
-describe('ApiMovimientoService', () => {
-  let service: ApiMovimientoService;
+describe('ApiMovimientosService', () => {
+  let service: ApiMovimientosService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ApiMovimientoService);
+    service = TestBed.inject(ApiMovimientosService);
   });
 
   it('should be created', () => {

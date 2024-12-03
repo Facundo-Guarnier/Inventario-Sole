@@ -1,7 +1,7 @@
 # TO DO list
 
 - IMPLEMENTAR DTOs para todas las validaciones de los endpoints
-
+- Incluir o arreglar restauracion DB con imágenes
 - Los services no deberían devolver una tupla con el dato y código de de respuesta de HTTP
 - Hacer algún test como en Kamina del backend
 

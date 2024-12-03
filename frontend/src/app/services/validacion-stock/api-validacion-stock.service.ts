@@ -39,7 +39,7 @@ export class ApiRondaValidacionStock {
   providedIn: 'root'
 })
 export class ApiValidarStock {
-  url = '/api/validar';
+  url = '/api/validacion-stock';
 
   constructor(private httpClient: HttpClient) {}
 

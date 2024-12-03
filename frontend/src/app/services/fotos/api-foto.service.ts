@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiFotoService {
-  url = '/api/foto';
+export class ApiFotosService {
+  url = '/api/fotos';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -21,17 +21,6 @@ export class ApiFotoService {
       headers: headers
     });
   }
-}
-
-//* ------------------------------------------------------------
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ApiFotosService {
-  url = '/api/fotos';
-
-  constructor(private httpClient: HttpClient) {}
 
   subirFoto(file: File, productoId: string, token: string): Observable<any> {
     let formData = new FormData();

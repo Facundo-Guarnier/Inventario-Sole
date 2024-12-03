@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiMovimientoService {
-  url = '/api/movimiento';
+export class ApiMovimientosService {
+  url = '/api/movimientos';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -31,17 +31,6 @@ export class ApiMovimientoService {
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.delete(`${this.url}/${id}`, { headers: heads });
   }
-}
-
-//* ------------------------------------------------------------
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ApiMovimientosService {
-  url = '/api/movimientos';
-
-  constructor(private httpClient: HttpClient) {}
 
   buscar_x_atributo(
     filtro: {},

@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filtro } from 'src/app/interfaces/filtro.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import {
-  ApiFotoService,
-  ApiFotosService
-} from 'src/app/services/fotos/api-foto.service';
+import { ApiFotosService } from 'src/app/services/fotos/api-foto.service';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 
 @Component({

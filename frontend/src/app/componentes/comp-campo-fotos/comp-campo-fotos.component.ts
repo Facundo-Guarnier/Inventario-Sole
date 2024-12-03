@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import {
-  ApiFotoService,
-  ApiFotosService
-} from 'src/app/services/fotos/api-foto.service';
+import { ApiFotosService } from 'src/app/services/fotos/api-foto.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
@@ -22,7 +19,7 @@ export class CompCampoFotosComponent {
 
   constructor(
     private authService: AuthService,
-    private apiFoto: ApiFotoService,
+    private apiFoto: ApiFotosService,
     private apiFotos: ApiFotosService,
     private sanitizer: DomSanitizer
   ) {}

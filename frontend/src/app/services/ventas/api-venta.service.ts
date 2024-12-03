@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiVentaService {
-  url = '/api/venta';
+export class ApiVentasService {
+  url = '/api/ventas';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -29,17 +29,6 @@ export class ApiVentaService {
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.delete(`${this.url}/${id}`, { headers: heads });
   }
-}
-
-//* ------------------------------------------------------------
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ApiVentasService {
-  url = '/api/ventas';
-
-  constructor(private httpClient: HttpClient) {}
 
   buscar_x_atributo(
     filtro: {},

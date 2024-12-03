@@ -56,7 +56,7 @@ class ValidacionStockModel:
 
         print("+++++++++++++Validacion: ", validacion)
 
-        fecha_actual = ValidacionStockModel.obtener_ronda_actual(tienda)
+        fecha_actual = self.obtener_ronda_actual(tienda)
         cantidad_fisica = producto[tienda]["cantidad"]
 
         #! Si la fecha actual es distinta a la fecha de la última validación, se reinicia la validación

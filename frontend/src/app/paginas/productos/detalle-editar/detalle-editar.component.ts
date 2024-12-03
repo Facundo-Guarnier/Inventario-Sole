@@ -6,7 +6,7 @@ import { flatMap } from 'rxjs';
 import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ApiFotoService } from 'src/app/services/fotos/api-foto.service';
+import { ApiFotosService } from 'src/app/services/fotos/api-foto.service';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
 
 @Component({
@@ -77,7 +77,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private apiProducto: ApiProductoService,
-    private apiFoto: ApiFotoService,
+    private apiFoto: ApiFotosService,
     private sanitizer: DomSanitizer
   ) {}
 

@@ -5,7 +5,7 @@ import { CompVentaListaProdComponent } from 'src/app/componentes/comp-venta-list
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiProductoService } from 'src/app/services/productos/api-producto.service';
-import { ApiVentaService } from 'src/app/services/ventas/api-venta.service';
+import { ApiVentasService } from 'src/app/services/ventas/api-venta.service';
 
 @Component({
   selector: 'pag-ventas-detalle',
@@ -102,7 +102,7 @@ export class PagVentasDetalleEditarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private apiVenta: ApiVentaService,
+    private apiVenta: ApiVentasService,
     private apiProductos: ApiProductoService
   ) {}
 

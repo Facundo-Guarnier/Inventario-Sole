@@ -6,8 +6,8 @@ import { environment } from 'src/environments/environment.prod';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiUsuarioService {
-  url = '/api/usuario';
+export class ApiUsuariosService {
+  url = '/api/usuarios';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -36,17 +36,6 @@ export class ApiUsuarioService {
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.delete(`${this.url}/${id}`, { headers: heads });
   }
-}
-
-//* ------------------------------------------------------------
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ApiUsuariosService {
-  url = '/api/usuarios';
-
-  constructor(private httpClient: HttpClient) {}
 
   buscar_todos(
     token: any,
