@@ -38,7 +38,7 @@ def download_database() -> tuple:
 
         #! Añadir datos de imágenes
         uploads_path = str(current_app.config.get("UPLOAD_FOLDER"))
-        data["images"] = list(get_images_data(uploads_path).values())
+        data["images"] = get_images_data(uploads_path)
 
         json_data = json.dumps(data, default=str)
 
@@ -70,7 +70,6 @@ def upload_database() -> tuple:
     """
     Recibe un archivo de base de datos encriptado (.bin), lo desencripta y lo aplica a la base de datos.
     """
-    # try:
     if "file" not in request.files:
         return jsonify({"msg": "No se encontró archivo en la solicitud"}), 400
 
@@ -93,9 +92,6 @@ def upload_database() -> tuple:
     else:
         return jsonify({"msg": "El archivo debe tener extensión .bin"}), 400
 
-    # except Exception as e:
-    #     return jsonify({"msg": str(e)}), 500
-
 
 def get_fernet_key(password: str) -> bytes:
     """
@@ -116,7 +112,6 @@ def apply_encrypted_database(file_path: str) -> None:
     """
     Desencripta el archivo de la base de datos y aplica los cambios a MongoDB.
     """
-    # try:
     #! Obtener la contraseña de app.config
     backup_password = current_app.config.get("CONTRA_BACKUP")
     if not backup_password:
@@ -145,38 +140,42 @@ def apply_encrypted_database(file_path: str) -> None:
     #! Restaurar imágenes
     if "images" in data:
         uploads_path = str(current_app.config.get("UPLOAD_FOLDER"))
-        # Limpiar la carpeta de uploads
-        shutil.rmtree(uploads_path)
+        #! Limpiar la carpeta de uploads
+        shutil.rmtree(uploads_path, ignore_errors=True)
         os.makedirs(uploads_path)
         save_images_data(data["images"], uploads_path)
 
-    # except Exception as e:
-    #     raise Exception(f"Error al aplicar la base de datos: {str(e)}") from e
 
-
-def get_images_data(uploads_path: str) -> dict:
+def get_images_data(uploads_path: str) -> list:
     """
     Obtiene los datos de las imágenes en la carpeta de uploads.
     """
-    images_data = {}
+    images_data = []
     for root, _, files in os.walk(uploads_path):
         for file in files:
             if file.lower().endswith((".png", ".jpg", ".jpeg", ".gif")):
                 file_path = os.path.join(root, file)
                 relative_path = os.path.relpath(file_path, uploads_path)
                 with open(file_path, "rb") as img_file:
-                    images_data[relative_path] = base64.b64encode(
-                        img_file.read()
-                    ).decode("utf-8")
+                    images_data.append(
+                        {
+                            "relative_path": relative_path,
+                            "img_data": base64.b64encode(img_file.read()).decode(
+                                "utf-8"
+                            ),
+                        }
+                    )
     return images_data
 
 
-def save_images_data(images_data: dict, uploads_path: str) -> None:
+def save_images_data(images_data: list, uploads_path: str) -> None:
     """
     Guarda las imágenes en la carpeta de uploads.
     """
     if images_data:
-        for relative_path, img_data in images_data.items():
+        for image in images_data:
+            relative_path = image["relative_path"]
+            img_data = image["img_data"]
             file_path = os.path.join(uploads_path, relative_path)
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             with open(file_path, "wb") as img_file:
