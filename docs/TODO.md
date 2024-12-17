@@ -1,5 +1,22 @@
 # TO DO list
 
+Eliminar lo relacionado a mercado libre:
+
+- Crear producto, Dejar campos como:
+  - color
+  - talle
+  - marca
+  - titulo
+  - genero
+- Crear producto, En el front, agregar un switch para activar o no los campos de meli (por ahora siempre desactivado), de esta forma nos ahorramos todo lo relacionado a meli.
+
+Implementar mercado libre:
+
+- Que los productos tenga un campo datos_meli de tipo json, donde se guardan los otros valores sin validar.
+- No debería afectar a los productos actuales.
+
+Despues del primer entregable:
+
 - IMPLEMENTAR DTOs para todas las validaciones de los endpoints
 - Incluir o arreglar restauracion DB con imágenes
 - Los services no deberían devolver una tupla con el dato y código de de respuesta de HTTP
