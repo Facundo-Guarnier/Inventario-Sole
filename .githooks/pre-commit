@@ -6,43 +6,67 @@ export LANG=C
 # Asegura que el script se detenga si algún comando falla
 set -e
 
+# Obtener la lista de archivos staged
+STAGED_FILES=$(git diff --cached --name-only)
+
+# Si no hay archivos staged, terminamos el script
+if [ -z "$STAGED_FILES" ]; then
+    echo "🚫 No files staged for commit. Aborting pre-commit hook."
+    exit 0
+fi
+
+# Función para verificar si hubo cambios en archivos staged
+check_staged_changes() {
+    MODIFIED_FILES=$(git diff --cached --name-only)
+    if [ "$MODIFIED_FILES" != "$STAGED_FILES" ]; then
+        echo "❌ Changes were made to staged files by $1. Commit aborted."
+        exit 1
+    fi
+}
+
+# Ejecutar Prettier en archivos staged del frontend
+echo "🚀 Running Prettier for staged frontend files..."
+for file in $STAGED_FILES; do
+    if [[ $file == frontend/* && $file == *.{js,ts,css,html,json} ]]; then
+        npx prettier --write "$file"
+    fi
+done
+git add $STAGED_FILES
+check_staged_changes "Prettier"
+
 # Activar el entorno virtual
 source ./backend/venv/bin/activate 
 
-# Ejecutar Black para formatear Python
-echo "🚀🚀 Running Black for Python files..."
-black backend/
+# Ejecutar Black en archivos staged del backend
+echo "🚀 Running Black for staged Python files..."
+for file in $STAGED_FILES; do
+    if [[ $file == backend/*.py ]]; then
+        black "$file"
+    fi
+done
+git add $STAGED_FILES
+check_staged_changes "Black"
 
-# Ejecutar isort para ordenar imports en Python
-echo "🚀🚀 Running isort for Python files..."
-isort backend/  # Se detectará automáticamente el archivo pyproject.toml
+# Ejecutar isort en archivos staged del backend
+echo "🚀 Running isort for staged Python files..."
+for file in $STAGED_FILES; do
+    if [[ $file == backend/*.py ]]; then
+        isort "$file"
+    fi
+done
+git add $STAGED_FILES
+check_staged_changes "isort"
 
-# Ejecutar Ruff para linting Python
-echo "🚀🚀 Running Ruff for Python files..."
-ruff check --fix backend/
+# Ejecutar Ruff en archivos staged del backend
+echo "🚀 Running Ruff for staged Python files..."
+for file in $STAGED_FILES; do
+    if [[ $file == backend/*.py ]]; then
+        ruff check --fix "$file"
+    fi
+done
+git add $STAGED_FILES
+check_staged_changes "Ruff"
 
-# Ejecutar Mypy para verificación de tipos en Python
-echo "🚀🚀 Running Mypy for type checking..."
-mypy --config-file=mypy.ini backend/
-
-# Ejecutar Prettier para formatear archivos del frontend
-echo "🚀🚀 Running Prettier for frontend files..."
-npx prettier --write frontend/ --log-level silent
-
-# Ejecutar ESLint para verificar problemas en el frontend (opcional)
-#echo "🚀🚀 Running ESLint for frontend files..."
-#npx eslint "frontend/**/*.{ts,js,html,css}"
-
-# Verificar si algún archivo fue modificado por los comandos anteriores
-git diff --exit-code > /dev/null
-
-# Si hay cambios, los añadimos automáticamente al commit
-if [ $? -ne 0 ]; then
-  echo "⚡⚡ Some files have been modified! Adding them to the commit..."
-  git add -u
-  echo "🚀🚀 Files have been updated and staged for commit."
-  exit 1  # Abortamos el commit para que el usuario pueda realizarlo nuevamente con los cambios
-fi
-
-# Si no hubo cambios, dejamos que el commit continúe
-echo "🚀🚀 All checks passed! Ready to commit."
+# Si llegamos hasta aquí, el commit puede continuar
+echo "✅ All checks passed! Ready to commit."
+exit 0

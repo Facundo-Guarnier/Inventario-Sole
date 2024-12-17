@@ -59,7 +59,7 @@ class VentaModel:
                 "respuesta": f"Hubo un error en la DB {str(e)}",
             }
 
-    def actualizar(self, id: str, data: dict) -> dict:
+    def actualizar(self, id: str, data: dict) -> bool:
         """
         Actualiza una venta.
 
@@ -70,18 +70,12 @@ class VentaModel:
             - dict: Venta actualizada
         """
         try:
-            return {
-                "estado": True,
-                "respuesta": mongo.db.ventas.update_one({"id": id}, {"$set": data}),
-            }
+            mongo.db.ventas.update_one({"id": id}, {"$set": data}),
+            return True
+        except Exception:
+            return False
 
-        except Exception as e:
-            return {
-                "estado": False,
-                "respuesta": f"Hubo un error en la DB {str(e)}",
-            }
-
-    def eliminar(self, id: str) -> dict:
+    def eliminar(self, id: str) -> bool:
         """
         Elimina una venta.
 
@@ -92,16 +86,10 @@ class VentaModel:
             - dict: Venta eliminada
         """
         try:
-            return {
-                "estado": True,
-                "respuesta": mongo.db.ventas.delete_one({"id": id}),
-            }
-
-        except Exception as e:
-            return {
-                "estado": False,
-                "respuesta": f"Hubo un error en la DB {str(e)}",
-            }
+            mongo.db.ventas.delete_one({"id": id})
+            return True
+        except Exception:
+            return False
 
     def total(self, filtro: dict) -> dict:
         """

@@ -173,8 +173,7 @@ class VentaService:
                 }, 500
 
         #! Actualizar venta
-        respuesta = self.venta_model.actualizar(id, nueva_venta)
-        if respuesta["estado"]:
+        if self.venta_model.actualizar(id, nueva_venta):
             return {"msg": "Venta actualizada y stock ajustado"}, 200
         else:
             # TODO lógica para revertir los movimientos ya realizados
@@ -190,13 +189,13 @@ class VentaService:
         Returns:
             - dict: Confirmación de eliminación.
         """
-
         if not id:
             return ({"msg": "Falta el ID"}), 400
 
         #! Buscar si existe la venta
         venta_actual = self.venta_model.buscar_x_atributo({"id": id})
-        if not venta_actual["estado"] or venta_actual["respuesta"] is None:
+
+        if not venta_actual["estado"] or venta_actual["respuesta"] == []:
             return ({"msg": "No se encontró la venta"}), 404
 
         venta_actual = venta_actual["respuesta"][0]
@@ -222,8 +221,7 @@ class VentaService:
                 }, 500
 
         #! Eliminar venta
-        respuesta, status_code = self.venta_model.eliminar(id)
-        if status_code == 200:
+        if self.venta_model.eliminar(id):
             return ({"msg": "Venta eliminada"}), 200
         return ({"msg": respuesta}), 400
 

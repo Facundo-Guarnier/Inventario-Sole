@@ -98,7 +98,7 @@ export class PagVentasCrearComponent implements OnInit {
       .buscar_proxima_id('venta', this.authService.getToken())
       .subscribe(
         (id) => {
-          this.id = id;
+          this.id = id['proxima_id'];
           this.campos1[0].valor = this.id;
         },
         (err) => {

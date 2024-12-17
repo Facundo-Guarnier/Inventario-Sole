@@ -30,4 +30,4 @@ def subir_foto():
     if not producto_id:
         return {"error": "No se proporcionó el ID del producto"}, 400
 
-    return foto_service.post(file=file, producto_id=producto_id)
+    return foto_service.subir_foto(file=file, producto_id=producto_id)

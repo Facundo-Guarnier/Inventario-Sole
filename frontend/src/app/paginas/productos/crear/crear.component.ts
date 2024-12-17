@@ -203,7 +203,7 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       .buscar_proxima_id('producto', this.authService.getToken())
       .subscribe(
         (id) => {
-          this.id = id;
+          this.id = id['proxima_id'];
           this.camposGenerales[0].valor = this.id;
         },
         (err) => {
