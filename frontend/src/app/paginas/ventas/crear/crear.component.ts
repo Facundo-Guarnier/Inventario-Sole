@@ -137,7 +137,6 @@ export class PagVentasCrearComponent implements OnInit {
     //! Crear la venta
     this.apiVenta.crear(venta_nueva, this.authService.getToken()).subscribe(
       (res) => {
-        console.log('Venta creada:', res);
         this.tituloModal = 'Venta creada';
         this.mensajeModal = 'La venta ha sido creado correctamente.';
         this.redireccionar = true;

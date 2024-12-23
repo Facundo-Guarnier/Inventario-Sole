@@ -2,7 +2,6 @@ import { identifierName } from '@angular/compiler';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { flatMap } from 'rxjs';
 import { CompDetalleNuevoComponent } from 'src/app/componentes/comp-detalle-nuevo-prod/comp-detalle-nuevo-prod.component';
 import { Campo } from 'src/app/interfaces/campo.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -47,11 +46,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   ];
 
   camposFisica: Campo[] = [
-    { nombre: 'Precio', identificador: 'precio', tipo: 'input-number' },
-    { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' }
-  ];
-
-  camposOnline: Campo[] = [
     { nombre: 'Precio', identificador: 'precio', tipo: 'input-number' },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' }
   ];
@@ -127,11 +121,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
         this.camposFisica[0].valor = datos['fisica']['precio'];
         this.camposFisica[1].valor = datos['fisica']['cantidad'];
 
-        //! Detalles online
-        this.camposOnline[0].valor = datos['online']['precio'];
-        this.camposOnline[1].valor = datos['online']['cantidad'];
-
-        // Fotos
+        //! Fotos
         this.fotos = datos['fotos'].map((foto: string) => ({
           filename: foto,
           url: this.sanitizer.bypassSecurityTrustUrl(
@@ -156,10 +146,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   //! Botones flotantes
   ClickAceptar() {
     this.compDetalleNuevo.recolectarDatos();
-    console.log('Campos generales:', this.camposGenerales);
-    console.log('Campos física:', this.camposFisica);
-    console.log('Campos online:', this.camposOnline);
-    console.log('Fotos:', this.fotos);
 
     //! Verificar que todos los campos no estén vacíos
     this.verificarCamposVacios();
@@ -175,10 +161,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       fisica: {
         precio: this.camposFisica[0].valor,
         cantidad: this.camposFisica[1].valor
-      },
-      online: {
-        precio: this.camposOnline[0].valor,
-        cantidad: this.camposOnline[1].valor
       },
       fotos: this.fotos.map((foto) => foto.filename)
     };
@@ -199,7 +181,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       .actualizar(producto.id, producto, this.authService.getToken())
       .subscribe(
         (res: any) => {
-          console.log('Producto actualizado:', res);
           this.tituloModal = 'Producto actualizado';
           this.mensajeModal = 'El producto se ha actualizado correctamente.';
           this.redireccionar = true;
@@ -254,7 +235,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   onDatosRecolectados(camposGenerales: any[]) {
     this.camposGenerales = camposGenerales[0];
     this.camposFisica = camposGenerales[1];
-    this.camposOnline = camposGenerales[2];
   }
 
   //! Modal
@@ -288,22 +268,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
 
     if (
       this.camposFisica.some(
-        (campo) =>
-          campo.valor === '' ||
-          campo.valor === null ||
-          campo.valor === undefined
-      )
-    ) {
-      console.error('Faltan campos por llenar');
-      this.tituloModal = 'Faltan campos por llenar';
-      this.mensajeModal =
-        'Por favor, llena todos los campos antes de continuar.';
-      this.openModal();
-      return;
-    }
-
-    if (
-      this.camposOnline.some(
         (campo) =>
           campo.valor === '' ||
           campo.valor === null ||

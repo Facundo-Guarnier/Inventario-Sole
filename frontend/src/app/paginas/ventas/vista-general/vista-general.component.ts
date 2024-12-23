@@ -293,7 +293,6 @@ export class PagVentasVistaGeneralComponent implements OnInit {
     } catch (error) {
       console.error('ERROR al cargar ventas:', error);
     }
-    console.log('Ventas:', this.datos);
   }
 
   //! Paginamiento

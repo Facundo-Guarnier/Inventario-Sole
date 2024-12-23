@@ -27,7 +27,6 @@ export class AuthService {
     /*
     Se realiza la petición POST al servidor con los datos de login.
     */
-    console.log('LA URL PARA EL BACKEND:', this.url + '/acceder');
     return this.httpClient.post(this.url + '/acceder', dataLogin).pipe(
       take(1),
       tap((response: any) => {

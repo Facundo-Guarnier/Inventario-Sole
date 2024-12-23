@@ -181,7 +181,6 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
           this.datos = Object.values(data['msg']).flat();
           this.totalDatos = data.total;
           this.totalPaginas = Math.ceil(this.totalDatos / this.porPagina);
-          console.log('Devoluciones:', this.datos);
         },
         (error) => {
           console.error(error);

@@ -1,16 +1,20 @@
 # TO DO list
 
-Eliminar lo relacionado a mercado libre:
+1 Revisar endpoint con el front para saber si funcionan todos
 
-- Crear producto, Dejar campos como:
-  - color
-  - talle
-  - marca
-  - titulo
-  - genero
-- Crear producto, En el front, agregar un switch para activar o no los campos de meli (por ahora siempre desactivado), de esta forma nos ahorramos todo lo relacionado a meli.
+2 Eliminar lo relacionado a mercado libre:
 
-Implementar mercado libre:
+3 Crear producto, Dejar campos como:
+
+- color
+- talle
+- marca
+- titulo
+- genero
+
+4 Crear producto, En el front, agregar un switch para activar o no los campos de meli (por ahora siempre desactivado), de esta forma nos ahorramos todo lo relacionado a meli.
+
+5 Implementar mercado libre:
 
 - Que los productos tenga un campo datos_meli de tipo json, donde se guardan los otros valores sin validar.
 - No debería afectar a los productos actuales.
@@ -25,7 +29,6 @@ Despues del primer entregable:
 ## Mercado Shop
 
 - [ ] Fotos para MS
-- [ ] Hacer que el tonken no se venza cada 6 horas
 - [ ] Ver la ubicación de los impuestos
 - [ ] Ver el envío
 

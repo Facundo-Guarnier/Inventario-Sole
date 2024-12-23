@@ -114,20 +114,6 @@
             [disabled]="!mostrarEditar"
           />
         </div>
-
-        <h5>Online:</h5>
-        <div class="mb-3" *ngFor="let campo of detalleOnline">
-          <label for="precioFisico" class="form-label">{{
-            campo.nombre
-          }}</label>
-          <input
-            type="number"
-            class="form-control"
-            id="precioFisico"
-            [(ngModel)]="campo.valor"
-            [disabled]="!mostrarEditar"
-          />
-        </div>
       </div>
     </div>
   </div>

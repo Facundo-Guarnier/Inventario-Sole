@@ -84,7 +84,6 @@ export class PagMovimientosCrearComponent implements OnInit {
       .crear(this.detalleMovimiento, this.authService.getToken())
       .subscribe(
         (res) => {
-          console.log('Movimiento creado:', res);
           this.tituloModal = 'Movimiento creado';
           this.mensajeModal = 'El movimiento ha sido creado correctamente.';
           this.redireccionar = true;

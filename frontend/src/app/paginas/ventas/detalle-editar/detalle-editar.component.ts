@@ -191,8 +191,6 @@ export class PagVentasDetalleEditarComponent implements OnInit {
       .actualizar(id, venta_nueva, this.authService.getToken())
       .subscribe(
         (data: any) => {
-          console.log('Respuesta del servidor:', data);
-          this.tituloModal = 'Venta actualizada';
           this.mensajeModal = 'La venta ha sido actualizada correctamente.';
           this.redireccionar = true;
           this.openModal();
@@ -217,7 +215,6 @@ export class PagVentasDetalleEditarComponent implements OnInit {
 
     this.apiVenta.eliminar(id, this.authService.getToken()).subscribe(
       (data: any) => {
-        console.log('Respuesta del servidor:', data);
         this.tituloModal = 'Venta eliminada';
         this.mensajeModal = 'La venta ha sido eliminada correctamente.';
         this.redireccionar = true;

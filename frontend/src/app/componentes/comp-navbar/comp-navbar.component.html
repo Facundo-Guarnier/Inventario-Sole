@@ -44,24 +44,6 @@
         >
       </li>
 
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          [class.active]="pagActual === 'to'"
-          [attr.aria-current]="pagActual === 'tiendaOnline' ? 'page' : null"
-          href="to"
-          >Tienda Online</a
-        >
-      </li>
-
-      <!-- <li class="nav-item">
-                <a class="nav-link" [class.active]="pagActual === 'reg'" [attr.aria-current]="pagActual === 'regalos' ? 'page' : null" href="reg">Regalos</a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link" [class.active]="pagActual === 'gc'" [attr.aria-current]="pagActual === 'giftCard' ? 'page' : null" href="gc">Gift Card</a>
-            </li> -->
-
       <div *ngIf="admin">
         <li class="nav-item">
           <a

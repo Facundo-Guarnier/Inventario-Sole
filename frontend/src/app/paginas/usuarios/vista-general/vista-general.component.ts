@@ -151,7 +151,6 @@ export class PagUsuarioVistaGeneralComponent implements OnInit {
 
       this.apiBackup.uploadDB(formData).subscribe(
         (response) => {
-          console.log('Base de datos subida con éxito', response);
           this.tituloModal = 'Base de datos subida';
           this.mensajeModal = 'La base de datos ha sido subida correctamente.';
           this.redireccionar = false;

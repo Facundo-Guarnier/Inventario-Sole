@@ -57,7 +57,6 @@ export class PagUsuarioCrearComponent implements OnInit {
 
     this.authService.register(this.detalleUsuario).subscribe(
       (data: any) => {
-        console.log('Respuesta del servidor:', data);
         this.tituloModal = 'Usuario creado';
         this.mensajeModal = 'El usuario ha sido creado correctamente.';
         this.redireccionar = true;

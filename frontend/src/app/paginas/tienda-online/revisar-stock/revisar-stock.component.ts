@@ -71,7 +71,6 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
       'online'
     ).subscribe(
       (respuesta) => {
-        console.log('Nueva ronda iniciada:', respuesta);
         this.recargarLista();
         this.notificaciones = [];
       },
@@ -148,7 +147,6 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
       this.AuthService.getToken()
     ).subscribe(
       (respuesta) => {
-        console.log('Unidad validada:', respuesta);
         this.agregarNotificacion({
           mensaje: `Producto '${this.id_a_validar}' validado. Unidades restantes: ${respuesta.unidades_restantes}`,
           puedeDeshacer: true,
@@ -178,14 +176,12 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
   deshacerAccion(index: number) {
     const notificacion = this.notificaciones[index];
     if (notificacion.puedeDeshacer && notificacion.idProducto) {
-      console.log('Deshaciendo validación:', notificacion.idProducto);
       this.ApiValidarStock.deshacerValidacion(
         notificacion.idProducto,
         'online',
         this.AuthService.getToken()
       ).subscribe(
         (respuesta) => {
-          console.log('Validación deshecha:', respuesta);
           this.notificaciones[index] = {
             mensaje: `Deshecho: ${notificacion.mensaje}`,
             puedeDeshacer: false

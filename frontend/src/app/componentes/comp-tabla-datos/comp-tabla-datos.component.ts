@@ -41,7 +41,6 @@ export class CompTablaDatosComponent implements OnInit {
   }
 
   eliminarFila(item: any) {
-    console.log('Eliminar', item);
     this.datos = this.datos.filter((dato) => dato !== item);
   }
 
