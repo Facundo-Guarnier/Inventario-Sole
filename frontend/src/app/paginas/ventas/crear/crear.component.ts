@@ -29,8 +29,8 @@ export class PagVentasCrearComponent implements OnInit {
     {
       nombre: 'Tienda',
       identificador: 'tienda',
-      tipo: 'selector-actualizar',
-      opciones: ['Fisica', 'Online']
+      tipo: 'readonly',
+      valor: 'Fisica'
     },
     { nombre: 'Monto total', identificador: 'total', tipo: 'input-number' },
     { nombre: 'Método', identificador: 'metodo', tipo: 'textarea-text' },
@@ -80,7 +80,7 @@ export class PagVentasCrearComponent implements OnInit {
   showSidebar = false;
 
   //! Actualizar en vivo el precio del producto
-  tiendaSeleccionada: string = '';
+  tiendaSeleccionada: string = 'fisica';
 
   //* ------------------------------------------------------------
 

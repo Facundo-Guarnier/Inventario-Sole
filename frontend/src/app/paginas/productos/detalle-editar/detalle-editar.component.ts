@@ -134,7 +134,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       (res: any) => {
         let datos = res['msg'][0];
         //! Detalles generales
-        console.log('⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️', datos);
         this.camposGenerales.forEach((campo) => {
           campo.valor = datos[campo.identificador];
         });
@@ -254,7 +253,6 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     }
     const file = input.files[0];
     if (file) {
-      console.log('Archivo seleccionado:');
       // TODO: Agregar aquí la lógica para subir la imagen
     }
   }

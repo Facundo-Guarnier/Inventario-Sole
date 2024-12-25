@@ -227,7 +227,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     // //! Crear el producto
     this.apiProductos.crear(producto, this.authService.getToken()).subscribe(
       (res: any) => {
-        console.log('Producto creado:', res);
         this.tituloModal = 'Producto creado';
         this.mensajeModal = 'El producto se ha creado correctamente.';
         this.redireccionar = true;
@@ -274,7 +273,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
     }
     const file = input.files[0];
     if (file) {
-      console.log('Archivo seleccionado:');
       // TODO: Agregar aquí la lógica para subir la imagen
     }
   }
@@ -306,7 +304,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         campo.tipo !== 'readonly'
     );
     if (campoVacioGenerales) {
-      console.error(`El campo ${campoVacioGenerales.nombre} está vacío`);
       this.tituloModal = 'Faltan campos por llenar';
       this.mensajeModal = `Por favor, llena el campo ${campoVacioGenerales.nombre} antes de continuar.`;
       this.openModal();
@@ -321,7 +318,6 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
         campo.tipo !== 'readonly'
     );
     if (campoVacioFisica) {
-      console.error(`El campo ${campoVacioFisica.nombre} está vacío`);
       this.tituloModal = 'Faltan campos por llenar';
       this.mensajeModal = `Por favor, llena el campo ${campoVacioFisica.nombre} antes de continuar.`;
       this.openModal();

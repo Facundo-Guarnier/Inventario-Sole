@@ -384,7 +384,7 @@ class VentaService:
                     < cantidad
                 ):
                     return {
-                        "msg": f"No hay suficiente stock del producto {id_producto}"
+                        "msg": f"No hay suficiente stock del producto {id_producto}, stock actual: {respuesta1['respuesta'][0][str(tienda).lower()]['cantidad']}"
                     }, 400
 
                 #! Revisar si la cantidad y el precio son válidos

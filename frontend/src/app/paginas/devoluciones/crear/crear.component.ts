@@ -75,7 +75,6 @@ export class PagDevolucionesCrearComponent implements OnInit {
       .crear(this.detalleDevolucion, this.authService.getToken())
       .subscribe(
         (res) => {
-          console.log('Devolucion creado:', res);
           this.tituloModal = 'Devolucion creado';
           this.mensajeModal = 'La devolucion ha sido creado correctamente.';
           this.redireccionar = true;
