@@ -4,13 +4,16 @@
 
 2 Eliminar lo relacionado a mercado libre:
 
-3 Crear producto, Dejar campos como:
+3 Crear producto, dejar campos:
 
-- color
-- talle
-- marca
-- titulo
-- genero
+- ID
+- Titulo
+- Color
+- Talle
+- Descripcion
+- Marca
+- Genero
+- Liquidación
 
 4 Crear producto, En el front, agregar un switch para activar o no los campos de meli (por ahora siempre desactivado), de esta forma nos ahorramos todo lo relacionado a meli.
 

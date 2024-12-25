@@ -59,27 +59,15 @@ class ProductoModel:
                 "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
             }
 
-    def actualizar(self, id: str, data: dict) -> dict:
+    def actualizar(self, id: str, data: dict) -> None:
         """
-        Actualiza una producto.
+        Actualiza un producto.
 
         Args:
-            - id (int): ID del producto
-
-        Returns:
-            - dict: Productos actualizada
+            - id (str): ID del producto.
+            - data (dict): Datos a actualizar.
         """
-        try:
-            return {
-                "estado": True,
-                "respuesta": mongo.db.productos.update_one({"id": id}, {"$set": data}),
-            }
-
-        except Exception as e:
-            return {
-                "estado": False,
-                "respuesta": f"Hubo un error al conectar con la DB: {str(e)}",
-            }
+        mongo.db.productos.update_one({"id": id}, {"$set": data})
 
     def eliminar(self, id: str) -> dict:
         """

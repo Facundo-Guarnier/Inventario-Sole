@@ -31,18 +31,42 @@ export class PagProductosDetalleEditarComponent implements OnInit {
   camposGenerales: Campo[] = [
     { nombre: 'ID', identificador: 'id', tipo: 'readonly' },
     {
-      nombre: 'Código Mercado Shop',
-      identificador: 'cod_ms',
+      nombre: 'Titulo',
+      identificador: 'titulo',
       tipo: 'input-text'
     },
-    { nombre: 'Marca', identificador: 'marca', tipo: 'input-text' },
+    {
+      nombre: 'Color',
+      identificador: 'color',
+      tipo: 'input-text'
+    },
+    {
+      nombre: 'Talle',
+      identificador: 'talle',
+      tipo: 'input-text'
+    },
     {
       nombre: 'Descripcion',
       identificador: 'descripcion',
       tipo: 'textarea-text'
     },
-    { nombre: 'Talle', identificador: 'talle', tipo: 'input-text' },
-    { nombre: 'Liquidacion', identificador: 'liquidacion', tipo: 'boolean' }
+    {
+      nombre: 'Genero',
+      identificador: 'genero',
+      tipo: 'selector',
+      opciones: ['Hombre', 'Mujer', 'Niño', 'Niña', 'Unisex']
+    },
+    {
+      nombre: 'Marca',
+      identificador: 'marca',
+      tipo: 'input-text'
+    },
+    {
+      nombre: 'Liquidacion',
+      identificador: 'liquidacion',
+      tipo: 'boolean',
+      valor: false
+    }
   ];
 
   camposFisica: Campo[] = [
@@ -110,12 +134,10 @@ export class PagProductosDetalleEditarComponent implements OnInit {
       (res: any) => {
         let datos = res['msg'][0];
         //! Detalles generales
-        this.camposGenerales[0].valor = datos['id'];
-        this.camposGenerales[1].valor = datos['cod_ms'];
-        this.camposGenerales[2].valor = datos['marca'];
-        this.camposGenerales[3].valor = datos['descripcion'];
-        this.camposGenerales[4].valor = datos['talle'];
-        this.camposGenerales[5].valor = datos['liquidacion'];
+        console.log('⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️', datos);
+        this.camposGenerales.forEach((campo) => {
+          campo.valor = datos[campo.identificador];
+        });
 
         //! Detalles física
         this.camposFisica[0].valor = datos['fisica']['precio'];
@@ -151,13 +173,19 @@ export class PagProductosDetalleEditarComponent implements OnInit {
     this.verificarCamposVacios();
 
     //! Dar formato a los datos
-    let producto = {
-      id: this.camposGenerales[0].valor,
-      cod_ms: this.camposGenerales[1].valor,
-      marca: this.camposGenerales[2].valor,
-      descripcion: this.camposGenerales[3].valor,
-      talle: this.camposGenerales[4].valor,
-      liquidacion: this.camposGenerales[5].valor,
+
+    let producto = this.camposGenerales.reduce(
+      (acc: { [key: string]: any }, campo) => {
+        if (campo.identificador !== 'tiendaFisica') {
+          acc[campo.identificador] = campo.valor;
+        }
+        return acc;
+      },
+      {}
+    );
+
+    producto = {
+      ...producto,
       fisica: {
         precio: this.camposFisica[0].valor,
         cantidad: this.camposFisica[1].valor
@@ -167,10 +195,10 @@ export class PagProductosDetalleEditarComponent implements OnInit {
 
     //! Verificar id
     if (
-      producto.id === null ||
-      producto.id === undefined ||
-      producto.id === '' ||
-      typeof producto.id !== 'string'
+      producto['id'] === null ||
+      producto['id'] === undefined ||
+      producto['id'] === '' ||
+      typeof producto['id'] !== 'string'
     ) {
       console.error('No se ha encontrado el ID');
       return;
@@ -178,7 +206,7 @@ export class PagProductosDetalleEditarComponent implements OnInit {
 
     //! Actualizar el producto
     this.apiProducto
-      .actualizar(producto.id, producto, this.authService.getToken())
+      .actualizar(producto['id'], producto, this.authService.getToken())
       .subscribe(
         (res: any) => {
           this.tituloModal = 'Producto actualizado';

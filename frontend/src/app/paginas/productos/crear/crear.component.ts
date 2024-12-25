@@ -126,6 +126,17 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       tipo: 'textarea-text'
     },
     {
+      nombre: 'Genero',
+      identificador: 'genero',
+      tipo: 'selector',
+      opciones: ['Hombre', 'Mujer', 'Niño', 'Niña', 'Unisex']
+    },
+    {
+      nombre: 'Marca',
+      identificador: 'marca',
+      tipo: 'input-text'
+    },
+    {
       nombre: 'Liquidacion',
       identificador: 'liquidacion',
       tipo: 'boolean',
@@ -213,25 +224,24 @@ export class PagProductosCrearComponent implements OnInit, AfterViewInit {
       fotos: this.fotos.map((foto) => foto.filename)
     };
 
-    console.log('❓❓❓❓❓Producto:', producto);
     // //! Crear el producto
-    // this.apiProductos.crear(producto, this.authService.getToken()).subscribe(
-    //   (res: any) => {
-    //     console.log('Producto creado:', res);
-    //     this.tituloModal = 'Producto creado';
-    //     this.mensajeModal = 'El producto se ha creado correctamente.';
-    //     this.redireccionar = true;
-    //     this.openModal();
-    //   },
-    //   (err: any) => {
-    //     console.error('Error al crear el producto:', err);
-    //     this.tituloModal = 'Error al crear';
-    //     this.mensajeModal =
-    //       'Ha ocurrido un error al crear el producto. Error: ' +
-    //       err['error']['msg'];
-    //     this.openModal();
-    //   }
-    // );
+    this.apiProductos.crear(producto, this.authService.getToken()).subscribe(
+      (res: any) => {
+        console.log('Producto creado:', res);
+        this.tituloModal = 'Producto creado';
+        this.mensajeModal = 'El producto se ha creado correctamente.';
+        this.redireccionar = true;
+        this.openModal();
+      },
+      (err: any) => {
+        console.error('Error al crear el producto:', err);
+        this.tituloModal = 'Error al crear';
+        this.mensajeModal =
+          'Ha ocurrido un error al crear el producto. Error: ' +
+          err['error']['msg'];
+        this.openModal();
+      }
+    );
   }
 
   ClickCancelar() {

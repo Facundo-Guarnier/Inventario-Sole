@@ -5,6 +5,32 @@ from app.models.ProductoModel import ProductoModel
 from app.services.foto import FotoService
 from app.services.ultima_id import UltimaIdService
 
+# {
+#   "_id": {
+#     "$oid": "676c7a4c90b696d3275c68bc"
+#   },
+#   "id": "00028",
+#   "titulo": "ti",
+#   "color": "co",
+#   "talle": "ta",
+#   "descripcion": "des",
+#   "genero": "Niña",
+#   "marca": "mar",
+#   "liquidacion": true,
+#   "fisica": {
+#     "precio": 11,
+#     "cantidad": 22,
+#     "validacion": {
+#       "ultima_fecha": "2024-12-25",
+#       "cantidad_validada": 0,
+#       "estado": "En proceso"
+#     }
+#   },
+#   "fotos": [
+#     "00028/resized_Captura_de_pantalla_48.jpg"
+#   ]
+# }
+
 
 class ProductoService:
     def __init__(self) -> None:
@@ -34,91 +60,41 @@ class ProductoService:
 
     def actualizar(self, id: str, datos: dict) -> tuple:
         """
-        Actualiza una producto.
+        Actualiza un producto, permitiendo cualquier campo y campos nuevos.
 
         Args:
-            - id (int): ID del producto
+            - id (str): ID del producto.
+            - datos (dict): Datos a actualizar.
 
         Returns:
-            - dict: Producto actualizado
+            - tuple: Mensaje y código de estado HTTP.
         """
+
         if not id:
             return ({"msg": "Falta el ID"}), 400
 
         #! Buscar si existe el producto
-        viejo_producto = self.producto_model.buscar_x_atributo({"id": id})
+        viejo_producto = self.producto_model.buscar_x_atributo({"id": id})["respuesta"][
+            0
+        ]
         if not viejo_producto:
             return ({"msg": "No se encontró el producto"}), 404
 
-        #! Validar datos
-        cod_ms = datos.get("cod_ms")
-        marca = datos.get("marca")
-        descripcion = datos.get("descripcion")
-        talle = datos.get("talle")
-        fisica = datos.get("fisica")
-        online = datos.get("online")
-        liquidacion = datos.get("liquidacion")
-        fotos = datos.get("fotos")
-
-        if (
-            not cod_ms
-            or not marca
-            or not descripcion
-            or not talle
-            or not fisica
-            or not online
-            or liquidacion is None
-            or not fotos
-        ):
-            return ({"msg": "Faltan datos"}), 400
-
-        #! Validar tiendas
-        try:
-            fisica["precio"] = float(fisica["precio"])
-            fisica["cantidad"] = int(fisica["cantidad"])
-            online["precio"] = float(online["precio"])
-            online["cantidad"] = int(online["cantidad"])
-
-        except Exception:
-            return ({"msg": "Error en los parámetros enviados"}), 400
-
-        if (
-            fisica["precio"] <= 0
-            or fisica["cantidad"] < 0
-            or online["precio"] <= 0
-            or online["cantidad"] < 0
-        ):
-            return ({"msg": "Los precios y cantidades deben ser mayores a 0"}), 400
-
-        #! Crear diccionario con los datos a actualizar
-        nuevo_producto = {
-            "id": id,
-            "cod_ms": cod_ms,
-            "marca": marca,
-            "descripcion": descripcion,
-            "talle": talle,
-            "fisica": fisica,
-            "online": online,
-            "liquidacion": liquidacion,
-            "fotos": fotos,
-        }
+        datos["fisica"]["validacion"] = viejo_producto["fisica"]["validacion"]
+        datos["id"] = id
 
         #! Actualizar producto
-        respuesta = self.producto_model.actualizar(id, nuevo_producto)
-        if respuesta["estado"]:
+        self.producto_model.actualizar(id, datos)
 
-            #! Borra las fotos que no se usan
+        #! Borra las fotos que no se usan (si se enviaron nuevas fotos)
+        if "fotos" in datos:
             fotos_nuevas_nombre = []
-            for f in nuevo_producto[
-                "fotos"
-            ]:  #! Ej: [00026/resized_Pic_20240204_165151_4096x2160.png', ...]
+            for f in datos["fotos"]:
                 foto = f.split("/")[-1]
                 fotos_nuevas_nombre.append(foto)
             self.fotoResource.eliminar_fotos_viejas_producto(id, fotos_nuevas_nombre)
 
-            return ({"msg": "Producto actualizada"}), 200
-
-        return ({"msg": respuesta["respuesta"]}), 400
+        return ({"msg": "Producto actualizado"}), 200
 
     def eliminar(self, id: str) -> tuple:
         """
@@ -262,51 +238,20 @@ class ProductoService:
         Returns:
             - dict: Producto creado
         """
-        print("++++DATOS DEL PRODUCTO NUEVO:", datos)
-        # {'id': '00027', 'titulo': 'pantalon ', 'liquidacion': False, 'dominio': 'Ropa y Accesorios > Pantalones', 'BRAND': 'generico',
-        # 'MODEL': 'pantalon2000', 'GENDER': 'Mujer', 'COLOR': 'Coral', 'SIZE': '28', 'MAIN_MATERIAL': 'Lana',
-        # 'PANT_TYPE': 'Pantalón', 'dominioObj': {'domain_id': 'MLA-PANTS', 'domain_name': 'Pantalones', 'category_id': 'MLA109282',
-        # 'category_name': 'Pantalones', 'attributes': [], 'path_completo': 'Ropa y Accesorios > Pantalones'}, 'fisica': {'precio': 100, 'cantidad': 100},
-        # 'online': {'precio': 200, 'cantidad': 200}, 'fotos': ['00027/resized_pngtree-tech-color-offline-color-twitch-design-banner-background-image_520015.jpg']}
-        return ({"msg": "En construcción"}), 400
-
-        cod_ms = datos.get("cod_ms")
-        marca = datos.get("marca")
-        descripcion = datos.get("descripcion")
-        talle = datos.get("talle")
         fisica = datos.get("fisica")
-        online = datos.get("online")
-        liquidacion = datos.get("liquidacion")
-        fotos = datos.get("fotos")
 
-        if (
-            not cod_ms
-            or not marca
-            or not descripcion
-            or not talle
-            or not fisica
-            or not online
-            or liquidacion is None
-            or not fotos
-        ):
-            return ({"msg": "Faltan datos"}), 400
+        if not fisica:
+            return ({"msg": "Faltan datos de tienda física"}), 400
 
         #! Validar tiendas
         try:
             fisica["precio"] = float(fisica["precio"])
             fisica["cantidad"] = int(fisica["cantidad"])
-            online["precio"] = float(online["precio"])
-            online["cantidad"] = int(online["cantidad"])
 
         except Exception:
             return ({"msg": "Error en los parámetros enviados"}), 400
 
-        if (
-            fisica["precio"] <= 0
-            or fisica["cantidad"] < 0
-            or online["precio"] <= 0
-            or online["cantidad"] < 0
-        ):
+        if fisica["precio"] <= 0 or fisica["cantidad"] < 0:
             return ({"msg": "Los precios y cantidades deben ser mayores a 0"}), 400
 
         buenos_aires_tz = pytz.timezone("America/Argentina/Buenos_Aires")
@@ -317,28 +262,18 @@ class ProductoService:
             "estado": "En proceso",
         }
 
-        #! Agregar validación a física y online
+        #! Agregar validación a física
         fisica["validacion"] = validacion.copy()
-        online["validacion"] = validacion.copy()
 
-        respuesta = self.producto_model.crear(
-            {
-                "id": self.ultima_id_resource.calcular_proximo_id("producto"),
-                "cod_ms": cod_ms,
-                "marca": marca,
-                "descripcion": descripcion,
-                "talle": talle,
-                "fisica": fisica,
-                "online": online,
-                "liquidacion": liquidacion,
-                "fotos": fotos,
-            }
-        )
+        datos["id"] = self.ultima_id_resource.calcular_proximo_id("producto")
+        datos["fisica"] = fisica
+
+        respuesta = self.producto_model.crear(datos)
 
         if respuesta["estado"]:
             if respuesta["respuesta"] is None:
                 return ({"msg": "Error al crear el producto"}), 400
             else:
-                self.ultima_id_resource.put("producto")
+                self.ultima_id_resource.aumentar_id("producto")
                 return ({"msg": "Producto creado con éxito"}), 201
         return ({"msg": respuesta["respuesta"]}), 400
