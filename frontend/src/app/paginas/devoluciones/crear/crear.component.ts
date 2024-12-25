@@ -21,8 +21,8 @@ export class PagDevolucionesCrearComponent implements OnInit {
     {
       nombre: 'Tienda',
       identificador: 'tienda',
-      tipo: 'selector',
-      opciones: ['Fisica', 'Online']
+      tipo: 'readonly',
+      valor: 'Fisica'
     },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
     {

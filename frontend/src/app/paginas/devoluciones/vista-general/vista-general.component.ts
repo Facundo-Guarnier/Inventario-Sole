@@ -28,7 +28,7 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
     },
     { nombre: 'Fecha', identificador: 'fecha_devolucion', tipo: 'date' },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'number' },
-    { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
+    // { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
     { nombre: 'Comentario dev.', identificador: 'comentario', tipo: 'text' }
   ];
 
@@ -39,11 +39,11 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
   //! Busqueda
   filtrosBusqueda: any[] = [];
   filtrosLista: Filtro[] = [
-    {
-      nombre: 'Tienda',
-      identificador: 'tienda',
-      opciones: ['Fisica', 'Online']
-    },
+    // {
+    //   nombre: 'Tienda',
+    //   identificador: 'tienda',
+    //   opciones: ['Fisica', 'Online']
+    // },
     {
       nombre: 'Rango de fecha',
       identificador: 'fecha',

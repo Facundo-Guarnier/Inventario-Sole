@@ -18,7 +18,7 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
     { nombre: 'Fecha', identificador: 'fecha', tipo: 'date' },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'number' },
     { nombre: 'Vendedor', identificador: 'vendedor', tipo: 'text' },
-    { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
+    // { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
     { nombre: 'Comentario', identificador: 'comentario', tipo: 'text' }
   ];
   acciones = {
@@ -36,11 +36,11 @@ export class PagMovimientosVistaGeneralComponent implements OnInit {
       identificador: 'movimiento',
       opciones: ['Entrada', 'Salida']
     },
-    {
-      nombre: 'Tienda',
-      identificador: 'tienda',
-      opciones: ['Fisica', 'Online']
-    },
+    // {
+    //   nombre: 'Tienda',
+    //   identificador: 'tienda',
+    //   opciones: ['Fisica', 'Online']
+    // },
     {
       nombre: 'Rango de fecha',
       identificador: 'fecha',

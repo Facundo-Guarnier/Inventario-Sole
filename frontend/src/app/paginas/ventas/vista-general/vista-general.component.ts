@@ -30,7 +30,7 @@ export class PagVentasVistaGeneralComponent implements OnInit {
       identificador: 'total_productos',
       tipo: 'currency'
     },
-    { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
+    // { nombre: 'Tienda', identificador: 'tienda', tipo: 'text' },
     { nombre: 'Metodo', identificador: 'metodo', tipo: 'text' }
   ];
 
@@ -57,11 +57,11 @@ export class PagVentasVistaGeneralComponent implements OnInit {
   //! Busqueda
   filtrosBusqueda: any[] = [];
   filtrosLista: Filtro[] = [
-    {
-      nombre: 'Tienda',
-      identificador: 'tienda',
-      opciones: ['Fisica', 'Online']
-    },
+    // {
+    //   nombre: 'Tienda',
+    //   identificador: 'tienda',
+    //   opciones: ['Fisica', 'Online']
+    // },
     {
       nombre: 'Rango de fecha',
       identificador: 'fecha',
