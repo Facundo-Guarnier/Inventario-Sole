@@ -27,8 +27,8 @@ export class PagMovimientosCrearComponent implements OnInit {
     {
       nombre: 'Tienda',
       identificador: 'tienda',
-      tipo: 'selector',
-      opciones: ['Fisica', 'Online']
+      tipo: 'readonly',
+      valor: 'Fisica'
     },
     { nombre: 'ID producto', identificador: 'idProducto', tipo: 'input-text' },
     { nombre: 'Cantidad', identificador: 'cantidad', tipo: 'input-number' },
