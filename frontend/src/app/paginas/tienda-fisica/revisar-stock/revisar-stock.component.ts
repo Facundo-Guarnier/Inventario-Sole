@@ -15,6 +15,7 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   notificaciones: Notificacion[] = [];
   fecha_ronda: string = '';
   id_a_validar: string = '';
+  cantidad_a_validar: number = 1;
 
   columnas = [
     { nombre: 'ID producto', identificador: 'id', tipo: 'text' },
@@ -130,26 +131,28 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
   }
 
   validarUnidad() {
-    //! Validar si la idproducto está en la lista de datos.
-    //* No debería hacer este filtro porque debería poder haber alguna discrepancia en el stock
-    // if (!this.datos.find(p => p.id === idProducto)) {
-    //   console.error('Producto no encontrado en la lista de productos para validar');
-    //   return;
-    // }
-
+    if (!this.id_a_validar) {
+      return;
+    }
+    if (this.cantidad_a_validar < 1) {
+      this.cantidad_a_validar = 1;
+    }
     this.ApiValidarStock.validarUnidad(
       this.id_a_validar,
+      this.cantidad_a_validar,
       'fisica',
       this.AuthService.getToken()
     ).subscribe(
       (respuesta) => {
         this.agregarNotificacion({
-          mensaje: `Producto '${this.id_a_validar}' validado. Unidades restantes: ${respuesta.unidades_restantes}`,
+          mensaje: `Producto '${this.id_a_validar}' ('${this.cantidad_a_validar}') validado. Unidades restantes: ${respuesta.unidades_restantes}`,
           puedeDeshacer: true,
-          idProducto: this.id_a_validar
+          idProducto: this.id_a_validar,
+          cantidad: this.cantidad_a_validar
         });
         this.recargarLista();
         this.id_a_validar = '';
+        this.cantidad_a_validar = 1;
       },
       (error) => {
         this.agregarNotificacion({
@@ -171,9 +174,14 @@ export class PagTiendaFisicaRevisarStockComponent implements OnInit {
 
   deshacerAccion(index: number) {
     const notificacion = this.notificaciones[index];
-    if (notificacion.puedeDeshacer && notificacion.idProducto) {
+    if (
+      notificacion.puedeDeshacer &&
+      notificacion.idProducto &&
+      notificacion.cantidad
+    ) {
       this.ApiValidarStock.deshacerValidacion(
         notificacion.idProducto,
+        notificacion.cantidad,
         'fisica',
         this.AuthService.getToken()
       ).subscribe(

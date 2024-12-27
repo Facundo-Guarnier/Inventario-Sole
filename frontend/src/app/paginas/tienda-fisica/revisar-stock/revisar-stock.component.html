@@ -43,14 +43,25 @@
               class="form-control"
               placeholder="ID del producto"
               (keyup.enter)="validarUnidad()"
+              required
             />
-            <button
-              (click)="validarUnidad()"
-              class="btn btn-secondary boton-revisar"
-            >
-              Revisar
-            </button>
+            <input
+              type="number"
+              [(ngModel)]="cantidad_a_validar"
+              class="form-control"
+              placeholder="Cantidad"
+              min="1"
+              [defaultValue]="1"
+              required
+              (keyup.enter)="validarUnidad()"
+            />
           </div>
+          <button
+            (click)="validarUnidad()"
+            class="btn btn-secondary boton-revisar"
+          >
+            Revisar
+          </button>
         </div>
       </div>
 

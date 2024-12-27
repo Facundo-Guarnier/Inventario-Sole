@@ -11,7 +11,6 @@ ronda_validacion_service = RondaValidacionStockService()
 # @jwt_required()
 @ronda_validacion.route("", methods=["GET"])
 def productos_a_validar():
-
     try:
         data = request.args.to_dict()
         tienda = data.get("tienda")
@@ -52,8 +51,11 @@ def validar_unidad():
     id_producto = data.get("id")
     deshacer = data.get("deshacer", False)
     tienda = data.get("tienda")
+    cantidad = data.get("cantidad", 1)
 
     if not id_producto or not tienda:
         return ({"error": "Datos incompletos"}), 400
 
-    return validacion_stock_service.validar_unidad(id_producto, tienda, deshacer)
+    return validacion_stock_service.validar_unidad(
+        id_producto, tienda, deshacer, cantidad
+    )

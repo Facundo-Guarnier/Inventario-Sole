@@ -43,7 +43,7 @@ class ValidacionStockModel:
             )
         )
 
-    def validar_unidad(self, id_producto, tienda):
+    def validar_unidad(self, id_producto, tienda, cantidad):
         producto = mongo.db.productos.find_one({"id": id_producto})
 
         if not producto:
@@ -54,8 +54,6 @@ class ValidacionStockModel:
             {"ultima_fecha": None, "cantidad_validada": 0, "estado": "no_iniciado"},
         )
 
-        print("+++++++++++++Validacion: ", validacion)
-
         fecha_actual = self.obtener_ronda_actual(tienda)
         cantidad_fisica = producto[tienda]["cantidad"]
 
@@ -65,7 +63,7 @@ class ValidacionStockModel:
             validacion["cantidad_validada"] = 0
             validacion["estado"] = "En proceso"
 
-        validacion["cantidad_validada"] += 1  #! Se suma una unidad
+        validacion["cantidad_validada"] += cantidad  #! Se suma una unidad
 
         #! Entrar en discrepancia si ya está validado
         if (
@@ -89,7 +87,7 @@ class ValidacionStockModel:
             "estado_validacion": validacion["estado"],
         }
 
-    def deshacer_validacion(self, id_producto, tienda):
+    def deshacer_validacion(self, id_producto, tienda, cantidad):
         producto = mongo.db.productos.find_one({"id": id_producto})
 
         if not producto:
@@ -112,7 +110,7 @@ class ValidacionStockModel:
                 "estado_validacion": validacion["estado"],
             }
 
-        validacion["cantidad_validada"] -= 1
+        validacion["cantidad_validada"] -= cantidad
 
         #!
         if validacion["cantidad_validada"] < cantidad_fisica:

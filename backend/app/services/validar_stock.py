@@ -52,16 +52,20 @@ class ValidarStockService:
     def __init__(self):
         self.validacion_stock_model = ValidacionStockModel()
 
-    def validar_unidad(self, id_producto: str, tienda: str, deshacer: bool = False):
+    def validar_unidad(
+        self, id_producto: str, tienda: str, deshacer: bool = False, cantidad: int = 1
+    ):
         """
         Valida una unidad de un producto.
         """
 
         if deshacer:
             resultado = self.validacion_stock_model.deshacer_validacion(
-                id_producto, tienda
+                id_producto, tienda, cantidad
             )
         else:
-            resultado = self.validacion_stock_model.validar_unidad(id_producto, tienda)
+            resultado = self.validacion_stock_model.validar_unidad(
+                id_producto, tienda, cantidad
+            )
 
         return (resultado), 200 if resultado["estado"] else 400

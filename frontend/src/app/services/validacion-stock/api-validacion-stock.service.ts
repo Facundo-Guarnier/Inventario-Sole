@@ -45,6 +45,7 @@ export class ApiValidarStock {
 
   validarUnidad(
     idProducto: string,
+    cantidad: number,
     tienda: string,
     token: string
   ): Observable<any> {
@@ -54,13 +55,14 @@ export class ApiValidarStock {
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.post(
       `${this.url}`,
-      { id: idProducto, tienda: tienda },
+      { id: idProducto, tienda: tienda, cantidad: cantidad },
       { headers: heads }
     );
   }
 
   deshacerValidacion(
     idProducto: string,
+    cantidad: number,
     tienda: string,
     token: string
   ): Observable<any> {
@@ -70,7 +72,7 @@ export class ApiValidarStock {
       .set('Authorization', 'Bearer ' + token);
     return this.httpClient.post(
       `${this.url}`,
-      { deshacer: true, id: idProducto, tienda: tienda },
+      { deshacer: true, id: idProducto, tienda: tienda, cantidad: cantidad },
       { headers: heads }
     );
   }

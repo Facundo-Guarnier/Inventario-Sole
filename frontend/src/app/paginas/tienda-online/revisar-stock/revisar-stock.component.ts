@@ -143,6 +143,7 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
 
     this.ApiValidarStock.validarUnidad(
       this.id_a_validar,
+      1,
       'online',
       this.AuthService.getToken()
     ).subscribe(
@@ -178,6 +179,7 @@ export class PagTiendaOnlineRevisarStockComponent implements OnInit {
     if (notificacion.puedeDeshacer && notificacion.idProducto) {
       this.ApiValidarStock.deshacerValidacion(
         notificacion.idProducto,
+        1,
         'online',
         this.AuthService.getToken()
       ).subscribe(
