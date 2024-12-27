@@ -14,6 +14,7 @@ export class PagTiendaFisicaVistaGeneralComponent implements OnInit {
   //! Tabla de datos
   columnas = [
     { nombre: 'ID producto', identificador: 'id', tipo: 'text' },
+    { nombre: 'Titulo', identificador: 'titulo', tipo: 'text' },
     { nombre: 'Marca', identificador: 'marca', tipo: 'text' },
     { nombre: 'Talle', identificador: 'talle', tipo: 'text' },
     { nombre: 'Precio', identificador: 'precio', tipo: 'currency' },

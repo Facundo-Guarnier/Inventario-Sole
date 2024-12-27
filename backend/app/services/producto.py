@@ -185,6 +185,7 @@ class ProductoService:
                 filtro["$or"] = [
                     {"id": {"$regex": palabra_clave, "$options": "i"}},
                     {"cod_ms": {"$regex": palabra_clave, "$options": "i"}},
+                    {"titulo": {"$regex": palabra_clave, "$options": "i"}},
                     {"marca": {"$regex": palabra_clave, "$options": "i"}},
                     {"descripcion": {"$regex": palabra_clave, "$options": "i"}},
                     {"talle": {"$regex": palabra_clave, "$options": "i"}},
@@ -198,6 +199,7 @@ class ProductoService:
                 #! Si no se puede convertir a número, usa solo búsqueda de texto
                 filtro["$or"] = [
                     {"id": {"$regex": palabra_clave, "$options": "i"}},
+                    {"titulo": {"$regex": palabra_clave, "$options": "i"}},
                     {"cod_ms": {"$regex": palabra_clave, "$options": "i"}},
                     {"marca": {"$regex": palabra_clave, "$options": "i"}},
                     {"descripcion": {"$regex": palabra_clave, "$options": "i"}},
