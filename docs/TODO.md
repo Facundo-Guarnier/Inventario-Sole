@@ -1,10 +1,10 @@
 # TO DO list
 
-1 Revisar endpoint con el front para saber si funcionan todos
+1 Revisar endpoint con el front para saber si funcionan todos ✅
 
-2 Eliminar lo relacionado a mercado libre:
+2 Eliminar lo relacionado a mercado libre ✅
 
-3 Crear producto, dejar campos:
+3 Crear producto, dejar campos: ✅
 
 - ID
 - Titulo

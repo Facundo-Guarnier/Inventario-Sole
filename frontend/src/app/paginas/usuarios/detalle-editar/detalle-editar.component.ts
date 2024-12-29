@@ -23,7 +23,7 @@ export class PagUsuarioDetalleEditarComponent implements OnInit {
       nombre: 'Roles (obligatorio)',
       identificador: 'roles',
       tipo: 'selector-multiple',
-      opciones: ['Admin', 'User', 'Ver y nada mas']
+      opciones: ['Admin', 'User']
     },
     {
       nombre: 'Nueva contraseña (si no desea cambiarla deje el campo vacío)',

@@ -14,20 +14,20 @@ spec:
         app: angular-frontend
     spec:
       containers:
-      - name: angular-frontend
-        image: facundoguarnier/inventario-sole-frontend:v1.1
-        resources:
-          requests:
-            cpu: "500m"
-            memory: "512Mi"
-          limits:
-            cpu: "2500m"
-            memory: "1536Mi"
-        ports:
-        - containerPort: 80
-        env:
-        - name: API_URL
-          value: "http://backend-service:5000"
+        - name: angular-frontend
+          image: facundoguarnier/inventario-sole-frontend:v1.3
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2500m"
+              memory: "1536Mi"
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_URL
+              value: "http://backend-service:5000"
 
 ---
 #T* Service
@@ -44,6 +44,4 @@ spec:
       targetPort: 80
       nodePort: 30080
   type: NodePort
-
-
 #! docker build -t facundoguarnier/inventario-sole-frontend:v0.11 .

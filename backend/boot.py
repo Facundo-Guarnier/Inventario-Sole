@@ -14,6 +14,8 @@ def esta_en_entorno_virtual():
     return os.getenv("VIRTUAL_ENV") is not None
 
 
+app = create_app()
+
 if __name__ == "__main__":
     if esta_en_entorno_virtual():
         print("[OK] El script se está ejecutando dentro de un entorno virtual.")
@@ -21,5 +23,4 @@ if __name__ == "__main__":
         print("El script NO se está ejecutando dentro de un entorno virtual.")
         exit(1)
 
-    app = create_app()
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

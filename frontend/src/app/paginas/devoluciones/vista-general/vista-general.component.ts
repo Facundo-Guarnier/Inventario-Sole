@@ -21,7 +21,6 @@ export class PagDevolucionesVistaGeneralComponent implements OnInit {
 
   columnas = [
     { nombre: 'ID producto', identificador: 'id_producto', tipo: 'text' },
-    { nombre: 'Titulo', identificador: 'titulo', tipo: 'text' },
     {
       nombre: 'Descripcion prod.',
       identificador: 'descripcion_producto',
