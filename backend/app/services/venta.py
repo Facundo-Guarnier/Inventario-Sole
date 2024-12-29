@@ -5,6 +5,7 @@ from app.models.ProductoModel import ProductoModel
 from app.models.VentaModel import VentaModel
 from app.services.movimiento import MovimientoService
 from app.services.ultima_id import UltimaIdService
+from flask_jwt_extended import get_jwt
 
 
 class VentaService:
@@ -350,7 +351,7 @@ class VentaService:
             tienda = datos["tienda"]
             metodo_pago = datos["metodo"]
             productos = datos["productos"]
-            vendedor = datos.get("vendedor", "-")
+            vendedor = get_jwt().get("sub", None)
         except KeyError as e:
             return {"msg": f"Falta el parámetro {str(e)}"}, 400
         except ValueError:
@@ -433,6 +434,7 @@ class VentaService:
                 }, 500
 
         buenos_aires_tz = pytz.timezone("America/Argentina/Buenos_Aires")
+
         #! Crear venta
         nueva_venta = {
             "id": self.ultima_id_resource.calcular_proximo_id("venta"),

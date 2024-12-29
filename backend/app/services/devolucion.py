@@ -63,7 +63,7 @@ class DevolucionService:
             }, 200
         return {"msg": respuesta["respuesta"]}, 404
 
-    def crear(self, datos: dict) -> tuple:
+    def crear(self, datos: dict, user: str) -> tuple:
         """
         Crea una devolución.
 
@@ -99,7 +99,7 @@ class DevolucionService:
             "movimiento": "Entrada",
             "idProducto": id_producto,
             "cantidad": cantidad,
-            "vendedor": "-",
+            "vendedor": user,
             "comentario": "Devolución de producto",
             "tienda": tienda,
         }

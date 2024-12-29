@@ -19,8 +19,6 @@ class DevolucionModel:
             - list: Devoluciones encontradas
         """
         try:
-            print("🚀🚀🚀", filtro)
-
             return {
                 "estado": True,
                 "respuesta": json.loads(
