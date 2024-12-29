@@ -7,15 +7,15 @@ movimiento = Blueprint("/api/movimientos", __name__, url_prefix="/api/movimiento
 movimiento_service = MovimientoService()
 
 
-@jwt_required()
 @movimiento.route("/<id>", methods=["GET"])
+@jwt_required()
 def buscar_por_id(id: str):
     return movimiento_service.buscar_por_id(id)
 
 
+@movimiento.route("/<id>", methods=["PUT"])
 @jwt_required()
 @admin_required
-@movimiento.route("/<id>", methods=["PUT"])
 def actualizar(id: str):
     datos = request.json
     if not datos or datos is None:
@@ -26,15 +26,15 @@ def actualizar(id: str):
     return movimiento_service.actualizar(id, datos)
 
 
+@movimiento.route("/<id>", methods=["DELETE"])
 @jwt_required()
 @admin_required
-@movimiento.route("/<id>", methods=["DELETE"])
 def eliminar(id: str):
     return movimiento_service.eliminar(id)
 
 
-@jwt_required()
 @movimiento.route("", methods=["GET"])
+@jwt_required()
 def buscar_todos():
     try:
         pagina = int(request.args.get("pagina", 1))
@@ -60,8 +60,8 @@ def buscar_todos():
     return movimiento_service.buscar_x_atributo(filtro, pagina, por_pagina)
 
 
-@jwt_required()
 @movimiento.route("", methods=["POST"])
+@jwt_required()
 def crear():
     datos = request.json
     if not datos or datos is None:

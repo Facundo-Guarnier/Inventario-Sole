@@ -11,15 +11,15 @@ usuario = Blueprint("/api/usuarios", __name__, url_prefix="/api/usuarios")
 usuario_service = UsuarioService()
 
 
-@jwt_required()
 @usuario.route("/<alias>", methods=["GET"])
+@jwt_required()
 def buscar_por_alias(alias: str):
     return usuario_service.buscar_por_alias(alias)
 
 
+@usuario.route("/<alias>", methods=["PUT"])
 @jwt_required()
 @admin_required
-@usuario.route("/<alias>", methods=["PUT"])
 def actualizar(alias: str):
     datos = request.json
     if not datos or datos is None:
@@ -30,16 +30,16 @@ def actualizar(alias: str):
     return usuario_service.actualizar(alias, datos)
 
 
+@usuario.route("/<alias>", methods=["DELETE"])
 @jwt_required()
 @admin_required
-@usuario.route("/<alias>", methods=["DELETE"])
 def eliminar(alias: str):
     return usuario_service.eliminar(alias)
 
 
+@usuario.route("", methods=["GET"])
 @jwt_required()
 @admin_required
-@usuario.route("", methods=["GET"])
 def buscar_todos():
     try:
         pagina = int(request.args.get("pagina", 1))

@@ -6,14 +6,14 @@ producto = Blueprint("/api/productos", __name__, url_prefix="/api/productos")
 producto_service = ProductoService()
 
 
-@jwt_required()
 @producto.route("/<id>", methods=["GET"])
+@jwt_required()
 def buscar_por_id(id: str):
     return producto_service.buscar_por_id(id)
 
 
-@jwt_required()
 @producto.route("/<id>", methods=["PUT"])
+@jwt_required()
 def actualizar(id: str):
     datos = request.json
     if not datos or datos is None:
@@ -22,14 +22,14 @@ def actualizar(id: str):
     return producto_service.actualizar(id, datos)
 
 
-@jwt_required()
 @producto.route("/<id>", methods=["DELETE"])
+@jwt_required()
 def eliminar(id: str):
     return producto_service.eliminar(id)
 
 
-@jwt_required()
 @producto.route("", methods=["GET"])
+@jwt_required()
 def buscar_por_filtro():
     filtro = request.args.to_dict()
     pagina = int(request.args.get("pagina", 1))
@@ -41,8 +41,8 @@ def buscar_por_filtro():
     return producto_service.buscar_por_filtro(filtro, pagina, por_pagina)
 
 
-@jwt_required()
 @producto.route("", methods=["POST"])
+@jwt_required()
 def crear():
     datos = request.json
     if not datos or datos is None:

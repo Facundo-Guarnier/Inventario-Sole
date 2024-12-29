@@ -8,8 +8,8 @@ ronda_validacion = Blueprint(
 ronda_validacion_service = RondaValidacionStockService()
 
 
-# @jwt_required()
 @ronda_validacion.route("", methods=["GET"])
+# @jwt_required()
 def productos_a_validar():
     try:
         data = request.args.to_dict()
@@ -26,8 +26,8 @@ def productos_a_validar():
     return ronda_validacion_service.productos_a_validar(tienda, pagina, por_pagina)
 
 
-@jwt_required()
 @ronda_validacion.route("", methods=["POST"])
+@jwt_required()
 def iniciar_ronda():
     data = request.json
     tienda = data.get("tienda")
@@ -44,8 +44,8 @@ validacion_stock = Blueprint(
 validacion_stock_service = ValidarStockService()
 
 
-@jwt_required()
 @validacion_stock.route("", methods=["POST"])
+@jwt_required()
 def validar_unidad():
     data = request.json
     id_producto = data.get("id")

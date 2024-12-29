@@ -7,8 +7,8 @@ from flask_jwt_extended import jwt_required
 meli = Blueprint("/api/meli", __name__, url_prefix="/api/meli")
 
 
-@jwt_required()
 @meli.route("", methods=["GET"])
+@jwt_required()
 def get():
     # Crear instancia de MeliService dentro de la función
     meli_service = MeliService()

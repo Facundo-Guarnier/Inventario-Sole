@@ -6,14 +6,14 @@ foto = Blueprint("/api/fotos", __name__, url_prefix="/api/fotos")
 foto_service = FotoService()
 
 
-@jwt_required()
 @foto.route("/<id_prod>/<filename>", methods=["GET"])
+@jwt_required()
 def buscar_foto(id_prod: str, filename: str):
     return foto_service.get_by_id_and_filename(id_prod, filename)
 
 
-@jwt_required()
 @foto.route("", methods=["POST"])
+@jwt_required()
 def subir_foto():
     if "foto" not in request.files:
         return {"error": "No se encontró la parte del archivo"}, 400

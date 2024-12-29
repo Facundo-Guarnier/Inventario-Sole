@@ -1,6 +1,6 @@
 from app.services.devolucion import DevolucionService
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt, jwt_required
 
 devolucion = Blueprint("/api/devoluciones", __name__, url_prefix="/api/devoluciones")
 devolucion_service = DevolucionService()
@@ -24,11 +24,12 @@ def buscar():
     )
 
 
-@jwt_required()
 @devolucion.route("", methods=["POST"])
+@jwt_required()
 def crear():
     datos = request.json
     if not datos:
         return {"msg": "Faltan datos"}, 400
 
-    return devolucion_service.crear(datos)
+    user = get_jwt().get("sub", None)
+    return devolucion_service.crear(datos, user)
