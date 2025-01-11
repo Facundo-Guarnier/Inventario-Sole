@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
         - name: flask-backend
-          image: facundoguarnier/inventario-sole-backend:v1.5
+          image: facundoguarnier/inventario-sole-backend:v1.6
           resources:
             requests:
               cpu: "500m"
