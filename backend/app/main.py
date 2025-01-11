@@ -78,20 +78,6 @@ def initialize_database(app):
                 }
             )
             logger.info("Admin creado.")
-        else:
-            mongo.db.usuarios.update_one(
-                {"alias": "admin"},
-                {
-                    "$set": {
-                        "roles": ["Admin"],
-                        "contraseña": generate_password_hash(
-                            app.config["CONTRA_ADMIN"]
-                        ),
-                    }
-                },
-                upsert=True,
-            )
-            logger.info("Admin actualizado.")
     except Exception as e:
         logger.error(f"Error al crear/actualizar el usuario admin: {str(e)}")
 
