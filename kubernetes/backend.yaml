@@ -5,7 +5,8 @@ metadata:
   name: flask-config
 
 data:
-  MONGO_URI: "mongodb://mongodb-service:37000/db-inventario-sole3.db"
+  #MONGO_URI: "mongodb://mongodb-service:37000/db-inventario-sole3.db"
+  MONGO_URI: "mongodb+srv://facundoguarnier:<contra>@<cluster y base de datos>"
   MONGO_DBNAME: "db-inventario-sole3.db"
   MONGO_COLLECTIONS: "usuarios,productos,movimientos,ventas,regalos,gift_cards,ultimasIDs"
   IMG_SIZE: "960,960"
