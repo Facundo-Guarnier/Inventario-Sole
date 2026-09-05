@@ -10,7 +10,7 @@ requests-toolbelt==1.0.0
 
 Werkzeug==3.0.3
 pillow==10.3.0
-cryptography==42.0.8
+cryptography==50.0.0
 
 black==24.10.0
 isort==5.13.2
